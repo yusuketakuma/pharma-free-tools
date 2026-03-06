@@ -11,10 +11,10 @@
     "abuse-prevention-drugs": 1741270800
   },
   "lastHomecare30m": {
-    "timestamp": 1741270800,
+    "timestamp": 1741272600,
     "tasks": [
-      "指定濫用防止医薬品現場チェックリスト案作成 (memory/abuse-prevention-drugs-checklist-2026-05.md)",
-      "経過措置薬品387品目の最新情報確認（更新なし）"
+      "2026年調剤報酬改定（在宅医療関連）情報更新: ターミナルケア・医療用麻薬訪問回数拡大、改定時期6月へ変更確認",
+      "PMDA安全性情報確認: 新規発出なし"
     ],
     "alerts": [
       "患者処方データ抽出と387品目照合が未実施（MedicalCareStation依存）"
