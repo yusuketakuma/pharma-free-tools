@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-03-04",
+  "totalTools": 8,
+  "topTools": [
+    {
+      "id": "pictory",
+      "name": "Pictory",
+      "commissionRate": "50%",
+      "score": 100
+    },
+    {
+      "id": "instantly",
+      "name": "Instantly.ai",
+      "commissionRate": "40%",
+      "score": 77
+    },
+    {
+      "id": "getresponse",
+      "name": "GetResponse",
+      "commissionRate": "40-60%",
+      "score": 75
+    },
+    {
+      "id": "reclaim",
+      "name": "Reclaim.ai",
+      "commissionRate": "40%",
+      "score": 67
+    },
+    {
+      "id": "writesonic",
+      "name": "Writesonic",
+      "commissionRate": "30%",
+      "score": 64
+    }
+  ],
+  "categoryCounts": {
+    "video-creation": 1,
+    "email-outreach": 1,
+    "email-marketing": 1,
+    "productivity": 1,
+    "content-writing": 2,
+    "chatbot": 1,
+    "3d-generation": 1
+  }
+}

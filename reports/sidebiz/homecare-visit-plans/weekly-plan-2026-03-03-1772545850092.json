@@ -1,0 +1,118 @@
+{
+  "generatedAt": "2026-03-03T13:50:50.092Z",
+  "source": "reports/sidebiz/homecare-visit-plans/test-patients.csv",
+  "weekStart": "2026-03-03",
+  "weekEnd": "2026-03-09",
+  "summary": {
+    "totalPatients": 8,
+    "criticalCount": 1,
+    "areaCount": 3
+  },
+  "days": {
+    "月": [
+      {
+        "id": "P104",
+        "name": "山田美智子",
+        "address": "杉並区高円寺北1-5-5",
+        "lastVisit": "2026-02-15",
+        "prescriptionDays": 7,
+        "urgency": "critical",
+        "notes": "在宅酸素・夜間も対応必要",
+        "priorityScore": 85,
+        "prescriptionRemaining": -9,
+        "daysSinceVisit": 16
+      },
+      {
+        "id": "P107",
+        "name": "小林正雄",
+        "address": "杉並区阿佐ヶ谷6-6-6",
+        "lastVisit": "2026-03-01",
+        "prescriptionDays": 14,
+        "urgency": "medium",
+        "notes": "パーキンソン病",
+        "priorityScore": 20,
+        "prescriptionRemaining": 12,
+        "daysSinceVisit": 2
+      }
+    ],
+    "火": [
+      {
+        "id": "P102",
+        "name": "鈴木花子",
+        "address": "杉並区高円寺南2-2-2",
+        "lastVisit": "2026-02-20",
+        "prescriptionDays": 14,
+        "urgency": "medium",
+        "notes": "認知症支援・服薬確認必要",
+        "priorityScore": 60,
+        "prescriptionRemaining": 3,
+        "daysSinceVisit": 11
+      },
+      {
+        "id": "P108",
+        "name": "木村恵子",
+        "address": "中野区野方7-7-7",
+        "lastVisit": "2026-02-18",
+        "prescriptionDays": 7,
+        "urgency": "high",
+        "notes": "抗凝固剤・INR確認必要",
+        "priorityScore": 60,
+        "prescriptionRemaining": -6,
+        "daysSinceVisit": 13
+      },
+      {
+        "id": "P105",
+        "name": "伊藤健一",
+        "address": "練馬区練馬4-4-4",
+        "lastVisit": "2026-02-26",
+        "prescriptionDays": 28,
+        "urgency": "medium",
+        "notes": "糖尿病・インスリン",
+        "priorityScore": 10,
+        "prescriptionRemaining": 23,
+        "daysSinceVisit": 5
+      }
+    ],
+    "水": [
+      {
+        "id": "P106",
+        "name": "渡辺和子",
+        "address": "中野区中野5-5-5",
+        "lastVisit": "2026-02-22",
+        "prescriptionDays": 14,
+        "urgency": "high",
+        "notes": "褥瘡ケア・軟膏処方",
+        "priorityScore": 60,
+        "prescriptionRemaining": 5,
+        "daysSinceVisit": 9
+      },
+      {
+        "id": "P103",
+        "name": "佐藤次郎",
+        "address": "練馬区光が丘3-3-3",
+        "lastVisit": "2026-02-28",
+        "prescriptionDays": 28,
+        "urgency": "low",
+        "notes": "",
+        "priorityScore": 0,
+        "prescriptionRemaining": 25,
+        "daysSinceVisit": 3
+      }
+    ],
+    "木": [],
+    "金": [
+      {
+        "id": "P101",
+        "name": "田中太郎",
+        "address": "杉並区高円寺北1-1-1",
+        "lastVisit": "2026-02-24",
+        "prescriptionDays": 28,
+        "urgency": "high",
+        "notes": "多剤併用・降圧剤3種",
+        "priorityScore": 20,
+        "prescriptionRemaining": 21,
+        "daysSinceVisit": 7
+      }
+    ]
+  }
+}

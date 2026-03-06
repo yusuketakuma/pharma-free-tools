@@ -1,0 +1,23 @@
+{
+  "lastChecks": {
+    "deadstock-ci": 1741257000,
+    "deadstock-test-fix": 1741224120,
+    "homecare-quality": 1741270800,
+    "pmda-safety-info": 1741267200,
+    "chouzai-houshu-kaisei": 1741269000,
+    "homecare-visit-prep": 1741250400,
+    "stripe-phase2-checkout-api": 1741266780,
+    "keika-sochi-yakuhin": 1741269000,
+    "abuse-prevention-drugs": 1741270800
+  },
+  "lastHomecare30m": {
+    "timestamp": 1741270800,
+    "tasks": [
+      "指定濫用防止医薬品現場チェックリスト案作成 (memory/abuse-prevention-drugs-checklist-2026-05.md)",
+      "経過措置薬品387品目の最新情報確認（更新なし）"
+    ],
+    "alerts": [
+      "患者処方データ抽出と387品目照合が未実施（MedicalCareStation依存）"
+    ]
+  }
+}

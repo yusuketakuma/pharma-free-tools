@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-03-05T19:05:36.541Z",
+  "totalLeads": 2,
+  "proposals": [
+    {
+      "id": "1772539618122",
+      "company": "Diagnostic Pharmacy B 20260303 2106",
+      "score": "86",
+      "value": "38543",
+      "outputPath": "/Users/yusuke/.openclaw/workspace/reports/sidebiz/poc-proposals/poc-proposal-1772539618122-2026-03-05.txt"
+    },
+    {
+      "id": "1772535987010",
+      "company": "Test Pharmacy",
+      "score": "79",
+      "value": "100542",
+      "outputPath": "/Users/yusuke/.openclaw/workspace/reports/sidebiz/poc-proposals/poc-proposal-1772535987010-2026-03-05.txt"
+    }
+  ],
+  "totalValue": 139085,
+  "totalPocRevenue": 21000
+}
