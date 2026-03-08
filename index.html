@@ -281,6 +281,72 @@
     ]
   }
   </script>
+
+  <!-- FAQPage Structured Data for Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "これらのツールは本当に無料ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、全25ツール完全無料でご利用いただけます。登録不要、広告もありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータは安全ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "すべてのデータはお使いのブラウザ内（ローカル）でのみ処理されます。外部サーバーへの送信は一切ありません。患者個人情報も保護されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "オフラインでも使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、一度ページを読み込めばオフラインでも動作します。電波の悪い訪問先でも安心してご利用いただけます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スマートフォンでも使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、全ツールレスポンシブ対応。スマホ・タブレット・PCのどちらでも快適にご利用いただけます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "生成されたテキストは業務で使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、自由にご活用ください。薬歴、報告書、メールなど、生成されたテキストをコピーしてそのまま業務で使えます。内容は必ず確認の上ご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "薬価や調剤報酬の計算は正確ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ツールは参考値を提供します。実際の計算では最新の薬価基準や点数表をご確認ください。大幅な誤差がある場合はご連絡いただけますと幸いです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "新しいツールのリクエストはできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、大歓迎です。「こんなツールがあったら便利」などのご意見・ご要望は、お問い合わせフォームまたはSNS（X/@yusuketakuma）までお寄せください。"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -477,7 +543,47 @@
         </div>
       </section>
     </main>
-    
+
+    <!-- FAQ Section -->
+    <section class="faq-section" style="background: white; border-radius: 20px; padding: 40px; margin-top: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+      <h2 style="font-size: 1.8rem; color: #667eea; margin-bottom: 24px; text-align: center;">よくある質問（FAQ）</h2>
+
+      <div class="faq-item" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">Q: これらのツールは本当に無料ですか？</h3>
+        <p style="color: #666; line-height: 1.7;">A: はい、全25ツール完全無料でご利用いただけます。登録不要、広告もありません。</p>
+      </div>
+
+      <div class="faq-item" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">Q: 入力したデータは安全ですか？</h3>
+        <p style="color: #666; line-height: 1.7;">A: すべてのデータはお使いのブラウザ内（ローカル）でのみ処理されます。外部サーバーへの送信は一切ありません。患者個人情報も保護されます。</p>
+      </div>
+
+      <div class="faq-item" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">Q: オフラインでも使えますか？</h3>
+        <p style="color: #666; line-height: 1.7;">A: はい、一度ページを読み込めばオフラインでも動作します。電波の悪い訪問先でも安心してご利用いただけます。</p>
+      </div>
+
+      <div class="faq-item" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">Q: スマートフォンでも使えますか？</h3>
+        <p style="color: #666; line-height: 1.7;">A: はい、全ツールレスポンシブ対応。スマホ・タブレット・PCのどちらでも快適にご利用いただけます。</p>
+      </div>
+
+      <div class="faq-item" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">Q: 生成されたテキストは業務で使えますか？</h3>
+        <p style="color: #666; line-height: 1.7;">A: はい、自由にご活用ください。薬歴、報告書、メールなど、生成されたテキストをコピーしてそのまま業務で使えます。内容は必ず確認の上ご利用ください。</p>
+      </div>
+
+      <div class="faq-item" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">Q: 薬価や調剤報酬の計算は正確ですか？</h3>
+        <p style="color: #666; line-height: 1.7;">A: ツールは参考値を提供します。実際の計算では最新の薬価基準や点数表をご確認ください。大幅な誤差がある場合はご連絡いただけますと幸いです。</p>
+      </div>
+
+      <div class="faq-item" style="padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">Q: 新しいツールのリクエストはできますか？</h3>
+        <p style="color: #666; line-height: 1.7;">A: はい、大歓迎です。「こんなツールがあったら便利」などのご意見・ご要望は、お問い合わせフォームまたはSNS（X/@yusuketakuma）までお寄せください。</p>
+      </div>
+    </section>
+
     <footer>
       <p>© 2026 薬剤師無料ツール集 | 全ツール完全無料・オフライン動作対応</p>
       <p style="margin-top: 8px; opacity: 0.8;">データは端末内のみで処理（プライバシー保護）</p>
