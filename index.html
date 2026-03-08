@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬剤師無料ツール集 - 業務効率化・在宅医療支援ツール24選</title>
+  <meta name="description" content="薬剤師の業務効率化を支援する24個の無料Webツール。薬価計算、薬歴作成、服薬指導、在宅医療報告書など、日常業務で即座に使えるツールを無料公開。">
+  <meta name="keywords" content="薬剤師,無料ツール,薬価計算,薬歴,服薬指導,在宅医療,業務効率化,ポリファーマシー,腎機能,調剤報酬">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="薬剤師無料ツール集 - 業務効率化・在宅医療支援ツール24選">
+  <meta property="og:description" content="薬剤師の業務効率化を支援する24個の無料Webツール。薬価計算、薬歴作成、服薬指導、在宅医療報告書など、日常業務で即座に使えるツールを無料公開。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+  <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="薬剤師無料ツール集 - 業務効率化・在宅医療支援ツール24選">
+  <meta name="twitter:description" content="薬剤師の業務効率化を支援する24個の無料Webツール。">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      margin-bottom: 24px;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .cta-banner {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 30px auto;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    .cta-banner h3 {
+      color: #667eea;
+      margin-bottom: 12px;
+    }
+    
+    .cta-banner p {
+      color: #666;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    main {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-top: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    
+    .category {
+      margin-bottom: 40px;
+    }
+    
+    .category-title {
+      font-size: 1.5rem;
+      color: #667eea;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #667eea;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .category-icon {
+      font-size: 1.8rem;
+    }
+    
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .tool-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      border-color: #667eea;
+    }
+    
+    .tool-card h3 {
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    
+    .tool-card p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    
+    .tool-link {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    
+    .tool-link:hover {
+      background: #5a6fd6;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      margin-left: 8px;
+    }
+    
+    .badge.popular {
+      background: #fff3e0;
+      color: #e65100;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+    }
+    
+    footer p {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .stats {
+        gap: 20px;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
+      }
+      
+      main {
+        padding: 24px;
+      }
+      
+      .category-title {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+  
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "薬剤師無料ツール集",
+    "description": "薬剤師の業務効率化を支援する24個の無料Webツール",
+    "numberOfItems": 24,
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "薬価シミュレーター", "url": "https://yusuketakuma.github.io/pharma-drug-price-tool/"},
+      {"@type": "ListItem", "position": 2, "name": "薬歴テンプレート生成", "url": "https://yusuketakuma.github.io/pharma-medication-history-tool/"},
+      {"@type": "ListItem", "position": 3, "name": "服薬指導チェックリスト生成", "url": "https://yusuketakuma.github.io/pharma-medication-guidance/"},
+      {"@type": "ListItem", "position": 4, "name": "腎機能別用量調整計算", "url": "https://yusuketakuma.github.io/pharma-renal-dose/"},
+      {"@type": "ListItem", "position": 5, "name": "業務効率化診断", "url": "https://yusuketakuma.github.io/pharma-efficiency-diagnosis/"},
+      {"@type": "ListItem", "position": 6, "name": "処方チェックリスト生成", "url": "https://yusuketakuma.github.io/pharma-prescription-checklist/"},
+      {"@type": "ListItem", "position": 7, "name": "疑義照会メール生成", "url": "https://yusuketakuma.github.io/pharma-inquiry-email/"},
+      {"@type": "ListItem", "position": 8, "name": "薬歴サマリー生成", "url": "https://yusuketakuma.github.io/pharma-medication-summary/"},
+      {"@type": "ListItem", "position": 9, "name": "副作用リスク評価", "url": "https://yusuketakuma.github.io/pharma-side-effect-checker/"},
+      {"@type": "ListItem", "position": 10, "name": "服薬カレンダー生成", "url": "https://yusuketakuma.github.io/pharma-medication-calendar/"},
+      {"@type": "ListItem", "position": 11, "name": "処方鑑別チェック", "url": "https://yusuketakuma.github.io/pharma-prescription-screening/"},
+      {"@type": "ListItem", "position": 12, "name": "DI照会生成", "url": "https://yusuketakuma.github.io/pharma-di-query/"},
+      {"@type": "ListItem", "position": 13, "name": "持参薬チェック", "url": "https://yusuketakuma.github.io/pharma-bringing-medicine/"},
+      {"@type": "ListItem", "position": 14, "name": "在庫アラート通知", "url": "https://yusuketakuma.github.io/pharma-inventory-alert/"},
+      {"@type": "ListItem", "position": 15, "name": "服薬アドヒアランス評価", "url": "https://yusuketakuma.github.io/pharma-adherence-check/"},
+      {"@type": "ListItem", "position": 16, "name": "類似薬名チェック", "url": "https://yusuketakuma.github.io/pharma-similar-drug-check/"},
+      {"@type": "ListItem", "position": 17, "name": "ポリファーマシー検出", "url": "https://yusuketakuma.github.io/pharma-polypharmacy/"},
+      {"@type": "ListItem", "position": 18, "name": "在宅医療報告書生成", "url": "https://yusuketakuma.github.io/pharma-homecare-report/"},
+      {"@type": "ListItem", "position": 19, "name": "調剤報酬シミュレーター", "url": "https://yusuketakuma.github.io/pharma-fee-calculator/"},
+      {"@type": "ListItem", "position": 20, "name": "服薬指導シナリオ生成", "url": "https://yusuketakuma.github.io/pharma-medication-guidance-scenario/"},
+      {"@type": "ListItem", "position": 21, "name": "患者向けお薬説明文生成", "url": "https://yusuketakuma.github.io/pharma-patient-explanation/"},
+      {"@type": "ListItem", "position": 22, "name": "訪問薬剤管理レコード生成", "url": "https://yusuketakuma.github.io/pharma-homecare-record/"},
+      {"@type": "ListItem", "position": 23, "name": "服薬リマインダー生成", "url": "https://yusuketakuma.github.io/pharma-medication-reminder/"},
+      {"@type": "ListItem", "position": 24, "name": "訪問薬剤管理スケジューラー", "url": "https://yusuketakuma.github.io/pharma-homecare-scheduler/"}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💊 薬剤師無料ツール集</h1>
+      <p class="subtitle">業務効率化・在宅医療支援ツール24選</p>
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number">24</div>
+          <div class="stat-label">無料ツール</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">オフライン動作</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">0円</div>
+          <div class="stat-label">完全無料</div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="cta-banner">
+      <h3>🎁 AI活用プロンプト集販売中</h3>
+      <p>薬剤師がChatGPT/Claudeで業務を効率化するためのプロンプトテンプレート集（20プロンプト収録）</p>
+      <a href="#" class="cta-button">詳細を見る</a>
+    </div>
+    
+    <main>
+      <!-- 計算・診断系 -->
+      <section class="category">
+        <h2 class="category-title"><span class="category-icon">📊</span>計算・診断系</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>薬価シミュレーター<span class="badge popular">人気</span></h3>
+            <p>後発品切り替え時の薬価差を即座に計算。患者説明・在庫管理に活用。</p>
+            <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>腎機能別用量調整計算<span class="badge popular">人気</span></h3>
+            <p>eGFR計算とCKD病期判定。12薬剤の用量調整情報を自動表示。</p>
+            <a href="https://yusuketakuma.github.io/pharma-renal-dose/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>調剤報酬シミュレーター<span class="badge popular">人気</span></h3>
+            <p>処方内容から調剤報酬点数を試算。経営分析・業務改善に活用。</p>
+            <a href="https://yusuketakuma.github.io/pharma-fee-calculator/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>業務効率化診断<span class="badge popular">人気</span></h3>
+            <p>10問の診断で業務改善ポイントを特定。優先度付きアクションプラン生成。</p>
+            <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>副作用リスク評価<span class="badge">高需要</span></h3>
+            <p>患者属性・処方薬から副作用リスクを評価。注意すべき組み合わせを検出。</p>
+            <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>ポリファーマシー検出<span class="badge">高需要</span></h3>
+            <p>70種類以上の薬剤データで多剤併用リスクを検出。Beers基準対応。</p>
+            <a href="https://yusuketakuma.github.io/pharma-polypharmacy/" class="tool-link">使ってみる →</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 薬歴・記録系 -->
+      <section class="category">
+        <h2 class="category-title"><span class="category-icon">📝</span>薬歴・記録系</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>薬歴テンプレート生成</h3>
+            <p>患者情報から標準的な薬歴フォーマットを自動生成。4種類のテンプレート対応。</p>
+            <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>薬歴サマリー生成</h3>
+            <p>複数処方の要点をまとめたサマリーを生成。引き継ぎ・報告に活用。</p>
+            <a href="https://yusuketakuma.github.io/pharma-medication-summary/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>服薬アドヒアランス評価</h3>
+            <p>患者の服薬状況からアドヒアランスリスクを評価。介入ポイントを特定。</p>
+            <a href="https://yusuketakuma.github.io/pharma-adherence-check/" class="tool-link">使ってみる →</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 服薬指導・患者対応系 -->
+      <section class="category">
+        <h2 class="category-title"><span class="category-icon">💬</span>服薬指導・患者対応系</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>服薬指導チェックリスト生成</h3>
+            <p>患者タイプ×薬剤タイプで最適化チェックリストを自動生成。</p>
+            <a href="https://yusuketakuma.github.io/pharma-medication-guidance/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>服薬指導シナリオ生成</h3>
+            <p>患者タイプ別の服薬指導トーク例を生成。新人教育にも活用。</p>
+            <a href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>患者向けお薬説明文生成</h3>
+            <p>専門用語を使わない患者向け説明文を自動生成。高齢者・小児対応。</p>
+            <a href="https://yusuketakuma.github.io/pharma-patient-explanation/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>服薬カレンダー生成</h3>
+            <p>処方内容から服薬スケジュールをカレンダー形式で生成。患者配布用。</p>
+            <a href="https://yusuketakuma.github.io/pharma-medication-calendar/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>服薬リマインダー生成</h3>
+            <p>患者の服薬時間に合わせたリマインダーテキストを生成。</p>
+            <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" class="tool-link">使ってみる →</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 疑義照会・DI系 -->
+      <section class="category">
+        <h2 class="category-title"><span class="category-icon">📞</span>疑義照会・DI系</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>処方チェックリスト生成</h3>
+            <p>処方内容から疑義照会チェック項目を自動生成。高リスク処方アラート付き。</p>
+            <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>処方鑑別チェック</h3>
+            <p>鑑別時の確認項目を自動生成。年齢・処方期間別の注意点を表示。</p>
+            <a href="https://yusuketakuma.github.io/pharma-prescription-screening/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>疑義照会メール生成</h3>
+            <p>状況別の疑義照会メール文面を生成。丁寧かつ効率的な医師連絡に。</p>
+            <a href="https://yusuketakuma.github.io/pharma-inquiry-email/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>DI照会生成</h3>
+            <p>DI業務の照会文面を自動生成。製薬企業・情報センターへの問い合わせに。</p>
+            <a href="https://yusuketakuma.github.io/pharma-di-query/" class="tool-link">使ってみる →</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 在宅医療・訪問薬剤管理系 -->
+      <section class="category">
+        <h2 class="category-title"><span class="category-icon">🏠</span>在宅医療・訪問薬剤管理系</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>在宅医療報告書生成<span class="badge">高需要</span></h3>
+            <p>訪問記録から医師報告書を自動生成。在宅医療連携の効率化に。</p>
+            <a href="https://yusuketakuma.github.io/pharma-homecare-report/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>訪問薬剤管理レコード生成<span class="badge">高需要</span></h3>
+            <p>訪問時の確認項目を網羅したレコードを生成。厚労省様式対応。</p>
+            <a href="https://yusuketakuma.github.io/pharma-homecare-record/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>訪問薬剤管理スケジューラー<span class="badge">高需要</span></h3>
+            <p>訪問計画の立案・管理を支援。患者別スケジュールを自動生成。</p>
+            <a href="https://yusuketakuma.github.io/pharma-homecare-scheduler/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>持参薬チェック</h3>
+            <p>持参薬の確認項目を自動生成。併用リスク・重複チェック付き。</p>
+            <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/" class="tool-link">使ってみる →</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 在庫・安全管理系 -->
+      <section class="category">
+        <h2 class="category-title"><span class="category-icon">📦</span>在庫・安全管理系</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>在庫アラート通知</h3>
+            <p>在庫管理のアラートメールを自動生成。欠品・期限切れ防止に。</p>
+            <a href="https://yusuketakuma.github.io/pharma-inventory-alert/" class="tool-link">使ってみる →</a>
+          </div>
+          <div class="tool-card">
+            <h3>類似薬名チェック</h3>
+            <p>紛らわしい薬名の組み合わせを検出。確認ミス防止に活用。</p>
+            <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/" class="tool-link">使ってみる →</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer>
+      <p>© 2026 薬剤師無料ツール集 | 全ツール完全無料・オフライン動作対応</p>
+      <p style="margin-top: 8px; opacity: 0.8;">データは端末内のみで処理（プライバシー保護）</p>
+    </footer>
+  </div>
+</body>
+</html>
