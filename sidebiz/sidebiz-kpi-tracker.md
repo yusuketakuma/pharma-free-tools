@@ -52,10 +52,13 @@
 | 商品ファイル作成 | 1式 | 1式 | 100% |
 | 登録手順書 | 1部 | 1部 | 100% |
 | 着地ページ作成 | 1式 | 1式 | 100% |
+| プロンプト数 | 25 | 47 | 188% |
 | 販売数 | 10 | - | - |
 | 収益 | ¥15,000 | ¥0 | 0% |
 
 **ステータス**: 販売準備完了、ユーザー登録待ち
+
+**最新更新（2026-03-08 06:06）**: セクション18-19（薬物治療管理・認知症ケア）追加、47プロンプト化
 
 ---
 
@@ -132,23 +135,56 @@
 
 **目的**: リード獲得 → 有料製品（プロンプト集/Notionテンプレート）へ転換
 
-| ツール | 公開日 | URL | 状態 |
-|--------|--------|-----|------|
-| G: 薬価シミュレーター | 03/07 | https://yusuketakuma.github.io/pharma-drug-price-tool/ | 公開中 |
-| G2: 薬歴テンプレート | 03/07 | https://yusuketakuma.github.io/pharma-medication-history-tool/ | 公開中 |
-| G3: 服薬指導チェックリスト | 03/07 | https://yusuketakuma.github.io/pharma-medication-guidance-tool/ | 公開中 |
-| G4: 腎機能別用量調整 | 03/07 | https://yusuketakuma.github.io/pharma-renal-dose-tool/ | 公開中 |
-| G5: 業務効率化診断 | 03/07 | - | MVP完成（デプロイ待ち） |
+**収益性**: 無料ツール経由でリード獲得 → 有料製品（¥300〜¥980）へ転換
+**再現性**: Vanilla HTML/CSS/JS（依存なし）+ GitHub Pages（無料ホスティング）
+**KPI**: 1ヶ月PV 1,600 / リード85件 / 有料転換17件
 
-**KPI目標（ツール群合計）**
+| ID | ツール名 | 公開日 | URL | 状態 |
+|----|----------|--------|-----|------|
+| G1 | 薬価シミュレーター | 03/07 | https://yusuketakuma.github.io/pharma-drug-price-tool/ | ✅公開中 |
+| G2 | 薬歴テンプレート | 03/07 | https://yusuketakuma.github.io/pharma-medication-history-tool/ | ✅公開中 |
+| G3 | 服薬指導チェックリスト | 03/07 | https://yusuketakuma.github.io/pharma-medication-guidance-tool/ | ✅公開中 |
+| G4 | 腎機能別用量調整 | 03/07 | https://yusuketakuma.github.io/pharma-renal-dose-tool/ | ✅公開中 |
+| G5 | 業務効率化診断 | 03/07 | https://yusuketakuma.github.io/pharma-efficiency-diagnosis/ | ✅公開中 |
+| G6 | 疑義照会クエリ生成 | 03/07 | https://yusuketakuma.github.io/pharma-di-query/ | ✅公開中 |
+| G7 | 疑義照会メール生成 | 03/07 | https://yusuketakuma.github.io/pharma-inquiry-email/ | ✅公開中 |
+| G8 | アドヒアランスチェック | 03/07 | https://yusuketakuma.github.io/pharma-adherence-check/ | ✅公開中 |
+| G9 | 在庫アラート設定 | 03/07 | https://yusuketakuma.github.io/pharma-inventory-alert/ | ✅公開中 |
+| G10 | 服薬カレンダー | 03/07 | https://yusuketakuma.github.io/pharma-medication-calendar/ | ✅公開中 |
+| G11 | 薬歴サマリー | 03/07 | https://yusuketakuma.github.io/pharma-medication-summary/ | ✅公開中 |
+| G12 | 処方チェックリスト | 03/07 | https://yusuketakuma.github.io/pharma-prescription-checklist/ | ✅公開中 |
+| G13 | 処方スクリーニング | 03/07 | https://yusuketakuma.github.io/pharma-prescription-screening/ | ✅公開中 |
+| G14 | 副作用チェッカー | 03/07 | https://yusuketakuma.github.io/pharma-side-effect-checker/ | ✅公開中 |
+| G15 | 類似薬名チェック | 03/07 | https://yusuketakuma.github.io/pharma-similar-drug-check/ | ✅公開中 |
+| G16 | 持参薬確認 | 03/07 | https://yusuketakuma.github.io/pharma-bringing-medicine/ | ✅公開中 |
+| G17 | ポリファーマシー | 03/07 | https://yusuketakuma.github.io/pharma-polypharmacy/ | ✅公開中 |
+| G18 | 在宅医療報告書生成 | 03/07 | https://yusuketakuma.github.io/pharma-homecare-report/ | ✅公開中 |
+| G19 | 調剤報酬シミュレーター | 03/07 | https://yusuketakuma.github.io/pharma-fee-calculator/ | ✅公開中 |
+| G20 | 服薬指導シナリオ生成 | 03/07 | https://yusuketakuma.github.io/pharma-medication-guidance-scenario/ | ✅公開中 |
+| G21 | 患者向けお薬説明文生成 | 03/07 | https://yusuketakuma.github.io/pharma-patient-explanation/ | ✅公開中 |
+| G22 | 訪問薬剤管理レコード生成 | 03/07 | https://yusuketakuma.github.io/pharma-homecare-record/ | ✅公開中 |
+| G23 | 服薬リマインダー生成 | 03/08 | https://yusuketakuma.github.io/pharma-medication-reminder/ | ✅公開中 |
+| G24 | 訪問薬剤管理スケジューラー | 03/08 | https://yusuketakuma.github.io/pharma-homecare-scheduler/ | ✅公開中 |
+
+**KPI目標（ツール群合計 - 24ツール）**
 
 | 指標 | 1週間 | 1ヶ月 | 3ヶ月 |
 |------|-------|-------|-------|
-| PV | 300 | 1,600 | 5,800 |
-| リード | 19 | 85 | 230 |
-| 有料転換 | 5 | 17 | 60 |
+| PV | 1,600 | 7,200 | 26,300 |
+| リード | 80 | 365 | 1,100 |
+| 有料転換 | 16 | 75 | 220 |
 
-**ステータス**: 4ツール公開中、G5デプロイ待ち
+**ステータス**: ✅ 24ツール全て公開完了（2026-03-08 05:10確認）
+
+**追加施策（2026-03-07 18:34）**:
+- ✅ G1/G5に収益化CTA統一（AIプロンプト集¥300 / Notionテンプレート¥500）
+- ✅ G1/G5の相互リンクを21ツールに拡張（G18-G21追加）
+- 🔲 残り19ツールへのCTA追加（次回以降）
+
+**次アクション（自律実行可能）**:
+- 🔲 G2-G4, G6-G21に収益化CTA追加
+- 🔲 CTAリンクを実URLへ差し替え（Payhip/Gumroadページ作成後）
+- 🔲 効果測定（GA4でCTAクリック率計測）
 
 ---
 
@@ -185,6 +221,20 @@
 | 02:06 | G2（薬歴テンプレート）開発・公開 | 完了 |
 | 03:38 | G4（腎機能別用量調整）開発・公開 | 完了 |
 | 04:10 | G5（業務効率化診断）MVP開発 | 完了 |
+| 12:40 | 無料ツール17件の公開状況確認・トラッカー更新 | 完了 |
+| 13:30 | G18（在宅医療報告書生成）開発・公開・相互リンク追加 | 完了 |
+| 14:30 | G18トラッカー追加（18ツール化）・KPI再計算 | 完了 |
+| 14:45 | G19（調剤報酬シミュレーター）開発・公開 | 完了 |
+| 15:06 | G20（服薬指導シナリオ生成）開発・公開 | 完了 |
+| 17:40 | G21（患者向けお薬説明文生成）開発・公開 | 完了 |
+
+### 2026-03-08
+
+| 時刻 | タスク | 状態 |
+|------|--------|------|
+| 00:37 | AIプロンプト集セクション13追加（患者教育ツール、29プロンプト化） | 完了 |
+| 01:36 | AIプロンプト集LP最新化（15→25プロンプト、¥1,500→¥300） | 完了 |
+| 05:05 | G24（訪問薬剤管理スケジューラー）開発・公開 | 完了 |
 
 ---
 
@@ -299,4 +349,80 @@
 
 ---
 
-*最終更新: 2026-03-06 22:12 JST*
+### N案: SEO構造化データ最適化（NEW - 2026/03/07 20:08）
+
+| 指標 | 目標（1ヶ月） | 実績 | 達成率 |
+|------|---------------|------|--------|
+| JSON-LD追加ツール数 | 21 | 21 | 100% |
+| sitemap.xml生成 | 1式 | 1式 | 100% |
+| Google Search Console登録 | 1件 | - | - |
+| 検索流入 | 300 PV | - | - |
+| リード | 15件 | - | - |
+
+**実施内容**:
+- 全21無料ツールにJSON-LD（Schema.org SoftwareApplication）追加完了
+- sitemap.xml生成完了（sidebiz/sitemap.xml）
+
+**ステータス**: 構造化データ追加完了、Search Console登録待ち（ユーザー依存）
+
+**収益性**: SEO強化 → 検索流入増 → リード獲得 → 有料製品転換
+**再現性**: テキストベースの追加で自律実行可能
+
+---
+
+### K案: 服薬カレンダー即デプロイキット（NEW - 2026/03/08 03:15）
+
+**目的**: 既存無料ツール（G9）をベースに「GitHub Pagesで5分公開」キットとして有料化
+
+**収益性**: 価格¥500。訪問薬剤師・在宅医療従事者向け。月5〜10販売で¥2,500〜¥5,000。
+**再現性**: テキスト中心で自律作成可能。購入者はFork→設定→公開で完了。
+
+| 指標 | 目標（初月） | 実績 | 達成率 |
+|------|--------------|------|--------|
+| 雛形作成 | 1式 | 1式 | 100% |
+| 専用リポジトリ作成 | 1件 | - | - |
+| 販売ページ作成 | 1式 | - | - |
+| DL数 | 10 | - | - |
+| スター | 5 | - | - |
+| 返金率 | <5% | - | - |
+| 収益 | ¥5,000 | ¥0 | 0% |
+
+**同梱物**:
+- index.html（ツール本体・軽量版）
+- README.md（概要・KPI・価格）
+- SETUP.md（GitHub Pages公開手順）
+- CUSTOMIZE.md（配色・文言変更ガイド）
+- LICENSE（MIT）
+
+**ステータス**: 雛形作成完了、リポジトリ・販売ページ作成待ち（ユーザー依存）
+
+---
+
+---
+
+### O案: Xプロモーション・バンドル戦略（NEW - 2026/03/08 04:38）
+
+| 指標 | 目標（1ヶ月） | 実績 | 達成率 |
+|------|---------------|------|--------|
+| Xスレッドドラフト作成 | 8種 | 8種 | 100% |
+| バンドル戦略ドキュメント | 1式 | 1式 | 100% |
+| バンドル販売数 | 5件 | - | - |
+| バンドル売上 | ¥3,250 | ¥0 | 0% |
+
+**成果物**:
+- `sidebiz/x-promotion-threads-2026-03.md`（投稿用ドラフト8種）
+- `sidebiz/bundle-strategy-2026-03.md`（3商品組み合わせ戦略）
+
+**バンドル構成**:
+- A: スターターセット（AI + カレンダー）¥650（19% OFF）
+- B: Notion効率化セット（AI + Notion）¥2,300（18% OFF）
+- C: フルパッケージ（3商品全部）¥2,500（24% OFF）
+
+**ステータス**: ドラフト作成完了、投稿・SKU作成待ち（ユーザー依存）
+
+**収益性**: バンドル販売でAOV向上（¥800 → ¥1,200目標）
+**再現性**: テキストベースで自律作成完了
+
+---
+
+*最終更新: 2026-03-08 05:10 JST*

@@ -1,23 +1,51 @@
 {
   "lastChecks": {
-    "deadstock-ci": 1741257000,
+    "deadstock-ci": 1741387260,
     "deadstock-test-fix": 1741224120,
-    "homecare-quality": 1741270800,
-    "pmda-safety-info": 1741267200,
+    "homecare-quality": 1741417200,
+    "pmda-safety-info": 1741417200,
     "chouzai-houshu-kaisei": 1741269000,
     "homecare-visit-prep": 1741250400,
     "stripe-phase2-checkout-api": 1741266780,
-    "keika-sochi-yakuhin": 1741269000,
+    "keika-sochi-yakuhin": 1741417200,
     "abuse-prevention-drugs": 1741270800
   },
+  "lastBuchoReport": 1741277700,
   "lastHomecare30m": {
-    "timestamp": 1741272600,
+    "timestamp": 1741417200,
     "tasks": [
-      "2026年調剤報酬改定（在宅医療関連）情報更新: ターミナルケア・医療用麻薬訪問回数拡大、改定時期6月へ変更確認",
-      "PMDA安全性情報確認: 新規発出なし"
+      "PMDAクラスI回収確認（1-2460が最新・前回と変更なし）",
+      "med-safe No.231確認（胃瘻カテーテル破損・前回と変更なし）",
+      "CloseDi供給状況確認（3/6更新が最新・日曜日は更新なし）",
+      "homecare-checklists.md更新日時更新（14:00→15:00）"
     ],
     "alerts": [
-      "患者処方データ抽出と387品目照合が未実施（MedicalCareStation依存）"
+      "[ALERT]経過措置医薬品: 3/31期限まで23日（患者抽出未実施）",
+      "[ALERT]指定濫用防止8成分: 5/1施行まで54日（準備未着手）"
+    ],
+    "next30mCandidates": [
+      "MedicalCareStation患者抽出実施（ゆうすけ操作必要）",
+      "CloseDi 3/14更新確認",
+      "指定濫用防止医薬品在庫確認・スタッフ教育準備"
+    ]
+  },
+  "lastSidebiz30m": {
+    "timestamp": 1741420860,
+    "tasks": [
+      "バンドル戦略策定（AIプロンプト集 × チェックリスト集）",
+      "バンドル販売ページドラフト作成",
+      "価格戦略策定（単品¥500×2 → バンドル¥800、クーポン¥200OFF）",
+      "SNS投稿テンプレート作成（バンドル用）"
+    ],
+    "blockers": [
+      "有料商材販売開始: Payhip/Gumroadアカウント作成必要（ユーザー依存）",
+      "PDF変換: pandocインストール必要（ユーザー依存）"
+    ],
+    "nextCandidates": [
+      "セールスメールドラフト作成（バンドル用）",
+      "無料サンプルLP作成（プロンプト3個 + チェックリスト1種）",
+      "無料ツールポータルのSEO対策",
+      "クーポンコード運用計画作成"
     ]
   }
 }

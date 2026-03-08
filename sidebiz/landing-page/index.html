@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>薬剤師向けAIプロンプト集 | 業務時間を30%短縮</title>
-    <meta name="description" content="ChatGPT/Claudeで薬歴入力・服薬指導・疑義照会を効率化。実務経験に基づく15のテンプレート集。">
+    <title>薬剤師向けAIプロンプト集25選 | 業務時間を30%短縮</title>
+    <meta name="description" content="ChatGPT/Claudeで薬歴入力・服薬指導・疑義照会を効率化。実務経験に基づく25のテンプレート集。薬歴入力が3分→1分に。">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
@@ -24,20 +24,26 @@
         .prompt-item:last-child { border-bottom: none; }
         .cta { text-align: center; padding: 60px 20px; background: #667eea; color: white; }
         .price { font-size: 2.5em; font-weight: bold; margin: 20px 0; }
+        .old-price { text-decoration: line-through; opacity: 0.6; font-size: 0.6em; }
         .btn { display: inline-block; background: #ff6b6b; color: white; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-size: 1.2em; font-weight: bold; transition: transform 0.2s, box-shadow 0.2s; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,107,107,0.4); }
         .guarantee { margin-top: 20px; font-size: 0.9em; opacity: 0.9; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .comparison-table th, .comparison-table td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
+        .comparison-table th { background: #f8f9fa; }
+        .comparison-table .highlight { color: #667eea; font-weight: bold; }
         footer { text-align: center; padding: 30px; color: #666; font-size: 0.9em; }
+        .badge { display: inline-block; background: #ff6b6b; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin-left: 10px; }
         @media (max-width: 600px) { h1 { font-size: 1.6em; } .price { font-size: 2em; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>💊 薬剤師向けAIプロンプト集</h1>
+            <h1>💊 薬剤師向けAIプロンプト集25選</h1>
             <p class="subtitle">ChatGPT/Claudeで業務時間を30%短縮</p>
             <div class="hero-stat">
-                <div class="number">15</div>
+                <div class="number">25</div>
                 <div>実務即戦力プロンプト</div>
             </div>
         </div>
@@ -45,7 +51,7 @@
 
     <section class="features">
         <div class="container">
-            <h2 style="text-align:center; margin-bottom:30px;">📝 含まれるプロンプト</h2>
+            <h2 style="text-align:center; margin-bottom:30px;">📝 含まれるプロンプト（12セクション）</h2>
             <div class="feature-grid">
                 <div class="feature">
                     <h3>📄 薬歴入力</h3>
@@ -63,7 +69,53 @@
                     <h3>🏠 在宅医療</h3>
                     <p>訪問薬剤管理の報告書を効率化。多職種連携の文書作成も対応。</p>
                 </div>
+                <div class="feature">
+                    <h3>💊 副作用・薬物動態</h3>
+                    <p>TDM評価、相互作用分析、副作用リスク評価をサポート。</p>
+                </div>
+                <div class="feature">
+                    <h3>📊 品質・在庫管理</h3>
+                    <p>在庫最適化レポート、ヒヤリハット分析、自己点検チェックリスト作成。</p>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2 style="text-align:center; margin-bottom:30px;">⏱️ 期待できる効果</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>業務</th>
+                        <th>従来</th>
+                        <th>プロンプト活用後</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>薬歴入力</td>
+                        <td>3〜5分/件</td>
+                        <td class="highlight">1〜2分/件</td>
+                    </tr>
+                    <tr>
+                        <td>疑義照会文面</td>
+                        <td>5〜10分</td>
+                        <td class="highlight">1〜2分</td>
+                    </tr>
+                    <tr>
+                        <td>訪問報告書</td>
+                        <td>10〜15分</td>
+                        <td class="highlight">3〜5分</td>
+                    </tr>
+                    <tr>
+                        <td>新薬情報整理</td>
+                        <td>20〜30分</td>
+                        <td class="highlight">5〜10分</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="text-align:center; color:#666;">1日あたり20分〜1時間の時間短縮が可能に</p>
         </div>
     </section>
 
@@ -76,6 +128,8 @@
                 <div class="prompt-item">✅ AIを業務に活用したいが使い方がわからない</div>
                 <div class="prompt-item">✅ 在宅医療の文書作成を効率化したい</div>
                 <div class="prompt-item">✅ 疑義照会の準備を時短したい</div>
+                <div class="prompt-item">✅ 副作用・相互作用の評価をサポートしたい</div>
+                <div class="prompt-item">✅ 品質管理・在庫管理のレポート作成を効率化したい</div>
             </div>
         </div>
     </section>
@@ -83,8 +137,12 @@
     <section class="cta">
         <div class="container">
             <h2>今すぐ業務効率化を始める</h2>
-            <div class="price">¥1,500</div>
-            <p>ランチ2回分で、毎日の業務が楽に</p>
+            <div class="price">
+                <span class="old-price">¥1,500</span>
+                <span>¥300</span>
+                <span class="badge">初回価格</span>
+            </div>
+            <p>コーヒー1杯分で、毎日の業務が楽に</p>
             <a href="[GUMROAD_LINK]" class="btn">購入する →</a>
             <p class="guarantee">📌 購入後のアップデート無料</p>
         </div>
@@ -92,6 +150,7 @@
 
     <footer>
         <p>© 2026 薬剤師向けAIプロンプト集</p>
+        <p style="margin-top:10px; font-size:0.8em;">収録内容: 25プロンプト / 12セクション（薬歴入力・疑義照会・服薬指導・在宅医療・調剤実務・学習・コミュニケーション・チーム運営・キャリア・副作用・品質管理）</p>
     </footer>
 </body>
 </html>

@@ -1,33 +1,19 @@
 {
-  "lastRun": "2026-03-07T00:36:00+09:00",
-  "task": "sidebiz-30m-assign",
-  "selectedTask": "施策F/B3: 商品ページドラフト作成（Gumroad/Payhip用）",
-  "reason": "収益性高・再現性高・自律実行可能・施策G（Webツール）との差分あり",
+  "lastRun": "2026-03-08T11:00:00+09:00",
+  "task": "homecare-30m-assign",
+  "selectedTask": "homecare-checklists.md更新・最新情報確認",
+  "reason": "30分以内完了可能・homecare運用品質向上の基盤整備",
   "deliverables": [
-    "gumroad-product-page-notion-template-draft.md（施策F）",
-    "payhip-product-page-ai-prompts-draft.md（施策B3）",
-    "promotion-copies-2026-03-06.md（施策Fセクション追加）"
+    "homecare-checklists.md（最新情報セクション追加）",
+    "memory/2026-03-08.md（11:00タスク記録）"
   ],
-  "kpi": {
-    "施策F": {
-      "1week": { "sales": 5, "revenue": 2500 },
-      "1month": { "sales": 20, "revenue": 10000 },
-      "3months": { "sales": 100, "revenue": 50000 }
-    },
-    "施策B3": {
-      "1week": { "sales": 5, "revenue": 1500 },
-      "1month": { "sales": 20, "revenue": 6000 },
-      "3months": { "sales": 100, "revenue": 30000 }
-    }
+  "progress": {
+    "経過措置医薬品": "変更なし（3月31日期限）",
+    "指定濫用防止医薬品": "変更なし（5月1日施行）",
+    "調剤報酬改定": "m3.com新着3記事確認",
+    "PMDA/med-safe": "新規クラスI回収なし"
   },
-  "nextSteps": [
-    "Payhipアカウント作成（ユーザー依存）",
-    "Gumroadアカウント作成（ユーザー依存）",
-    "PDF変換（pandocインストール後）",
-    "スクリーンショット撮影",
-    "商品ページ公開",
-    "施策G X/LINE告知"
-  ],
   "anomalies": [],
-  "nextRun": "2026-03-07T01:06:00+09:00"
+  "nextRun": "2026-03-08T11:30:00+09:00",
+  "alertCandidates": []
 }
