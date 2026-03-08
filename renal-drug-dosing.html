@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>腎機能別用量調整計算ツール - 薬剤師無料ツール</title>
+  <meta name="description" content="Cockcroft-Gault式でクレアチニンクリアランス(Ccr)を自動計算し、腎機能に応じた用量調整を支援する無料ツールです。">
+  <link rel="canonical" href="https://yusuke-ai.github.io/free-tool-portal/renal-drug-dosing.html">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="腎機能別用量調整計算ツール - 薬剤師無料ツール">
+  <meta property="og:description" content="Cockcroft-Gault式でCcrを自動計算し、腎機能に応じた用量調整を支援。">
+  <meta property="og:url" content="https://yusuke-ai.github.io/free-tool-portal/renal-drug-dosing.html">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="腎機能別用量調整計算ツール">
+  <meta name="twitter:description" content="Ccr自動計算で腎機能別用量調整を支援する無料ツール">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "腎機能別用量調整計算ツール",
+    "description": "Cockcroft-Gault式でクレアチニンクリアランス(Ccr)を自動計算し、腎機能に応じた用量調整を支援する無料ツール",
+    "url": "https://yusuke-ai.github.io/free-tool-portal/renal-drug-dosing.html",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    .input-section {
+      margin-bottom: 25px;
+    }
+    
+    .input-section h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-left: 4px solid #667eea;
+      padding-left: 10px;
+    }
+    
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    
+    .input-group {
+      margin-bottom: 15px;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.9rem;
+    }
+    
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .input-group input:focus, .input-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .calculate-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 20px;
+    }
+    
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .result {
+      margin-top: 30px;
+      padding: 25px;
+      background: #f8f9fa;
+      border-radius: 15px;
+      display: none;
+    }
+    
+    .result.show {
+      display: block;
+    }
+    
+    .result h3 {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .ccr-display {
+      text-align: center;
+      margin-bottom: 25px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+    }
+    
+    .ccr-value {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #667eea;
+    }
+    
+    .ccr-unit {
+      font-size: 1rem;
+      color: #666;
+    }
+    
+    .ckd-stage {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    
+    .ckd-stage.g1 { background: #c8e6c9; color: #2e7d32; }
+    .ckd-stage.g2 { background: #dcedc8; color: #558b2f; }
+    .ckd-stage.g3a { background: #fff9c4; color: #f9a825; }
+    .ckd-stage.g3b { background: #ffe0b2; color: #ef6c00; }
+    .ckd-stage.g4 { background: #ffccbc; color: #d84315; }
+    .ckd-stage.g5 { background: #ffcdd2; color: #c62828; }
+    
+    .drug-list {
+      margin-top: 20px;
+    }
+    
+    .drug-item {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .drug-name {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    
+    .dose-info {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .dose-warning {
+      color: #d32f2f;
+      font-weight: 600;
+    }
+    
+    .dose-ok {
+      color: #388e3c;
+    }
+    
+    .copy-btn {
+      padding: 10px 20px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+    
+    .copy-btn:hover {
+      background: #5a6fd6;
+    }
+    
+    .note {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff3cd;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #856404;
+    }
+    
+    .cta-section {
+      margin-top: 32px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 16px;
+      border: 1px solid #bfdbfe;
+    }
+    
+    .cta-section h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1e40af;
+    }
+    
+    .cta-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: white;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .cta-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .cta-icon {
+      font-size: 1.5rem;
+    }
+    
+    .cta-content {
+      flex: 1;
+    }
+    
+    .cta-title {
+      font-weight: 600;
+      color: #1e40af;
+    }
+    
+    .cta-desc {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    
+    .cta-price {
+      font-weight: 700;
+      color: #dc2626;
+      white-space: nowrap;
+    }
+    
+    .footer-links {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .footer-links h4 {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+    
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    
+    .link-grid a {
+      font-size: 0.85rem;
+      color: #667eea;
+      text-decoration: none;
+      padding: 6px 0;
+    }
+    
+    .link-grid a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🩺 腎機能別用量調整計算ツール</h1>
+      <p>Cockcroft-Gault式でCcrを自動計算し、薬剤の用量調整を支援</p>
+    </div>
+    
+    <div class="content">
+      <div class="input-section">
+        <h3>患者情報入力</h3>
+        <div class="input-grid">
+          <div class="input-group">
+            <label>年齢</label>
+            <input type="number" id="age" placeholder="例: 75" min="1" max="120">
+          </div>
+          <div class="input-group">
+            <label>性別</label>
+            <select id="gender">
+              <option value="male">男性</option>
+              <option value="female">女性</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>体重 (kg)</label>
+            <input type="number" id="weight" placeholder="例: 55" min="20" max="200" step="0.1">
+          </div>
+          <div class="input-group">
+            <label>身長 (cm)</label>
+            <input type="number" id="height" placeholder="例: 160" min="100" max="250">
+          </div>
+          <div class="input-group">
+            <label>血清クレアチニン (mg/dL)</label>
+            <input type="number" id="scr" placeholder="例: 1.2" min="0.1" max="20" step="0.01">
+          </div>
+          <div class="input-group">
+            <label>計算式</label>
+            <select id="formula">
+              <option value="cg">Cockcroft-Gault（標準）</option>
+              <option value="cg-bsa">Cockcroft-Gault（BSA補正）</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <button class="calculate-btn" onclick="calculate()">計算する</button>
+      
+      <div class="result" id="result">
+        <h3>📊 計算結果</h3>
+        
+        <div class="ccr-display">
+          <div class="ccr-value" id="ccrValue">--</div>
+          <div class="ccr-unit">mL/min</div>
+          <div class="ckd-stage" id="ckdStage">--</div>
+        </div>
+        
+        <div class="drug-list" id="drugList">
+          <!-- 動的に生成 -->
+        </div>
+        
+        <button class="copy-btn" onclick="copyResult()">📋 結果をコピー</button>
+        
+        <div class="note">
+          <strong>⚠️ 注意事項</strong><br>
+          • 本計算は目安です。実際の用量調整は添付文書およびガイドラインに従ってください。<br>
+          • 高齢者・低体重・浮腫のある患者では推定精度が低下します。<br>
+          • Cockcroft-Gault式は安定した腎機能の患者に適用してください。
+        </div>
+      </div>
+      
+      <!-- CTA Section -->
+      <div class="cta-section">
+        <h3>🎁 さらに業務を効率化しませんか？</h3>
+        <a href="#" class="cta-item">
+          <span class="cta-icon">📚</span>
+          <div class="cta-content">
+            <div class="cta-title">薬剤師専用AIプロンプト集（100個）</div>
+            <div class="cta-desc">服薬指導・薬歴・DI照会を瞬時に作成</div>
+          </div>
+          <span class="cta-price">¥500</span>
+        </a>
+        <a href="#" class="cta-item">
+          <span class="cta-icon">✅</span>
+          <div class="cta-content">
+            <div class="cta-title">薬剤師業務チェックリスト集（15種）</div>
+            <div class="cta-desc">確認漏れ防止・印刷対応PDF</div>
+          </div>
+          <span class="cta-price">¥300</span>
+        </a>
+      </div>
+      
+      <!-- Footer Links -->
+      <div class="footer-links">
+        <h4>🔗 他の無料ツール</h4>
+        <div class="link-grid">
+          <a href="index.html">🏠 ポータルTOP</a>
+          <a href="drug-price.html">💊 薬価シミュレーター</a>
+          <a href="doac-dosing.html">🩸 DOAC用量チェック</a>
+          <a href="antihypertensive-selector.html">❤️ 降圧薬選択</a>
+          <a href="antibiotic-stewardship.html">🦠 抗菌薬適正使用</a>
+          <a href="polypharmacy.html">💊 ポリファーマシー検出</a>
+          <a href="side-effect-checker.html">⚠️ 副作用リスク評価</a>
+          <a href="medication-guidance.html">📝 服薬指導チェック</a>
+          <a href="medication-history.html">📋 薬歴テンプレート</a>
+          <a href="di-query.html">📞 DI照会生成</a>
+          <a href="homecare-report.html">🏠 在宅医療報告書</a>
+          <a href="fee-calculator.html">💰 調剤報酬シミュレーター</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // よく使われる腎排泄型薬剤の用量調整基準
+    const drugAdjustments = [
+      {
+        name: 'メトホルミン',
+        class: 'ビグアナイド系糖尿病薬',
+        adjustments: [
+          { minCcr: 60, dose: '通常用量可', status: 'ok' },
+          { minCcr: 45, dose: '減量検討（750mg/日以下）', status: 'warning' },
+          { minCcr: 30, dose: '禁忌（乳酸アシドーシスリスク）', status: 'danger' }
+        ]
+      },
+      {
+        name: 'ダピガトラン',
+        class: '直接経口抗凝固薬（DOAC）',
+        adjustments: [
+          { minCcr: 50, dose: '通常用量（300mg/日）', status: 'ok' },
+          { minCcr: 30, dose: '減量（220mg/日）', status: 'warning' },
+          { minCcr: 0, dose: '禁忌（Ccr<30mL/min）', status: 'danger' }
+        ]
+      },
+      {
+        name: 'リバーロキサバン',
+        class: '直接経口抗凝固薬（DOAC）',
+        adjustments: [
+          { minCcr: 50, dose: '通常用量（20mg/日）', status: 'ok' },
+          { minCcr: 15, dose: '減量（15mg/日）', status: 'warning' },
+          { minCcr: 0, dose: '禁忌（Ccr<15mL/min）', status: 'danger' }
+        ]
+      },
+      {
+        name: 'アピキサバン',
+        class: '直接経口抗凝固薬（DOAC）',
+        adjustments: [
+          { minCcr: 30, dose: '通常用量（10mg/日）', status: 'ok' },
+          { minCcr: 15, dose: '減量検討（5mg/日）', status: 'warning' },
+          { minCcr: 0, dose: '慎重投与（Ccr<15mL/min）', status: 'danger' }
+        ]
+      },
+      {
+        name: 'エドキサバン',
+        class: '直接経口抗凝固薬（DOAC）',
+        adjustments: [
+          { minCcr: 50, dose: '減量（30mg/日）※Ccr>95は禁忌', status: 'warning' },
+          { minCcr: 15, dose: '減量（30mg/日）', status: 'warning' },
+          { minCcr: 0, dose: '禁忌（Ccr<15mL/min）', status: 'danger' }
+        ]
+      },
+      {
+        name: 'レボフロキサシン',
+        class: 'ニューキノロン系抗菌薬',
+        adjustments: [
+          { minCcr: 50, dose: '通常用量（500mg/日）', status: 'ok' },
+          { minCcr: 20, dose: '初回500mg、以降250mg/日', status: 'warning' },
+          { minCcr: 0, dose: '初回500mg、以降250mg/48h', status: 'warning' }
+        ]
+      },
+      {
+        name: 'バンコマイシン（経口）',
+        class: 'グリコペプチド系抗菌薬',
+        adjustments: [
+          { minCcr: 50, dose: '通常用量（0.5-2g/日）', status: 'ok' },
+          { minCcr: 10, dose: '用量調整不要（腸管不吸収）', status: 'ok' }
+        ]
+      },
+      {
+        name: 'バンコマイシン（注射）',
+        class: 'グリコペプチド系抗菌薬',
+        adjustments: [
+          { minCcr: 50, dose: '通常用量（TDM推奨）', status: 'ok' },
+          { minCcr: 20, dose: '投与間隔延長（TDM必須）', status: 'warning' },
+          { minCcr: 0, dose: '投与間隔大幅延長（TDM必須）', status: 'danger' }
+        ]
+      },
+      {
+        name: 'アトルバスタチン',
+        class: 'スタチン系脂質異常症治療薬',
+        adjustments: [
+          { minCcr: 0, dose: '用量調整不要', status: 'ok' }
+        ]
+      },
+      {
+        name: 'ロスバスタチン',
+        class: 'スタチン系脂質異常症治療薬',
+        adjustments: [
+          { minCcr: 30, dose: '通常用量可（最大20mg）', status: 'ok' },
+          { minCcr: 0, dose: '開始用量5mg、最大10mg', status: 'warning' }
+        ]
+      },
+      {
+        name: 'シタグリプチン',
+        class: 'DPP-4阻害薬',
+        adjustments: [
+          { minCcr: 50, dose: '通常用量（100mg/日）', status: 'ok' },
+          { minCcr: 30, dose: '減量（50mg/日）', status: 'warning' },
+          { minCcr: 0, dose: '減量（25mg/日）', status: 'warning' }
+        ]
+      },
+      {
+        name: 'リナグリプチン',
+        class: 'DPP-4阻害薬',
+        adjustments: [
+          { minCcr: 0, dose: '用量調整不要（5mg/日）', status: 'ok' }
+        ]
+      }
+    ];
+    
+    function calculate() {
+      const age = parseFloat(document.getElementById('age').value);
+      const gender = document.getElementById('gender').value;
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+      const scr = parseFloat(document.getElementById('scr').value);
+      const formula = document.getElementById('formula').value;
+      
+      if (!age || !weight || !scr) {
+        alert('年齢、体重、血清クレアチニンは必須です');
+        return;
+      }
+      
+      // Cockcroft-Gault式
+      let ccr = ((140 - age) * weight) / (72 * scr);
+      if (gender === 'female') {
+        ccr *= 0.85;
+      }
+      
+      // BSA補正（選択時）
+      if (formula === 'cg-bsa' && height) {
+        const bsa = 0.007184 * Math.pow(height, 0.725) * Math.pow(weight, 0.425);
+        ccr = ccr * (1.73 / bsa);
+      }
+      
+      ccr = Math.round(ccr * 10) / 10;
+      
+      // CKD病期分類
+      let ckdStage, ckdClass;
+      if (ccr >= 90) {
+        ckdStage = 'G1 正常または亢進';
+        ckdClass = 'g1';
+      } else if (ccr >= 60) {
+        ckdStage = 'G2 軽度低下';
+        ckdClass = 'g2';
+      } else if (ccr >= 45) {
+        ckdStage = 'G3a 軽度〜中等度低下';
+        ckdClass = 'g3a';
+      } else if (ccr >= 30) {
+        ckdStage = 'G3b 中等度〜高度低下';
+        ckdClass = 'g3b';
+      } else if (ccr >= 15) {
+        ckdStage = 'G4 高度低下';
+        ckdClass = 'g4';
+      } else {
+        ckdStage = 'G5 末期腎不全';
+        ckdClass = 'g5';
+      }
+      
+      // 結果表示
+      document.getElementById('ccrValue').textContent = ccr;
+      const ckdElement = document.getElementById('ckdStage');
+      ckdElement.textContent = ckdStage;
+      ckdElement.className = 'ckd-stage ' + ckdClass;
+      
+      // 薬剤用量調整表示
+      let drugHtml = '<h4 style="margin-bottom:15px;color:#333;">💊 主な薬剤の用量調整目安</h4>';
+      
+      drugAdjustments.forEach(drug => {
+        let adjustment = drug.adjustments.find(a => ccr >= a.minCcr);
+        if (!adjustment) {
+          adjustment = drug.adjustments[drug.adjustments.length - 1];
+        }
+        
+        const statusClass = adjustment.status === 'ok' ? 'dose-ok' : 
+                           adjustment.status === 'warning' ? '' : 'dose-warning';
+        
+        drugHtml += `
+          <div class="drug-item">
+            <div class="drug-name">${drug.name} <span style="font-weight:400;color:#888;font-size:0.85rem;">(${drug.class})</span></div>
+            <div class="dose-info ${statusClass}">${adjustment.dose}</div>
+          </div>
+        `;
+      });
+      
+      document.getElementById('drugList').innerHTML = drugHtml;
+      document.getElementById('result').classList.add('show');
+    }
+    
+    function copyResult() {
+      const ccr = document.getElementById('ccrValue').textContent;
+      const ckdStage = document.getElementById('ckdStage').textContent;
+      
+      const text = `【腎機能評価】
+Ccr: ${ccr} mL/min
+CKD病期: ${ckdStage}
+計算日時: ${new Date().toLocaleString('ja-JP')}`;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        alert('コピーしました');
+      });
+    }
+  </script>
+</body>
+</html>
