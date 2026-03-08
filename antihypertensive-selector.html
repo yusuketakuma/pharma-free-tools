@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>降圧薬選択サポートツール - 薬剤師無料ツール</title>
+  <meta name="description" content="患者の年齢・合併症・腎機能から最適な降圧薬を推奨。JSH2024ガイドライン準拠。禁忌・注意点も自動表示。">
+  <meta name="keywords" content="降圧薬,高血圧,血圧,ARB,ACE,カルシウム拮抗薬,利尿薬,ガイドライン,JSH2024">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      padding: 30px 20px;
+      color: white;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.95;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-top: 12px;
+    }
+    
+    main {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      color: #c62828;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e53935;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .hint {
+      font-size: 0.85rem;
+      color: #666;
+      font-weight: normal;
+      margin-left: 8px;
+    }
+    
+    select, input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    select:focus, input:focus {
+      outline: none;
+      border-color: #e53935;
+    }
+    
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .checkbox-item:hover {
+      background: #eeeeee;
+    }
+    
+    .checkbox-item input {
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
+    }
+    
+    .checkbox-item.selected {
+      background: #ffebee;
+      border: 2px solid #e53935;
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(229, 57, 53, 0.4);
+    }
+    
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .result {
+      margin-top: 30px;
+      padding: 24px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border-left: 4px solid #e53935;
+    }
+    
+    .result h3 {
+      color: #c62828;
+      margin-bottom: 16px;
+      font-size: 1.3rem;
+    }
+    
+    .recommendation {
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .recommendation h4 {
+      color: #2e7d32;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .recommendation h4::before {
+      content: "✓";
+      color: #2e7d32;
+    }
+    
+    .drug-class {
+      font-weight: bold;
+      color: #1565c0;
+    }
+    
+    .reason {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 4px;
+    }
+    
+    .warning {
+      background: #fff3e0;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      border-left: 4px solid #ff9800;
+    }
+    
+    .warning h4 {
+      color: #e65100;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .warning h4::before {
+      content: "⚠";
+    }
+    
+    .contraindication {
+      background: #ffebee;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      border-left: 4px solid #f44336;
+    }
+    
+    .contraindication h4 {
+      color: #c62828;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .contraindication h4::before {
+      content: "✕";
+    }
+    
+    .notes {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+    
+    .copy-btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 20px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    
+    .copy-btn:hover {
+      background: #5a6fd6;
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 24px;
+      color: white;
+      text-decoration: none;
+      opacity: 0.9;
+    }
+    
+    .back-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      main {
+        padding: 20px;
+      }
+      
+      .checkbox-group {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .disclaimer {
+      font-size: 0.8rem;
+      color: #999;
+      text-align: center;
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💊 降圧薬選択サポートツール</h1>
+      <p class="subtitle">患者属性から最適な降圧薬を推奨</p>
+      <span class="badge">JSH2024ガイドライン準拠</span>
+    </header>
+    
+    <main>
+      <div class="section">
+        <h2 class="section-title">患者基本情報</h2>
+        
+        <div class="form-group">
+          <label>年齢 <span class="hint">歳</span></label>
+          <input type="number" id="age" min="0" max="120" placeholder="例: 65">
+        </div>
+        
+        <div class="form-group">
+          <label>性別</label>
+          <select id="sex">
+            <option value="">選択してください</option>
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>eGFR <span class="hint">mL/min/1.73m²（不明の場合は空欄可）</span></label>
+          <input type="number" id="egfr" min="0" max="150" placeholder="例: 45">
+        </div>
+        
+        <div class="form-group">
+          <label>妊娠可能性</label>
+          <select id="pregnancy">
+            <option value="no">なし / 該当しない</option>
+            <option value="possible">あり</option>
+            <option value="unknown">不明</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2 class="section-title">合併症・リスク因子</h2>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 16px;">該当する項目をすべて選択してください</p>
+        
+        <div class="checkbox-group" id="comorbidities">
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="diabetes">
+            糖尿病
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="ckd">
+            慢性腎臓病（CKD）
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="heart_failure">
+            心不全
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="cad">
+            冠動脈疾患
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="stroke">
+            脳卒中既往
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="af">
+            心房細動
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="lvh">
+            左室肥大
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="proteinuria">
+            蛋白尿
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="dyslipidemia">
+            脂質異常症
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="gout">
+            痛風/高尿酸血症
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="asthma">
+            気管支喘息
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="comorbidity" value="bph">
+            前立腺肥大
+          </label>
+        </div>
+      </div>
+      
+      <button class="btn" onclick="generateRecommendation()">降圧薬を推奨する</button>
+      
+      <div id="result" class="result" style="display: none;"></div>
+    </main>
+    
+    <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="back-link">← ツール一覧に戻る</a>
+    
+    <div class="disclaimer">
+      <strong>免責事項</strong><br>
+      本ツールはJSH2024ガイドラインに基づく参考情報を提供します。実際の処方判断は医師の診察に基づいてください。禁忌・相互作用は最新の添付文書をご確認ください。
+    </div>
+  </div>
+  
+  <script>
+    // チェックボックスの選択状態を視覚的にフィードバック
+    document.querySelectorAll('.checkbox-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        if (e.target.tagName !== 'INPUT') {
+          const checkbox = this.querySelector('input');
+          checkbox.checked = !checkbox.checked;
+        }
+        this.classList.toggle('selected', this.querySelector('input').checked);
+      });
+    });
+    
+    function getComorbidities() {
+      const checkboxes = document.querySelectorAll('input[name="comorbidity"]:checked');
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
+    
+    function generateRecommendation() {
+      const age = parseInt(document.getElementById('age').value) || null;
+      const sex = document.getElementById('sex').value;
+      const egfr = parseFloat(document.getElementById('egfr').value) || null;
+      const pregnancy = document.getElementById('pregnancy').value;
+      const comorbidities = getComorbidities();
+      
+      if (!age || !sex) {
+        alert('年齢と性別を入力してください。');
+        return;
+      }
+      
+      const recommendations = [];
+      const warnings = [];
+      const contraindications = [];
+      
+      // 妊娠可能性のチェック
+      if (pregnancy === 'possible' || (sex === 'female' && age >= 15 && age <= 50 && pregnancy !== 'no')) {
+        contraindications.push({
+          drug: 'ARB/ACE阻害薬',
+          reason: '妊娠可能性がある場合、催奇形性リスクのため禁忌'
+        });
+        recommendations.push({
+          class: 'カルシウム拮抗薬',
+          drugs: 'アムロジピン、ニフェジピン',
+          reason: '妊娠中も使用可能な降圧薬の第一選択',
+          priority: 1
+        });
+        if (comorbidities.includes('ckd') || egfr < 60) {
+          warnings.push({
+            drug: '妊娠中のCKD管理',
+            note: '腎機能悪化リスクがある場合、産科・腎臓専門医との連携推奨'
+          });
+        }
+      } else {
+        // 合併症別の推奨
+        if (comorbidities.includes('diabetes')) {
+          if (comorbidities.includes('proteinuria') || (egfr !== null && egfr < 60)) {
+            recommendations.push({
+              class: 'ARB/ACE阻害薬（第一選択）',
+              drugs: 'カンデサルタン、バルサルタン、テルミサルタン、リシノプリル',
+              reason: '糖尿病+腎障害では腎保護作用があり第一選択',
+              priority: 1
+            });
+          } else {
+            recommendations.push({
+              class: 'ARB/ACE阻害薬 または カルシウム拮抗薬',
+              drugs: 'カンデサルタン、アムロジピン、アゼルニジピン',
+              reason: '糖尿病合併では腎保護・心血管イベント抑制効果あり',
+              priority: 1
+            });
+          }
+        }
+        
+        if (comorbidities.includes('ckd') || (egfr !== null && egfr < 60)) {
+          if (!recommendations.some(r => r.class.includes('ARB/ACE'))) {
+            recommendations.push({
+              class: 'ARB/ACE阻害薬',
+              drugs: 'カンデサルタン、バルサルタン、リシノプリル',
+              reason: 'CKDでは腎保護作用により第一選択',
+              priority: 1
+            });
+          }
+          if (egfr !== null && egfr < 30) {
+            warnings.push({
+              drug: 'ACE阻害薬',
+              note: 'eGFR<30では高カリウム血症・腎機能悪化に注意'
+            });
+            warnings.push({
+              drug: 'アルドステロン拮抗薬',
+              note: 'eGFR<30では高カリウム血症リスクが高い'
+            });
+          }
+        }
+        
+        if (comorbidities.includes('heart_failure')) {
+          recommendations.push({
+            class: 'ARB/ACE阻害薬 + β遮断薬',
+            drugs: 'カンデサルタン + カルベジロール、ビソプロロール',
+            reason: '心不全では予後改善効果が確立',
+            priority: 1
+          });
+          recommendations.push({
+            class: 'アルドステロン拮抗薬（追加）',
+            drugs: 'スピロノラクトン、エプレレノン',
+            reason: 'LVEF低下性心不全では予後改善',
+            priority: 2
+          });
+        }
+        
+        if (comorbidities.includes('cad')) {
+          recommendations.push({
+            class: 'ARB/ACE阻害薬 または β遮断薬',
+            drugs: 'カンデサルタン、リシノプリル、カルベジロール',
+            reason: '冠動脈疾患では二次予防効果あり',
+            priority: 1
+          });
+        }
+        
+        if (comorbidities.includes('stroke')) {
+          recommendations.push({
+            class: 'ARB/ACE阻害薬',
+            drugs: 'カンデサルタン、テルミサルタン',
+            reason: '脳卒中再発抑制効果が報告',
+            priority: 1
+          });
+        }
+        
+        if (comorbidities.includes('af')) {
+          recommendations.push({
+            class: 'ARB/ACE阻害薬',
+            drugs: 'カンデサルタン、バルサルタン',
+            reason: '心房細動合併では心房リモデリング抑制の可能性',
+            priority: 1
+          });
+        }
+        
+        if (comorbidities.includes('lvh')) {
+          recommendations.push({
+            class: 'ARB/ACE阻害薬',
+            drugs: 'カンデサルタン、バルサルタン、ロサルタン',
+            reason: '左室肥大退縮効果が報告',
+            priority: 1
+          });
+        }
+        
+        if (comorbidities.includes('gout')) {
+          contraindications.push({
+            drug: 'サイアザイド系利尿薬',
+            reason: '尿酸値上昇作用あり、痛風発作誘発リスク'
+          });
+          warnings.push({
+            drug: '利尿薬全般',
+            note: '高尿酸血症・痛風既往では尿酸値モニタリング必須'
+          });
+        }
+        
+        if (comorbidities.includes('asthma')) {
+          contraindications.push({
+            drug: 'β遮断薬（非選択的）',
+            reason: '気管支喘息では禁忌'
+          });
+          warnings.push({
+            drug: 'β遮断薬（選択的β1）',
+            note: '気管支喘息では慎重投与、β1選択性でも気道抵抗上昇の可能性'
+          });
+        }
+        
+        if (comorbidities.includes('bph')) {
+          recommendations.push({
+            class: 'α遮断薬（追加検討）',
+            drugs: 'ドキサゾシン、タムスロシン',
+            reason: '前立腺肥大症状改善効果あり、降圧効果も期待',
+            priority: 3
+          });
+        }
+        
+        // 年齢別の推奨
+        if (age >= 75) {
+          recommendations.push({
+            class: 'カルシウム拮抗薬',
+            drugs: 'アムロジピン、アゼルニジピン',
+            reason: '高齢者では忍容性良好、血圧変動抑制効果',
+            priority: 1
+          });
+          warnings.push({
+            drug: '全降圧薬',
+            note: '高齢者では急激な血圧低下に注意（立ちくらみ・転倒リスク）'
+          });
+        }
+        
+        // 第一選択薬がない場合のデフォルト
+        if (recommendations.length === 0) {
+          recommendations.push({
+            class: 'ARB/ACE阻害薬 または カルシウム拮抗薬',
+            drugs: 'カンデサルタン、バルサルタン、アムロジピン、アゼルニジピン',
+            reason: '第一選択薬（JSH2024ガイドライン推奨）',
+            priority: 1
+          });
+          recommendations.push({
+            class: 'サイアザイド系利尿薬（追加）',
+            drugs: 'ヒドロクロロチアジド、トリクロルメチアジド',
+            reason: '併用で相加効果あり',
+            priority: 2
+          });
+        }
+      }
+      
+      // 重複を除去して優先度順にソート
+      const uniqueRecommendations = recommendations.filter((rec, index, self) =>
+        index === self.findIndex(r => r.class === rec.class)
+      ).sort((a, b) => a.priority - b.priority);
+      
+      // 結果を表示
+      let html = '<h3>📋 推奨降圧薬</h3>';
+      
+      if (contraindications.length > 0) {
+        html += '<div class="contraindication"><h4>禁忌（使用不可）</h4><ul>';
+        contraindications.forEach(c => {
+          html += `<li><strong>${c.drug}</strong>: ${c.reason}</li>`;
+        });
+        html += '</ul></div>';
+      }
+      
+      if (warnings.length > 0) {
+        html += '<div class="warning"><h4>注意事項</h4><ul>';
+        warnings.forEach(w => {
+          html += `<li><strong>${w.drug}</strong>: ${w.note}</li>`;
+        });
+        html += '</ul></div>';
+      }
+      
+      uniqueRecommendations.forEach((rec, index) => {
+        const priorityLabel = rec.priority === 1 ? '【第一選択】' : rec.priority === 2 ? '【第二選択/併用】' : '【追加検討】';
+        html += `
+          <div class="recommendation">
+            <h4>${priorityLabel} <span class="drug-class">${rec.class}</span></h4>
+            <p><strong>代表的薬剤:</strong> ${rec.drugs}</p>
+            <p class="reason">${rec.reason}</p>
+          </div>
+        `;
+      });
+      
+      html += `
+        <div class="notes">
+          <strong>参考事項:</strong>
+          <ul>
+            <li>降圧目標: 130/80mmHg未満（高齢者では140/90mmHg未満を目安）</li>
+            <li>単剤で目標達成できない場合は併用療法を検討</li>
+            <li>本結果はガイドラインに基づく参考情報です</li>
+            <li>最終的な処方判断は医師が行います</li>
+          </ul>
+        </div>
+        <button class="copy-btn" onclick="copyResult()">📋 結果をコピー</button>
+      `;
+      
+      document.getElementById('result').innerHTML = html;
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function copyResult() {
+      const resultDiv = document.getElementById('result');
+      const text = resultDiv.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('結果をクリップボードにコピーしました。');
+      });
+    }
+  </script>
+</body>
+</html>
