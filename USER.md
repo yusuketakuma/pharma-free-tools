@@ -24,7 +24,7 @@ _Learn about the person you're helping. Update this as you go._
   - Claude Code
   - MedicalCareStation
 - 支援してほしいこと（優先）:
-  1. 自律コーディング
+  1. DeadStockSolutionの保守（新規開発・機能追加は停止、着手は指示があるまで保留）
   2. 訪問薬剤管理の支援
   3. 副業支援
 
