@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局医療安全診断 - 5領域20問で医療安全レベルを可視化 | 薬剤師無料ツール集</title>
+  <meta name="description" content="薬局の医療安全レベルを5領域20問で診断。調剤エラー防止・副作用モニタリング・相互作用チェック・ヒヤリハット分析・インシデント報告の改善ポイントを自動提案。">
+  <meta name="keywords" content="薬局,医療安全,調剤エラー,副作用,相互作用,ヒヤリハット,インシデント,リスクマネジメント,無料ツール">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="薬局医療安全診断 - 5領域20問で医療安全レベルを可視化">
+  <meta property="og:description" content="薬局の医療安全レベルを5領域20問で診断。調剤エラー防止・副作用モニタリング・相互作用チェック・ヒヤリハット分析・インシデント報告の改善ポイントを自動提案。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-safety-diagnosis.html">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      padding: 30px 20px;
+      color: white;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.95;
+      margin-bottom: 20px;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: #f39c12;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    
+    .progress-container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 24px;
+      background: #ecf0f1;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #e74c3c, #f39c12);
+      width: 0%;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .progress-text {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .question-container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    .category-label {
+      display: inline-block;
+      background: #e74c3c;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+    
+    .question-number {
+      color: #e74c3c;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option {
+      background: #f8f9fa;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+    
+    .option:hover {
+      border-color: #e74c3c;
+      background: #fff5f5;
+    }
+    
+    .option.selected {
+      border-color: #e74c3c;
+      background: #e74c3c;
+      color: white;
+    }
+    
+    .result-container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      display: none;
+    }
+    
+    .result-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .result-score {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #e74c3c;
+      margin-bottom: 10px;
+    }
+    
+    .result-level {
+      font-size: 1.5rem;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    
+    .result-description {
+      color: #666;
+      font-size: 1rem;
+    }
+    
+    .domain-scores {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .domain-score {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+    }
+    
+    .domain-name {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .domain-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+    
+    .domain-bar {
+      width: 100%;
+      height: 6px;
+      background: #ecf0f1;
+      border-radius: 3px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    
+    .domain-bar-fill {
+      height: 100%;
+      background: #e74c3c;
+      transition: width 0.5s ease;
+    }
+    
+    .improvements {
+      background: #fff5f5;
+      border-left: 4px solid #e74c3c;
+      padding: 20px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 20px;
+    }
+    
+    .improvements h3 {
+      color: #c0392b;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+    
+    .improvements ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .improvements li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      color: #2c3e50;
+    }
+    
+    .improvements li:before {
+      content: "⚠️";
+      position: absolute;
+      left: 0;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      margin-top: 30px;
+    }
+    
+    .cta-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+    
+    .cta-section p {
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: white;
+      text-decoration: none;
+      opacity: 0.9;
+    }
+    
+    .back-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .result-score {
+        font-size: 3rem;
+      }
+      
+      .domain-scores {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  
+  <!-- JSON-LD 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "薬局医療安全診断",
+    "description": "薬局の医療安全レベルを5領域20問で診断。調剤エラー防止・副作用モニタリング・相互作用チェック・ヒヤリハット分析・インシデント報告の改善ポイントを自動提案。",
+    "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-safety-diagnosis.html",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏥 薬局医療安全診断<span class="badge">NEW</span></h1>
+      <p class="subtitle">5領域20問で医療安全レベルを可視化し、改善ポイントを自動提案</p>
+    </header>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill">0%</div>
+      </div>
+      <div class="progress-text">質問 <span id="currentQuestion">0</span> / 20</div>
+    </div>
+    
+    <div class="question-container" id="questionContainer">
+      <!-- 質問が動的に挿入される -->
+    </div>
+    
+    <div class="result-container" id="resultContainer">
+      <div class="result-header">
+        <div class="result-score" id="totalScore">0</div>
+        <div class="result-level" id="resultLevel">レベル判定中</div>
+        <div class="result-description" id="resultDescription">診断結果を分析中...</div>
+      </div>
+      
+      <div class="domain-scores" id="domainScores">
+        <!-- 領域スコアが動的に挿入される -->
+      </div>
+      
+      <div class="improvements" id="improvements">
+        <h3>🔧 優先改善ポイント</h3>
+        <ul id="improvementList">
+          <!-- 改善提案が動的に挿入される -->
+        </ul>
+      </div>
+      
+      <div class="cta-section">
+        <h3>🎯 医療安全スキルをさらに強化しませんか？</h3>
+        <p>薬剤師向けAIプロンプト集で、副作用チェック・相互作用確認・インシデント分析を効率化</p>
+        <a href="ai-prompts-lp.html" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': 'safety_diagnosis', 'event_label': 'ai_prompts'});">AIプロンプト集を見る →</a>
+      </div>
+      
+      <a href="index.html" class="back-link">← 無料ツール一覧に戻る</a>
+    </div>
+  </div>
+  
+  <script>
+    const questions = [
+      // 領域1: 調剤エラー防止（4問）
+      {
+        domain: "調剤エラー防止",
+        question: "調剤時の二重確認（ダブルチェック）の実施状況は？",
+        options: [
+          { text: "実施していない", score: 1 },
+          { text: "一部の医薬品でのみ実施", score: 2 },
+          { text: "高リスク薬で実施", score: 3 },
+          { text: "全処方で体系的に実施", score: 4 }
+        ]
+      },
+      {
+        domain: "調剤エラー防止",
+        question: "バーコードスキャンによる照合システムの導入状況は？",
+        options: [
+          { text: "導入していない", score: 1 },
+          { text: "検討中", score: 2 },
+          { text: "一部導入済み", score: 3 },
+          { text: "全面導入済み", score: 4 }
+        ]
+      },
+      {
+        domain: "調剤エラー防止",
+        question: "紛らわしい薬名・外観のチェック体制は？",
+        options: [
+          { text: "特になし", score: 1 },
+          { text: "個別の注意喚起のみ", score: 2 },
+          { text: "リスト化して共有", score: 3 },
+          { text: "定期更新・教育を含む体系的管理", score: 4 }
+        ]
+      },
+      {
+        domain: "調剤エラー防止",
+        question: "調剤環境の整備（照明・騒音・中断防止）状況は？",
+        options: [
+          { text: "特に整備していない", score: 1 },
+          { text: "基本的な整備のみ", score: 2 },
+          { text: "一部対策済み", score: 3 },
+          { text: "包括的に整備済み", score: 4 }
+        ]
+      },
+      
+      // 領域2: 副作用モニタリング（4問）
+      {
+        domain: "副作用モニタリング",
+        question: "副作用報告（PMDA）の体制は？",
+        options: [
+          { text: "報告体制なし", score: 1 },
+          { text: "発生時のみ対応", score: 2 },
+          { text: "担当者配置済み", score: 3 },
+          { text: "体系的な報告・分析体制あり", score: 4 }
+        ]
+      },
+      {
+        domain: "副作用モニタリング",
+        question: "患者からの副作用相談への対応体制は？",
+        options: [
+          { text: "個別対応のみ", score: 1 },
+          { text: "マニュアル化のみ", score: 2 },
+          { text: "担当者による体系的対応", score: 3 },
+          { text: "24時間対応・フォローアップ体制あり", score: 4 }
+        ]
+      },
+      {
+        domain: "副作用モニタリング",
+        question: "副作用リスク患者の識別・フォロー体制は？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "主観的判断のみ", score: 2 },
+          { text: "チェックリスト活用", score: 3 },
+          { text: "電子システムによる継続フォロー", score: 4 }
+        ]
+      },
+      {
+        domain: "副作用モニタリング",
+        question: "多剤併用患者の副作用リスク評価頻度は？",
+        options: [
+          { text: "実施していない", score: 1 },
+          { text: "必要時のみ", score: 2 },
+          { text: "定期実施（月1以上）", score: 3 },
+          { text: "継続モニタリング体制あり", score: 4 }
+        ]
+      },
+      
+      // 領域3: 相互作用チェック（4問）
+      {
+        domain: "相互作用チェック",
+        question: "相互作用チェックシステムの導入状況は？",
+        options: [
+          { text: "導入していない", score: 1 },
+          { text: "手動チェックのみ", score: 2 },
+          { text: "電子システム導入済み", score: 3 },
+          { text: "AI活用の高度チェック導入済み", score: 4 }
+        ]
+      },
+      {
+        domain: "相互作用チェック",
+        question: "重大な相互作用の発生時対応プロセスは？",
+        options: [
+          { text: "定まっていない", score: 1 },
+          { text: "担当者判断に委ねている", score: 2 },
+          { text: "マニュアル化済み", score: 3 },
+          { text: "医師連携を含む明確なフロー確立", score: 4 }
+        ]
+      },
+      {
+        domain: "相互作用チェック",
+        question: "相互作用情報の更新・共有体制は？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "随時共有のみ", score: 2 },
+          { text: "定期更新あり", score: 3 },
+          { text: "リアルタイム更新・全 staff 共有体制", score: 4 }
+        ]
+      },
+      {
+        domain: "相互作用チェック",
+        question: "食品・サプリメントとの相互作用チェック体制は？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "患者申告時のみ", score: 2 },
+          { text: "定期的な確認あり", score: 3 },
+          { text: "包括的な確認・指導体制あり", score: 4 }
+        ]
+      },
+      
+      // 領域4: ヒヤリハット分析（4問）
+      {
+        domain: "ヒヤリハット分析",
+        question: "ヒヤリハット報告制度の運用状況は？",
+        options: [
+          { text: "制度なし", score: 1 },
+          { text: "報告のみ（分析なし）", score: 2 },
+          { text: "報告・分析あり", score: 3 },
+          { text: "報告・分析・改善のPDCA確立", score: 4 }
+        ]
+      },
+      {
+        domain: "ヒヤリハット分析",
+        question: "ヒヤリハット事例の原因分析方法は？",
+        options: [
+          { text: "実施していない", score: 1 },
+          { text: "担当者個人の判断", score: 2 },
+          { text: "分析フレームワーク活用", score: 3 },
+          { text: "多角的要因分析（4Mなど）実施", score: 4 }
+        ]
+      },
+      {
+        domain: "ヒヤリハット分析",
+        question: "改善策の効果測定・継続的見直し状況は？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "実施時のみ確認", score: 2 },
+          { text: "定期確認あり", score: 3 },
+          { text: "データに基づく継続的改善サイクル確立", score: 4 }
+        ]
+      },
+      {
+        domain: "ヒヤリハット分析",
+        question: "スタッフへのヒヤリハット共有・教育頻度は？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "年1回以下", score: 2 },
+          { text: "四半期に1回", score: 3 },
+          { text: "月次以上の定期共有・教育", score: 4 }
+        ]
+      },
+      
+      // 領域5: インシデント報告（4問）
+      {
+        domain: "インシデント報告",
+        question: "インシデント報告の電子化状況は？",
+        options: [
+          { text: "紙のみ", score: 1 },
+          { text: "一部電子化", score: 2 },
+          { text: "電子化済み", score: 3 },
+          { text: "電子化＋分析システム導入済み", score: 4 }
+        ]
+      },
+      {
+        domain: "インシデント報告",
+        question: "インシデントの重症度分類・分析体制は？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "简单的分類のみ", score: 2 },
+          { text: "標準的分類活用", score: 3 },
+          { text: "詳細分類・トレンド分析実施", score: 4 }
+        ]
+      },
+      {
+        domain: "インシデント報告",
+        question: "再発防止策の策定・実施プロセスは？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "その場対応のみ", score: 2 },
+          { text: "標準的な防止策あり", score: 3 },
+          { text: "根本原因分析に基づく防止策実施", score: 4 }
+        ]
+      },
+      {
+        domain: "インシデント報告",
+        question: "インシデント情報の外部報告（学会・論文等）状況は？",
+        options: [
+          { text: "なし", score: 1 },
+          { text: "検討のみ", score: 2 },
+          { text: "必要時実施", score: 3 },
+          { text: "積極的に情報発信・共有", score: 4 }
+        ]
+      }
+    ];
+    
+    const improvements = {
+      "調剤エラー防止": [
+        "二重確認プロセスの標準化と高リスク薬での必須化",
+        "バーコードスキャンシステムの段階的導入検討",
+        "紛らわしい薬名リストの定期更新と全スタッフ共有",
+        "調剤環境の整備（照明・騒音対策・中断防止エリア設定）"
+      ],
+      "副作用モニタリング": [
+        "副作用報告担当者の明確化と報告フローの整備",
+        "患者相談対応マニュアルの作成と24時間連絡体制の構築",
+        "副作用リスク患者チェックリストの導入",
+        "多剤併用患者の定期副作用リスク評価の実施"
+      ],
+      "相互作用チェック": [
+        "電子相互作用チェックシステムの導入または高度化",
+        "重大相互作用発生時の医師連携フローの明文化",
+        "相互作用情報の定期更新とスタッフ共有の仕組み化",
+        "食品・サプリメント確認の服薬指導への組み込み"
+      ],
+      "ヒヤリハット分析": [
+        "ヒヤリハット報告の匿名性確保と報告奨励文化の醸成",
+        "原因分析方法（4M・特性要因図など）の導入",
+        "改善策の効果測定と継続的見直しのPDCA確立",
+        "月次ヒヤリハット共有ミーティングの導入"
+      ],
+      "インシデント報告": [
+        "インシデント報告の完全電子化と分析システム導入",
+        "重症度分類の標準化とトレンド分析の実施",
+        "根本原因分析（RCA）手法の導入と再発防止策の強化",
+        "学会・論文等での情報発信による業界貢献"
+      ]
+    };
+    
+    let currentQuestionIndex = 0;
+    let answers = [];
+    let domainScores = {
+      "調剤エラー防止": 0,
+      "副作用モニタリング": 0,
+      "相互作用チェック": 0,
+      "ヒヤリハット分析": 0,
+      "インシデント報告": 0
+    };
+    
+    function showQuestion() {
+      const container = document.getElementById('questionContainer');
+      const q = questions[currentQuestionIndex];
+      
+      let optionsHtml = q.options.map((opt, idx) => 
+        `<div class="option" onclick="selectOption(${idx})" data-index="${idx}">${opt.text}</div>`
+      ).join('');
+      
+      container.innerHTML = `
+        <div class="category-label">${q.domain}</div>
+        <div class="question-number">質問 ${currentQuestionIndex + 1} / 20</div>
+        <div class="question-text">${q.question}</div>
+        <div class="options">${optionsHtml}</div>
+      `;
+      
+      updateProgress();
+    }
+    
+    function selectOption(index) {
+      const options = document.querySelectorAll('.option');
+      options.forEach(opt => opt.classList.remove('selected'));
+      options[index].classList.add('selected');
+      
+      const q = questions[currentQuestionIndex];
+      answers[currentQuestionIndex] = q.options[index].score;
+      domainScores[q.domain] += q.options[index].score;
+      
+      setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      }, 500);
+    }
+    
+    function updateProgress() {
+      const percent = Math.round((currentQuestionIndex / questions.length) * 100);
+      document.getElementById('progressFill').style.width = percent + '%';
+      document.getElementById('progressFill').textContent = percent + '%';
+      document.getElementById('currentQuestion').textContent = currentQuestionIndex;
+    }
+    
+    function showResult() {
+      document.getElementById('questionContainer').style.display = 'none';
+      document.querySelector('.progress-container').style.display = 'none';
+      
+      const resultContainer = document.getElementById('resultContainer');
+      resultContainer.style.display = 'block';
+      
+      const totalScore = answers.reduce((sum, score) => sum + score, 0);
+      const maxScore = questions.length * 4;
+      const percentScore = Math.round((totalScore / maxScore) * 100);
+      
+      document.getElementById('totalScore').textContent = percentScore + '点';
+      
+      let level, description;
+      if (percentScore >= 85) {
+        level = "🏆 医療安全リーダーレベル";
+        description = "非常に高い医療安全レベルです。他薬局のモデルケースとして情報発信を検討してください。";
+      } else if (percentScore >= 70) {
+        level = "✅ 医療安全管理レベル";
+        description = "高い医療安全レベルです。一部領域の強化でさらに向上可能です。";
+      } else if (percentScore >= 55) {
+        level = "📈 医療安全強化レベル";
+        description = "基礎的な医療安全体制があります。優先領域の改善で大きく向上できます。";
+      } else if (percentScore >= 40) {
+        level = "⚠️ 医療安全基礎レベル";
+        description = "医療安全体制の基礎構築が必要です。優先的に改善に取り組んでください。";
+      } else {
+        level = "🚨 医療安全早急改善レベル";
+        description = "医療安全体制の早急な構築が必要です。外部専門家の活用も検討してください。";
+      }
+      
+      document.getElementById('resultLevel').textContent = level;
+      document.getElementById('resultDescription').textContent = description;
+      
+      // 領域スコア表示
+      let domainHtml = '';
+      const domainNames = Object.keys(domainScores);
+      domainNames.forEach(domain => {
+        const score = domainScores[domain];
+        const maxDomainScore = 16; // 4問 × 4点
+        const percent = Math.round((score / maxDomainScore) * 100);
+        domainHtml += `
+          <div class="domain-score">
+            <div class="domain-name">${domain}</div>
+            <div class="domain-value">${percent}%</div>
+            <div class="domain-bar">
+              <div class="domain-bar-fill" style="width: ${percent}%"></div>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById('domainScores').innerHTML = domainHtml;
+      
+      // 改善提案（スコアが低い領域から優先表示）
+      const sortedDomains = domainNames.sort((a, b) => domainScores[a] - domainScores[b]);
+      let improvementHtml = '';
+      sortedDomains.slice(0, 3).forEach(domain => {
+        const domainImprove = improvements[domain];
+        improvementHtml += `<li><strong>${domain}:</strong> ${domainImprove[0]}</li>`;
+      });
+      document.getElementById('improvementList').innerHTML = improvementHtml;
+      
+      // スクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // 初期化
+    showQuestion();
+  </script>
+</body>
+</html>
