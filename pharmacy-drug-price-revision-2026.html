@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026薬価改定対応チェックリスト - 薬剤師無料ツール</title>
+  <meta name="description" content="2026年度薬価改定に向けた薬局の対応状況をチェック。在庫確認・新薬価反映・患者説明・調剤報酬影響の4領域20項目で評価。">
+  <meta name="keywords" content="2026薬価改定,薬価,調剤報酬,薬局経営,チェックリスト">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    
+    .intro {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+    
+    .intro h3 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .intro ul {
+      margin-left: 20px;
+    }
+    
+    .intro li {
+      margin-bottom: 8px;
+    }
+    
+    .category {
+      margin-bottom: 30px;
+    }
+    
+    .category-title {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    
+    .question {
+      background: #f8f9fa;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .question-text {
+      flex: 1;
+    }
+    
+    .options {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .option {
+      padding: 8px 16px;
+      border: 2px solid #667eea;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.85rem;
+    }
+    
+    .option:hover {
+      background: #667eea;
+      color: white;
+    }
+    
+    .option.selected {
+      background: #667eea;
+      color: white;
+    }
+    
+    .btn-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .result {
+      display: none;
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+    
+    .result.show {
+      display: block;
+    }
+    
+    .score-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .total-score {
+      font-size: 3rem;
+      color: #667eea;
+      font-weight: bold;
+    }
+    
+    .score-label {
+      color: #666;
+    }
+    
+    .level {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    .level-excellent {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .level-good {
+      background: #cce5ff;
+      color: #004085;
+    }
+    
+    .level-fair {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .level-needs-work {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .category-scores {
+      margin-top: 30px;
+    }
+    
+    .category-score {
+      margin-bottom: 20px;
+    }
+    
+    .category-name {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .progress-bar {
+      background: #e9ecef;
+      border-radius: 10px;
+      height: 20px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.5s;
+    }
+    
+    .recommendations {
+      margin-top: 30px;
+    }
+    
+    .recommendations h4 {
+      color: #667eea;
+      margin-bottom: 15px;
+    }
+    
+    .recommendation {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 15px;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 15px;
+      transition: transform 0.3s;
+    }
+    
+    .cta-btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .question {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .options {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📋 2026薬価改定対応チェックリスト</h1>
+      <p class="subtitle">薬局の対応状況を20項目で評価</p>
+    </header>
+    
+    <div class="intro">
+      <h3>2026年度薬価改定のポイント</h3>
+      <ul>
+        <li>4月1日から新薬価を適用</li>
+        <li>在庫品の切り替え準備が必要</li>
+        <li>患者への説明・理解促進が重要</li>
+        <li>調剤報酬への影響を確認</li>
+      </ul>
+    </div>
+    
+    <form id="checklist-form">
+      <!-- 在庫管理 -->
+      <div class="category">
+        <div class="category-title">📦 在庫管理・準備（5項目）</div>
+        
+        <div class="question">
+          <div class="question-text">1. 改定対象品目の在庫リストを作成している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">2. 新薬価のマスタ更新準備ができている</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">3. 改定前後の在庫切れリスクを評価している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">4. 卸業者との連携・発注計画を立てている</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">5. 旧薬価品の消化計画を立てている</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 患者対応 -->
+      <div class="category">
+        <div class="category-title">👥 患者説明・対応（5項目）</div>
+        
+        <div class="question">
+          <div class="question-text">6. 薬価変更の患者説明資料を準備している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">7. スタッフへの説明・教育を実施している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">8. 患者からの問い合わせ対応フローを整備している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">9. 後発品切り替え候補を検討している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">10. 患者負担への影響を試算している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- システム対応 -->
+      <div class="category">
+        <div class="category-title">💻 システム・事務対応（5項目）</div>
+        
+        <div class="question">
+          <div class="question-text">11. 調剤システムの薬価マスタ更新予定を確認している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">12. レセプト電算処理の対応を確認している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">13. 4月1日以降の調剤データ移行テストを実施している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">14. 売上・利益への影響を試算している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">15. 改定後の請求・入金フローを確認している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 経営戦略 -->
+      <div class="category">
+        <div class="category-title">📊 経営戦略・計画（5項目）</div>
+        
+        <div class="question">
+          <div class="question-text">16. 改定による収益影響を経営層と共有している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">17. 改定後の品揃え戦略を見直している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">18. 後発品推進・差益改善策を検討している</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">19. 改定に伴う業務負荷増への対策を立てている</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">20. 次回改定に向けた継続的改善体制を整えている</div>
+          <div class="options">
+            <span class="option" data-value="4" onclick="selectOption(this)">済</span>
+            <span class="option" data-value="3" onclick="selectOption(this)">一部</span>
+            <span class="option" data-value="2" onclick="selectOption(this)">未着手</span>
+            <span class="option" data-value="1" onclick="selectOption(this)">不明</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="btn-container">
+        <button type="button" class="btn" onclick="calculateScore()">診断結果を見る</button>
+      </div>
+    </form>
+    
+    <div class="result" id="result">
+      <div class="score-container">
+        <div class="total-score" id="total-score">0</div>
+        <div class="score-label">/ 80点</div>
+        <div class="level" id="level"></div>
+      </div>
+      
+      <div class="category-scores" id="category-scores"></div>
+      
+      <div class="recommendations" id="recommendations">
+        <h4>📌 優先改善ポイント</h4>
+      </div>
+      
+      <div class="cta-section">
+        <h3>薬価改定対応を効率化しませんか？</h3>
+        <p>薬剤師向けAIプロンプト集で、業務効率化・収益改善を実現</p>
+        <a href="ai-prompts-lp.html" class="cta-btn">詳細を見る →</a>
+      </div>
+    </div>
+    
+    <footer>
+      <p>© 2026 薬剤師無料ツール集 | <a href="index.html">ツール一覧に戻る</a></p>
+    </footer>
+  </div>
+  
+  <script>
+    const categories = [
+      { name: '在庫管理・準備', questions: 5, scores: [] },
+      { name: '患者説明・対応', questions: 5, scores: [] },
+      { name: 'システム・事務対応', questions: 5, scores: [] },
+      { name: '経営戦略・計画', questions: 5, scores: [] }
+    ];
+    
+    let currentCategory = 0;
+    let currentQuestion = 0;
+    
+    function selectOption(element) {
+      const options = element.parentElement.querySelectorAll('.option');
+      options.forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+      
+      const value = parseInt(element.dataset.value);
+      categories[currentCategory].scores[currentQuestion] = value;
+      
+      currentQuestion++;
+      if (currentQuestion >= categories[currentCategory].questions) {
+        currentQuestion = 0;
+        currentCategory++;
+      }
+    }
+    
+    function calculateScore() {
+      // 全質問に回答しているか確認
+      const allAnswered = document.querySelectorAll('.option.selected').length === 20;
+      if (!allAnswered) {
+        alert('すべての質問に回答してください');
+        return;
+      }
+      
+      let totalScore = 0;
+      categories.forEach(cat => {
+        totalScore += cat.scores.reduce((a, b) => a + b, 0);
+      });
+      
+      // 結果表示
+      document.getElementById('total-score').textContent = totalScore;
+      document.getElementById('result').classList.add('show');
+      
+      // レベル判定
+      const levelEl = document.getElementById('level');
+      if (totalScore >= 70) {
+        levelEl.textContent = '🏆 改定対応完了レベル';
+        levelEl.className = 'level level-excellent';
+      } else if (totalScore >= 55) {
+        levelEl.textContent = '✅ 概ね対応済み';
+        levelEl.className = 'level level-good';
+      } else if (totalScore >= 40) {
+        levelEl.textContent = '⚠️ 要対応';
+        levelEl.className = 'level level-fair';
+      } else {
+        levelEl.textContent = '🚨 早急な対応が必要';
+        levelEl.className = 'level level-needs-work';
+      }
+      
+      // カテゴリ別スコア
+      const categoryScoresHtml = categories.map(cat => {
+        const catTotal = cat.scores.reduce((a, b) => a + b, 0);
+        const catMax = cat.questions * 4;
+        const percentage = (catTotal / catMax) * 100;
+        return `
+          <div class="category-score">
+            <div class="category-name">${cat.name}: ${catTotal}/${catMax}点</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${percentage}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('category-scores').innerHTML = categoryScoresHtml;
+      
+      // 改善提案
+      const recommendations = generateRecommendations();
+      document.getElementById('recommendations').innerHTML = `
+        <h4>📌 優先改善ポイント</h4>
+        ${recommendations}
+      `;
+      
+      // スクロール
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function generateRecommendations() {
+      const recs = [];
+      
+      // 在庫管理
+      const inventoryScore = categories[0].scores.reduce((a, b) => a + b, 0);
+      if (inventoryScore < 15) {
+        recs.push('<div class="recommendation"><strong>📦 在庫管理を強化:</strong> 改定対象品目のリスト化と新旧薬価の確認を最優先で実施してください。</div>');
+      }
+      
+      // 患者対応
+      const patientScore = categories[1].scores.reduce((a, b) => a + b, 0);
+      if (patientScore < 15) {
+        recs.push('<div class="recommendation"><strong>👥 患者説明の準備:</strong> 薬価変更に関する患者説明資料を作成し、スタッフ教育を実施してください。</div>');
+      }
+      
+      // システム対応
+      const systemScore = categories[2].scores.reduce((a, b) => a + b, 0);
+      if (systemScore < 15) {
+        recs.push('<div class="recommendation"><strong>💻 システム確認:</strong> 調剤システムの薬価マスタ更新予定をベンダーに確認してください。</div>');
+      }
+      
+      // 経営戦略
+      const strategyScore = categories[3].scores.reduce((a, b) => a + b, 0);
+      if (strategyScore < 15) {
+        recs.push('<div class="recommendation"><strong>📊 経営戦略の見直し:</strong> 改定による収益影響を試算し、後発品推進策を検討してください。</div>');
+      }
+      
+      if (recs.length === 0) {
+        recs.push('<div class="recommendation"><strong>🎉 素晴らしい!</strong> 2026薬価改定への対応が進んでいます。継続的な改善を続けてください。</div>');
+      }
+      
+      return recs.join('');
+    }
+    
+    // インデックスをリセット
+    currentCategory = 0;
+    currentQuestion = 0;
+    
+    // 各質問にインデックスを割り当て
+    document.querySelectorAll('.question').forEach((q, index) => {
+      const catIndex = Math.floor(index / 5);
+      const qIndex = index % 5;
+      q.querySelectorAll('.option').forEach(opt => {
+        opt.onclick = function() {
+          const options = this.parentElement.querySelectorAll('.option');
+          options.forEach(o => o.classList.remove('selected'));
+          this.classList.add('selected');
+          
+          const value = parseInt(this.dataset.value);
+          categories[catIndex].scores[qIndex] = value;
+        };
+      });
+    });
+  </script>
+</body>
+</html>
