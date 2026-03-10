@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬歴作成効率化診断 - 薬剤師無料ツール</title>
+  <meta name="description" content="薬歴作成時間のボトルネックを5領域20問で診断。入力時間短縮・AI活用準備度・業務プロセス・環境要因・継続改善のスコアを可視化し改善提案を自動生成。">
+  <meta name="keywords" content="薬歴,効率化,薬剤師,無料ツール,AI活用,時間短縮,業務改善">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="薬歴作成効率化診断 - 薬剤師無料ツール">
+  <meta property="og:description" content="薬歴作成時間のボトルネックを5領域20問で診断。入力時間短縮・AI活用準備度を可視化し改善提案を自動生成。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-medication-history-efficiency.html">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-medication-history-efficiency.html">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    header { text-align: center; margin-bottom: 30px; }
+    h1 { font-size: 2rem; color: #667eea; margin-bottom: 10px; }
+    .subtitle { color: #666; font-size: 0.95rem; }
+    .progress-bar { background: #e0e0e0; border-radius: 10px; height: 8px; margin-bottom: 30px; overflow: hidden; }
+    .progress-fill { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; width: 0%; transition: width 0.3s ease; }
+    .category-title { font-size: 1.3rem; color: #667eea; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #667eea; }
+    .question { margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; }
+    .question-text { font-weight: 500; margin-bottom: 12px; color: #333; }
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .option { display: flex; align-items: center; padding: 10px 15px; background: white; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+    .option:hover { border-color: #667eea; background: #f0f4ff; }
+    .option.selected { border-color: #667eea; background: #667eea; color: white; }
+    .option input { display: none; }
+    .btn { display: block; width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 30px; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); }
+    .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+    .result { display: none; text-align: center; }
+    .score-circle { width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; }
+    .score-number { font-size: 3rem; font-weight: bold; }
+    .score-label { font-size: 0.9rem; }
+    .level-badge { display: inline-block; padding: 8px 20px; border-radius: 20px; font-weight: bold; margin-bottom: 20px; }
+    .level-excellent { background: #e8f5e9; color: #2e7d32; }
+    .level-good { background: #fff3e0; color: #f57c00; }
+    .level-average { background: #fce4ec; color: #c2185b; }
+    .level-needs-work { background: #ffebee; color: #c62828; }
+    .category-scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 30px 0; }
+    .category-score { background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center; }
+    .category-score-title { font-size: 0.85rem; color: #666; margin-bottom: 5px; }
+    .category-score-value { font-size: 1.5rem; font-weight: bold; color: #667eea; }
+    .improvements { text-align: left; background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px; }
+    .improvements h3 { color: #667eea; margin-bottom: 15px; }
+    .improvement-item { padding: 10px 0; border-bottom: 1px solid #e0e0e0; }
+    .improvement-item:last-child { border-bottom: none; }
+    .cta-section { margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white; text-align: center; }
+    .cta-section h3 { margin-bottom: 10px; }
+    .cta-section p { font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9; }
+    .cta-button { display: inline-block; background: white; color: #667eea; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: transform 0.2s; }
+    .cta-button:hover { transform: translateY(-2px); }
+    .back-link { display: block; text-align: center; margin-top: 20px; color: #667eea; text-decoration: none; }
+    @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 1.5rem; } .score-circle { width: 150px; height: 150px; } .score-number { font-size: 2.5rem; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>薬歴作成効率化診断</h1>
+      <p class="subtitle">薬歴作成時間のボトルネックを5領域20問で診断</p>
+    </header>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <form id="diagnosisForm">
+      <h2 class="category-title">📝 入力時間・工数</h2>
+      <div class="question"><p class="question-text">1. 1処方箋あたりの薬歴作成時間はどの程度ですか？</p><div class="options"><label class="option"><input type="radio" name="q1" value="4">5分未満</label><label class="option"><input type="radio" name="q1" value="3">5〜10分</label><label class="option"><input type="radio" name="q1" value="2">10〜15分</label><label class="option"><input type="radio" name="q1" value="1">15分以上</label></div></div>
+      <div class="question"><p class="question-text">2. 薬歴入力の際、どの程度思考停止時間がありますか？</p><div class="options"><label class="option"><input type="radio" name="q2" value="4">ほとんどない</label><label class="option"><input type="radio" name="q2" value="3">1〜2分程度</label><label class="option"><input type="radio" name="q2" value="2">3〜5分程度</label><label class="option"><input type="radio" name="q2" value="1">5分以上</label></div></div>
+      <div class="question"><p class="question-text">3. 類似処方の薬歴入力は効率化されていますか？</p><div class="options"><label class="option"><input type="radio" name="q3" value="4">コピペ活用で大幅短縮</label><label class="option"><input type="radio" name="q3" value="3">ある程度効率化</label><label class="option"><input type="radio" name="q3" value="2">あまり効率化できていない</label><label class="option"><input type="radio" name="q3" value="1">毎回ゼロから入力</label></div></div>
+      <div class="question"><p class="question-text">4. 服薬指導内容の記録にどの程度時間を費やしていますか？</p><div class="options"><label class="option"><input type="radio" name="q4" value="4">要点のみ簡潔（1〜2分）</label><label class="option"><input type="radio" name="q4" value="3">標準的（3〜5分）</label><label class="option"><input type="radio" name="q4" value="2">詳細（5〜10分）</label><label class="option"><input type="radio" name="q4" value="1">非常に詳細（10分以上）</label></div></div>
+      
+      <h2 class="category-title">🤖 AI活用準備度</h2>
+      <div class="question"><p class="question-text">5. 生成AIを薬歴作成に活用していますか？</p><div class="options"><label class="option"><input type="radio" name="q5" value="4">日常的に活用</label><label class="option"><input type="radio" name="q5" value="3">時々活用</label><label class="option"><input type="radio" name="q5" value="2">試したことはある</label><label class="option"><input type="radio" name="q5" value="1">活用していない</label></div></div>
+      <div class="question"><p class="question-text">6. AI音声入力機能の活用経験は？</p><div class="options"><label class="option"><input type="radio" name="q6" value="4">日常的に活用</label><label class="option"><input type="radio" name="q6" value="3">時々活用</label><label class="option"><input type="radio" name="q6" value="2">導入検討中</label><label class="option"><input type="radio" name="q6" value="1">知らない・興味ない</label></div></div>
+      <div class="question"><p class="question-text">7. AI薬歴作成支援システムの活用状況は？</p><div class="options"><label class="option"><input type="radio" name="q7" value="4">フル活用</label><label class="option"><input type="radio" name="q7" value="3">一部活用</label><label class="option"><input type="radio" name="q7" value="2">導入予定がある</label><label class="option"><input type="radio" name="q7" value="1">導入予定がない</label></div></div>
+      <div class="question"><p class="question-text">8. プロンプトエンジニアリングの習熟度は？</p><div class="options"><label class="option"><input type="radio" name="q8" value="4">高度に習熟</label><label class="option"><input type="radio" name="q8" value="3">基本的スキルあり</label><label class="option"><input type="radio" name="q8" value="2">学習中</label><label class="option"><input type="radio" name="q8" value="1">未習得</label></div></div>
+      
+      <h2 class="category-title">⚙️ 業務プロセス</h2>
+      <div class="question"><p class="question-text">9. 薬歴作成のタイミングは最適化されていますか？</p><div class="options"><label class="option"><input type="radio" name="q9" value="4">服薬指導直後に即座に入力</label><label class="option"><input type="radio" name="q9" value="3">業務の合間にまとめて入力</label><label class="option"><input type="radio" name="q9" value="2">業務終了後に入力</label><label class="option"><input type="radio" name="q9" value="1">翌日以降に入力することが多い</label></div></div>
+      <div class="question"><p class="question-text">10. 薬歴作成の標準化はされていますか？</p><div class="options"><label class="option"><input type="radio" name="q10" value="4">完全に標準化</label><label class="option"><input type="radio" name="q10" value="3">ある程度標準化</label><label class="option"><input type="radio" name="q10" value="2">標準化を検討中</label><label class="option"><input type="radio" name="q10" value="1">標準化されていない</label></div></div>
+      <div class="question"><p class="question-text">11. 薬歴の品質管理はされていますか？</p><div class="options"><label class="option"><input type="radio" name="q11" value="4">定期的に見直し改善</label><label class="option"><input type="radio" name="q11" value="3">時々見直し</label><label class="option"><input type="radio" name="q11" value="2">ほとんど見直していない</label><label class="option"><input type="radio" name="q11" value="1">見直しをしていない</label></div></div>
+      <div class="question"><p class="question-text">12. 薬歴作成の教育は充実していますか？</p><div class="options"><label class="option"><input type="radio" name="q12" value="4">体系的な教育プログラムあり</label><label class="option"><input type="radio" name="q12" value="3">OJTで教育</label><label class="option"><input type="radio" name="q12" value="2">自己学習が中心</label><label class="option"><input type="radio" name="q12" value="1">教育機会がない</label></div></div>
+      
+      <h2 class="category-title">🖥️ 環境要因</h2>
+      <div class="question"><p class="question-text">13. 電子薬歴システムの使いやすさは？</p><div class="options"><label class="option"><input type="radio" name="q13" value="4">非常に使いやすい</label><label class="option"><input type="radio" name="q13" value="3">まあまあ使いやすい</label><label class="option"><input type="radio" name="q13" value="2">使いにくい部分がある</label><label class="option"><input type="radio" name="q13" value="1">非常に使いにくい</label></div></div>
+      <div class="question"><p class="question-text">14. 薬歴入力のための物理的環境は整っていますか？</p><div class="options"><label class="option"><input type="radio" name="q14" value="4">非常に整っている</label><label class="option"><input type="radio" name="q14" value="3">ある程度整っている</label><label class="option"><input type="radio" name="q14" value="2">改善が必要</label><label class="option"><input type="radio" name="q14" value="1">整っていない</label></div></div>
+      <div class="question"><p class="question-text">15. 薬歴作成時間の確保はできていますか？</p><div class="options"><label class="option"><input type="radio" name="q15" value="4">十分な時間が確保できる</label><label class="option"><input type="radio" name="q15" value="3">ある程度確保できる</label><label class="option"><input type="radio" name="q15" value="2">時間が足りないことが多い</label><label class="option"><input type="radio" name="q15" value="1">ほとんど時間がない</label></div></div>
+      <div class="question"><p class="question-text">16. 同時進行業務とのバランスは取れていますか？</p><div class="options"><label class="option"><input type="radio" name="q16" value="4">うまくバランスが取れている</label><label class="option"><input type="radio" name="q16" value="3">概ねバランスが取れている</label><label class="option"><input type="radio" name="q16" value="2">バランスを取るのが難しい</label><label class="option"><input type="radio" name="q16" value="1">常に業務に追われている</label></div></div>
+      
+      <h2 class="category-title">📈 継続改善</h2>
+      <div class="question"><p class="question-text">17. 薬歴作成時間の計測・分析はしていますか？</p><div class="options"><label class="option"><input type="radio" name="q17" value="4">定期的に計測分析</label><label class="option"><input type="radio" name="q17" value="3">時々計測</label><label class="option"><input type="radio" name="q17" value="2">ほとんど計測していない</label><label class="option"><input type="radio" name="q17" value="1">計測していない</label></div></div>
+      <div class="question"><p class="question-text">18. 薬歴作成効率化の改善活動はしていますか？</p><div class="options"><label class="option"><input type="radio" name="q18" value="4">継続的な改善活動</label><label class="option"><input type="radio" name="q18" value="3">時々改善に取り組んでいる</label><label class="option"><input type="radio" name="q18" value="2">改善したいができていない</label><label class="option"><input type="radio" name="q18" value="1">改善活動をしていない</label></div></div>
+      <div class="question"><p class="question-text">19. 他薬剤師との情報共有はしていますか？</p><div class="options"><label class="option"><input type="radio" name="q19" value="4">積極的に情報共有</label><label class="option"><input type="radio" name="q19" value="3">時々情報共有</label><label class="option"><input type="radio" name="q19" value="2">情報共有の機会が少ない</label><label class="option"><input type="radio" name="q19" value="1">情報共有していない</label></div></div>
+      <div class="question"><p class="question-text">20. 薬歴作成効率化の目標設定はしていますか？</p><div class="options"><label class="option"><input type="radio" name="q20" value="4">明確な目標と計画がある</label><label class="option"><input type="radio" name="q20" value="3">ざっくりとした目標がある</label><label class="option"><input type="radio" name="q20" value="2">目標を持ちたいと思っている</label><label class="option"><input type="radio" name="q20" value="1">目標設定していない</label></div></div>
+      
+      <button type="submit" class="btn" id="submitBtn" disabled>診断結果を見る</button>
+    </form>
+    <div class="result" id="result">
+      <div class="score-circle"><span class="score-number" id="totalScore">0</span><span class="score-label">/ 80点</span></div>
+      <div id="levelBadge" class="level-badge"></div>
+      <div class="category-scores" id="categoryScores"></div>
+      <div class="improvements" id="improvements"><h3>🎯 改善提案</h3></div>
+      <div class="cta-section"><h3>薬歴作成をさらに効率化しませんか？</h3><p>薬剤師向けAIプロンプト集で、薬歴作成時間を大幅短縮</p><a href="ai-prompts-lp.html" class="cta-button">詳細を見る →</a></div>
+      <a href="index.html" class="back-link">← ツール一覧に戻る</a>
+    </div>
+  </div>
+  <script>
+    const form = document.getElementById('diagnosisForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressFill = document.getElementById('progressFill');
+    const result = document.getElementById('result');
+    const categories = [
+      { name: '入力時間', questions: [1, 2, 3, 4] },
+      { name: 'AI活用', questions: [5, 6, 7, 8] },
+      { name: '業務プロセス', questions: [9, 10, 11, 12] },
+      { name: '環境要因', questions: [13, 14, 15, 16] },
+      { name: '継続改善', questions: [17, 18, 19, 20] }
+    ];
+    const improvements = {
+      inputTime: ['1処方箋あたりの薬歴作成時間を5分以内に短縮する目標を設定', '類似処方のテンプレート化を進め、コピペ活用率を向上', '服薬指導内容の要点を絞り、簡潔な記録を心がける'],
+      aiUsage: ['ChatGPT等の生成AIを薬歴作成に日常的に活用開始', 'AI音声入力機能の導入を検討', '電子薬歴のAI薬歴作成支援機能をフル活用', 'プロンプトエンジニアリングの基本スキルを習得'],
+      process: ['服薬指導直後の薬歴入力を習慣化', '薬歴フォーマットの標準化を推進', '定期的な薬歴品質レビューを実施'],
+      environment: ['電子薬歴システムのショートカット・効率機能を習得', '薬歴入力専用スペース・時間の確保', '同時進行業務とのバランス改善を検討'],
+      continuous: ['薬歴作成時間の定期的な計測・分析を開始', '他薬剤師との薬歴作成手法の情報共有', '効率化目標の明確化と進捗管理']
+    };
+    form.addEventListener('change', function() {
+      const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+      progressFill.style.width = (answeredQuestions / 20) * 100 + '%';
+      submitBtn.disabled = answeredQuestions < 20;
+    });
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', function() {
+        const name = this.querySelector('input').name;
+        document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+          input.closest('.option').classList.remove('selected');
+        });
+        this.classList.add('selected');
+      });
+    });
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      let totalScore = 0;
+      const categoryScores = {};
+      categories.forEach(cat => {
+        let catScore = 0;
+        cat.questions.forEach(q => {
+          const selected = document.querySelector(`input[name="q${q}"]:checked`);
+          if (selected) catScore += parseInt(selected.value);
+        });
+        categoryScores[cat.name] = catScore;
+        totalScore += catScore;
+      });
+      document.getElementById('totalScore').textContent = totalScore;
+      const levelBadge = document.getElementById('levelBadge');
+      if (totalScore >= 65) { levelBadge.textContent = '🌟 優秀レベル'; levelBadge.className = 'level-badge level-excellent'; }
+      else if (totalScore >= 50) { levelBadge.textContent = '👍 良好レベル'; levelBadge.className = 'level-badge level-good'; }
+      else if (totalScore >= 35) { levelBadge.textContent = '📊 平均レベル'; levelBadge.className = 'level-badge level-average'; }
+      else { levelBadge.textContent = '🎯 改善余地あり'; levelBadge.className = 'level-badge level-needs-work'; }
+      const categoryScoresDiv = document.getElementById('categoryScores');
+      categoryScoresDiv.innerHTML = Object.entries(categoryScores).map(([name, score]) => `<div class="category-score"><div class="category-score-title">${name}</div><div class="category-score-value">${score}/16</div></div>`).join('');
+      const improvementsDiv = document.getElementById('improvements');
+      let improvementsHTML = '<h3>🎯 改善提案</h3>';
+      if (categoryScores['入力時間'] < 12) improvementsHTML += improvements.inputTime.map(i => `<div class="improvement-item">• ${i}</div>`).join('');
+      if (categoryScores['AI活用'] < 12) improvementsHTML += improvements.aiUsage.map(i => `<div class="improvement-item">• ${i}</div>`).join('');
+      if (categoryScores['業務プロセス'] < 12) improvementsHTML += improvements.process.map(i => `<div class="improvement-item">• ${i}</div>`).join('');
+      if (categoryScores['環境要因'] < 12) improvementsHTML += improvements.environment.map(i => `<div class="improvement-item">• ${i}</div>`).join('');
+      if (categoryScores['継続改善'] < 12) improvementsHTML += improvements.continuous.map(i => `<div class="improvement-item">• ${i}</div>`).join('');
+      improvementsDiv.innerHTML = improvementsHTML;
+      form.style.display = 'none';
+      result.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
