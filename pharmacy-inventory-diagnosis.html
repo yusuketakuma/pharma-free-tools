@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局在庫管理診断 | 薬剤師のための無料ツール</title>
+    <meta name="description" content="薬局の在庫管理レベルを5分で診断。発注管理・在庫回転・期限管理・欠品対策・コスト管理の5領域をスコア化し、改善ポイントを提案します。">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "薬局在庫管理診断",
+        "description": "薬局の在庫管理レベルを5分で診断。5領域20問でボトルネックを特定し改善提案を自動生成。",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #2ecc71;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .question-section {
+            display: none;
+        }
+
+        .question-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .section-icon {
+            margin-right: 10px;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: #3498db;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+
+        .option input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: #ecf0f1;
+            color: #7f8c8d;
+        }
+
+        .btn-secondary:hover {
+            background: #dfe6e9;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Section */
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .total-score {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .total-score .score {
+            font-size: 4rem;
+            font-weight: bold;
+        }
+
+        .total-score .label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .level-expert { background: #2ecc71; color: white; }
+        .level-advanced { background: #3498db; color: white; }
+        .level-intermediate { background: #f39c12; color: white; }
+        .level-beginner { background: #e74c3c; color: white; }
+
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-score {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .category-score .category-name {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+
+        .category-score .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .category-score.low { border-left: 4px solid #e74c3c; }
+        .category-score.medium { border-left: 4px solid #f39c12; }
+        .category-score.high { border-left: 4px solid #2ecc71; }
+
+        .bottleneck-section {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f39c12;
+        }
+
+        .bottleneck-section h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .bottleneck-section ul {
+            color: #856404;
+            padding-left: 20px;
+        }
+
+        .bottleneck-section li {
+            margin-bottom: 8px;
+        }
+
+        .recommendations {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recommendations h3 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #28a745;
+        }
+
+        .recommendation-item h4 {
+            color: #155724;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+        }
+
+        .cta-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .restart-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #ecf0f1;
+            color: #7f8c8d;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            background: #dfe6e9;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .content {
+                padding: 20px;
+            }
+            .nav-buttons {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 薬局在庫管理診断</h1>
+            <p>5領域20問で在庫管理レベルを可視化</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: 発注管理 -->
+            <div class="question-section active" id="section1">
+                <h2 class="section-title"><span class="section-icon">📋</span>発注管理（4問）</h2>
+
+                <div class="question">
+                    <div class="question-text">Q1. 発注数量の決定方法は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="1">
+                            感覚・経験に基づいて決定している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="2">
+                            過去の販売実績を参考にしている
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="3">
+                            発注点・発注量を数値化している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="4">
+                            需要予測システムを活用している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q2. 発注タイミングの管理方法は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="1">
+                            在庫が減ったら気づいた時に発注
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="2">
+                            定期的（週1回など）にまとめて発注
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="3">
+                            発注点を下回ったら自動アラート
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="4">
+                            自動発注システムを導入している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q3. 複数仕入先の使い分けは？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="1">
+                            基本的に1社からのみ購入
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="2">
+                            複数社あるが使い分け基準なし
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="3">
+                            価格・納期で使い分けている
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="4">
+                            各仕入先の特徴をデータ化し最適化している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q4. 発注ミスの防止対策は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="1">
+                            特に対策をしていない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="2">
+                            二重確認で防いでいる
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="3">
+                            チェックリストを運用している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="4">
+                            システムによるバーコード照合を実施している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" disabled>← 前へ</button>
+                    <button class="btn btn-primary" onclick="nextSection(1)">次へ →</button>
+                </div>
+            </div>
+
+            <!-- Section 2: 在庫回転 -->
+            <div class="question-section" id="section2">
+                <h2 class="section-title"><span class="section-icon">🔄</span>在庫回転（4問）</h2>
+
+                <div class="question">
+                    <div class="question-text">Q5. 在庫回転率の把握状況は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="1">
+                            把握していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="2">
+                            年に1回程度確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="3">
+                            月次で主要品目を確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="4">
+                            全品目の回転率をリアルタイム把握している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q6. 売れ筋・死に筋の分析方法は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="1">
+                            分析していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="2">
+                            感覚で把握している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="3">
+                            ABC分析を定期的に実施している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="4">
+                            自動分析ツールで常時モニタリングしている
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q7. 適正在庫の設定は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="1">
+                            設定していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="2">
+                            主要品目のみ設定している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="3">
+                            全品目に適正在庫を設定している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="4">
+                            季節変動を考慮した動的適正在庫を運用している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q8. デッドストック（滞留在庫）の対策は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="1">
+                            特に対策していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="2">
+                            気づいた時に処分している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="3">
+                            定期的に棚卸しで確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="4">
+                            滞留アラート・自動処分基準を運用している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection(2)">← 前へ</button>
+                    <button class="btn btn-primary" onclick="nextSection(2)">次へ →</button>
+                </div>
+            </div>
+
+            <!-- Section 3: 期限管理 -->
+            <div class="question-section" id="section3">
+                <h2 class="section-title"><span class="section-icon">⏰</span>期限管理（4問）</h2>
+
+                <div class="question">
+                    <div class="question-text">Q9. 有効期限の把握方法は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="1">
+                            手書きメモや記憶に頼っている
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="2">
+                            エクセル等で一覧管理している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="3">
+                            調剤システムで期限アラートがある
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="4">
+                            FIFO（先入先出）システムを完全運用している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q10. 期限切れ・期限間近医薬品の対策は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="1">
+                            発見時に対応している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="2">
+                            月1回程度確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="3">
+                            週1回で定期確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="4">
+                            自動アラートで即時対応している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q11. 先入先出（FIFO）の徹底状況は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q11" value="1">
+                            徹底できていない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="2">
+                            意識してはいるが不安がある
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="3">
+                            手順書で徹底している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="4">
+                            バーコード管理で確実に実施している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q12. 返品・廃棄の管理は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q12" value="1">
+                            記録を残していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="2">
+                            簡易的な記録を残している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="3">
+                            専用台帳で管理している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="4">
+                            システムで原因分析・改善まで実施している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection(3)">← 前へ</button>
+                    <button class="btn btn-primary" onclick="nextSection(3)">次へ →</button>
+                </div>
+            </div>
+
+            <!-- Section 4: 欠品対策 -->
+            <div class="question-section" id="section4">
+                <h2 class="section-title"><span class="section-icon">🚨</span>欠品対策（4問）</h2>
+
+                <div class="question">
+                    <div class="question-text">Q13. 欠品の発生頻度は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q13" value="1">
+                            週に数回以上発生する
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="2">
+                            月に数回程度発生する
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="3">
+                            月に1回以下に抑えている
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="4">
+                            ほぼ発生していない
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q14. 欠品時の代替薬対応は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q14" value="1">
+                            その都度医師に確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="2">
+                            よく使う代替薬は把握している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="3">
+                            代替薬リストを整備している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="4">
+                            システムで代替薬を自動提案できる
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q15. 供給情報の収集方法は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q15" value="1">
+                            卸からの連絡を待っている
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="2">
+                            必要に応じて確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="3">
+                            CloseDi等を定期的にチェックしている
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="4">
+                            供給情報アラートを自動受信している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q16. 欠品による機会損失の把握は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q16" value="1">
+                            把握していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q16" value="2">
+                            感覚で把握している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q16" value="3">
+                            記録を残している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q16" value="4">
+                            金額換算・原因分析まで実施している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection(4)">← 前へ</button>
+                    <button class="btn btn-primary" onclick="nextSection(4)">次へ →</button>
+                </div>
+            </div>
+
+            <!-- Section 5: コスト管理 -->
+            <div class="question-section" id="section5">
+                <h2 class="section-title"><span class="section-icon">💰</span>コスト管理（4問）</h2>
+
+                <div class="question">
+                    <div class="question-text">Q17. 在庫金額の把握状況は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q17" value="1">
+                            正確に把握できていない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q17" value="2">
+                            棚卸し時のみ把握している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q17" value="3">
+                            月次で在庫金額を確認している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q17" value="4">
+                            リアルタイムで在庫金額を把握している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q18. 在庫回転期間の目標設定は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q18" value="1">
+                            目標を設定していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q18" value="2">
+                            全体で大まかな目標がある
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q18" value="3">
+                            カテゴリ別に目標を設定している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q18" value="4">
+                            品目別に最適回転期間を設定・管理している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q19. 仕入値引き・特値の活用は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q19" value="1">
+                            ほぼ活用していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q19" value="2">
+                            案内があった時に検討している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q19" value="3">
+                            定期的に確認・活用している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q19" value="4">
+                            需要予測と組み合わせて戦略的に活用している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">Q20. 在庫管理コスト（人件費・スペース等）の把握は？</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q20" value="1">
+                            把握していない
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q20" value="2">
+                            概算で把握している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q20" value="3">
+                            詳細に把握している
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q20" value="4">
+                            把握した上で改善施策を実施している
+                        </label>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection(5)">← 前へ</button>
+                    <button class="btn btn-primary" onclick="showResults()">診断結果を見る →</button>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results" id="results">
+                <div class="total-score">
+                    <div class="label">在庫管理スコア</div>
+                    <div class="score" id="totalScore">0</div>
+                    <div class="label">/ 80点</div>
+                    <div class="level-badge" id="levelBadge">計算中...</div>
+                </div>
+
+                <div class="score-breakdown" id="scoreBreakdown"></div>
+
+                <div class="bottleneck-section" id="bottleneckSection">
+                    <h3>⚠️ 改善が必要な領域</h3>
+                    <ul id="bottleneckList"></ul>
+                </div>
+
+                <div class="recommendations" id="recommendations">
+                    <h3>📝 今すぐできる改善提案</h3>
+                    <div id="recommendationList"></div>
+                </div>
+
+                <div class="cta-section">
+                    <h3>🚀 在庫管理を自動化しませんか？</h3>
+                    <p>薬剤師向けAIプロンプト集で、在庫管理の効率化・自動化アイデアを100以上収録。<br>Excel→自動化への移行も具体的に解説しています。</p>
+                    <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-button">詳細を見る →</a>
+                </div>
+
+                <button class="restart-btn" onclick="location.reload()">もう一度診断する</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const categories = [
+            { name: '発注管理', questions: [1, 2, 3, 4], icon: '📋' },
+            { name: '在庫回転', questions: [5, 6, 7, 8], icon: '🔄' },
+            { name: '期限管理', questions: [9, 10, 11, 12], icon: '⏰' },
+            { name: '欠品対策', questions: [13, 14, 15, 16], icon: '🚨' },
+            { name: 'コスト管理', questions: [17, 18, 19, 20], icon: '💰' }
+        ];
+
+        let currentSection = 1;
+        const totalSections = 5;
+
+        function updateProgress() {
+            const progress = (currentSection / totalSections) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextSection(current) {
+            // Validate current section
+            const sectionQuestions = document.querySelectorAll(`#section${current} input[type="radio"]`);
+            const sectionGroups = {};
+            sectionQuestions.forEach(q => {
+                sectionGroups[q.name] = sectionGroups[q.name] || [];
+                sectionGroups[q.name].push(q);
+            });
+
+            let allAnswered = true;
+            for (let group in sectionGroups) {
+                if (!sectionGroups[group].some(q => q.checked)) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+
+            if (!allAnswered) {
+                alert('すべての質問に回答してください');
+                return;
+            }
+
+            document.getElementById(`section${current}`).classList.remove('active');
+            document.getElementById(`section${current + 1}`).classList.add('active');
+            currentSection = current + 1;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function prevSection(current) {
+            document.getElementById(`section${current}`).classList.remove('active');
+            document.getElementById(`section${current - 1}`).classList.add('active');
+            currentSection = current - 1;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function showResults() {
+            // Validate last section
+            const sectionQuestions = document.querySelectorAll('#section5 input[type="radio"]');
+            const sectionGroups = {};
+            sectionQuestions.forEach(q => {
+                sectionGroups[q.name] = sectionGroups[q.name] || [];
+                sectionGroups[q.name].push(q);
+            });
+
+            let allAnswered = true;
+            for (let group in sectionGroups) {
+                if (!sectionGroups[group].some(q => q.checked)) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+
+            if (!allAnswered) {
+                alert('すべての質問に回答してください');
+                return;
+            }
+
+            // Calculate scores
+            const categoryScores = [];
+            let totalScore = 0;
+
+            categories.forEach(cat => {
+                let catScore = 0;
+                cat.questions.forEach(qNum => {
+                    const selected = document.querySelector(`input[name="q${qNum}"]:checked`);
+                    if (selected) {
+                        catScore += parseInt(selected.value);
+                    }
+                });
+                categoryScores.push({
+                    name: cat.name,
+                    icon: cat.icon,
+                    score: catScore,
+                    maxScore: 16
+                });
+                totalScore += catScore;
+            });
+
+            // Display total score
+            document.getElementById('totalScore').textContent = totalScore;
+
+            // Determine level
+            let level, levelClass;
+            if (totalScore >= 65) {
+                level = '🏆 エキスパートレベル';
+                levelClass = 'level-expert';
+            } else if (totalScore >= 50) {
+                level = '⭐ 上級レベル';
+                levelClass = 'level-advanced';
+            } else if (totalScore >= 35) {
+                level = '📚 中級レベル';
+                levelClass = 'level-intermediate';
+            } else {
+                level = '🌱 初級レベル';
+                levelClass = 'level-beginner';
+            }
+
+            const levelBadge = document.getElementById('levelBadge');
+            levelBadge.textContent = level;
+            levelBadge.className = 'level-badge ' + levelClass;
+
+            // Display category breakdown
+            const breakdownHTML = categoryScores.map(cat => {
+                let scoreClass = 'low';
+                if (cat.score >= 12) scoreClass = 'high';
+                else if (cat.score >= 8) scoreClass = 'medium';
+
+                return `
+                    <div class="category-score ${scoreClass}">
+                        <div class="category-name">${cat.icon} ${cat.name}</div>
+                        <div class="score-value">${cat.score}/${cat.maxScore}</div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('scoreBreakdown').innerHTML = breakdownHTML;
+
+            // Identify bottlenecks
+            const bottlenecks = categoryScores.filter(cat => cat.score < 10);
+            const bottleneckList = document.getElementById('bottleneckList');
+            if (bottlenecks.length > 0) {
+                bottleneckList.innerHTML = bottlenecks.map(cat => 
+                    `<li><strong>${cat.icon} ${cat.name}</strong>: ${cat.score}/16点 - 改善の余地が大きい領域です</li>`
+                ).join('');
+            } else {
+                document.getElementById('bottleneckSection').style.display = 'none';
+            }
+
+            // Generate recommendations
+            const recommendations = generateRecommendations(categoryScores);
+            document.getElementById('recommendationList').innerHTML = recommendations;
+
+            // Show results
+            document.querySelectorAll('.question-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+            document.querySelector('.progress-fill').style.width = '100%';
+            window.scrollTo(0, 0);
+        }
+
+        function generateRecommendations(scores) {
+            const recs = [];
+
+            scores.forEach(cat => {
+                if (cat.name === '発注管理' && cat.score < 10) {
+                    recs.push({
+                        title: '📋 発注管理の標準化',
+                        desc: '発注点・発注量を数値化し、マニュアル化することから始めましょう。Excelテンプレートの活用が効果的です。'
+                    });
+                }
+                if (cat.name === '在庫回転' && cat.score < 10) {
+                    recs.push({
+                        title: '🔄 ABC分析の導入',
+                        desc: '売上上位20%の商品（Aランク）に焦点を当て、在庫管理の精度を高めましょう。'
+                    });
+                }
+                if (cat.name === '期限管理' && cat.score < 10) {
+                    recs.push({
+                        title: '⏰ 期限アラートの設定',
+                        desc: '調剤システムの期限管理機能を活用し、期限3ヶ月前からのアラート設定を検討してください。'
+                    });
+                }
+                if (cat.name === '欠品対策' && cat.score < 10) {
+                    recs.push({
+                        title: '🚨 代替薬リストの整備',
+                        desc: '頻繁に処方される薬の代替薬リストを作成し、欠品時の対応時間を短縮しましょう。'
+                    });
+                }
+                if (cat.name === 'コスト管理' && cat.score < 10) {
+                    recs.push({
+                        title: '💰 在庫金額の可視化',
+                        desc: '月次で在庫金額を把握し、適正在庫との乖離を確認する習慣から始めましょう。'
+                    });
+                }
+            });
+
+            if (recs.length === 0) {
+                recs.push({
+                    title: '🎉 素晴らしい！',
+                    desc: '在庫管理レベルは高水準です。さらに自動化・予測分析の導入で次のレベルへ進みましょう。'
+                });
+            }
+
+            return recs.map(rec => `
+                <div class="recommendation-item">
+                    <h4>${rec.title}</h4>
+                    <p>${rec.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        // Option selection styling
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const name = this.querySelector('input').name;
+                document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+                    input.closest('.option').classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
