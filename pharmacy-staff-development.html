@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局スタッフ育成診断 - 48番目の無料ツール</title>
+  <meta name="description" content="薬局のスタッフ育成レベルを5領域20問で診断。OJT体制・スキル評価・フィードバック・キャリアパス・組織文化を可視化し、人材育成の改善ポイントを特定。">
+  <meta name="keywords" content="薬局,スタッフ育成,人材育成,OJT,スキル評価,キャリアパス,組織文化,薬剤師">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      color: #11998e;
+      margin-bottom: 16px;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 24px;
+    }
+    
+    .category-badge {
+      display: inline-block;
+      background: #11998e;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 10px;
+      height: 8px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #11998e, #38ef7d);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    
+    .question-section {
+      margin-bottom: 30px;
+    }
+    
+    .category-title {
+      font-size: 1.2rem;
+      color: #11998e;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #11998e;
+    }
+    
+    .question {
+      margin-bottom: 20px;
+    }
+    
+    .question-text {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .options {
+      display: grid;
+      gap: 8px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .option:hover {
+      background: #e9ecef;
+    }
+    
+    .option.selected {
+      background: #d4edda;
+      border-color: #11998e;
+    }
+    
+    .option input {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+    }
+    
+    .option label {
+      cursor: pointer;
+      flex: 1;
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(17, 153, 142, 0.3);
+    }
+    
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .result {
+      display: none;
+      margin-top: 40px;
+    }
+    
+    .score-card {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .total-score {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .score-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .level-badge {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+    
+    .category-scores {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    
+    .category-score {
+      background: #f8f9fa;
+      padding: 16px;
+      border-radius: 8px;
+    }
+    
+    .category-score-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #11998e;
+    }
+    
+    .category-bar {
+      background: #e0e0e0;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .category-fill {
+      height: 100%;
+      background: #11998e;
+      transition: width 0.5s ease;
+    }
+    
+    .recommendations {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .recommendations h3 {
+      color: #11998e;
+      margin-bottom: 12px;
+    }
+    
+    .recommendations ul {
+      padding-left: 20px;
+    }
+    
+    .recommendations li {
+      margin-bottom: 8px;
+    }
+    
+    .cta-section {
+      margin-top: 40px;
+      padding: 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      text-align: center;
+      color: white;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 12px;
+    }
+    
+    .cta-section p {
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      padding: 12px 32px;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+    
+    .cta-btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    footer a {
+      color: #11998e;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>薬局スタッフ育成診断</h1>
+      <p class="subtitle">5領域20問で人材育成レベルを可視化</p>
+      <span class="category-badge">人材育成・組織開発系</span>
+    </header>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress" style="width: 0%"></div>
+    </div>
+    
+    <form id="diagnosis-form">
+      <!-- OJT体制 -->
+      <div class="question-section">
+        <h3 class="category-title">📊 OJT体制（4問）</h3>
+        
+        <div class="question">
+          <p class="question-text">1. 新人薬剤師へのOJT担当者は明確に決まっていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q1" value="1"> 担当者は決まっていない</label>
+            <label class="option"><input type="radio" name="q1" value="2"> 形式的に決まっているが機能していない</label>
+            <label class="option"><input type="radio" name="q1" value="3"> 担当者は決まっているが指導時間が不十分</label>
+            <label class="option"><input type="radio" name="q1" value="4"> 担当者が明確で指導時間も確保されている</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">2. OJTカリキュラム（指導項目・スケジュール）は整備されていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q2" value="1"> カリキュラムはない</label>
+            <label class="option"><input type="radio" name="q2" value="2"> 項目はあるがスケジュール化されていない</label>
+            <label class="option"><input type="radio" name="q2" value="3"> カリキュラムはあるが実施状況の把握が不十分</label>
+            <label class="option"><input type="radio" name="q2" value="4"> カリキュラムが整備され進捗管理もされている</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">3. 指導者（先輩薬剤師）への指導スキル研修は実施していますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q3" value="1"> 実施していない</label>
+            <label class="option"><input type="radio" name="q3" value="2"> 過去に実施したことがあるのみ</label>
+            <label class="option"><input type="radio" name="q3" value="3"> 年1回程度実施している</label>
+            <label class="option"><input type="radio" name="q3" value="4"> 定期的（年2回以上）に実施している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">4. OJTの効果測定（習熟度チェック）は行っていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q4" value="1"> 行っていない</label>
+            <label class="option"><input type="radio" name="q4" value="2"> 口頭確認のみ</label>
+            <label class="option"><input type="radio" name="q4" value="3"> チェックリストで確認している</label>
+            <label class="option"><input type="radio" name="q4" value="4"> 客観的評価（テスト・実技確認）を実施している</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- スキル評価 -->
+      <div class="question-section">
+        <h3 class="category-title">🎯 スキル評価（4問）</h3>
+        
+        <div class="question">
+          <p class="question-text">5. スタッフのスキルマップ（能力一覧）は作成していますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q5" value="1"> 作成していない</label>
+            <label class="option"><input type="radio" name="q5" value="2"> 一部のスキルのみ把握している</label>
+            <label class="option"><input type="radio" name="q5" value="3"> スキルマップはあるが更新が不十分</label>
+            <label class="option"><input type="radio" name="q5" value="4"> スキルマップを定期的に更新している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">6. スタッフの目標設定（年間目標・キャリア目標）は行っていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q6" value="1"> 行っていない</label>
+            <label class="option"><input type="radio" name="q6" value="2"> 形式的に設定しているのみ</label>
+            <label class="option"><input type="radio" name="q6" value="3"> 設定しているが進捗確認が不十分</label>
+            <label class="option"><input type="radio" name="q6" value="4"> 目標設定と進捗確認を定期的に行っている</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">7. 外部研修・学会参加の機会は提供していますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q7" value="1"> 提供していない</label>
+            <label class="option"><input type="radio" name="q7" value="2"> 希望があった場合のみ検討</label>
+            <label class="option"><input type="radio" name="q7" value="3"> 年1回程度の機会を提供</label>
+            <label class="option"><input type="radio" name="q7" value="4"> 計画的に年複数回の機会を提供している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">8. スキル評価の結果を育成計画に反映していますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q8" value="1"> 反映していない</label>
+            <label class="option"><input type="radio" name="q8" value="2"> 一部反映している</label>
+            <label class="option"><input type="radio" name="q8" value="3"> 反映しているがPDCAが回っていない</label>
+            <label class="option"><input type="radio" name="q8" value="4"> 評価結果に基づき計画的に育成している</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- フィードバック -->
+      <div class="question-section">
+        <h3 class="category-title">💬 フィードバック（4問）</h3>
+        
+        <div class="question">
+          <p class="question-text">9. 定期的な1on1ミーティングは実施していますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q9" value="1"> 実施していない</label>
+            <label class="option"><input type="radio" name="q9" value="2"> 不定期に実施している</label>
+            <label class="option"><input type="radio" name="q9" value="3"> 月1回程度実施している</label>
+            <label class="option"><input type="radio" name="q9" value="4"> 週1回〜隔週で定期的に実施している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">10. フィードバックの際、良い点と改善点のバランスは取れていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q10" value="1"> 改善点のみ伝えていることが多い</label>
+            <label class="option"><input type="radio" name="q10" value="2"> バランスが取れていないことが多い</label>
+            <label class="option"><input type="radio" name="q10" value="3"> 意識してバランスを取っている</label>
+            <label class="option"><input type="radio" name="q10" value="4"> 良い点も積極的に伝え、バランスよく実施している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">11. スタッフからのフィードバック（上意下達）を受け取る機会はありますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q11" value="1"> ない</label>
+            <label class="option"><input type="radio" name="q11" value="2"> 不定期に機会がある</label>
+            <label class="option"><input type="radio" name="q11" value="3"> 定期的な機会がある</label>
+            <label class="option"><input type="radio" name="q11" value="4"> 常時受け付けており、活用している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">12. フィードバック内容は記録され、次回の育成に活かされていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q12" value="1"> 記録していない</label>
+            <label class="option"><input type="radio" name="q12" value="2"> 記録しているが活用できていない</label>
+            <label class="option"><input type="radio" name="q12" value="3"> 記録・活用している</label>
+            <label class="option"><input type="radio" name="q12" value="4"> 記録を体系化し、育成計画に反映している</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- キャリアパス -->
+      <div class="question-section">
+        <h3 class="category-title">🚀 キャリアパス（4問）</h3>
+        
+        <div class="question">
+          <p class="question-text">13. 薬局内でのキャリアパス（昇進・昇格ルート）は明確ですか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q13" value="1"> 明確でない</label>
+            <label class="option"><input type="radio" name="q13" value="2"> 書面化されていないが慣例がある</label>
+            <label class="option"><input type="radio" name="q13" value="3"> 書面化されているが周知が不十分</label>
+            <label class="option"><input type="radio" name="q13" value="4"> 明確に書面化され、全スタッフに周知されている</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">14. 認定薬剤師・専門薬剤師取得の支援はしていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q14" value="1"> 支援していない</label>
+            <label class="option"><input type="radio" name="q14" value="2"> 情報提供のみ</label>
+            <label class="option"><input type="radio" name="q14" value="3"> 研修費の一部補助がある</label>
+            <label class="option"><input type="radio" name="q14" value="4"> 積極的に取得を推奨し、費用補助も充実している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">15. 管理職候補の育成プログラムはありますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q15" value="1"> ない</label>
+            <label class="option"><input type="radio" name="q15" value="2"> 想定はしているがプログラム化されていない</label>
+            <label class="option"><input type="radio" name="q15" value="3"> プログラムはあるが実施が不十分</label>
+            <label class="option"><input type="radio" name="q15" value="4"> 計画的な育成プログラムを実施している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">16. スタッフのキャリア希望を把握し、配置に反映していますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q16" value="1"> 把握していない</label>
+            <label class="option"><input type="radio" name="q16" value="2"> 希望を聞く機会はあるが反映できていない</label>
+            <label class="option"><input type="radio" name="q16" value="3"> 把握・反映している</label>
+            <label class="option"><input type="radio" name="q16" value="4"> 希望を積極的に把握し、配置・育成に活かしている</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 組織文化 -->
+      <div class="question-section">
+        <h3 class="category-title">🏢 組織文化（4問）</h3>
+        
+        <div class="question">
+          <p class="question-text">17. 学習・成長を奨励する組織文化は醸成されていますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q17" value="1"> 醸成されていない</label>
+            <label class="option"><input type="radio" name="q17" value="2"> 一部のスタッフのみ意識が高い</label>
+            <label class="option"><input type="radio" name="q17" value="3"> 学習奨励の雰囲気はある</label>
+            <label class="option"><input type="radio" name="q17" value="4"> 全体的に学習・成長が奨励される文化がある</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">18. 失敗を許容し、学びの機会とする文化はありますか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q18" value="1"> ない</label>
+            <label class="option"><input type="radio" name="q18" value="2"> 形式的にはあるが実質的でない</label>
+            <label class="option"><input type="radio" name="q18" value="3"> ある程度ある</label>
+            <label class="option"><input type="radio" name="q18" value="4"> 失敗を学びの機会とする文化が定着している</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">19. チーム内での知識共有は活発ですか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q19" value="1"> 活発でない</label>
+            <label class="option"><input type="radio" name="q19" value="2"> 一部のスタッフ間でのみ共有されている</label>
+            <label class="option"><input type="radio" name="q19" value="3"> 会議等で共有する機会がある</label>
+            <label class="option"><input type="radio" name="q19" value="4"> 常時、活発に知識共有が行われている</label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <p class="question-text">20. スタッフの定着率・モチベーションは高いですか？</p>
+          <div class="options">
+            <label class="option"><input type="radio" name="q20" value="1"> 離職が多く、モチベーションも低い</label>
+            <label class="option"><input type="radio" name="q20" value="2"> 定着率は低いがモチベーションは高いスタッフもいる</label>
+            <label class="option"><input type="radio" name="q20" value="3"> 定着率・モチベーションは概ね良好</label>
+            <label class="option"><input type="radio" name="q20" value="4"> 定着率が高く、モチベーションも全体的に高い</label>
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn" id="submit-btn" disabled>診断結果を見る</button>
+    </form>
+    
+    <div class="result" id="result">
+      <div class="score-card">
+        <div class="total-score" id="total-score">0</div>
+        <div class="score-label">/ 80点</div>
+        <div class="level-badge" id="level-badge">レベル判定中</div>
+      </div>
+      
+      <div class="category-scores" id="category-scores"></div>
+      
+      <div class="recommendations" id="recommendations">
+        <h3>💡 改善提案</h3>
+        <ul id="recommendation-list"></ul>
+      </div>
+      
+      <div class="cta-section">
+        <h3>📚 薬剤師向けAI活用ガイド</h3>
+        <p>スタッフ育成を含む薬局業務効率化の実践的なプロンプト集で、さらに効果的な人材育成を実現。</p>
+        <a href="ai-prompts-lp.html" class="cta-btn">詳細を見る →</a>
+      </div>
+    </div>
+    
+    <footer>
+      <p>薬剤師無料ツール集 | <a href="index.html">ツール一覧に戻る</a></p>
+    </footer>
+  </div>
+  
+  <script>
+    const form = document.getElementById('diagnosis-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const progress = document.getElementById('progress');
+    const totalQuestions = 20;
+    
+    // Progress update
+    form.addEventListener('change', () => {
+      const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+      progress.style.width = `${(answered / totalQuestions) * 100}%`;
+      submitBtn.disabled = answered < totalQuestions;
+    });
+    
+    // Option selection visual feedback
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', function() {
+        const name = this.querySelector('input').name;
+        document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+          input.closest('.option').classList.remove('selected');
+        });
+        this.classList.add('selected');
+      });
+    });
+    
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const categories = {
+        'OJT体制': { questions: [1,2,3,4], score: 0, max: 16 },
+        'スキル評価': { questions: [5,6,7,8], score: 0, max: 16 },
+        'フィードバック': { questions: [9,10,11,12], score: 0, max: 16 },
+        'キャリアパス': { questions: [13,14,15,16], score: 0, max: 16 },
+        '組織文化': { questions: [17,18,19,20], score: 0, max: 16 }
+      };
+      
+      let totalScore = 0;
+      
+      // Calculate scores
+      Object.keys(categories).forEach(cat => {
+        categories[cat].questions.forEach(q => {
+          const value = parseInt(document.querySelector(`input[name="q${q}"]:checked`).value);
+          categories[cat].score += value;
+          totalScore += value;
+        });
+      });
+      
+      // Display results
+      document.getElementById('total-score').textContent = totalScore;
+      
+      // Level determination
+      let level = '';
+      if (totalScore >= 70) level = '🏆 人材育成モデル薬局レベル';
+      else if (totalScore >= 55) level = '⭐ 高い育成力レベル';
+      else if (totalScore >= 40) level = '📊 標準レベル';
+      else if (totalScore >= 25) level = '⚠️ 改善が必要レベル';
+      else level = '🚨 早急な改善が必要';
+      
+      document.getElementById('level-badge').textContent = level;
+      
+      // Category scores
+      const categoryScoresDiv = document.getElementById('category-scores');
+      categoryScoresDiv.innerHTML = '';
+      
+      Object.keys(categories).forEach(cat => {
+        const percentage = (categories[cat].score / categories[cat].max) * 100;
+        categoryScoresDiv.innerHTML += `
+          <div class="category-score">
+            <div class="category-score-title">${cat}: ${categories[cat].score}/${categories[cat].max}</div>
+            <div class="category-bar">
+              <div class="category-fill" style="width: ${percentage}%"></div>
+            </div>
+          </div>
+        `;
+      });
+      
+      // Recommendations
+      const recommendations = [];
+      
+      if (categories['OJT体制'].score < 12) {
+        recommendations.push('OJT担当者の明確化と指導時間の確保');
+        recommendations.push('指導者向け研修の定期実施');
+      }
+      if (categories['スキル評価'].score < 12) {
+        recommendations.push('スキルマップの作成と定期的更新');
+        recommendations.push('目標設定と進捗確認の仕組み化');
+      }
+      if (categories['フィードバック'].score < 12) {
+        recommendations.push('定期的な1on1ミーティングの導入');
+        recommendations.push('フィードバック記録の体系化');
+      }
+      if (categories['キャリアパス'].score < 12) {
+        recommendations.push('キャリアパスの明確化と周知');
+        recommendations.push('認定薬剤師取得支援の強化');
+      }
+      if (categories['組織文化'].score < 12) {
+        recommendations.push('学習・成長を奨励する文化の醸成');
+        recommendations.push('知識共有の仕組みづくり');
+      }
+      
+      const recommendationList = document.getElementById('recommendation-list');
+      recommendationList.innerHTML = '';
+      recommendations.forEach(rec => {
+        recommendationList.innerHTML += `<li>${rec}</li>`;
+      });
+      
+      // Show results
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
