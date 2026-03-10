@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服薬フォロー効率化診断 | 薬剤師無料ツール</title>
+    <meta name="description" content="電話フォロー業務の工数を可視化し、効率化ポイントを診断。1件あたり約7分の工数削減が可能。">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "服薬フォロー効率化診断",
+        "description": "電話フォロー業務の工数を可視化し、効率化ポイントを診断する無料ツール",
+        "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-followup-efficiency.html",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center; margin-bottom: 30px; border-radius: 10px; }
+        h1 { font-size: 28px; margin-bottom: 10px; }
+        .subtitle { font-size: 14px; opacity: 0.9; }
+        .intro { background: white; padding: 25px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .intro h2 { color: #667eea; margin-bottom: 15px; font-size: 20px; }
+        .intro ul { padding-left: 20px; }
+        .intro li { margin-bottom: 8px; }
+        .question-section { background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .category-title { color: #667eea; font-size: 18px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea; }
+        .question { margin-bottom: 20px; }
+        .question-text { font-weight: 600; margin-bottom: 10px; color: #333; }
+        .options { display: flex; flex-direction: column; gap: 8px; }
+        .option { display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
+        .option:hover { background: #e9ecef; }
+        .option.selected { background: #667eea; color: white; border-color: #5a6fd8; }
+        .option input { display: none; }
+        .option-label { font-size: 14px; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; display: block; margin: 30px auto; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .result-section { display: none; background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .result-header { text-align: center; margin-bottom: 30px; }
+        .result-score { font-size: 48px; font-weight: bold; color: #667eea; margin-bottom: 10px; }
+        .result-level { font-size: 24px; font-weight: 600; margin-bottom: 10px; }
+        .result-level.excellent { color: #28a745; }
+        .result-level.good { color: #17a2b8; }
+        .result-level.average { color: #ffc107; }
+        .result-level.needs-improvement { color: #dc3545; }
+        .score-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .score-item { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; }
+        .score-item-title { font-size: 12px; color: #666; margin-bottom: 5px; }
+        .score-item-value { font-size: 24px; font-weight: bold; color: #667eea; }
+        .recommendations { background: #f8f9fa; padding: 20px; border-radius: 8px; }
+        .recommendations h3 { color: #667eea; margin-bottom: 15px; }
+        .recommendation-item { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #667eea; }
+        .recommendation-item h4 { color: #333; margin-bottom: 5px; font-size: 14px; }
+        .recommendation-item p { font-size: 13px; color: #666; }
+        .time-savings { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
+        .time-savings h3 { margin-bottom: 10px; }
+        .time-savings-value { font-size: 32px; font-weight: bold; }
+        .cta-section { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; border-radius: 10px; text-align: center; margin-top: 30px; }
+        .cta-section h3 { margin-bottom: 15px; font-size: 22px; }
+        .cta-section p { margin-bottom: 20px; opacity: 0.9; }
+        .cta-btn { background: white; color: #f5576c; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; transition: transform 0.3s; }
+        .cta-btn:hover { transform: translateY(-2px); }
+        footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+        @media (max-width: 600px) { h1 { font-size: 22px; } .container { padding: 10px; } .question-section { padding: 15px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>服薬フォロー効率化診断</h1>
+            <p class="subtitle">電話フォロー業務の工数を可視化し、効率化ポイントを特定</p>
+        </header>
+
+        <div class="intro">
+            <h2>📋 この診断ツールでできること</h2>
+            <ul>
+                <li>服薬フォロー業務の現状を5領域20項目で評価</li>
+                <li>効率化のボトルネックを特定</li>
+                <li><strong>1件あたり約7分の工数削減</strong>が可能な改善ポイントを提示</li>
+                <li>2026年調剤報酬改定への対応状況を確認</li>
+            </ul>
+        </div>
+
+        <form id="diagnosisForm">
+            <!-- 領域1: フォロー体制 -->
+            <div class="question-section">
+                <h3 class="category-title">📊 領域1: フォロー体制（5問）</h3>
+                
+                <div class="question">
+                    <div class="question-text">1. 服薬フォローの実施頻度はどの程度ですか？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="4"><span class="option-label">全処方箋で実施（100%）</span></label>
+                        <label class="option"><input type="radio" name="q1" value="3"><span class="option-label">大部分で実施（70-99%）</span></label>
+                        <label class="option"><input type="radio" name="q1" value="2"><span class="option-label">必要時のみ実施（30-69%）</span></label>
+                        <label class="option"><input type="radio" name="q1" value="1"><span class="option-label">ほとんど実施しない（0-29%）</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">2. フォロー担当者の役割分担は明確ですか？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="4"><span class="option-label">明確なマニュアルがあり、役割分担されている</span></label>
+                        <label class="option"><input type="radio" name="q2" value="3"><span class="option-label">口頭指示で役割分担している</span></label>
+                        <label class="option"><input type="radio" name="q2" value="2"><span class="option-label">担当者任せで不明確</span></label>
+                        <label class="option"><input type="radio" name="q2" value="1"><span class="option-label">役割分担していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">3. フォロー記録の管理方法は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="4"><span class="option-label">電子薬歴に統合・自動保存</span></label>
+                        <label class="option"><input type="radio" name="q3" value="3"><span class="option-label">電子薬歴に手動入力</span></label>
+                        <label class="option"><input type="radio" name="q3" value="2"><span class="option-label">紙と電子の併用</span></label>
+                        <label class="option"><input type="radio" name="q3" value="1"><span class="option-label">紙のみで管理</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">4. フォロー対象患者の選定基準は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="4"><span class="option-label">リスク評価ツールで自動選定</span></label>
+                        <label class="option"><input type="radio" name="q4" value="3"><span class="option-label">明確な基準で手動選定</span></label>
+                        <label class="option"><input type="radio" name="q4" value="2"><span class="option-label">担当者の判断に委ねている</span></label>
+                        <label class="option"><input type="radio" name="q4" value="1"><span class="option-label">選定基準がない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">5. フォロー結果のフィードバック体制は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="4"><span class="option-label">定例会議で共有・改善サイクル確立</span></label>
+                        <label class="option"><input type="radio" name="q5" value="3"><span class="option-label">必要時に共有している</span></label>
+                        <label class="option"><input type="radio" name="q5" value="2"><span class="option-label">個人任せで共有不足</span></label>
+                        <label class="option"><input type="radio" name="q5" value="1"><span class="option-label">フィードバックしていない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 領域2: コミュニケーション -->
+            <div class="question-section">
+                <h3 class="category-title">📞 領域2: コミュニケーション手段（5問）</h3>
+                
+                <div class="question">
+                    <div class="question-text">6. 電話フォローの効率化ツールを導入していますか？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="4"><span class="option-label">自動発信・録音・文字起こし機能あり</span></label>
+                        <label class="option"><input type="radio" name="q6" value="3"><span class="option-label">発信履歴管理機能あり</span></label>
+                        <label class="option"><input type="radio" name="q6" value="2"><span class="option-label">通常の電話のみ</span></label>
+                        <label class="option"><input type="radio" name="q6" value="1"><span class="option-label">電話フォローを実施していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">7. LINE・メール等のデジタルフォロー手段を活用していますか？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="4"><span class="option-label">積極活用（患者希望者の70%以上）</span></label>
+                        <label class="option"><input type="radio" name="q7" value="3"><span class="option-label">一部活用（30-69%）</span></label>
+                        <label class="option"><input type="radio" name="q7" value="2"><span class="option-label">検討段階</span></label>
+                        <label class="option"><input type="radio" name="q7" value="1"><span class="option-label">活用していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">8. フォロー内容のテンプレート化は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="4"><span class="option-label">疾患・薬剤別にテンプレート完備</span></label>
+                        <label class="option"><input type="radio" name="q8" value="3"><span class="option-label">基本的なテンプレートあり</span></label>
+                        <label class="option"><input type="radio" name="q8" value="2"><span class="option-label">一部テンプレート化</span></label>
+                        <label class="option"><input type="radio" name="q8" value="1"><span class="option-label">テンプレートなし</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">9. 不在時の再架電管理は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="4"><span class="option-label">システムで自動管理・リマインド</span></label>
+                        <label class="option"><input type="radio" name="q9" value="3"><span class="option-label">手動でリスト管理</span></label>
+                        <label class="option"><input type="radio" name="q9" value="2"><span class="option-label">担当者の記憶・メモ任せ</span></label>
+                        <label class="option"><input type="radio" name="q9" value="1"><span class="option-label">管理していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">10. フォロー時間帯の最適化は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q10" value="4"><span class="option-label">患者希望時間を記録・最適化</span></label>
+                        <label class="option"><input type="radio" name="q10" value="3"><span class="option-label">一般的な時間帯で実施</span></label>
+                        <label class="option"><input type="radio" name="q10" value="2"><span class="option-label">空き時間に実施</span></label>
+                        <label class="option"><input type="radio" name="q10" value="1"><span class="option-label">特に考慮していない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 領域3: 業務プロセス -->
+            <div class="question-section">
+                <h3 class="category-title">⚙️ 領域3: 業務プロセス（5問）</h3>
+                
+                <div class="question">
+                    <div class="question-text">11. フォロー判断の自動化は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q11" value="4"><span class="option-label">AI・ルールベースで自動判定</span></label>
+                        <label class="option"><input type="radio" name="q11" value="3"><span class="option-label">チェックリストで半自動化</span></label>
+                        <label class="option"><input type="radio" name="q11" value="2"><span class="option-label">担当者の経験則で判断</span></label>
+                        <label class="option"><input type="radio" name="q11" value="1"><span class="option-label">判断基準がない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">12. 処方箋受取時のフォロー予定登録は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q12" value="4"><span class="option-label">システムで自動スケジューリング</span></label>
+                        <label class="option"><input type="radio" name="q12" value="3"><span class="option-label">手動でスケジュール登録</span></label>
+                        <label class="option"><input type="radio" name="q12" value="2"><span class="option-label">カレンダー等で管理</span></label>
+                        <label class="option"><input type="radio" name="q12" value="1"><span class="option-label">管理していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">13. 服薬状況の把握方法は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q13" value="4"><span class="option-label">服薬カレンダー・アプリ連携</span></label>
+                        <label class="option"><input type="radio" name="q13" value="3"><span class="option-label">電話で詳細ヒアリング</span></label>
+                        <label class="option"><input type="radio" name="q13" value="2"><span class="option-label">来局時に確認</span></label>
+                        <label class="option"><input type="radio" name="q13" value="1"><span class="option-label">把握していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">14. 副作用・有害事象のモニタリングは？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q14" value="4"><span class="option-label">リスク評価ツールで自動抽出・フォロー</span></label>
+                        <label class="option"><input type="radio" name="q14" value="3"><span class="option-label">チェックリストで定期的に確認</span></label>
+                        <label class="option"><input type="radio" name="q14" value="2"><span class="option-label">患者申告時に対応</span></label>
+                        <label class="option"><input type="radio" name="q14" value="1"><span class="option-label">モニタリングしていない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">15. 処方医へのフィードバックは？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q15" value="4"><span class="option-label">電子カルテ連携で自動共有</span></label>
+                        <label class="option"><input type="radio" name="q15" value="3"><span class="option-label">FAX・電話で定期的に報告</span></label>
+                        <label class="option"><input type="radio" name="q15" value="2"><span class="option-label">必要時のみ報告</span></label>
+                        <label class="option"><input type="radio" name="q15" value="1"><span class="option-label">報告していない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 領域4: DX推進 -->
+            <div class="question-section">
+                <h3 class="category-title">💻 領域4: DX推進（3問）</h3>
+                
+                <div class="question">
+                    <div class="question-text">16. フォロー業務のデジタル化率は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q16" value="4"><span class="option-label">80%以上デジタル化</span></label>
+                        <label class="option"><input type="radio" name="q16" value="3"><span class="option-label">50-79%デジタル化</span></label>
+                        <label class="option"><input type="radio" name="q16" value="2"><span class="option-label">20-49%デジタル化</span></label>
+                        <label class="option"><input type="radio" name="q16" value="1"><span class="option-label">20%未満</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">17. AI・自動化ツールの活用は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q17" value="4"><span class="option-label">AIでフォロー内容自動生成・要約</span></label>
+                        <label class="option"><input type="radio" name="q17" value="3"><span class="option-label">一部自動化ツール活用</span></label>
+                        <label class="option"><input type="radio" name="q17" value="2"><span class="option-label">導入検討中</span></label>
+                        <label class="option"><input type="radio" name="q17" value="1"><span class="option-label">活用していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">18. 在宅医療DX（計画書・報告書のデジタル化）は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q18" value="4"><span class="option-label">完全デジタル化・電子署名導入</span></label>
+                        <label class="option"><input type="radio" name="q18" value="3"><span class="option-label">デジタル作成・FAX送信</span></label>
+                        <label class="option"><input type="radio" name="q18" value="2"><span class="option-label">一部デジタル化</span></label>
+                        <label class="option"><input type="radio" name="q18" value="1"><span class="option-label">紙中心</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 領域5: 成果測定 -->
+            <div class="question-section">
+                <h3 class="category-title">📈 領域5: 成果測定・改善（2問）</h3>
+                
+                <div class="question">
+                    <div class="question-text">19. フォロー効果の測定は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q19" value="4"><span class="option-label">アウトカム指標で定量評価</span></label>
+                        <label class="option"><input type="radio" name="q19" value="3"><span class="option-label">実施数・率で管理</span></label>
+                        <label class="option"><input type="radio" name="q19" value="2"><span class="option-label">定性評価のみ</span></label>
+                        <label class="option"><input type="option" name="q19" value="1"><span class="option-label">測定していない</span></label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text">20. フォロー業務の工数把握は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q20" value="4"><span class="option-label">1件あたりの平均工数を把握・改善中</span></label>
+                        <label class="option"><input type="radio" name="q20" value="3"><span class="option-label">総工数は把握している</span></label>
+                        <label class="option"><input type="radio" name="q20" value="2"><span class="option-label">感覚的に把握</span></label>
+                        <label class="option"><input type="radio" name="q20" value="1"><span class="option-label">把握していない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">診断結果を見る</button>
+        </form>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-header">
+                <div class="result-score" id="totalScore">0</div>
+                <div class="result-level" id="resultLevel">診断中...</div>
+                <p>80点満点中</p>
+            </div>
+
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="score-item-title">フォロー体制</div>
+                    <div class="score-item-value" id="score1">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-item-title">コミュニケーション</div>
+                    <div class="score-item-value" id="score2">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-item-title">業務プロセス</div>
+                    <div class="score-item-value" id="score3">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-item-title">DX推進</div>
+                    <div class="score-item-value" id="score4">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-item-title">成果測定</div>
+                    <div class="score-item-value" id="score5">0</div>
+                </div>
+            </div>
+
+            <div class="time-savings" id="timeSavings">
+                <h3>⏱️ 想定工数削減効果</h3>
+                <div class="time-savings-value" id="timeSavingsValue">約0分/件</div>
+                <p>効率化ツール導入で1件あたり最大約7分削減可能</p>
+            </div>
+
+            <div class="recommendations">
+                <h3>💡 改善推奨事項</h3>
+                <div id="recommendationsList"></div>
+            </div>
+
+            <button onclick="location.reload()" class="btn">再診断する</button>
+        </div>
+
+        <div class="cta-section">
+            <h3>🚀 さらに効率化を進めたい方へ</h3>
+            <p>服薬フォロー自動化・AI活用のプロンプト集を販売中</p>
+            <a href="ai-prompts-lp.html" class="cta-btn">AIプロンプト集を見る →</a>
+        </div>
+
+        <footer>
+            <p>© 2026 薬剤師無料ツール | <a href="index.html">ツール一覧に戻る</a></p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const name = this.querySelector('input').name;
+                document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+                    input.closest('.option').classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+
+        document.getElementById('diagnosisForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let totalScore = 0;
+            let scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0 };
+            
+            for (let i = 1; i <= 20; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    alert('すべての質問に回答してください');
+                    return;
+                }
+                const value = parseInt(selected.value);
+                totalScore += value;
+                
+                if (i <= 5) scores.s1 += value;
+                else if (i <= 10) scores.s2 += value;
+                else if (i <= 15) scores.s3 += value;
+                else if (i <= 18) scores.s4 += value;
+                else scores.s5 += value;
+            }
+
+            document.getElementById('totalScore').textContent = totalScore;
+            document.getElementById('score1').textContent = scores.s1;
+            document.getElementById('score2').textContent = scores.s2;
+            document.getElementById('score3').textContent = scores.s3;
+            document.getElementById('score4').textContent = scores.s4;
+            document.getElementById('score5').textContent = scores.s5;
+
+            const level = document.getElementById('resultLevel');
+            if (totalScore >= 65) {
+                level.textContent = '優秀：効率化先進レベル';
+                level.className = 'result-level excellent';
+            } else if (totalScore >= 50) {
+                level.textContent = '良好：効率化進行中';
+                level.className = 'result-level good';
+            } else if (totalScore >= 35) {
+                level.textContent = '平均：改善余地あり';
+                level.className = 'result-level average';
+            } else {
+                level.textContent = '要改善：効率化が必要';
+                level.className = 'result-level needs-improvement';
+            }
+
+            const timeSavings = Math.round((80 - totalScore) / 80 * 7);
+            document.getElementById('timeSavingsValue').textContent = `約${timeSavings}分/件削減可能`;
+
+            const recommendations = [];
+            if (scores.s1 < 15) recommendations.push({ title: 'フォロー体制の整備', desc: 'マニュアル作成・役割分担の明確化で基盤を構築' });
+            if (scores.s2 < 15) recommendations.push({ title: 'デジタルコミュニケーション導入', desc: 'LINE・メールフォローで電話工数を削減' });
+            if (scores.s3 < 15) recommendations.push({ title: '業務プロセス自動化', desc: 'フォロー判断・スケジューリングの自動化を検討' });
+            if (scores.s4 < 10) recommendations.push({ title: 'DX推進加速', desc: 'AI・自動化ツール導入でデジタル化率向上' });
+            if (scores.s5 < 6) recommendations.push({ title: '成果測定の仕組み化', desc: 'KPI設定・定量的効果測定の導入' });
+
+            const listHtml = recommendations.map(r => `
+                <div class="recommendation-item">
+                    <h4>${r.title}</h4>
+                    <p>${r.desc}</p>
+                </div>
+            `).join('');
+            document.getElementById('recommendationsList').innerHTML = listHtml;
+
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
