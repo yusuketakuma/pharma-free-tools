@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スタッフ育成診断 | 薬剤師無料ツール集</title>
+  <meta name="description" content="薬局のスタッフ育成レベルを5領域20問で診断。OJT・知識習得・スキル評価・コミュニケーション・キャリアパスの包括的評価と改善提案を無料提供。">
+  <meta name="keywords" content="薬剤師,スタッフ育成,OJT,教育プログラム,スキル評価,キャリアパス,薬局経営">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="スタッフ育成診断 | 薬剤師無料ツール集">
+  <meta property="og:description" content="薬局のスタッフ育成レベルを5領域20問で診断。OJT・知識習得・スキル評価・コミュニケーション・キャリアパスの包括的評価と改善提案を無料提供。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-staff-development.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="スタッフ育成診断 | 薬剤師無料ツール集">
+  <meta name="twitter:description" content="薬局のスタッフ育成レベルを5領域20問で診断。OJT・知識習得・スキル評価・コミュニケーション・キャリアパスの包括的評価。">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-staff-development.html">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "スタッフ育成診断",
+    "description": "薬局のスタッフ育成レベルを5領域20問で診断する無料ツール",
+    "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-staff-development.html",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師無料ツール集"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      color: #667eea;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.3s ease;
+    }
+    
+    .question-container {
+      margin: 20px 0;
+    }
+    
+    .category {
+      color: #667eea;
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .question {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option {
+      padding: 12px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+    }
+    
+    .option:hover {
+      border-color: #667eea;
+      background: #f8f9ff;
+    }
+    
+    .option.selected {
+      border-color: #667eea;
+      background: #667eea;
+      color: white;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    
+    button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-prev {
+      background: #e0e0e0;
+      color: #333;
+    }
+    
+    .btn-next {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .result {
+      display: none;
+      text-align: center;
+    }
+    
+    .score-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px auto;
+      font-size: 3rem;
+      font-weight: bold;
+      box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+    }
+    
+    .level {
+      font-size: 1.5rem;
+      color: #667eea;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    
+    .breakdown {
+      text-align: left;
+      margin: 30px 0;
+      padding: 20px;
+      background: #f8f9ff;
+      border-radius: 12px;
+    }
+    
+    .breakdown h3 {
+      color: #667eea;
+      margin-bottom: 15px;
+    }
+    
+    .category-score {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .category-score:last-child {
+      border-bottom: none;
+    }
+    
+    .category-name {
+      font-weight: 500;
+    }
+    
+    .category-points {
+      color: #667eea;
+      font-weight: bold;
+    }
+    
+    .recommendations {
+      text-align: left;
+      margin: 30px 0;
+      padding: 20px;
+      background: #fff8e1;
+      border-radius: 12px;
+      border-left: 4px solid #ffa726;
+    }
+    
+    .recommendations h3 {
+      color: #f57c00;
+      margin-bottom: 15px;
+    }
+    
+    .recommendations ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .recommendations li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+    }
+    
+    .recommendations li:before {
+      content: "💡";
+      position: absolute;
+      left: 0;
+    }
+    
+    .cta-section {
+      margin-top: 40px;
+      padding: 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 15px 40px;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 15px;
+      transition: transform 0.3s ease;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .score-circle {
+        width: 150px;
+        height: 150px;
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏥 スタッフ育成診断</h1>
+      <p class="subtitle">薬局のスタッフ育成レベルを5領域20問で診断</p>
+    </header>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 5%"></div>
+    </div>
+    
+    <div id="quizContainer" class="question-container">
+      <!-- Questions will be loaded here -->
+    </div>
+    
+    <div class="buttons">
+      <button class="btn-prev" id="prevBtn" onclick="prevQuestion()" disabled>← 前へ</button>
+      <button class="btn-next" id="nextBtn" onclick="nextQuestion()">次へ →</button>
+    </div>
+    
+    <div id="result" class="result">
+      <h2>診断結果</h2>
+      <div class="score-circle" id="scoreCircle">0</div>
+      <div class="level" id="levelText">判定中...</div>
+      
+      <div class="breakdown">
+        <h3>📊 領域別スコア</h3>
+        <div id="breakdownList"></div>
+      </div>
+      
+      <div class="recommendations" id="recommendations">
+        <h3>💡 改善提案</h3>
+        <ul id="recommendationList"></ul>
+      </div>
+      
+      <div class="cta-section">
+        <h3>🎯 スタッフ育成を加速させる</h3>
+        <p>AIプロンプト集で教育プログラム作成を効率化</p>
+        <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-button">AIプロンプト集を見る →</a>
+      </div>
+      
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="back-link">← ツール一覧に戻る</a>
+    </div>
+  </div>
+  
+  <script>
+    const questions = [
+      // OJT・実地研修 (4問)
+      { category: "OJT・実地研修", question: "新入職員に対するOJTプログラムが体系化されている", options: ["全くない", "一部ある", "かなり整備されている", "完全に整備されている"] },
+      { category: "OJT・実地研修", question: "指導担当者が明確に決まっている", options: ["決まっていない", "曖昧", "決まっている", "明確で役割も定義されている"] },
+      { category: "OJT・実地研修", question: "実地研修の進捗を定期的に評価している", options: ["評価していない", "非公式に評価", "定期的に評価", "評価結果を記録・活用"] },
+      { category: "OJT・実地研修", question: "現場での指導時間が確保されている", options: ["確保されていない", "不十分", "ある程度確保", "十分に確保"] },
+      
+      // 知識習得・研修 (4問)
+      { category: "知識習得・研修", question: "定期的な社内研修が実施されている", options: ["実施していない", "不定期", "月1回以上", "週1回以上"] },
+      { category: "知識習得・研修", question: "外部研修への参加を支援している", options: ["支援していない", "一部支援", "積極的に支援", "参加を推奨・費用負担"] },
+      { category: "知識習得・研修", question: "学習教材・資料が整備されている", options: ["整備されていない", "最低限", "ある程度整備", "充実した教材あり"] },
+      { category: "知識習得・研修", question: "継続勉強の仕組みがある", options: ["ない", "推奨のみ", "制度あり", "評価にも反映"] },
+      
+      // スキル評価 (4問)
+      { category: "スキル評価", question: "スキル評価シートを活用している", options: ["活用していない", "一部活用", "定期的に活用", "評価結果を人事に反映"] },
+      { category: "スキル評価", question: "調剤スキルの評価基準が明確である", options: ["明確でない", "曖昧", "明確", "詳細な基準あり"] },
+      { category: "スキル評価", question: "服薬指導スキルを評価している", options: ["評価していない", "主観的評価", "客観的評価", "評価基準あり"] },
+      { category: "スキル評価", question: "評価結果をフィードバックしている", options: ["フィードバックなし", "口頭のみ", "書面でフィードバック", "改善計画も策定"] },
+      
+      // コミュニケーション (4問)
+      { category: "コミュニケーション", question: "定期的な個人面談を実施している", options: ["実施していない", "年1回", "四半期ごと", "月1回以上"] },
+      { category: "コミュニケーション", question: "スタッフ間の情報共有が円滑である", options: ["円滑でない", "一部共有", "ある程度円滑", "非常に円滑"] },
+      { category: "コミュニケーション", question: "フィードバック文化が定着している", options: ["定着していない", "上から下のみ", "双方向あり", "日常的に実施"] },
+      { category: "コミュニケーション", question: "悩みや相談を受け止める体制がある", options: ["ない", "受動的対応", "相談窓口あり", "メンター制度あり"] },
+      
+      // キャリアパス (4問)
+      { category: "キャリアパス", question: "キャリアパスが明確に示されている", options: ["示されていない", "曖昧", "明確", "詳細なパスあり"] },
+      { category: "キャリアパス", question: "昇進・昇格基準が透明である", options: ["透明でない", "一部透明", "透明", "詳細な基準公開"] },
+      { category: "キャリアパス", question: "資格取得を支援している", options: ["支援していない", "一部支援", "積極的に支援", "取得推奨・費用負担"] },
+      { category: "キャリアパス", question: "長期キャリア計画を立てている", options: ["立てていない", "一部計画", "個別に計画", "全員で計画"] }
+    ];
+    
+    let currentQuestion = 0;
+    let answers = new Array(questions.length).fill(null);
+    
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById('quizContainer').innerHTML = `
+        <div class="category">${q.category}</div>
+        <div class="question">${currentQuestion + 1}. ${q.question}</div>
+        <div class="options">
+          ${q.options.map((opt, idx) => `
+            <div class="option ${answers[currentQuestion] === idx ? 'selected' : ''}" onclick="selectOption(${idx})">
+              ${opt}
+            </div>
+          `).join('')}
+        </div>
+      `;
+      
+      document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+      document.getElementById('prevBtn').disabled = currentQuestion === 0;
+      document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? '結果を見る' : '次へ →';
+    }
+    
+    function selectOption(idx) {
+      answers[currentQuestion] = idx;
+      loadQuestion();
+    }
+    
+    function nextQuestion() {
+      if (answers[currentQuestion] === null) {
+        alert('選択してください');
+        return;
+      }
+      
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+    
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+      }
+    }
+    
+    function showResult() {
+      document.getElementById('quizContainer').style.display = 'none';
+      document.querySelector('.buttons').style.display = 'none';
+      document.querySelector('.progress-bar').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      
+      // Calculate scores
+      const categoryScores = {};
+      const categoryCounts = {};
+      
+      questions.forEach((q, idx) => {
+        if (!categoryScores[q.category]) {
+          categoryScores[q.category] = 0;
+          categoryCounts[q.category] = 0;
+        }
+        categoryScores[q.category] += answers[idx];
+        categoryCounts[q.category]++;
+      });
+      
+      let totalScore = 0;
+      let maxScore = 0;
+      
+      Object.keys(categoryScores).forEach(cat => {
+        totalScore += categoryScores[cat];
+        maxScore += (categoryCounts[cat] * 3);
+      });
+      
+      const percentage = Math.round((totalScore / maxScore) * 100);
+      
+      // Animate score
+      let currentScore = 0;
+      const scoreInterval = setInterval(() => {
+        currentScore += 2;
+        if (currentScore >= percentage) {
+          currentScore = percentage;
+          clearInterval(scoreInterval);
+        }
+        document.getElementById('scoreCircle').textContent = currentScore;
+      }, 20);
+      
+      // Determine level
+      let level, recommendations;
+      if (percentage >= 80) {
+        level = '🏆 優秀レベル - スタッフ育成が非常に進んでいます';
+        recommendations = [
+          '他薬局へのノウハウ共有を検討',
+          'メンター制度のさらなる強化',
+          '外部研修講師としての展開も視野に',
+          '育成成果の定量評価を実施'
+        ];
+      } else if (percentage >= 60) {
+        level = '👍 良好レベル - 一定の取り組みができています';
+        recommendations = [
+          '評価基準のさらなる明確化',
+          'フィードバック頻度の向上',
+          '外部研修参加の拡大',
+          'キャリアパスの可視化'
+        ];
+      } else if (percentage >= 40) {
+        level = '⚠️ 改善が必要 - 育成体制の強化が急務です';
+        recommendations = [
+          'OJTプログラムの体系化',
+          '指導担当者の明確化',
+          '定期的な評価シートの導入',
+          '個人面談の実施頻度向上'
+        ];
+      } else {
+        level = '🚨 要対策 - スタッフ育成の基盤構築が必要です';
+        recommendations = [
+          '育成方針の策定から開始',
+          '指導担当者の任命',
+          '基本的な評価シートの導入',
+          '研修時間の確保'
+        ];
+      }
+      
+      document.getElementById('levelText').textContent = level;
+      
+      // Show breakdown
+      const breakdownHTML = Object.keys(categoryScores).map(cat => {
+        const score = categoryScores[cat];
+        const max = categoryCounts[cat] * 3;
+        const pct = Math.round((score / max) * 100);
+        return `
+          <div class="category-score">
+            <span class="category-name">${cat}</span>
+            <span class="category-points">${score}/${max} (${pct}%)</span>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('breakdownList').innerHTML = breakdownHTML;
+      
+      // Show recommendations
+      const recHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+      document.getElementById('recommendationList').innerHTML = recHTML;
+      
+      // Track result view
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'quiz_complete', {
+          'event_category': 'Staff Development Quiz',
+          'event_label': 'Score',
+          'value': percentage
+        });
+      }
+    }
+    
+    // Initialize
+    loadQuestion();
+  </script>
+  
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+</body>
+</html>
