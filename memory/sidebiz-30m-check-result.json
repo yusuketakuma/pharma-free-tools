@@ -1,0 +1,903 @@
+{
+  "monitor": {
+    "ok": [
+      {
+        "input": "https://yusuketakuma.github.io/pharma-adherence-check/",
+        "final": "https://yusuketakuma.github.io/pharma-adherence-check/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-bringing-medicine/",
+        "final": "https://yusuketakuma.github.io/pharma-bringing-medicine/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-di-query/",
+        "final": "https://yusuketakuma.github.io/pharma-di-query/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-drug-price-tool/",
+        "final": "https://yusuketakuma.github.io/pharma-drug-price-tool/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-efficiency-diagnosis/",
+        "final": "https://yusuketakuma.github.io/pharma-efficiency-diagnosis/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-fee-calculator/",
+        "final": "https://yusuketakuma.github.io/pharma-fee-calculator/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-homecare-record/",
+        "final": "https://yusuketakuma.github.io/pharma-homecare-record/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-homecare-report/",
+        "final": "https://yusuketakuma.github.io/pharma-homecare-report/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-homecare-scheduler/",
+        "final": "https://yusuketakuma.github.io/pharma-homecare-scheduler/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-inquiry-email/",
+        "final": "https://yusuketakuma.github.io/pharma-inquiry-email/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-inventory-alert/",
+        "final": "https://yusuketakuma.github.io/pharma-inventory-alert/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-calendar/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-calendar/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-guidance-scenario/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-guidance-scenario/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-history-tool/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-history-tool/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-summary/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-summary/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-patient-explanation/",
+        "final": "https://yusuketakuma.github.io/pharma-patient-explanation/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-polypharmacy/",
+        "final": "https://yusuketakuma.github.io/pharma-polypharmacy/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-prescription-checklist/",
+        "final": "https://yusuketakuma.github.io/pharma-prescription-checklist/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-prescription-screening/",
+        "final": "https://yusuketakuma.github.io/pharma-prescription-screening/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-side-effect-checker/",
+        "final": "https://yusuketakuma.github.io/pharma-side-effect-checker/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-similar-drug-check/",
+        "final": "https://yusuketakuma.github.io/pharma-similar-drug-check/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      }
+    ],
+    "ng": [
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-guidance/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-reminder/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-renal-dose/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      }
+    ]
+  },
+  "all_links": {
+    "ok": [
+      {
+        "input": "https://cdn.tailwindcss.com",
+        "final": "https://cdn.tailwindcss.com/3.4.17",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://github.com/yusuketakuma",
+        "final": "https://github.com/yusuketakuma",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX",
+        "final": "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-adherence-check/",
+        "final": "https://yusuketakuma.github.io/pharma-adherence-check/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-bringing-medicine/",
+        "final": "https://yusuketakuma.github.io/pharma-bringing-medicine/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-di-query/",
+        "final": "https://yusuketakuma.github.io/pharma-di-query/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-drug-price-tool/",
+        "final": "https://yusuketakuma.github.io/pharma-drug-price-tool/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-efficiency-diagnosis-v2/",
+        "final": "https://yusuketakuma.github.io/pharma-efficiency-diagnosis-v2/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-efficiency-diagnosis/",
+        "final": "https://yusuketakuma.github.io/pharma-efficiency-diagnosis/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-fee-calculator/",
+        "final": "https://yusuketakuma.github.io/pharma-fee-calculator/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/antibiotic-stewardship.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/antibiotic-stewardship.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/doac-dosing.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/doac-dosing.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/drug-induced-ade-checklist.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/drug-induced-ade-checklist.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/pharmacist-career-diagnosis.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/pharmacist-career-diagnosis.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/pharmacist-quiz-generator.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/pharmacist-quiz-generator.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-ai-readiness.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-ai-readiness.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-branding-diagnosis.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-branding-diagnosis.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-priority-scoring.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-priority-scoring.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-safety-diagnosis.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-safety-diagnosis.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/polypharmacy-assessment.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/polypharmacy-assessment.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-free-tools/renal-drug-dosing.html",
+        "final": "https://yusuketakuma.github.io/pharma-free-tools/renal-drug-dosing.html",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-homecare-record/",
+        "final": "https://yusuketakuma.github.io/pharma-homecare-record/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-homecare-report/",
+        "final": "https://yusuketakuma.github.io/pharma-homecare-report/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-homecare-scheduler/",
+        "final": "https://yusuketakuma.github.io/pharma-homecare-scheduler/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-inquiry-email/",
+        "final": "https://yusuketakuma.github.io/pharma-inquiry-email/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-interaction-checker/",
+        "final": "https://yusuketakuma.github.io/pharma-interaction-checker/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-inventory-alert/",
+        "final": "https://yusuketakuma.github.io/pharma-inventory-alert/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-calendar/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-calendar/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-guidance-scenario/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-guidance-scenario/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-guidance-tool/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-guidance-tool/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-history-tool/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-history-tool/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-summary/",
+        "final": "https://yusuketakuma.github.io/pharma-medication-summary/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-patient-explanation/",
+        "final": "https://yusuketakuma.github.io/pharma-patient-explanation/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-polypharmacy/",
+        "final": "https://yusuketakuma.github.io/pharma-polypharmacy/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-prescription-checklist/",
+        "final": "https://yusuketakuma.github.io/pharma-prescription-checklist/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-prescription-screening/",
+        "final": "https://yusuketakuma.github.io/pharma-prescription-screening/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-renal-dose-tool/",
+        "final": "https://yusuketakuma.github.io/pharma-renal-dose-tool/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-side-effect-checker/",
+        "final": "https://yusuketakuma.github.io/pharma-side-effect-checker/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-similar-drug-check/",
+        "final": "https://yusuketakuma.github.io/pharma-similar-drug-check/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      },
+      {
+        "input": "https://yusuketakuma.github.io/promo-ai-prompts-lp/",
+        "final": "https://yusuketakuma.github.io/promo-ai-prompts-lp/",
+        "status": 200,
+        "method": "HEAD",
+        "error": null
+      }
+    ],
+    "ng": [
+      {
+        "input": "https://forms.gle/placeholder",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://payhip.com/b/XXXXX",
+        "final": null,
+        "status": null,
+        "method": "GET",
+        "error": "<HTTPError 403: 'Forbidden'>"
+      },
+      {
+        "input": "https://yusuke-ai.github.io/free-tool-portal/renal-drug-dosing.html",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-adherence-check/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-bringing-medicine/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-di-query/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-drug-interaction/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-drug-price/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-fee-calculator/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-homecare-report/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-inquiry-email/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-inventory-alert/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-medication-calendar/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-medication-guidance-scenario/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-medication-guidance/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-medication-history/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-medication-reminder/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-medication-summary/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-patient-explanation/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-pharmacist-efficiency-diagnosis/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-polypharmacy/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-prescription-checklist/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-prescription-screening/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-renal-dose/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-side-effect-checker/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuke-ikitama.github.io/free-tool-similar-drug-check/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-adherence-check/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-bringing-medicine/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-di-query/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-drug-price/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-fee-calculator/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-homecare-report/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-inquiry-email/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-inventory-alert/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-medication-calendar/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-medication-guidance-scenario/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-medication-guidance/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-medication-history/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-medication-reminder/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-medication-summary/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-patient-explanation/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-polypharmacy/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-prescription-checklist/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-prescription-screening/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-renal-dose/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-side-effect-checker/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/free-tool-similar-drug-check/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-claim-simulator/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-drug-price-simulator/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-guidance-scenario/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-guidance/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-history/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-medication-reminder/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-renal-dose/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-similar-drug-name/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      },
+      {
+        "input": "https://yusuketakuma.github.io/pharma-similar-drug-names/",
+        "final": null,
+        "status": null,
+        "method": "HEAD",
+        "error": "<HTTPError 404: 'Not Found'>"
+      }
+    ]
+  },
+  "monitor_urls": [
+    "https://yusuketakuma.github.io/pharma-free-tools/",
+    "https://yusuketakuma.github.io/pharma-drug-price-tool/",
+    "https://yusuketakuma.github.io/pharma-medication-history-tool/",
+    "https://yusuketakuma.github.io/pharma-medication-guidance/",
+    "https://yusuketakuma.github.io/pharma-renal-dose/",
+    "https://yusuketakuma.github.io/pharma-efficiency-diagnosis/",
+    "https://yusuketakuma.github.io/pharma-prescription-checklist/",
+    "https://yusuketakuma.github.io/pharma-inquiry-email/",
+    "https://yusuketakuma.github.io/pharma-medication-summary/",
+    "https://yusuketakuma.github.io/pharma-side-effect-checker/",
+    "https://yusuketakuma.github.io/pharma-medication-calendar/",
+    "https://yusuketakuma.github.io/pharma-prescription-screening/",
+    "https://yusuketakuma.github.io/pharma-di-query/",
+    "https://yusuketakuma.github.io/pharma-bringing-medicine/",
+    "https://yusuketakuma.github.io/pharma-inventory-alert/",
+    "https://yusuketakuma.github.io/pharma-adherence-check/",
+    "https://yusuketakuma.github.io/pharma-similar-drug-check/",
+    "https://yusuketakuma.github.io/pharma-polypharmacy/",
+    "https://yusuketakuma.github.io/pharma-homecare-report/",
+    "https://yusuketakuma.github.io/pharma-fee-calculator/",
+    "https://yusuketakuma.github.io/pharma-medication-guidance-scenario/",
+    "https://yusuketakuma.github.io/pharma-patient-explanation/",
+    "https://yusuketakuma.github.io/pharma-homecare-record/",
+    "https://yusuketakuma.github.io/pharma-medication-reminder/",
+    "https://yusuketakuma.github.io/pharma-homecare-scheduler/"
+  ],
+  "all_links_count": 98
+}

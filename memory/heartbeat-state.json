@@ -2,50 +2,262 @@
   "lastChecks": {
     "deadstock-ci": 1741387260,
     "deadstock-test-fix": 1741224120,
-    "homecare-quality": 1741417200,
-    "pmda-safety-info": 1741417200,
+    "homecare-quality": 1741651200,
+    "pmda-safety-info": 1741651200,
     "chouzai-houshu-kaisei": 1741269000,
     "homecare-visit-prep": 1741250400,
     "stripe-phase2-checkout-api": 1741266780,
-    "keika-sochi-yakuhin": 1741417200,
-    "abuse-prevention-drugs": 1741270800
+    "keika-sochi-yakuhin": 1741651200,
+    "abuse-prevention-drugs": 1741651200
   },
-  "lastBuchoReport": 1741277700,
+  "lastBuchoReport": 1773157260,
+  "last30mReportToTrainerSent": 1773157260,
   "lastHomecare30m": {
-    "timestamp": 1741417200,
+    "timestamp": 1773157260,
     "tasks": [
-      "PMDAクラスI回収確認（1-2460が最新・前回と変更なし）",
-      "med-safe No.231確認（胃瘻カテーテル破損・前回と変更なし）",
-      "CloseDi供給状況確認（3/6更新が最新・日曜日は更新なし）",
-      "homecare-checklists.md更新日時更新（14:00→15:00）"
+      "30分連携報告を部長（-5088508248）に送信完了（messageId: 886）",
+      "次30分アクションとして患者抽出チェックリスト化・抽出後フロー整理・翌朝の代替情報源確認へ切替を整理"
     ],
     "alerts": [
-      "[ALERT]経過措置医薬品: 3/31期限まで23日（患者抽出未実施）",
-      "[ALERT]指定濫用防止8成分: 5/1施行まで54日（準備未着手）"
+      "[ALERT]経過措置医薬品: 3/31期限まで20日（患者抽出未実施・ゆうすけ操作必要）",
+      "[INFO]CloseDi DNS障害継続: web_search代替運用は確立済み・夜間再試行は非効率",
+      "[INFO]主要阻害は手動操作依存で、homecareのボトルネックとして副業運用側にも波及共有対象"
     ],
     "next30mCandidates": [
-      "MedicalCareStation患者抽出実施（ゆうすけ操作必要）",
-      "CloseDi 3/14更新確認",
-      "指定濫用防止医薬品在庫確認・スタッフ教育準備"
-    ]
+      "患者抽出マニュアルの段階的チェックリスト化",
+      "抽出完了後の代替薬リスト／主治医照会フロー最終確認",
+      "CloseDi確認は翌朝に代替情報源優先で再開"
+    ],
+    "learningNotes": [
+      "夜間はCloseDi直アクセス再試行より、翌朝に代替情報源を優先する方が時間効率が高い",
+      "AIで代替できない手動操作依存は、段階チェックリスト化で進行阻害を緩和できる",
+      "homecareの手動依存ボトルネックはsidebizの販売プラットフォーム未開設問題と同型で、運用管理上の横断課題として扱う価値がある"
+    ],
+    "selfImprovement": {
+      "learningPoints": [
+        "夜間はCloseDi直アクセス再試行より、翌朝に代替情報源を優先する方が時間効率が高い"
+      ],
+      "failures": [
+        {
+          "issue": "経過措置患者抽出はAI自律実行不可",
+          "cause": "MedicalCareStationがローカルアプリ依存でAIから直接操作できない",
+          "prevention": "人手操作を前提にした段階チェックリスト化で支援する",
+          "impact": "経過措置対応の着手遅延が継続"
+        }
+      ],
+      "improvementProposals": [
+        {
+          "priority": "高",
+          "feasibility": "実行可能",
+          "proposal": "患者抽出チェックリスト化"
+        },
+        {
+          "priority": "中",
+          "feasibility": "実行可能",
+          "proposal": "抽出後フロー標準化"
+        },
+        {
+          "priority": "中",
+          "feasibility": "要検討",
+          "proposal": "代替情報源の定期確認ルーチン化"
+        }
+      ]
+    }
+  },
+  "lastBucho30mResearch": {
+    "timestamp": 1741675800,
+    "findings": [
+      "【薬局運営】AI薬歴入力で業務効率4割向上（日経2026/2）",
+      "【薬局運営】2025年改正薬機法で調剤補助業務外部委託円滑化（PSFT 2025/6）",
+      "【薬局運営】医薬品在庫管理最適化で廃棄ロス削減（PSFT 2025/10）",
+      "【副業自動化】AI副業月5万円ルート確立（SBBit 2025/11）",
+      "【副業自動化】n8n自前ホストで完全無料化可能（Zapier $50+ vs n8n無料）",
+      "【副業自動化】ストック型ビジネスで労働時間削減（侍エンジニア 2025/12）",
+      "【マネジメント】41%組織が定例1on1優先（HR.com 2024）",
+      "【マネジメント】フィードバック優先順位付け・セグメント化がベスト（Project.co 2025/7）",
+      "【マネジメント】アジャイルポートフォリオガバナンスで反復優先順位付け（North Highland 2026/2）",
+      "【OpenClaw】cron 3種スケジュール（at/every/cron）で柔軟設計（Stack Junkie 2026/3）",
+      "【OpenClaw】プロアクティブAI自動化のベストプラクティス（Zenvanriel 2026/3）",
+      "【保守監視】IoT+RPA+iPaaS連携で異常検知自動化（AI経営総研 2025/12）",
+      "【保守監視】24時間365日安定稼働の実践ガイド（TechThanks 2025/6）"
+    ],
+    "taskCandidates": {
+      "sidebiz_dev": [
+        "45ツール目「AI薬歴入力効率化診断」開発（日経事例参照）",
+        "n8n自前ホスト構築調査（月5万円事例の再現性評価）",
+        "ストック型ビジネス商品構成（プロンプトガイド販売）"
+      ],
+      "sidebiz_maintenance": [
+        "IoT+RPA+iPaaS連携チェックリスト作成",
+        "24時間365日安定稼働監視フロー設計",
+        "ポータルリンク7件404修正（保守担当検出分）"
+      ],
+      "homecare": [
+        "AI薬歴入力支援ワークフロー設計（日経事例参照）",
+        "調剤補助業務外部委託チェックリスト作成（2025年改正薬機法対応）",
+        "在庫管理最適化テンプレート作成"
+      ]
+    },
+    "alerts": [
+      "[ALERT]経過措置: 3/31期限まで20日・患者抽出未着手（ゆうすけ操作必要）",
+      "[INFO]CloseDi DNS障害継続: web_search代替手段で情報取得可能",
+      "[INFO]指定濩用防止: 5/1施行まで52日・印刷設置4/15予定",
+      "[INFO]sidebiz販売プラットフォーム未開設（Gumroad/Note/Beehiiv等アカウント作成待ち）",
+      "[INFO]ポータルリンク7件404検出済み（修正待ち）"
+    ],
+    "teamBias": {
+      "homecare": "情報収集中心・実行アクション不足（ゆうすけ依存・CloseDi障害）→次: AI薬歴入力支援ワークフロー設計",
+      "sidebiz_dev": "コンテンツ作成活発（44ツール達成）・収益化実行保留→次: n8n自前ホスト構築調査・ストック型ビジネス商品構成",
+      "sidebiz_maintenance": "初期段階・ポータルリンク404検出済み→次: リンク修正・監視フロー設計",
+      "coding": "本日報告なし・アイドル状態（3/8方針変更で待機）"
+    },
+    "implications": [
+      "AI薬歴入力効率化→homecare業務改善のKPI目標",
+      "n8n自前ホスト→副業インフラ選定で検討",
+      "定例1on1優先→副業担当/保守担当の週次同期アジェンダに導入",
+      "ポータルリンク404→保守担当の即時対応項目"
+    ],
+    "learningLoop": {
+      "adopted": [
+        "AI薬歴入力効率化: homecare業務改善のKPI目標",
+        "n8n自前ホスト: 副業インフラ選定で検討",
+        "定例1on1優先: 副業担当/保守担当の週次同期に導入",
+        "フィードバック優先順位付け: trainer 30分タスク選定に適用"
+      ],
+      "pending": [
+        "アジャイルポートフォリオガバナンス: 将来的な組織拡大時に検討"
+      ]
+    },
+    "selfImprovement": {
+      "learningPoints": [
+        "AI薬歴入力で4割効率向上: 日経事例はhomecare業務改善の直接参考",
+        "n8n自前ホストでコスト削減: Zapier $50+/月 vs n8n無料は副業インフラ選定で重要",
+        "定例1on1優先の41%: HR.com調査はマネジメント改善の参考"
+      ],
+      "failures": [],
+      "improvementProposals": [
+        {
+          "priority": "高",
+          "feasibility": "実行可能",
+          "proposal": "45ツール目「AI薬歴入力効率化診断」開発"
+        },
+        {
+          "priority": "高",
+          "feasibility": "実行可能",
+          "proposal": "ポータルリンク7件404修正"
+        },
+        {
+          "priority": "中",
+          "feasibility": "要検討",
+          "proposal": "n8n自前ホスト構築調査"
+        },
+        {
+          "priority": "中",
+          "feasibility": "実行可能",
+          "proposal": "IoT+RPA+iPaaS連携チェックリスト作成"
+        }
+      ]
+    }
   },
   "lastSidebiz30m": {
-    "timestamp": 1741420860,
+    "timestamp": 1741654860,
     "tasks": [
-      "バンドル戦略策定（AIプロンプト集 × チェックリスト集）",
-      "バンドル販売ページドラフト作成",
-      "価格戦略策定（単品¥500×2 → バンドル¥800、クーポン¥200OFF）",
-      "SNS投稿テンプレート作成（バンドル用）"
+      "46ツール目『服薬フォロー効率化診断』開発",
+      "ボトルネック調査: 2026年調剤報酬改定の服薬フォロー効率化需要を特定（1件あたり約7分削減可能）",
+      "5領域20問診断（フォロー体制・コミュニケーション・業務プロセス・DX推進・成果測定）",
+      "ポータル更新（45→46ツール）・GitHub Pagesデプロイ完了"
+    ],
+    "deliverables": [
+      "sidebiz/free-tool-portal/pharmacy-followup-efficiency.html"
     ],
     "blockers": [
-      "有料商材販売開始: Payhip/Gumroadアカウント作成必要（ユーザー依存）",
-      "PDF変換: pandocインストール必要（ユーザー依存）"
+      "販売プラットフォーム未開設: Gumroad/Note/Beehiiv等アカウント作成待ち（ユーザー依存）",
+      "実販売・実配信はユーザーアクション後に可能"
     ],
     "nextCandidates": [
-      "セールスメールドラフト作成（バンドル用）",
-      "無料サンプルLP作成（プロンプト3個 + チェックリスト1種）",
-      "無料ツールポータルのSEO対策",
-      "クーポンコード運用計画作成"
-    ]
+      "47ツール目開発候補検討（需要調査→選定）",
+      "個別free-tool-*のCTA追加（26ツール分割実施）",
+      "ニュースレター登録LP文案作成",
+      "n8n自動収益システム調査（月5万円事例の再現性評価）"
+    ],
+    "selfImprovement": {
+      "learningPoints": [
+        "2026年調剤報酬改定の服薬フォロー需要: PSFTウェビナーレポートで「電話フォロー1件あたり約7分の工数削減」が明記されており、実務課題としての需要が高いことを確認",
+        "5領域設計: フォロー体制・コミュニケーション・業務プロセス・DX推進・成果測定の5軸で包括的評価。単一指標ではなく多次元評価が実用的"
+      ],
+      "failures": [],
+      "improvementProposals": [
+        {
+          "priority": "高",
+          "feasibility": "実行可能",
+          "proposal": "47ツール目開発: 広域応需効率化診断または地域支援体制加算チェックツール"
+        },
+        {
+          "priority": "中",
+          "feasibility": "要検討",
+          "proposal": "n8n自前ホスト構築調査: 月5万円事例の再現性評価"
+        }
+      ]
+    }
+  },
+  "lastSidebizSyncToTrainer": {
+    "timestamp": 1741654860,
+    "status": "alert",
+    "summary": [
+      "sidebiz: 46ツール達成・ポータルリンク7件404検出済み（修正待ち）・販売プラットフォーム未開設継続",
+      "homecare: 経過措置患者抽出未着手（3/31期限まで20日・[ALERT]）・CloseDi DNS障害継続（代替手段確立済）",
+      "保守: 26サイト稼働確認完了・SLOベース通知チェックリスト作成候補あり"
+    ],
+    "next30mActions": [
+      "ポータルリンク7件404修正（medication-guidance, renal-dose, antihypertensive-selector他）",
+      "経過措置患者抽出リマインド準備（ゆうすけ操作必要）",
+      "CloseDi DNS回復確認（翌朝9:00以降推奨）"
+    ],
+    "desiredActions": [
+      "n8n自前ホスト構築調査（月5万円事例の再現性評価）",
+      "AIプロンプトエンジニアリング診断ツール開発（高収入副業需要対応）",
+      "SLOベース通知チェックリスト作成（予測保全でダウンタイム50%削減）"
+    ],
+    "requiredEnvironment": {
+      "immediate": [
+        "ポータルリンク修正",
+        "診断ツール開発",
+        "チェックリスト作成"
+      ],
+      "userDependent": [
+        "販売プラットフォーム開設（Gumroad/Note/Beehiiv等）",
+        "経過措置患者抽出（MedicalCareStation操作）"
+      ]
+    },
+    "selfImprovement": {
+      "learningPoints": [
+        "配信停止ルールの徹底: 15:47のユーザー要望で3エージェント報告停止が明確化。本ジョブもdelivery: noneで運用し、対外報告はtrainer-2h-regular-reportに集約する方針を再確認"
+      ],
+      "failures": [
+        {
+          "issue": "ポータルリンク7件404（16:35保守担当検出）",
+          "cause": "URL命名ゆれ（-tool付き/なし）が原因",
+          "prevention": "ポータル更新時に外部リンク自動検証スクリプト導入",
+          "impact": "該当7ページへの導線断絶（実サイトは稼働）"
+        }
+      ],
+      "improvementProposals": [
+        {
+          "priority": "高",
+          "feasibility": "即時実行可能",
+          "proposal": "ポータルリンク7件404修正"
+        },
+        {
+          "priority": "中",
+          "feasibility": "要検討",
+          "proposal": "ポータル外部リンク自動検証スクリプト導入"
+        },
+        {
+          "priority": "低",
+          "feasibility": "要検討",
+          "proposal": "memory書込競合回避（ジョブスケジュール調整）"
+        }
+      ]
+    }
   }
 }

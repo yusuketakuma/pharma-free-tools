@@ -1,0 +1,70 @@
+{
+  "lastUpdated": "2026-03-10T21:52:00+09:00",
+  "reports": [
+    {
+      "timestamp": "2026-03-10T21:52:00+09:00",
+      "source": "sidebiz-30m-report-to-trainer",
+      "status": "done",
+      "summary": {
+        "status": "done",
+        "development": {
+          "freeToolsCount": 44,
+          "newToolsToday": 13,
+          "newCategories": [
+            "学習・自己研鑽系",
+            "キャリア診断系",
+            "マーケティング・ブランディング系",
+            "在庫管理・運営効率系",
+            "AI活用診断系",
+            "改定対応系",
+            "優先順位スコアリング系（RICE Framework）",
+            "患者コミュニケーション系"
+          ],
+          "bottlenecksInvestigated": [
+            "在庫管理",
+            "優先順位付け",
+            "患者対応"
+          ],
+          "deliverables": [
+            "X告知スレッドドラフト（35ツール達成版）",
+            "LinkedIn投稿ドラフト（4案）",
+            "ニュースレター原稿（36ツール紹介）",
+            "AIプロンプトガイド草案（薬剤師向け25プロンプト）"
+          ]
+        },
+        "handoff": {
+          "reproductionSteps": "全ツール: HTML/JS完結、GitHub Pagesで公開",
+          "url": "https://yusuketakuma.github.io/pharma-free-tools/",
+          "workarounds": "CloseDi DNS障害: web_search代替手段で情報取得可能",
+          "dependencyRisks": "GitHub Pages稼働継続依存、外部API依存なし",
+          "monitoringPoints": [
+            "ページ表示エラー",
+            "CTAクリック率",
+            "ポータルリンク404（7件検出→修正済み）"
+          ]
+        },
+        "nextActions": [
+          "45ツール目開発: スタッフ教育・育成診断ツール",
+          "Make自動化フロー調査: 90%機能を10%コストで実現",
+          "n8n自前ホスト構築調査: 月5万円事例の再現性評価",
+          "AIプロンプトガイド商品化準備: PDF化・OGP画像作成"
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "販売プラットフォーム未開設: Gumroad/Note/Coconala/MENTA/TimeTicket/Payhip/Beehiiv/Substackアカウント作成待ち（ユーザー依存）"
+          ],
+          "selfExecutable": [
+            "無料ツール開発（継続）",
+            "コンテンツ作成（継続）",
+            "自動化インフラ調査（継続）"
+          ]
+        },
+        "learningPoints": [
+          "RICE Framework採用: 科学的優先順位付けで意思決定品質向上",
+          "Impact Scoring Framework: Critical/High/Medium/Lowの4段階分類が実務で使いやすい",
+          "代替手段の早期確立: DNS障害長期化時はweb_searchを第一選択化"
+        ]
+      }
+    }
+  ]
+}
