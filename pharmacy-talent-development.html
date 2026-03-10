@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局人材育成診断 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="薬局の人材育成レベルを5領域20問で診断。人手不足対応・スキル継承・チームビルディングの現状を可視化し、改善提案を提供します。">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "薬局人材育成診断",
+        "description": "薬局の人材育成レベルを5領域20問で診断する無料ツール",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.95;
+            font-size: 1.05em;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .progress-text {
+            text-align: center;
+            padding: 10px;
+            color: #666;
+            font-size: 0.9em;
+            background: #f9f9f9;
+        }
+        .question-container {
+            padding: 40px 30px;
+        }
+        .category-title {
+            font-size: 1.3em;
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f5576c;
+        }
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+        .question-text {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        .option {
+            display: block;
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result-container {
+            padding: 40px 30px;
+            display: none;
+        }
+        .score-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .score-number {
+            font-size: 4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .score-label {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        .category-scores {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .category-score {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .category-score-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .category-score-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .category-score-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+        .recommendations {
+            background: #fff3cd;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #ffc107;
+        }
+        .recommendations h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        .recommendations ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+        .recommendations li {
+            margin-bottom: 8px;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .cta-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .cta-section p {
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #f5576c;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .question-container, .result-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 薬局人材育成診断</h1>
+            <p>5領域20問で人材育成レベルを可視化</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">質問 1 / 20</div>
+        
+        <div class="question-container" id="questionContainer"></div>
+        
+        <div class="result-container" id="resultContainer"></div>
+    </div>
+
+    <script>
+        const categories = [
+            {
+                name: "OJT・現場教育",
+                questions: [
+                    "新人薬剤師へのOJTは体系的に実施されていますか？",
+                    "指導薬剤師の育成・研修は定期的に行われていますか？",
+                    "実務研修のマニュアル・チェックリストは整備されていますか？",
+                    "指導記録・スキル習得状況は適切に管理されていますか？"
+                ]
+            },
+            {
+                name: "スキル継承",
+                questions: [
+                    "ベテラン薬剤師のノウハウ継承システムはありますか？",
+                    "特殊業務（在宅・無菌製剤等）のスキル継承は進んでいますか？",
+                    "業務マニュアル・手順書は常に最新化されていますか？",
+                    "知識共有の場（勉強会・カンファレンス）は定期開催されていますか？"
+                ]
+            },
+            {
+                name: "チームビルディング",
+                questions: [
+                    "チーム内のコミュニケーションは円滑ですか？",
+                    "役割分担・責任範囲は明確ですか？",
+                    "チーム目標の共有・進捗管理はできていますか？",
+                    "メンバー間の信頼関係は構築されていますか？"
+                ]
+            },
+            {
+                name: "キャリアパス",
+                questions: [
+                    "薬剤師のキャリアパス（専門・管理職等）は明確ですか？",
+                    "昇進・昇格基準は透明化されていますか？",
+                    "自己申告制度・キャリア面談は実施されていますか？",
+                    "外部研修・資格取得の支援制度はありますか？"
+                ]
+            },
+            {
+                name: "定着・エンゲージメント",
+                questions: [
+                    "従業員満足度調査は定期的に実施されていますか？",
+                    "退職理由の分析・改善策は実施されていますか？",
+                    "働きがい・やりがいを感じられる環境ですか？",
+                    "ワークライフバランスの取り組みは進んでいますか？"
+                ]
+            }
+        ];
+
+        const options = [
+            { text: "まったくできていない", score: 1 },
+            { text: "あまりできていない", score: 2 },
+            { text: "どちらとも言えない", score: 3 },
+            { text: "ある程度できている", score: 4 },
+            { text: "十分にできている", score: 5 }
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        function init() {
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const container = document.getElementById('questionContainer');
+            const categoryIndex = Math.floor(currentQuestion / 4);
+            const questionIndex = currentQuestion % 4;
+            const category = categories[categoryIndex];
+            const question = category.questions[questionIndex];
+
+            container.innerHTML = `
+                <div class="category-title">${category.name}</div>
+                <div class="question-card">
+                    <div class="question-text">${currentQuestion + 1}. ${question}</div>
+                    <div class="options">
+                        ${options.map((opt, idx) => `
+                            <label class="option" onclick="selectOption(${idx})">
+                                <input type="radio" name="answer" value="${idx}" style="display:none">
+                                ${opt.text}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>次へ</button>
+            `;
+
+            updateProgress();
+        }
+
+        function selectOption(index) {
+            const optionElements = document.querySelectorAll('.option');
+            optionElements.forEach((el, idx) => {
+                if (idx === index) {
+                    el.classList.add('selected');
+                } else {
+                    el.classList.remove('selected');
+                }
+            });
+            document.getElementById('nextBtn').disabled = false;
+            answers[currentQuestion] = options[index].score;
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion >= 20) {
+                showResult();
+            } else {
+                renderQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion) / 20) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `質問 ${currentQuestion + 1} / 20`;
+        }
+
+        function showResult() {
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('progressText').style.display = 'none';
+            document.getElementById('progressFill').style.width = '100%';
+
+            const categoryScores = [];
+            for (let i = 0; i < 5; i++) {
+                const start = i * 4;
+                const categoryTotal = answers.slice(start, start + 4).reduce((a, b) => a + b, 0);
+                categoryScores.push({
+                    name: categories[i].name,
+                    score: categoryTotal,
+                    maxScore: 20,
+                    percentage: (categoryTotal / 20) * 100
+                });
+            }
+
+            const totalScore = answers.reduce((a, b) => a + b, 0);
+            const percentage = (totalScore / 100) * 100;
+
+            let level = "";
+            let color = "";
+            let recommendations = [];
+
+            if (percentage >= 80) {
+                level = "優秀";
+                color = "#4CAF50";
+                recommendations = [
+                    "現在の人材育成システムを継続・改善",
+                    "他薬局へのベストプラクティス共有を検討",
+                    "より高度なリーダーシップ研修の導入"
+                ];
+            } else if (percentage >= 60) {
+                level = "良好";
+                color = "#8BC34A";
+                recommendations = [
+                    "スコアが低い領域の重点強化",
+                    "OJTマニュアルの整備・更新",
+                    "定期的なフィードバックサイクルの確立"
+                ];
+            } else if (percentage >= 40) {
+                level = "要改善";
+                color = "#FF9800";
+                recommendations = [
+                    "人材育成計画の策定が急務",
+                    "指導薬剤師の育成を優先",
+                    "スキル継承システムの構築"
+                ];
+            } else {
+                level = "要注意";
+                color = "#f44336";
+                recommendations = [
+                    "人材育成体制の抜本的見直しが必要",
+                    "外部研修・コンサルティングの活用検討",
+                    "従業員満足度調査の即時実施"
+                ];
+            }
+
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.style.display = 'block';
+            resultContainer.innerHTML = `
+                <div class="score-card">
+                    <div class="score-number" style="color: ${color}">${totalScore}点</div>
+                    <div class="score-label">人材育成レベル: ${level}</div>
+                </div>
+
+                <div class="category-scores">
+                    ${categoryScores.map(cat => `
+                        <div class="category-score">
+                            <div class="category-score-title">${cat.name}: ${cat.score}/20点</div>
+                            <div class="category-score-bar">
+                                <div class="category-score-fill" style="width: ${cat.percentage}%; background: ${getColor(cat.percentage)}"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="recommendations">
+                    <h3>📝 改善提案</h3>
+                    <ul>
+                        ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="cta-section">
+                    <h3>🎯 人材育成を加速しませんか？</h3>
+                    <p>薬剤師向けAIプロンプト集で、教育資料作成・フィードバック文面を効率化</p>
+                    <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-button" target="_blank">詳細を見る →</a>
+                </div>
+            `;
+        }
+
+        function getColor(percentage) {
+            if (percentage >= 80) return '#4CAF50';
+            if (percentage >= 60) return '#8BC34A';
+            if (percentage >= 40) return '#FF9800';
+            return '#f44336';
+        }
+
+        init();
+    </script>
+</body>
+</html>
