@@ -310,6 +310,56 @@
       border-radius: 8px;
       color: white;
     }
+    
+    /* CTA Section */
+    .cta-section {
+      margin-top: 32px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 16px;
+      border: 1px solid #bfdbfe;
+    }
+    
+    .cta-section h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1e40af;
+    }
+    
+    .cta-section p {
+      font-size: 0.9rem;
+      color: #4a5568;
+      margin-bottom: 16px;
+    }
+    
+    .cta-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    
+    .cta-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    
+    .cta-link.secondary {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    }
   </style>
 </head>
 <body>
@@ -413,6 +463,16 @@
       
       <div id="result" class="result" style="display: none;"></div>
     </main>
+    
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h3>🎁 さらに業務を効率化しませんか？</h3>
+      <p>薬剤師向けAIプロンプト集（100個）とNotionテンプレートで、鑑別・服薬指導・薬歴作成を自動化</p>
+      <div class="cta-links">
+        <a href="#" class="cta-link">AIプロンプト集を見る (¥500)</a>
+        <a href="#" class="cta-link secondary">Notionテンプレート (¥500)</a>
+      </div>
+    </div>
     
     <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="back-link">← ツール一覧に戻る</a>
     
