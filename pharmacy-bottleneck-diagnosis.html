@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局業務ボトルネック診断 - 効率化課題を可視化</title>
+  <meta name="description" content="薬局運営のボトルネックを5領域20問で診断。調剤業務・服薬指導・在庫管理・在宅医療・事務作業の課題を可視化し、優先改善ポイントを提案。">
+  <meta name="keywords" content="薬局,ボトルネック,業務効率化,調剤,服薬指導,在庫管理,在宅医療,DX">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      color: #fff;
+      padding: 20px;
+    }
+    
+    .container { max-width: 800px; margin: 0 auto; }
+    
+    header {
+      text-align: center;
+      padding: 30px 20px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #f39c12, #e74c3c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      color: #aaa;
+      font-size: 0.95rem;
+    }
+    
+    .progress-bar {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      height: 8px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #f39c12, #e74c3c);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    .question-container {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 20px 0;
+      display: none;
+    }
+    
+    .question-container.active { display: block; }
+    
+    .question-number {
+      color: #f39c12;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+    
+    .question-category {
+      display: inline-block;
+      background: rgba(243,156,18,0.2);
+      color: #f39c12;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+    
+    .question-text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    
+    .option {
+      background: rgba(255,255,255,0.08);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .option:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: #f39c12;
+    }
+    
+    .option.selected {
+      background: rgba(243,156,18,0.2);
+      border-color: #f39c12;
+    }
+    
+    .result-container {
+      display: none;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 20px 0;
+    }
+    
+    .result-container.active { display: block; }
+    
+    .result-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .result-title {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+    
+    .overall-score {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #f39c12, #e74c3c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .score-label { color: #aaa; }
+    
+    .category-scores {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin: 30px 0;
+    }
+    
+    .category-score {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    
+    .category-name {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+    
+    .category-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .category-bar {
+      background: rgba(255,255,255,0.1);
+      height: 4px;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    
+    .category-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.5s;
+    }
+    
+    .bottleneck-section {
+      background: rgba(231,76,60,0.1);
+      border: 1px solid rgba(231,76,60,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    
+    .bottleneck-title {
+      color: #e74c3c;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    
+    .bottleneck-list {
+      list-style: none;
+    }
+    
+    .bottleneck-list li {
+      padding: 8px 0;
+      padding-left: 20px;
+      position: relative;
+      color: #ddd;
+    }
+    
+    .bottleneck-list li::before {
+      content: "⚠";
+      position: absolute;
+      left: 0;
+    }
+    
+    .recommendations {
+      background: rgba(46,204,113,0.1);
+      border: 1px solid rgba(46,204,113,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    
+    .recommendations-title {
+      color: #2ecc71;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    
+    .recommendations-list {
+      list-style: none;
+    }
+    
+    .recommendations-list li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      color: #ddd;
+    }
+    
+    .recommendations-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #2ecc71;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .cta-title {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      background: #fff;
+      color: #667eea;
+      padding: 14px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 12px;
+      transition: transform 0.2s;
+    }
+    
+    .cta-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .copy-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+    }
+    
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    
+    .restart-btn {
+      background: transparent;
+      border: 2px solid #f39c12;
+      color: #f39c12;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    
+    @media (max-width: 600px) {
+      h1 { font-size: 1.5rem; }
+      .question-text { font-size: 1rem; }
+      .category-scores { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏥 薬局業務ボトルネック診断</h1>
+      <p class="subtitle">5領域20問で、あなたの薬局の効率化課題を可視化</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+      <p id="progress-text" style="color: #aaa; font-size: 0.85rem;">準備完了</p>
+    </header>
+    
+    <div id="start-screen" class="question-container active">
+      <h2 style="text-align: center; margin-bottom: 20px;">診断について</h2>
+      <p style="color: #aaa; line-height: 1.8; margin-bottom: 20px;">
+        この診断では、薬局運営における5つの領域の課題を可視化します：
+      </p>
+      <ul style="color: #aaa; line-height: 2; margin-bottom: 24px; padding-left: 20px;">
+        <li><strong style="color: #f39c12;">調剤業務</strong> - 調剤の効率性・正確性</li>
+        <li><strong style="color: #3498db;">服薬指導</strong> - 指導の質・時間管理</li>
+        <li><strong style="color: #2ecc71;">在庫管理</strong> - 発注・棚卸・期限管理</li>
+        <li><strong style="color: #9b59b6;">在宅医療</strong> - 訪問業務・連携体制</li>
+        <li><strong style="color: #e74c3c;">事務作業</strong> - 請求・報告・書類作成</li>
+      </ul>
+      <button class="option" onclick="startDiagnosis()" style="text-align: center; font-size: 1.1rem;">
+        診断を始める →
+      </button>
+    </div>
+    
+    <div id="questions"></div>
+    
+    <div id="result" class="result-container">
+      <div class="result-header">
+        <h2 class="result-title">診断結果</h2>
+        <div class="overall-score" id="overall-score">0</div>
+        <p class="score-label">総合スコア（100点満点）</p>
+      </div>
+      
+      <div class="category-scores" id="category-scores"></div>
+      
+      <div class="bottleneck-section">
+        <h3 class="bottleneck-title">🔍 最優先ボトルネック</h3>
+        <ul class="bottleneck-list" id="bottleneck-list"></ul>
+      </div>
+      
+      <div class="recommendations">
+        <h3 class="recommendations-title">💡 改善提案</h3>
+        <ul class="recommendations-list" id="recommendations-list"></ul>
+      </div>
+      
+      <div class="cta-section">
+        <h3 class="cta-title">効率化を加速させませんか？</h3>
+        <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">
+          AIプロンプト集で、業務効率化を即実践
+        </p>
+        <a href="ai-prompts-lp.html" class="cta-btn">AIプロンプト集を見る →</a>
+      </div>
+      
+      <button class="copy-btn" onclick="copyResult()">📋 結果をコピー</button>
+      <button class="restart-btn" onclick="location.reload()">もう一度診断する</button>
+    </div>
+  </div>
+  
+  <script>
+    const questions = [
+      // 調剤業務（4問）
+      { category: "調剤業務", text: "処方箋受付から調剤完了までの平均時間は？", options: ["10分以内", "10〜15分", "15〜20分", "20分以上"], scores: [100, 75, 50, 25] },
+      { category: "調剤業務", text: "調剤エラー（薬品違い・数量ミス等）の発生頻度は？", options: ["ほぼない", "月1回程度", "週1回程度", "頻繁にある"], scores: [100, 75, 50, 25] },
+      { category: "調剤業務", text: "一包化・PTP包装の作業効率に課題を感じる？", options: ["ない", "少し", "かなり", "深刻"], scores: [100, 75, 50, 25] },
+      { category: "調剤業務", text: "疑義照会の解決にかかる時間は適切？", options: ["すぐ解決", "少し時間がかかる", "かなり時間がかかる", "解決が難しいケースが多い"], scores: [100, 75, 50, 25] },
+      
+      // 服薬指導（4問）
+      { category: "服薬指導", text: "1患者あたりの服薬指導時間は十分確保できている？", options: ["十分", "やや不足", "かなり不足", "ほとんど取れない"], scores: [100, 75, 50, 25] },
+      { category: "服薬指導", text: "服薬指導の内容は標準化できている？", options: ["完全に標準化", "ある程度", "あまりできていない", "全くできていない"], scores: [100, 75, 50, 25] },
+      { category: "服薬指導", text: "指導記録の作成に時間がかかりすぎる？", options: ["問題ない", "少し感じる", "かなり感じる", "負担が大きい"], scores: [100, 75, 50, 25] },
+      { category: "服薬指導", text: "患者からの問い合わせ対応に追われる？", options: ["適切に対応", "やや負担", "かなり負担", "業務に支障"], scores: [100, 75, 50, 25] },
+      
+      // 在庫管理（4問）
+      { category: "在庫管理", text: "欠品・過剰在庫の発生頻度は？", options: ["ほぼない", "時々ある", "頻繁にある", "常に課題"], scores: [100, 75, 50, 25] },
+      { category: "在庫管理", text: "発注作業の効率に満足している？", options: ["満足", "やや不満", "かなり不満", "大幅改善が必要"], scores: [100, 75, 50, 25] },
+      { category: "在庫管理", text: "有効期限管理は適切に行えている？", options: ["完全に管理", "概ね管理", "漏れがある", "管理が不十分"], scores: [100, 75, 50, 25] },
+      { category: "在庫管理", text: "棚卸作業の負担は？", options: ["軽い", "普通", "重い", "非常に重い"], scores: [100, 75, 50, 25] },
+      
+      // 在宅医療（4問）
+      { category: "在宅医療", text: "訪問スケジュールの最適化はできている？", options: ["最適化済み", "ある程度", "課題あり", "全くできていない"], scores: [100, 75, 50, 25] },
+      { category: "在宅医療", text: "訪問記録・報告書作成の効率に課題は？", options: ["ない", "少し", "かなり", "深刻"], scores: [100, 75, 50, 25] },
+      { category: "在宅医療", text: "多職種連携（医師・看護師・ケアマネ）は円滑？", options: ["非常に円滑", "概ね円滑", "やや課題", "連携不足"], scores: [100, 75, 50, 25] },
+      { category: "在宅医療", text: "在宅患者の服薬状況把握は十分？", options: ["十分把握", "概ね把握", "不十分", "把握できていない"], scores: [100, 75, 50, 25] },
+      
+      // 事務作業（4問）
+      { category: "事務作業", text: "調剤報酬請求業務の効率に満足？", options: ["満足", "やや不満", "かなり不満", "大幅改善が必要"], scores: [100, 75, 50, 25] },
+      { category: "事務作業", text: "書類・レポート作成に時間がかかりすぎる？", options: ["問題ない", "少し", "かなり", "負担が大きい"], scores: [100, 75, 50, 25] },
+      { category: "事務作業", text: "患者情報の検索・管理は効率的？", options: ["効率的", "普通", "非効率", "非常に非効率"], scores: [100, 75, 50, 25] },
+      { category: "事務作業", text: "会議・ミーティングの生産性は？", options: ["高い", "普通", "低い", "時間の無駄が多い"], scores: [100, 75, 50, 25] }
+    ];
+    
+    let currentQuestion = 0;
+    let answers = [];
+    const categoryScores = {};
+    const categoryColors = {
+      "調剤業務": "#f39c12",
+      "服薬指導": "#3498db",
+      "在庫管理": "#2ecc71",
+      "在宅医療": "#9b59b6",
+      "事務作業": "#e74c3c"
+    };
+    
+    function startDiagnosis() {
+      document.getElementById('start-screen').classList.remove('active');
+      renderQuestion();
+    }
+    
+    function renderQuestion() {
+      const container = document.getElementById('questions');
+      const q = questions[currentQuestion];
+      
+      container.innerHTML = `
+        <div class="question-container active">
+          <p class="question-number">質問 ${currentQuestion + 1} / ${questions.length}</p>
+          <span class="question-category">${q.category}</span>
+          <p class="question-text">${q.text}</p>
+          <div class="options">
+            ${q.options.map((opt, i) => `
+              <div class="option" onclick="selectAnswer(${i})">${opt}</div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      const progress = ((currentQuestion) / questions.length) * 100;
+      document.getElementById('progress').style.width = progress + '%';
+      document.getElementById('progress-text').textContent = `${currentQuestion + 1} / ${questions.length}`;
+    }
+    
+    function selectAnswer(index) {
+      const q = questions[currentQuestion];
+      answers.push({ category: q.category, score: q.scores[index] });
+      
+      // カテゴリ別スコア集計
+      if (!categoryScores[q.category]) {
+        categoryScores[q.category] = [];
+      }
+      categoryScores[q.category].push(q.scores[index]);
+      
+      currentQuestion++;
+      
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+    
+    function showResult() {
+      document.getElementById('questions').innerHTML = '';
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('progress-text').textContent = '診断完了';
+      
+      // カテゴリ別平均計算
+      const categoryAvg = {};
+      let totalScore = 0;
+      
+      for (const [cat, scores] of Object.entries(categoryScores)) {
+        const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+        categoryAvg[cat] = Math.round(avg);
+        totalScore += avg;
+      }
+      
+      const overallScore = Math.round(totalScore / Object.keys(categoryAvg).length);
+      
+      // 総合スコア表示（アニメーション）
+      let displayScore = 0;
+      const scoreInterval = setInterval(() => {
+        displayScore += 2;
+        if (displayScore >= overallScore) {
+          displayScore = overallScore;
+          clearInterval(scoreInterval);
+        }
+        document.getElementById('overall-score').textContent = displayScore;
+      }, 20);
+      
+      // カテゴリ別スコア表示
+      const categoryHtml = Object.entries(categoryAvg).map(([cat, score]) => `
+        <div class="category-score">
+          <p class="category-name">${cat}</p>
+          <p class="category-value" style="color: ${categoryColors[cat]}">${score}</p>
+          <div class="category-bar">
+            <div class="category-fill" style="width: ${score}%; background: ${categoryColors[cat]}"></div>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('category-scores').innerHTML = categoryHtml;
+      
+      // ボトルネック特定（最低スコアのカテゴリ）
+      const sortedCategories = Object.entries(categoryAvg).sort((a, b) => a[1] - b[1]);
+      const bottlenecks = sortedCategories.slice(0, 2);
+      
+      const bottleneckTexts = {
+        "調剤業務": "調剤プロセスの効率化が急務。処方箋処理時間の短縮・エラー防止策の導入が必要",
+        "服薬指導": "服薬指導の質と時間のバランス改善が必要。指導の標準化・記録効率化を検討",
+        "在庫管理": "在庫管理体制の強化が必要。発注自動化・期限管理システムの導入を検討",
+        "在宅医療": "在宅医療業務の最適化が必要。訪問スケジュール・連携体制の見直しを検討",
+        "事務作業": "事務作業の効率化が重要。請求・書類作成の自動化・テンプレート化を検討"
+      };
+      
+      const bottleneckHtml = bottlenecks.map(([cat, score]) => `
+        <li><strong>${cat}</strong>（${score}点）: ${bottleneckTexts[cat]}</li>
+      `).join('');
+      document.getElementById('bottleneck-list').innerHTML = bottleneckHtml;
+      
+      // 改善提案
+      const recommendations = [];
+      if (categoryAvg["調剤業務"] < 70) {
+        recommendations.push("調剤支援ツール・自動包装機の導入を検討");
+      }
+      if (categoryAvg["服薬指導"] < 70) {
+        recommendations.push("服薬指導シナリオ・チェックリストの標準化");
+      }
+      if (categoryAvg["在庫管理"] < 70) {
+        recommendations.push("発注管理システム・アラート機能の活用");
+      }
+      if (categoryAvg["在宅医療"] < 70) {
+        recommendations.push("訪問スケジュール最適化ツール・報告書テンプレートの活用");
+      }
+      if (categoryAvg["事務作業"] < 70) {
+        recommendations.push("AI活用による書類作成・データ入力の効率化");
+      }
+      
+      if (recommendations.length === 0) {
+        recommendations.push("現在の業務効率は良好。さらなる改善としてDX推進を継続");
+      }
+      
+      const recHtml = recommendations.map(r => `<li>${r}</li>`).join('');
+      document.getElementById('recommendations-list').innerHTML = recHtml;
+      
+      document.getElementById('result').classList.add('active');
+    }
+    
+    function copyResult() {
+      const categoryAvg = {};
+      for (const [cat, scores] of Object.entries(categoryScores)) {
+        categoryAvg[cat] = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+      }
+      
+      const text = `【薬局業務ボトルネック診断結果】
+総合スコア: ${document.getElementById('overall-score').textContent}点
+
+カテゴリ別:
+${Object.entries(categoryAvg).map(([c, s]) => `${c}: ${s}点`).join('\n')}
+
+診断日: ${new Date().toLocaleDateString('ja-JP')}
+https://yusuketakuma.github.io/pharma-free-tools/pharmacy-bottleneck-diagnosis.html`;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        alert('結果をコピーしました');
+      });
+    }
+  </script>
+</body>
+</html>
