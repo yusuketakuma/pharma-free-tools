@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>調剤薬局発注点自動計算ツール - 無料在庫管理支援</title>
+  <meta name="description" content="調剤薬局の発注点を自動計算する無料ツール。平均使用量・リードタイム・安全在庫から最適な発注タイミングを算出。過剰在庫・欠品リスクを削減。">
+  <meta name="keywords" content="調剤薬局,発注点,在庫管理,自動計算,発注タイミング,安全在庫,欠品防止,過剰在庫削減">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="調剤薬局発注点自動計算ツール - 無料在庫管理支援">
+  <meta property="og:description" content="調剤薬局の発注点を自動計算。平均使用量・リードタイム・安全在庫から最適な発注タイミングを算出。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-reorder-point-calculator.html">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "調剤薬局発注点自動計算ツール",
+    "description": "調剤薬局の発注点を自動計算する無料ツール",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      color: white;
+      padding: 30px 0;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.95;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+    
+    .card h2 {
+      color: #11998e;
+      margin-bottom: 16px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card h2::before {
+      content: '📊';
+    }
+    
+    .formula-box {
+      background: #f0fdf4;
+      border-left: 4px solid #11998e;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .formula-box code {
+      display: block;
+      font-size: 1.1rem;
+      color: #11998e;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+    
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .input-group input:focus {
+      outline: none;
+      border-color: #11998e;
+    }
+    
+    .input-group small {
+      color: #888;
+      font-size: 0.75rem;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      margin-top: 10px;
+    }
+    
+    .result-box {
+      display: none;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .result-box.show {
+      display: block;
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-main {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    
+    .result-detail {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .result-item {
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+      border-radius: 8px;
+    }
+    
+    .result-item .value {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    
+    .result-item .label {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+    
+    .item-list {
+      margin-top: 20px;
+    }
+    
+    .item-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+      gap: 8px;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+    
+    .item-row:first-child {
+      background: #f8f9fa;
+      font-weight: 600;
+      border-radius: 8px 8px 0 0;
+    }
+    
+    .item-row input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    
+    .btn-remove {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    
+    .btn-add {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .status-indicator {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .status-ok {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .status-warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .status-danger {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .tips-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 16px;
+      margin-top: 20px;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .tips-box h3 {
+      color: #856404;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+    
+    .tips-box ul {
+      margin-left: 20px;
+      color: #856404;
+      font-size: 0.9rem;
+    }
+    
+    .tips-box li {
+      margin: 4px 0;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 12px;
+    }
+    
+    .cta-section p {
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+    
+    .cta-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .export-section {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .btn-export {
+      background: #17a2b8;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0 8px;
+    }
+    
+    @media (max-width: 600px) {
+      .item-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      
+      .item-row > *:nth-child(n+5) {
+        grid-column: span 2;
+      }
+      
+      .result-detail {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏥 調剤薬局発注点自動計算ツール</h1>
+      <p class="subtitle">過剰在庫・欠品リスクを削減する最適発注タイミング算出</p>
+    </header>
+    
+    <!-- 計算式説明 -->
+    <div class="card">
+      <h2>発注点の計算式</h2>
+      <div class="formula-box">
+        <strong>発注点 = (平均使用量/日 × 発注リードタイム) + 安全在庫</strong>
+        <code>発注点 = (使用量 × リードタイム) + (使用量 × 安全日数)</code>
+        <small>※ 現在在庫が発注点を下回ったら発注</small>
+      </div>
+      
+      <div class="input-grid">
+        <div class="input-group">
+          <label>平均使用量（個/日）</label>
+          <input type="number" id="avgUsage" placeholder="例: 5" step="0.1" min="0">
+          <small>1日あたりの平均使用個数</small>
+        </div>
+        <div class="input-group">
+          <label>発注リードタイム（日）</label>
+          <input type="number" id="leadTime" placeholder="例: 3" min="0">
+          <small>発注から納品までの日数</small>
+        </div>
+        <div class="input-group">
+          <label>安全在庫日数（日）</label>
+          <input type="number" id="safetyDays" placeholder="例: 7" min="0">
+          <small>急増・遅延時のバッファ</small>
+        </div>
+        <div class="input-group">
+          <label>現在在庫（個）</label>
+          <input type="number" id="currentStock" placeholder="例: 50" min="0">
+          <small>現在の在庫数</small>
+        </div>
+      </div>
+      
+      <button class="btn" onclick="calculateSingle()">発注点を計算</button>
+      
+      <div class="result-box" id="singleResult">
+        <div class="label">発注点</div>
+        <div class="result-main" id="reorderPoint">-</div>
+        <div class="result-detail">
+          <div class="result-item">
+            <div class="value" id="leadTimeStock">-</div>
+            <div class="label">リードタイム在庫</div>
+          </div>
+          <div class="result-item">
+            <div class="value" id="safetyStock">-</div>
+            <div class="label">安全在庫</div>
+          </div>
+          <div class="result-item">
+            <div class="value" id="stockStatus">-</div>
+            <div class="label">在庫状況</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 一括計算 -->
+    <div class="card">
+      <h2>複数薬品の一括計算</h2>
+      <p style="color: #666; margin-bottom: 16px; font-size: 0.9rem;">
+        レセコンデータから転記して一括計算。CSVエクスポート対応。
+      </p>
+      
+      <div class="item-list">
+        <div class="item-row">
+          <div>薬品名</div>
+          <div>使用量/日</div>
+          <div>リードタイム</div>
+          <div>安全日数</div>
+          <div>現在庫</div>
+          <div>操作</div>
+        </div>
+        <div id="itemRows">
+          <!-- 動的に追加 -->
+        </div>
+      </div>
+      
+      <button class="btn-add" onclick="addItemRow()">+ 薬品を追加</button>
+      <button class="btn" style="margin-top: 10px;" onclick="calculateAll()">一括計算</button>
+      
+      <div id="bulkResults" style="display: none; margin-top: 20px;">
+        <div class="item-row" style="background: #f8f9fa; font-weight: 600;">
+          <div>薬品名</div>
+          <div>発注点</div>
+          <div>在庫状況</div>
+          <div>推奨発注量</div>
+          <div>判定</div>
+          <div></div>
+        </div>
+        <div id="bulkResultRows"></div>
+        
+        <div class="export-section">
+          <button class="btn-export" onclick="exportCSV()">📥 CSVダウンロード</button>
+          <button class="btn-export" onclick="copyToClipboard()">📋 クリップボードにコピー</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 活用Tips -->
+    <div class="card">
+      <h2>効果的な活用方法</h2>
+      <div class="tips-box">
+        <h3>💡 調剤薬局での実践ポイント</h3>
+        <ul>
+          <li><strong>季節変動を考慮:</strong> インフルエンザ薬など季節性薬品は安全在庫を多めに</li>
+          <li><strong>供給不安対策:</strong> 供給停止頻発薬は安全在庫を2週間分確保</li>
+          <li><strong>定期的な見直し:</strong> 月次で使用量を更新し発注点を再計算</li>
+          <li><strong>ABC分析との組み合わせ:</strong> Aランク薬品は厳密管理、Cランクは簡易管理</li>
+          <li><strong>レセコン連携:</strong> 処方件数×平均使用量で自動更新を検討</li>
+        </ul>
+      </div>
+      
+      <div style="margin-top: 16px; padding: 16px; background: #e8f5e9; border-radius: 8px;">
+        <h3 style="color: #2e7d32; margin-bottom: 8px;">📈 期待できる効果</h3>
+        <ul style="margin-left: 20px; color: #555; font-size: 0.9rem;">
+          <li>欠品による機会損失の削減</li>
+          <li>過剰在庫による資金繰り改善</li>
+          <li>発忘れ・過発注の防止</li>
+          <li>発注業務の標準化・効率化</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="cta-section">
+      <h3>🚀 在庫管理をもっと効率化しませんか？</h3>
+      <p>AI活用プロンプト集で発注業務を自動化・効率化する方法を学べます</p>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn" target="_blank">
+        薬剤師向けAIプロンプト集を見る →
+      </a>
+    </div>
+    
+    <!-- 戻るリンク -->
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" style="color: white; opacity: 0.8;">
+        ← 無料ツール一覧に戻る
+      </a>
+    </div>
+  </div>
+  
+  <script>
+    // 初期行追加
+    document.addEventListener('DOMContentLoaded', () => {
+      addItemRow();
+      addItemRow();
+      addItemRow();
+    });
+    
+    // 単一計算
+    function calculateSingle() {
+      const avgUsage = parseFloat(document.getElementById('avgUsage').value) || 0;
+      const leadTime = parseFloat(document.getElementById('leadTime').value) || 0;
+      const safetyDays = parseFloat(document.getElementById('safetyDays').value) || 0;
+      const currentStock = parseFloat(document.getElementById('currentStock').value) || 0;
+      
+      const leadTimeStock = Math.ceil(avgUsage * leadTime);
+      const safetyStock = Math.ceil(avgUsage * safetyDays);
+      const reorderPoint = leadTimeStock + safetyStock;
+      
+      document.getElementById('reorderPoint').textContent = reorderPoint + ' 個';
+      document.getElementById('leadTimeStock').textContent = leadTimeStock + ' 個';
+      document.getElementById('safetyStock').textContent = safetyStock + ' 個';
+      
+      // 在庫状況判定
+      const statusEl = document.getElementById('stockStatus');
+      const resultBox = document.getElementById('singleResult');
+      
+      if (currentStock <= 0) {
+        statusEl.textContent = '欠品中';
+        statusEl.className = 'status-indicator status-danger';
+        resultBox.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
+      } else if (currentStock < reorderPoint) {
+        statusEl.textContent = '要発注';
+        statusEl.className = 'status-indicator status-warning';
+        resultBox.style.background = 'linear-gradient(135deg, #ffc107 0%, #e0a800 100%)';
+      } else {
+        statusEl.textContent = '十分';
+        statusEl.className = 'status-indicator status-ok';
+        resultBox.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+      }
+      
+      document.getElementById('singleResult').classList.add('show');
+      
+      // GA4イベント
+      if (typeof gtag === 'function') {
+        gtag('event', 'calculate_reorder_point', {
+          'event_category': 'tool_usage',
+          'event_label': 'single_calculation'
+        });
+      }
+    }
+    
+    // 行追加
+    function addItemRow() {
+      const container = document.getElementById('itemRows');
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <input type="text" placeholder="薬品名" class="item-name">
+        <input type="number" placeholder="使用量" step="0.1" min="0" class="item-usage">
+        <input type="number" placeholder="LT" min="0" class="item-leadtime">
+        <input type="number" placeholder="安全" min="0" class="item-safety">
+        <input type="number" placeholder="在庫" min="0" class="item-stock">
+        <button class="btn-remove" onclick="this.parentElement.remove()">削除</button>
+      `;
+      container.appendChild(row);
+    }
+    
+    // 一括計算
+    function calculateAll() {
+      const rows = document.querySelectorAll('#itemRows .item-row');
+      const results = [];
+      
+      rows.forEach(row => {
+        const name = row.querySelector('.item-name').value || '未入力';
+        const usage = parseFloat(row.querySelector('.item-usage').value) || 0;
+        const leadTime = parseFloat(row.querySelector('.item-leadtime').value) || 3;
+        const safetyDays = parseFloat(row.querySelector('.item-safety').value) || 7;
+        const stock = parseFloat(row.querySelector('.item-stock').value) || 0;
+        
+        const reorderPoint = Math.ceil((usage * leadTime) + (usage * safetyDays));
+        const leadTimeStock = Math.ceil(usage * leadTime);
+        const safetyStock = Math.ceil(usage * safetyDays);
+        
+        let status, statusClass, orderQty;
+        if (stock <= 0) {
+          status = '欠品';
+          statusClass = 'status-danger';
+          orderQty = reorderPoint + safetyStock;
+        } else if (stock < reorderPoint) {
+          status = '要発注';
+          statusClass = 'status-warning';
+          orderQty = reorderPoint - stock + safetyStock;
+        } else {
+          status = 'OK';
+          statusClass = 'status-ok';
+          orderQty = 0;
+        }
+        
+        results.push({
+          name, usage, leadTime, safetyDays, stock,
+          reorderPoint, leadTimeStock, safetyStock,
+          status, statusClass, orderQty: Math.ceil(orderQty)
+        });
+      });
+      
+      // 結果表示
+      const resultsContainer = document.getElementById('bulkResultRows');
+      resultsContainer.innerHTML = results.map(r => `
+        <div class="item-row">
+          <div>${r.name}</div>
+          <div><strong>${r.reorderPoint}</strong> 個</div>
+          <div>${r.stock} 個</div>
+          <div>${r.orderQty > 0 ? r.orderQty + ' 個' : '-'}</div>
+          <div><span class="status-indicator ${r.statusClass}">${r.status}</span></div>
+          <div></div>
+        </div>
+      `).join('');
+      
+      document.getElementById('bulkResults').style.display = 'block';
+      window.bulkResults = results;
+      
+      // GA4イベント
+      if (typeof gtag === 'function') {
+        gtag('event', 'calculate_reorder_point', {
+          'event_category': 'tool_usage',
+          'event_label': 'bulk_calculation',
+          'item_count': results.length
+        });
+      }
+    }
+    
+    // CSV出力
+    function exportCSV() {
+      if (!window.bulkResults || window.bulkResults.length === 0) {
+        alert('先に計算を実行してください');
+        return;
+      }
+      
+      const headers = ['薬品名', '使用量/日', 'リードタイム', '安全日数', '現在庫', '発注点', 'リードタイム在庫', '安全在庫', '在庫状況', '推奨発注量'];
+      const csv = [
+        headers.join(','),
+        ...window.bulkResults.map(r => [
+          r.name, r.usage, r.leadTime, r.safetyDays, r.stock,
+          r.reorderPoint, r.leadTimeStock, r.safetyStock, r.status, r.orderQty
+        ].join(','))
+      ].join('\n');
+      
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `発注点計算_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+    }
+    
+    // クリップボードコピー
+    function copyToClipboard() {
+      if (!window.bulkResults || window.bulkResults.length === 0) {
+        alert('先に計算を実行してください');
+        return;
+      }
+      
+      const text = window.bulkResults.map(r => 
+        `${r.name}\t発注点:${r.reorderPoint}\t在庫:${r.stock}\t${r.status}\t推奨:${r.orderQty}`
+      ).join('\n');
+      
+      navigator.clipboard.writeText(text).then(() => {
+        alert('クリップボードにコピーしました');
+      });
+    }
+  </script>
+  
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // gtag('config', 'G-XXXXXXXXXX'); // 実際のIDに置換
+  </script>
+</body>
+</html>
