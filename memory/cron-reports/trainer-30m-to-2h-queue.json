@@ -1,6 +1,53 @@
 {
-  "lastUpdated": "2026-03-10T21:52:00+09:00",
+  "lastUpdated": "2026-03-11T09:09:00+09:00",
   "reports": [
+    {
+      "timestamp": "2026-03-11T09:09:00+09:00",
+      "source": "sidebiz-30m-maintenance",
+      "status": "alert",
+      "summary": {
+        "status": "alert",
+        "monitor": {
+          "scope": 25,
+          "ok": 22,
+          "ng": 3,
+          "major": [
+            "https://yusuketakuma.github.io/pharma-medication-guidance/",
+            "https://yusuketakuma.github.io/pharma-renal-dose/",
+            "https://yusuketakuma.github.io/pharma-medication-reminder/"
+          ]
+        },
+        "handoff": {
+          "reproductionSteps": [
+            "各NGURLをブラウザ直接開くと即404",
+            "portal/関連記事導線から遷移しても同条件で到達失敗"
+          ],
+          "impact": "高: 主要到達導線3件停止 / 中: portal回遊ノイズ増加",
+          "workarounds": "guidance・renal-doseは到達可能ツールへの暫定代替可。reminderは公開先未確定。",
+          "monitoringPoints": [
+            "major 3URLを監視継続",
+            "major/noise 分離ルールを整備"
+          ]
+        },
+        "nextActions": [
+          "guidance/renal-dose/reminder の公開方針確定と portal・関連記事同時更新",
+          "major/noise 分離監査ルール更新",
+          "旧URL混在棚卸しを次サイクルタスク化"
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "guidance/renal-dose/reminder の公開先および代替運用の承認"
+          ],
+          "selfExecutable": [
+            "major/noise定義を監査テンプレへ反映"
+          ]
+        },
+        "learningPoints": [
+          "主要導線公開方針を明文化してからリンク更新を実施することが必須",
+          "依存監査はmajorのみを即時アラート化しノイズ排除を優先"
+        ]
+      }
+    },
     {
       "timestamp": "2026-03-10T21:52:00+09:00",
       "source": "sidebiz-30m-report-to-trainer",

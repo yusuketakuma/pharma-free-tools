@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年度調剤報酬改定対応診断 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="2026年度調剤報酬改定への対応状況を5領域20問で診断。医療DX推進体制整備加算・調剤物価対応料・在宅医療評価の準備度を可視化し、改善ポイントを特定します。">
+    <meta name="keywords" content="調剤報酬改定,2026年度,医療DX推進体制整備加算,調剤物価対応料,薬局DX,業務効率化,薬剤師">
+    
+    <!-- OGP -->
+    <meta property="og:title" content="2026年度調剤報酬改定対応診断 | 薬剤師向け無料ツール">
+    <meta property="og:description" content="2026年度調剤報酬改定への対応状況を5領域20問で診断。医療DX推進体制整備加算・調剤物価対応料・在宅医療評価の準備度を可視化。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-dispensing-fee-revision-diagnosis.html">
+    
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "2026年度調剤報酬改定対応診断",
+        "description": "2026年度調剤報酬改定への対応状況を5領域20問で診断する無料ツール",
+        "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-dispensing-fee-revision-diagnosis.html",
+        "applicationCategory": "MedicalApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "薬剤師ゆうすけ"
+        }
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .intro {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .intro h2 {
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .intro ul {
+            margin-left: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .category {
+            margin-bottom: 30px;
+        }
+        
+        .category-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .question-text {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .option input {
+            display: none;
+        }
+        
+        .option-label {
+            font-size: 14px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result {
+            display: none;
+            padding: 30px;
+        }
+        
+        .score-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .total-score {
+            font-size: 60px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .score-label {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .category-scores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .category-score {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .category-score-title {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .category-score-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .diagnosis {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .diagnosis h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .diagnosis ul {
+            margin-left: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .improvements {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .improvements h3 {
+            color: #856404;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .improvements ul {
+            margin-left: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-section h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .cta-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .category-scores {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 2026年度調剤報酬改定対応診断</h1>
+            <p>5領域20問で改定対応準備度を可視化</p>
+        </div>
+        
+        <div class="content" id="questionnaire">
+            <div class="intro">
+                <h2>この診断でわかること</h2>
+                <ul>
+                    <li>医療DX推進体制整備加算の取得準備度</li>
+                    <li>調剤物価対応料の満額算定可能性</li>
+                    <li>在宅医療評価の体制整備状況</li>
+                    <li>対物業務→対人業務転換の進捗度</li>
+                    <li>3年間猶予期間での改善優先順位</li>
+                </ul>
+            </div>
+            
+            <!-- Category 1: 医療DX推進体制整備 -->
+            <div class="category">
+                <div class="category-title">🏥 1. 医療DX推進体制整備加算</div>
+                
+                <div class="question">
+                    <div class="question-text">Q1. 電子薬歴システムを導入していますか？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="1"><span class="option-label">未導入</span></label>
+                        <label class="option"><input type="radio" name="q1" value="2"><span class="option-label">一部導入</span></label>
+                        <label class="option"><input type="radio" name="q1" value="3"><span class="option-label">完全導入済み</span></label>
+                        <label class="option"><input type="radio" name="q1" value="4"><span class="option-label">完全導入+AI活用</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q2. 重複投薬チェックシステムを導入していますか？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="1"><span class="option-label">手動確認のみ</span></label>
+                        <label class="option"><input type="radio" name="q2" value="2"><span class="option-label">簡易システム</span></label>
+                        <label class="option"><input type="radio" name="q2" value="3"><span class="option-label">自動チェック導入</span></label>
+                        <label class="option"><input type="radio" name="q2" value="4"><span class="option-label">自動+アラート機能</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q3. オンライン服薬指導の体制は整っていますか？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="1"><span class="option-label">未整備</span></label>
+                        <label class="option"><input type="radio" name="q3" value="2"><span class="option-label">準備中</span></label>
+                        <label class="option"><input type="radio" name="q3" value="3"><span class="option-label">実施可能</span></label>
+                        <label class="option"><input type="radio" name="q3" value="4"><span class="option-label">積極実施中</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q4. 患者向けお薬手帳アプリとの連携状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="1"><span class="option-label">未連携</span></label>
+                        <label class="option"><input type="radio" name="q4" value="2"><span class="option-label">一部連携</span></label>
+                        <label class="option"><input type="radio" name="q4" value="3"><span class="option-label">標準連携</span></label>
+                        <label class="option"><input type="radio" name="q4" value="4"><span class="option-label">積極活用中</span></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 2: 調剤物価対応 -->
+            <div class="category">
+                <div class="category-title">💰 2. 調剤物価対応料</div>
+                
+                <div class="question">
+                    <div class="question-text">Q5. 業務効率化（対物業務削減）の進捗は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="1"><span class="option-label">未着手</span></label>
+                        <label class="option"><input type="radio" name="q5" value="2"><span class="option-label">計画段階</span></label>
+                        <label class="option"><input type="radio" name="q5" value="3"><span class="option-label">部分的実施</span></label>
+                        <label class="option"><input type="radio" name="q5" value="4"><span class="option-label">大幅削減達成</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q6. 調剤機器（自動分包機等）の導入状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="1"><span class="option-label">未導入</span></label>
+                        <label class="option"><input type="radio" name="q6" value="2"><span class="option-label">一部導入</span></label>
+                        <label class="option"><input type="radio" name="q6" value="3"><span class="option-label">標準導入</span></label>
+                        <label class="option"><input type="radio" name="q6" value="4"><span class="option-label">高度自動化</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q7. 在庫管理システムの自動化状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="1"><span class="option-label">手動管理</span></label>
+                        <label class="option"><input type="radio" name="q7" value="2"><span class="option-label">簡易システム</span></label>
+                        <label class="option"><input type="radio" name="q7" value="3"><span class="option-label">自動発注導入</span></label>
+                        <label class="option"><input type="radio" name="q7" value="4"><span class="option-label">AI予測活用</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q8. R9年6月の200%満額算定に向けた計画は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="1"><span class="option-label">未検討</span></label>
+                        <label class="option"><input type="radio" name="q8" value="2"><span class="option-label">認識のみ</span></label>
+                        <label class="option"><input type="radio" name="q8" value="3"><span class="option-label">計画作成中</span></label>
+                        <label class="option"><input type="radio" name="q8" value="4"><span class="option-label">実行計画確定</span></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 3: 在宅医療評価 -->
+            <div class="category">
+                <div class="category-title">🏠 3. 在宅医療評価</div>
+                
+                <div class="question">
+                    <div class="question-text">Q9. 在宅訪問薬剤管理指導の実施状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="1"><span class="option-label">未実施</span></label>
+                        <label class="option"><input type="radio" name="q9" value="2"><span class="option-label">準備中</span></label>
+                        <label class="option"><input type="radio" name="q9" value="3"><span class="option-label">実施中</span></label>
+                        <label class="option"><input type="radio" name="q9" value="4"><span class="option-label">積極拡大中</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q10. 医師薬剤師同時訪問（300点）への対応準備は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q10" value="1"><span class="option-label">未検討</span></label>
+                        <label class="option"><input type="radio" name="q10" value="2"><span class="option-label">情報収集中</span></label>
+                        <label class="option"><input type="radio" name="q10" value="3"><span class="option-label">体制構築中</span></label>
+                        <label class="option"><input type="radio" name="q10" value="4"><span class="option-label">実施準備完了</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q11. 在宅DX（計画書・報告書デジタル化）の進捗は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q11" value="1"><span class="option-label">紙のみ</span></label>
+                        <label class="option"><input type="radio" name="q11" value="2"><span class="option-label">一部デジタル</span></label>
+                        <label class="option"><input type="radio" name="q11" value="3"><span class="option-label">標準デジタル</span></label>
+                        <label class="option"><input type="radio" name="q11" value="4"><span class="option-label">完全デジタル化</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q12. ポリファーマシー・残薬問題への取り組み状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q12" value="1"><span class="option-label">未着手</span></label>
+                        <label class="option"><input type="radio" name="q12" value="2"><span class="option-label">認識のみ</span></label>
+                        <label class="option"><input type="radio" name="q12" value="3"><span class="option-label">取り組み開始</span></label>
+                        <label class="option"><input type="radio" name="q12" value="4"><span class="option-label">積極実施中</span></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 4: 対人業務転換 -->
+            <div class="category">
+                <div class="category-title">👥 4. 対物→対人業務転換</div>
+                
+                <div class="question">
+                    <div class="question-text">Q13. 服薬指導時間の確保状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q13" value="1"><span class="option-label">不足</span></label>
+                        <label class="option"><input type="radio" name="q13" value="2"><span class="option-label">やや不足</span></label>
+                        <label class="option"><input type="radio" name="q13" value="3"><span class="option-label">確保できている</span></label>
+                        <label class="option"><input type="radio" name="q13" value="4"><span class="option-label">十分に確保</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q14. 服薬フォローアップの実施状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q14" value="1"><span class="option-label">未実施</span></label>
+                        <label class="option"><input type="radio" name="q14" value="2"><span class="option-label">一部実施</span></label>
+                        <label class="option"><input type="radio" name="q14" value="3"><span class="option-label">標準実施</span></label>
+                        <label class="option"><input type="radio" name="q14" value="4"><span class="option-label">積極実施中</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q15. 地域連携（多職種連携）の取り組み状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q15" value="1"><span class="option-label">未着手</span></label>
+                        <label class="option"><input type="radio" name="q15" value="2"><span class="option-label">情報収集中</span></label>
+                        <label class="option"><input type="radio" name="q15" value="3"><span class="option-label">連携開始</span></label>
+                        <label class="option"><input type="radio" name="q15" value="4"><span class="option-label">密接連携中</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q16. かかりつけ薬剤師制度の活用状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q16" value="1"><span class="option-label">未活用</span></label>
+                        <label class="option"><input type="radio" name="q16" value="2"><span class="option-label">認識のみ</span></label>
+                        <label class="option"><input type="radio" name="q16" value="3"><span class="option-label">活用中</span></label>
+                        <label class="option"><input type="radio" name="q16" value="4"><span class="option-label">積極活用中</span></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 5: 組織体制 -->
+            <div class="category">
+                <div class="category-title">📊 5. 組織・経営体制</div>
+                
+                <div class="question">
+                    <div class="question-text">Q17. 調剤報酬改定の情報収集頻度は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q17" value="1"><span class="option-label">不定期</span></label>
+                        <label class="option"><input type="radio" name="q17" value="2"><span class="option-label">月1回程度</span></label>
+                        <label class="option"><input type="radio" name="q17" value="3"><span class="option-label">週1回程度</span></label>
+                        <label class="option"><input type="radio" name="q17" value="4"><span class="option-label">毎日チェック</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q18. スタッフ教育・研修の実施頻度は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q18" value="1"><span class="option-label">ほぼなし</span></label>
+                        <label class="option"><input type="radio" name="q18" value="2"><span class="option-label">年数回</span></label>
+                        <label class="option"><input type="radio" name="q18" value="3"><span class="option-label">月1回</span></label>
+                        <label class="option"><input type="radio" name="q18" value="4"><span class="option-label">週1回以上</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q19. 業務改善PDCAサイクルの回転状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q19" value="1"><span class="option-label">未実施</span></label>
+                        <label class="option"><input type="radio" name="q19" value="2"><span class="option-label">不定期</span></label>
+                        <label class="option"><input type="radio" name="q19" value="3"><span class="option-label">月次実施</span></label>
+                        <label class="option"><input type="radio" name="q19" value="4"><span class="option-label">週次実施</span></label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">Q20. 3年後の薬局像の明確化状況は？</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q20" value="1"><span class="option-label">未検討</span></label>
+                        <label class="option"><input type="radio" name="q20" value="2"><span class="option-label">漠然とイメージ</span></label>
+                        <label class="option"><input type="radio" name="q20" value="3"><span class="option-label">方向性決定</span></label>
+                        <label class="option"><input type="radio" name="q20" value="4"><span class="option-label">詳細計画策定済</span></label>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitBtn" onclick="calculateResult()">診断結果を見る</button>
+        </div>
+        
+        <div class="result" id="result">
+            <div class="score-container">
+                <div class="total-score" id="totalScore">0</div>
+                <div class="score-label">/ 80点</div>
+            </div>
+            
+            <div class="category-scores" id="categoryScores"></div>
+            
+            <div class="diagnosis" id="diagnosis"></div>
+            
+            <div class="improvements" id="improvements"></div>
+        </div>
+        
+        <div class="cta-section">
+            <h3>🚀 業務効率化をさらに加速させる</h3>
+            <p>薬剤師向けAI活用プロンプト集で、薬歴作成・服薬指導・業務改善を効率化</p>
+            <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="cta-btn">無料ツール一覧を見る</a>
+        </div>
+        
+        <div class="footer">
+            © 2026 薬剤師ゆうすけ | <a href="https://yusuketakuma.github.io/pharma-free-tools/">無料ツール一覧</a>
+        </div>
+    </div>
+    
+    <script>
+        // Track CTA clicks
+        document.querySelectorAll('.cta-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'cta_click', {
+                        'event_category': 'engagement',
+                        'event_label': 'dispensing_fee_revision_diagnosis_cta'
+                    });
+                }
+            });
+        });
+        
+        // Option selection
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const name = this.querySelector('input').name;
+                document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
+                    inp.closest('.option').classList.remove('selected');
+                });
+                this.classList.add('selected');
+                this.querySelector('input').checked = true;
+            });
+        });
+        
+        function calculateResult() {
+            const totalQuestions = 20;
+            let answered = 0;
+            let totalScore = 0;
+            
+            const categories = {
+                '医療DX推進': { questions: [1,2,3,4], score: 0 },
+                '調剤物価対応': { questions: [5,6,7,8], score: 0 },
+                '在宅医療評価': { questions: [9,10,11,12], score: 0 },
+                '対人業務転換': { questions: [13,14,15,16], score: 0 },
+                '組織・経営体制': { questions: [17,18,19,20], score: 0 }
+            };
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    answered++;
+                    const score = parseInt(selected.value);
+                    totalScore += score;
+                    
+                    // Category scoring
+                    for (const [catName, catData] of Object.entries(categories)) {
+                        if (catData.questions.includes(i)) {
+                            catData.score += score;
+                        }
+                    }
+                }
+            }
+            
+            if (answered < totalQuestions) {
+                alert('すべての質問に回答してください');
+                return;
+            }
+            
+            // Display results
+            document.getElementById('questionnaire').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            
+            // Animate score
+            let currentScore = 0;
+            const scoreElement = document.getElementById('totalScore');
+            const interval = setInterval(() => {
+                currentScore += 1;
+                scoreElement.textContent = currentScore;
+                if (currentScore >= totalScore) {
+                    clearInterval(interval);
+                }
+            }, 30);
+            
+            // Category scores
+            let categoryHTML = '';
+            for (const [catName, catData] of Object.entries(categories)) {
+                const percentage = Math.round((catData.score / 16) * 100);
+                categoryHTML += `
+                    <div class="category-score">
+                        <div class="category-score-title">${catName}</div>
+                        <div class="category-score-value">${catData.score}/16</div>
+                    </div>
+                `;
+            }
+            document.getElementById('categoryScores').innerHTML = categoryHTML;
+            
+            // Diagnosis
+            let diagnosisHTML = '<h3>📋 診断結果</h3><ul>';
+            let level = '';
+            
+            if (totalScore >= 65) {
+                level = '【優秀】改定対応準備完了';
+                diagnosisHTML += '<li>2026年度調剤報酬改定への対応準備は十分です</li>';
+                diagnosisHTML += '<li>満額算定に向けた取り組みが順調に進んでいます</li>';
+                diagnosisHTML += '<li>他薬局のモデルケースになる可能性があります</li>';
+            } else if (totalScore >= 50) {
+                level = '【良好】一部改善余地あり';
+                diagnosisHTML += '<li>基本的な対応準備はできています</li>';
+                diagnosisHTML += '<li>特定領域での強化が必要です</li>';
+                diagnosisHTML += '<li>3年間猶予期間を活用した段階的改善を推奨</li>';
+            } else if (totalScore >= 35) {
+                level = '【要注意】早急な改善が必要';
+                diagnosisHTML += '<li>複数領域での準備不足が見られます</li>';
+                diagnosisHTML += '<li>優先順位を付けて段階的に改善を進めてください</li>';
+                diagnosisHTML += '<li>外部支援や研修の活用を検討してください</li>';
+            } else {
+                level = '【緊急】抜本的な見直しが必要';
+                diagnosisHTML += '<li>多くの領域で準備が不足しています</li>';
+                diagnosisHTML += '<li>経営陣を含めた緊急の対策会議が必要です</li>';
+                diagnosisHTML += '<li>専門家のアドバイスを受けることを強く推奨します</li>';
+            }
+            diagnosisHTML += '</ul>';
+            document.getElementById('diagnosis').innerHTML = diagnosisHTML;
+            
+            // Improvements
+            let improvementsHTML = '<h3>🔧 優先改善ポイント</h3><ul>';
+            
+            // Sort categories by score
+            const sortedCategories = Object.entries(categories).sort((a, b) => a[1].score - b[1].score);
+            
+            const improvementSuggestions = {
+                '医療DX推進': [
+                    '電子薬歴システムの早期導入',
+                    '重複投薬チェックシステムの自動化',
+                    'オンライン服薬指導体制の整備',
+                    '患者向けアプリとの連携強化'
+                ],
+                '調剤物価対応': [
+                    '対物業務の棚卸しと効率化計画',
+                    '調剤機器導入の費用対効果検討',
+                    '在庫管理の自動化推進',
+                    'R9年6月満額算定に向けたロードマップ作成'
+                ],
+                '在宅医療評価': [
+                    '在宅訪問体制の構築',
+                    '医師薬剤師同時訪問の実施準備',
+                    '在宅DX（デジタル化）の推進',
+                    'ポリファーマシー対策の強化'
+                ],
+                '対人業務転換': [
+                    '服薬指導時間の確保',
+                    '服薬フォローアップの実施',
+                    '多職種連携の強化',
+                    'かかりつけ薬剤師制度の活用'
+                ],
+                '組織・経営体制': [
+                    '改定情報の定期収集体制',
+                    'スタッフ教育・研修の強化',
+                    '業務改善PDCAサイクルの確立',
+                    '3年後薬局像の明確化'
+                ]
+            };
+            
+            // Show top 3 improvement areas
+            for (let i = 0; i < 3 && i < sortedCategories.length; i++) {
+                const [catName, catData] = sortedCategories[i];
+                if (catData.score < 12) {
+                    improvementsHTML += `<li><strong>${catName}:</strong> ${improvementSuggestions[catName][0]}</li>`;
+                }
+            }
+            
+            improvementsHTML += '</ul>';
+            document.getElementById('improvements').innerHTML = improvementsHTML;
+            
+            // Scroll to results
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+</body>
+</html>
