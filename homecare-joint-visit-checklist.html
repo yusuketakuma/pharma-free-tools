@@ -449,11 +449,30 @@
         <div class="cta-section">
             <div class="cta-title">🚀 在宅医療業務をもっと効率化しませんか？</div>
             <p class="cta-text">薬剤師向けAIプロンプト集で、薬歴作成・患者説明・報告書作成を時短。50種類以上の無料ツールで業務改善をサポート。</p>
-            <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn" target="_blank">無料ツール一覧を見る →</a>
+            <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn" target="_blank" onclick="trackCTAClick('homecare_joint_visit_checklist_cta')">無料ツール一覧を見る →</a>
         </div>
     </div>
     
     <script>
+        // GA4 Event Tracking
+        function trackToolUsage(action, label) {
+            if (typeof gtag === 'function') {
+                gtag('event', action, {
+                    'event_category': 'tool_usage',
+                    'event_label': label || 'homecare_joint_visit_checklist'
+                });
+            }
+        }
+
+        function trackCTAClick(buttonName) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'cta_click', {
+                    'event_category': 'engagement',
+                    'event_label': buttonName
+                });
+            }
+        }
+
         const totalItems = 15;
         
         function updateProgress() {
@@ -505,6 +524,14 @@
             
             // Save to localStorage
             saveState();
+
+            // Track tool usage when items are checked
+            if (checkedCount > 0 && checkedCount % 5 === 0) {
+                trackToolUsage('checklist_progress', 'homecare_joint_visit_checklist_' + checkedCount + '_items');
+            }
+            if (checkedCount === 15) {
+                trackToolUsage('checklist_complete', 'homecare_joint_visit_checklist');
+            }
         }
         
         function saveState() {
