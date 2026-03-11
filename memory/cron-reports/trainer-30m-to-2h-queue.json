@@ -1,6 +1,131 @@
 {
-  "lastUpdated": "2026-03-11T12:17:00+09:00",
+  "lastUpdated": "2026-03-11T20:26:00+09:00",
   "reports": [
+    {
+      "timestamp": "2026-03-11T18:08:00+09:00",
+      "source": "homecare-30m-assign",
+      "status": "done",
+      "summary": {
+        "status": "done",
+        "tasks": [
+          {
+            "name": "経過措置患者抽出チェックリスト修正",
+            "result": "完了",
+            "detail": "成分リストが誤って指定濫用防止医薬品の8成分になっていたため、経過措置優先3成分（リラグルチド、アモキサピン、トラニラスト）に修正"
+          },
+          {
+            "name": "情報源可用性確認",
+            "result": "阻害あり",
+            "detail": "CloseDi DNS解決不可、web_search API制限到達、代替情報源（おじさん薬剤師の日記）404"
+          }
+        ],
+        "alerts": [
+          {
+            "type": "info",
+            "item": "経過措置医薬品患者抽出",
+            "deadline": "2026-03-31",
+            "daysRemaining": 20,
+            "status": "チェックリスト修正完了、抽出実施待ち（ゆうすけ依存）"
+          },
+          {
+            "type": "info",
+            "item": "指定濫用防止医薬品",
+            "deadline": "2026-05-01",
+            "daysRemaining": 51,
+            "status": "チェックリスト完成済み、施行まで余裕あり"
+          }
+        ],
+        "nextActions": [
+          "ゆうすけへの患者抽出リマインド（trainer経由で共有）",
+          "CloseDi DNS回復確認（次サイクル）",
+          "代替情報源の探索"
+        ],
+        "blockers": [
+          {
+            "item": "CloseDiアクセス",
+            "status": "DNS解決不可",
+            "removalCondition": "DNS回復待ち"
+          },
+          {
+            "item": "web_search API",
+            "status": "月額制限到達",
+            "removalCondition": "翌月リセットまたはプラン変更"
+          },
+          {
+            "item": "経過措置患者抽出",
+            "status": "ゆうすけ操作依存",
+            "removalCondition": "MedicalCareStation手動操作"
+          }
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "MedicalCareStationアクセス権限（ゆうすけ）",
+            "CloseDi安定アクセス（DNS回復）"
+          ],
+          "selfExecutable": [
+            "チェックリスト整備・修正",
+            "内部記録更新"
+          ]
+        },
+        "learningPoints": [
+          {
+            "point": "チェックリスト作成時の内容誤り防止",
+            "detail": "別タスクの成分リストを誤コピーしていた。二重確認フローまたは成分名とタスク名の照合を追加すべき",
+            "priority": "中"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-03-11T16:58:00+09:00",
+      "source": "sidebiz-30m-maintenance",
+      "status": "alert",
+      "summary": {
+        "status": "alert",
+        "monitor": {
+          "scope": 25,
+          "ok": 22,
+          "ng": 3,
+          "major": [
+            "https://yusuketakuma.github.io/pharma-medication-guidance/",
+            "https://yusuketakuma.github.io/pharma-renal-dose/",
+            "https://yusuketakuma.github.io/pharma-medication-reminder/"
+          ]
+        },
+        "handoff": {
+          "reproductionSteps": [
+            "3 URLをブラウザ直接GETするとHTTP 404",
+            "portal・関連記事経由導線でも同条件で到達不可",
+            "代替導線は guidance-tool / renal-dose-tool / medication-calendar は200"
+          ],
+          "impact": "高: 主要3導線停止（初回導線喪失） / 中: 旧slug参照51件（guidance21/renal7/reminder23）による回遊離脱リスク",
+          "workarounds": "guidance/renalはtool導線へ即時誘導、reminderはmedication-calendarを暫定表示候補として明示",
+          "monitoringPoints": [
+            "major3URLを継続監視し、12〜30分以内で状態再確認",
+            "旧slug参照数51件を2時間報告へ再分類し、公開前チェックリスト化"
+          ]
+        },
+        "nextActions": [
+          "guidance/renal-dose/reminder の公開方針を即時確定し、portal・関連記事を同一サイクル更新",
+          "reminder暫定導線（medication-calendar）か停止案内の表記を固定し、導線分岐を単一化",
+          "旧slug参照をカテゴリ別に棚卸し、2時間サイクルで再発防止タスク化"
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "guidance / renal-dose / reminder の最終公開方針決裁",
+            "GitHub Pages編集・再デプロイ権限"
+          ],
+          "selfExecutable": [
+            "major/noise分離監査ルールの運用維持",
+            "旧slug参照一覧の毎サイクル更新"
+          ]
+        },
+        "learningPoints": [
+          "公開方針未確定時のslug差分は major導線停止に直結しやすい。方針確定→同一サイクル同時反映をルール化すべき。",
+          "major/noise分離により、重大障害は即時通報しつつ低緊急事項は2h報告へ集約し運用ノイズを下げられる。"
+        ]
+      }
+    },
     {
       "timestamp": "2026-03-11T12:17:00+09:00",
       "source": "sidebiz-30m-maintenance",
@@ -209,6 +334,164 @@
           "RICE Framework採用: 科学的優先順位付けで意思決定品質向上",
           "Impact Scoring Framework: Critical/High/Medium/Lowの4段階分類が実務で使いやすい",
           "代替手段の早期確立: DNS障害長期化時はweb_searchを第一選択化"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-03-11T18:26:00+09:00",
+      "source": "sidebiz-30m-maintenance",
+      "status": "alert",
+      "summary": {
+        "status": "alert",
+        "monitor": {
+          "scope": 25,
+          "ok": 22,
+          "ng": 3,
+          "major": [
+            "https://yusuketakuma.github.io/pharma-medication-guidance/",
+            "https://yusuketakuma.github.io/pharma-renal-dose/",
+            "https://yusuketakuma.github.io/pharma-medication-reminder/"
+          ]
+        },
+        "handoff": {
+          "reproductionSteps": [
+            "上記3URLをブラウザで直接GET → 即時HTTP 404",
+            "portal/indexなど既知導線から辿っても同3URLへ到達すると404",
+            "代替のtool系 (`medication-guidance-tool`, `renal-dose-tool`) と `medication-calendar` は200"
+          ],
+          "impact": "高: 主要3導線停止（初回導線で到達不可）。中: 旧slug参照（guidance21 / renal7 / reminder23 件、計51）が残存し、portal/関連記事経由の回遊離脱リスクが継続",
+          "workarounds": "guidance/renalはtool版導線へ即時誘導。reminderは暫定としてmedication-calendarを案内（方針固定化が前提）",
+          "monitoringPoints": [
+            "major3URLを30分以内に再確認し、状態が変われば緊急エスカレーション",
+            "旧slug参照の高頻度ページを再分類し2時間報告で恒久タスク化"
+          ]
+        },
+        "nextActions": [
+          "guidance / renal-dose / reminder の公開方針を部長経由で即時確定",
+          "方針確定後、portalと関連記事導線の旧URL差替えを同一サイクルで反映",
+          "認証・データ保持面の追加観測（保存先/期限切れ）を次回30分で追加サンプル取得"
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "guidance / renal-dose / reminder の公開方針最終承認（trainer）",
+            "GitHub Pages編集・再デプロイ実行権限"
+          ],
+          "selfExecutable": [
+            "監視結果の継続更新",
+            "major/noise分離ルールの維持"
+          ]
+        },
+        "learningPoints": [
+          "公開方針未確定時のslug変更はmajorを同時停止させやすい。方針確定→同一サイクル反映を運用品質ルールに明文化すべき。",
+          "主要導線障害と低優先度リンク混在は分離報告するとノイズを抑えつつ再発防止へ繋げやすい。"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-03-11T18:59:00+09:00",
+      "source": "sidebiz-30m-maintenance",
+      "status": "alert",
+      "summary": {
+        "status": "alert",
+        "monitor": {
+          "scope": 25,
+          "ok": 22,
+          "ng": 3,
+          "major": [
+            "https://yusuketakuma.github.io/pharma-medication-guidance/",
+            "https://yusuketakuma.github.io/pharma-renal-dose/",
+            "https://yusuketakuma.github.io/pharma-medication-reminder/"
+          ]
+        },
+        "handoff": {
+          "reproductionSteps": [
+            "3 URLをブラウザで直接GET/Openして即時HTTP 404",
+            "portal・関連記事等主要導線から同3URLへ遷移しても到達不可",
+            "代替として guidance-tool / renal-dose-tool / medication-calendar は200到達（到達自体は可能）"
+          ],
+          "impact": "高: 主要3導線停止（初回導線喪失）。中: 旧slug参照51件による回遊離脱リスク継続。",
+          "workarounds": "guidance/renalは`...-tool`へ即時誘導、reminderは`medication-calendar`暫定代替を方針固定で統一表示。",
+          "monitoringPoints": [
+            "major3URLを30分以内に再確認し、状態変化あれば即時エスカレーション",
+            "旧slug混在（guidance21/renal7/reminder23）を2時間報告へ恒久タスクとして再分類"
+          ]
+        },
+        "nextActions": [
+          "guidance/renal-dose/reminder の公開方針をtrainerで即時確定する",
+          "方針確定後、portal・関連記事の古い導線を同一サイクルで整合更新",
+          "reminder代替先（medication-calendar）を固定し、未確定のまま分岐文言を残さない運用を明文化"
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "guidance / renal-dose / reminder の最終公開方針承認",
+            "GitHub Pages編集・再デプロイ権限（trainer承認）"
+          ],
+          "selfExecutable": [
+            "major/noise分離監視ルール維持",
+            "link_audit（旧slug監査）を毎サイクル更新"
+          ]
+        },
+        "learningPoints": [
+          "公開方針未確定のままslug差替えが続くと、3点同時停止のmajorリスクが継続しやすい。majorは原則即時エスカレーションし同一サイクルで方針・リンク反映を実施する必要がある。",
+          "代替導線が到達可能でも、初回導線が落ちている状態を放置すると、回遊型導線のノイズや離脱に直結するため、2h報告前の30m継続監視を厳守する。"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-03-11T20:26:00+09:00",
+      "source": "sidebiz-30m-maintenance",
+      "status": "alert",
+      "summary": {
+        "status": "alert",
+        "monitor": {
+          "scope": 25,
+          "ok": 22,
+          "ng": 3,
+          "major": [
+            "https://yusuketakuma.github.io/pharma-medication-guidance/",
+            "https://yusuketakuma.github.io/pharma-renal-dose/",
+            "https://yusuketakuma.github.io/pharma-medication-reminder/"
+          ],
+          "portalExternalUrlCount": 26,
+          "historicalMonitorUrlCount": 25,
+          "coverageGapUrls": [
+            "https://yusuketakuma.github.io/pharma-efficiency-diagnosis-v2/",
+            "https://yusuketakuma.github.io/pharma-medication-guidance-tool/",
+            "https://yusuketakuma.github.io/pharma-renal-dose-tool/",
+            "https://yusuketakuma.github.io/promo-ai-prompts-lp/"
+          ]
+        },
+        "handoff": {
+          "reproductionSteps": [
+            "旧slug 3URLをブラウザ/GETで直接開くと即時HTTP 404",
+            "portal・関連記事経由でも同3URLへの遷移は到達不可",
+            "未監視だった現行portal 4URLは直接GETで全件200"
+          ],
+          "impact": "高: 旧slug 3導線の404継続 / 中: portal実URLと監視watchlistのズレにより未検知リスクが存在 / 中: 旧slug参照51件による回遊離脱継続",
+          "workarounds": "guidance / renal-dose は tool版へ誘導、reminderは medication-calendar 暫定誘導。監視は portal実URL群とlegacy watch群へ分離する。",
+          "monitoringPoints": [
+            "watchlistを portal実URL26件 + legacy watch3件 に再定義",
+            "旧slug参照51件の高頻度ファイルから優先改修"
+          ]
+        },
+        "nextActions": [
+          "trainer経由で guidance/renal-dose/reminder の公開方針を即時確定",
+          "watchlistを更新し、portal現行URLの監視盲点4件を次サイクルから定常監視へ組み込む",
+          "旧slug参照の高頻度ページから差替えを進める"
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "guidance / renal-dose / reminder の最終公開方針承認",
+            "GitHub Pages編集・再デプロイ実行権限"
+          ],
+          "selfExecutable": [
+            "watchlistファイル整備",
+            "major/noise分離監視継続"
+          ]
+        },
+        "learningPoints": [
+          "監視対象は portal実URL群 と legacy watch 群 を分離しないと、公開面の盲点と旧導線ノイズが同時に増える。",
+          "404 major の暫定回避だけでなく、watchlist更新まで同一サイクルで反映する運用が必要。"
         ]
       }
     }

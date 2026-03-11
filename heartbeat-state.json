@@ -1,0 +1,78 @@
+{
+  "lastChecks": {
+    "email": null,
+    "calendar": null,
+    "weather": null,
+    "homecare30m": 1741690200,
+    "sidebiz30m": 1741711500
+  },
+  "lastHomecare30m": {
+    "timestamp": 1741710600,
+    "date": "2026-03-11T20:30:00+09:00",
+    "status": "alert",
+    "alerts": [
+      "[ALERT] 経過措置医薬品: 3/31期限まで20日・患者抽出未着手（ゆうすけ操作必要）",
+      "[ALERT] 外部情報ソース3件同時アクセス不可（CloseDi DNS障害/PMDA 404/web_search制限）",
+      "[INFO] 指定濫用防止: 5/1施行まで51日・印刷設置4/15予定"
+    ],
+    "completed": [
+      "経過措置患者抽出Phase 1-4チェックリスト作成完了",
+      "Phase 2-4詳細化（テンプレート・FAX雛形・患者説明文例）完了"
+    ],
+    "nextCandidates": [
+      "経過措置患者抽出Phase 1実行リマインド（trainer経由でゆうすけへ共有）",
+      "AI薬歴支援ワークフロー整理",
+      "CloseDi/PMDAアクセス回復確認"
+    ]
+  },
+  "lastSidebiz30m": {
+    "timestamp": 1741711500,
+    "date": "2026-03-11T20:45:00+09:00",
+    "status": "done",
+    "completed": [
+      "ポータルフッター件数修正（57→58）完了",
+      "新規ツール追加チェックリスト作成完了（TOOL-ADD-CHECKLIST.md）"
+    ],
+    "alerts": [
+      "[INFO] ポータル件数整合性: タイトル58/統計58/フッター58で統一完了",
+      "[INFO] tool-card数67個・JSON-LD 61個の乖離残存（要調査・緊急度低）"
+    ],
+    "nextCandidates": [
+      "51ツール目候補選定（需要・実装難易度・収益導線の3軸評価）",
+      "link-checker.sh週次cron化（404予防自動化）",
+      "既存ツール重複チェックスクリプト作成"
+    ],
+    "selfImprovement": {
+      "learningPoints": [
+        "フッター件数の更新忘れが多発→チェックリスト化で予防",
+        "ポータル更新時はタイトル・統計・フッター・JSON-LDを同時更新",
+        "新規ツール追加前のファイル存在確認で404予防"
+      ],
+      "failures": [
+        {
+          "issue": "フッター件数が古い（57）ままだった",
+          "cause": "前回のツール追加時にフッター更新を忘れた",
+          "prevention": "チェックリスト作成で再発防止",
+          "impact": "ユーザー表示の信頼性低下（修正済み）"
+        }
+      ],
+      "improvementProposals": [
+        {
+          "priority": "高",
+          "feasibility": "次サイクル",
+          "proposal": "link-checker.sh週次cron化"
+        },
+        {
+          "priority": "中",
+          "feasibility": "次サイクル",
+          "proposal": "件数自動カウントスクリプト作成"
+        },
+        {
+          "priority": "中",
+          "feasibility": "次サイクル",
+          "proposal": "51ツール目候補選定"
+        }
+      ]
+    }
+  }
+}
