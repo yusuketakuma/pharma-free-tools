@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局自動化ROI診断 - 投資回収期間・収益性を可視化</title>
+  <meta name="description" content="薬局自動化のROI（投資収益率）を診断。導入コスト・削減効果・回収期間を可視化し、投資判断を支援する無料ツール。">
+  <meta name="keywords" content="薬局自動化,ROI,投資収益率,調剤ロボット,自動分包機,薬局DX,業務効率化">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="薬局自動化ROI診断 - 投資回収期間・収益性を可視化">
+  <meta property="og:description" content="薬局自動化のROI（投資収益率）を診断。導入コスト・削減効果・回収期間を可視化。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-automation-roi.html">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "薬局自動化ROI診断",
+    "description": "薬局自動化のROI（投資収益率）を診断する無料ツール",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      color: #11998e;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    
+    .intro {
+      background: #f0fdf4;
+      border-left: 4px solid #11998e;
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .intro h3 {
+      color: #11998e;
+      margin-bottom: 8px;
+    }
+    
+    .questionnaire {
+      margin-bottom: 30px;
+    }
+    
+    .category {
+      margin-bottom: 25px;
+      padding: 20px;
+      background: #fafafa;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .category-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #11998e;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #38ef7d;
+    }
+    
+    .question {
+      margin-bottom: 18px;
+    }
+    
+    .question-text {
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .option {
+      padding: 8px 14px;
+      background: #f5f5f5;
+      border: 2px solid #ddd;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+    
+    .option:hover {
+      background: #e8f5e9;
+      border-color: #11998e;
+    }
+    
+    .option.selected {
+      background: #11998e;
+      color: white;
+      border-color: #11998e;
+    }
+    
+    .calculate-btn {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 30px;
+    }
+    
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+    }
+    
+    .result {
+      display: none;
+      padding: 30px;
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border-radius: 12px;
+      margin-bottom: 25px;
+    }
+    
+    .result.show {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .roi-score {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .roi-number {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #11998e;
+    }
+    
+    .roi-label {
+      font-size: 1.2rem;
+      color: #666;
+    }
+    
+    .payback-period {
+      text-align: center;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .payback-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #38ef7d;
+    }
+    
+    .payback-label {
+      color: #666;
+    }
+    
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .metric {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #11998e;
+    }
+    
+    .metric-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .recommendations {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    
+    .recommendations h4 {
+      color: #11998e;
+      margin-bottom: 15px;
+    }
+    
+    .recommendation {
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #f0fdf4;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      color: white;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 10px;
+    }
+    
+    .cta-section p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 15px;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    
+    .cta-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    footer a {
+      color: #11998e;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💊 薬局自動化ROI診断</h1>
+      <p class="subtitle">投資回収期間・収益性を可視化し、投資判断を支援</p>
+    </header>
+    
+    <div class="intro">
+      <h3>📋 このツールでできること</h3>
+      <p>薬局自動化（調剤ロボット・自動分包機・電子薬歴等）のROI（投資収益率）を診断します。導入コスト・削減効果・回収期間を可視化し、投資判断の根拠を提供します。</p>
+    </div>
+    
+    <form class="questionnaire" id="roiForm">
+      <!-- カテゴリ1: 現状コスト -->
+      <div class="category">
+        <div class="category-title">1️⃣ 現状の運営コスト</div>
+        
+        <div class="question">
+          <div class="question-text">Q1. 1日の平均処方箋枚数は？</div>
+          <div class="options">
+            <div class="option" data-q="1" data-v="1">50枚未満</div>
+            <div class="option" data-q="1" data-v="2">50-100枚</div>
+            <div class="option" data-q="1" data-v="3">100-200枚</div>
+            <div class="option" data-q="1" data-v="4">200-300枚</div>
+            <div class="option" data-q="1" data-v="5">300枚以上</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q2. 調剤・監査にかかる1日の総工数は？</div>
+          <div class="options">
+            <div class="option" data-q="2" data-v="1">4時間未満</div>
+            <div class="option" data-q="2" data-v="2">4-6時間</div>
+            <div class="option" data-q="2" data-v="3">6-8時間</div>
+            <div class="option" data-q="2" data-v="4">8-10時間</div>
+            <div class="option" data-q="2" data-v="5">10時間以上</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q3. 薬剤師の月額人件費（1人あたり）は？</div>
+          <div class="options">
+            <div class="option" data-q="3" data-v="1">40万円未満</div>
+            <div class="option" data-q="3" data-v="2">40-50万円</div>
+            <div class="option" data-q="3" data-v="3">50-60万円</div>
+            <div class="option" data-q="3" data-v="4">60-70万円</div>
+            <div class="option" data-q="3" data-v="5">70万円以上</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q4. 年間の投薬ミス・確認ミスの発生件数は？</div>
+          <div class="options">
+            <div class="option" data-q="4" data-v="1">0-2件</div>
+            <div class="option" data-q="4" data-v="2">3-5件</div>
+            <div class="option" data-q="4" data-v="3">6-10件</div>
+            <div class="option" data-q="4" data-v="4">11-20件</div>
+            <div class="option" data-q="4" data-v="5">20件以上</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- カテゴリ2: 自動化投資 -->
+      <div class="category">
+        <div class="category-title">2️⃣ 自動化投資計画</div>
+        
+        <div class="question">
+          <div class="question-text">Q5. 検討中の自動化機器は？</div>
+          <div class="options">
+            <div class="option" data-q="5" data-v="1">調剤ロボット単体</div>
+            <div class="option" data-q="5" data-v="2">自動分包機単体</div>
+            <div class="option" data-q="5" data-v="3">調剤ロボット+分包機</div>
+            <div class="option" data-q="5" data-v="4">フル自動化ライン</div>
+            <div class="option" data-q="5" data-v="5">未定・調査中</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q6. 想定導入コスト（初期投資）は？</div>
+          <div class="options">
+            <div class="option" data-q="6" data-v="1">500万円未満</div>
+            <div class="option" data-q="6" data-v="2">500-1000万円</div>
+            <div class="option" data-q="6" data-v="3">1000-2000万円</div>
+            <div class="option" data-q="6" data-v="4">2000-3000万円</div>
+            <div class="option" data-q="6" data-v="5">3000万円以上</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q7. 想定年間メンテナンス費用は？</div>
+          <div class="options">
+            <div class="option" data-q="7" data-v="1">50万円未満</div>
+            <div class="option" data-q="7" data-v="2">50-100万円</div>
+            <div class="option" data-q="7" data-v="3">100-150万円</div>
+            <div class="option" data-q="7" data-v="4">150-200万円</div>
+            <div class="option" data-q="7" data-v="5">200万円以上</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- カテゴリ3: 削減効果見込み -->
+      <div class="category">
+        <div class="category-title">3️⃣ 削減効果見込み</div>
+        
+        <div class="question">
+          <div class="question-text">Q8. 調剤時間の削減見込みは？</div>
+          <div class="options">
+            <div class="option" data-q="8" data-v="1">10%未満</div>
+            <div class="option" data-q="8" data-v="2">10-20%</div>
+            <div class="option" data-q="8" data-v="3">20-30%</div>
+            <div class="option" data-q="8" data-v="4">30-40%</div>
+            <div class="option" data-q="8" data-v="5">40%以上</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q9. 投薬ミス削減見込みは？</div>
+          <div class="options">
+            <div class="option" data-q="9" data-v="1">20%未満</div>
+            <div class="option" data-q="9" data-v="2">20-40%</div>
+            <div class="option" data-q="9" data-v="3">40-60%</div>
+            <div class="option" data-q="9" data-v="4">60-80%</div>
+            <div class="option" data-q="9" data-v="5">80%以上</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q10. 在庫管理効率化見込みは？</div>
+          <div class="options">
+            <div class="option" data-q="10" data-v="1">改善なし</div>
+            <div class="option" data-q="10" data-v="2">小幅改善</div>
+            <div class="option" data-q="10" data-v="3">中程度改善</div>
+            <div class="option" data-q="10" data-v="4">大幅改善</div>
+            <div class="option" data-q="10" data-v="5">劇的改善</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- カテゴリ4: 運用環境 -->
+      <div class="category">
+        <div class="category-title">4️⃣ 運用環境・制約</div>
+        
+        <div class="question">
+          <div class="question-text">Q11. 店舗のスペース確保状況は？</div>
+          <div class="options">
+            <div class="option" data-q="11" data-v="1">スペース不足</div>
+            <div class="option" data-q="11" data-v="2">最小限確保可能</div>
+            <div class="option" data-q="11" data-v="3">標準的確保可能</div>
+            <div class="option" data-q="11" data-v="4">十分確保可能</div>
+            <div class="option" data-q="11" data-v="5">余裕あり</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q12. スタッフのIT習熟度は？</div>
+          <div class="options">
+            <div class="option" data-q="12" data-v="1">低い（研修必要）</div>
+            <div class="option" data-q="12" data-v="2">やや低い</div>
+            <div class="option" data-q="12" data-v="3">標準的</div>
+            <div class="option" data-q="12" data-v="4">高い</div>
+            <div class="option" data-q="12" data-v="5">非常に高い</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q13. 導入後のサポート体制は？</div>
+          <div class="options">
+            <div class="option" data-q="13" data-v="1">サポート契約なし</div>
+            <div class="option" data-q="13" data-v="2">基本サポートのみ</div>
+            <div class="option" data-q="13" data-v="3">標準サポート</div>
+            <div class="option" data-q="13" data-v="4">プレミアムサポート</div>
+            <div class="option" data-q="13" data-v="5">フルサポート</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- カテゴリ5: 戦略的価値 -->
+      <div class="category">
+        <div class="category-title">5️⃣ 戦略的価値・将来性</div>
+        
+        <div class="question">
+          <div class="question-text">Q14. 薬剤師不足の深刻度は？</div>
+          <div class="options">
+            <div class="option" data-q="14" data-v="1">問題なし</div>
+            <div class="option" data-q="14" data-v="2">軽微</div>
+            <div class="option" data-q="14" data-v="3">中程度</div>
+            <div class="option" data-q="14" data-v="4">深刻</div>
+            <div class="option" data-q="14" data-v="5">非常に深刻</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q15. 対人業務へのシフト必要性は？</div>
+          <div class="options">
+            <div class="option" data-q="15" data-v="1">不要</div>
+            <div class="option" data-q="15" data-v="2">小程度</div>
+            <div class="option" data-q="15" data-v="3">中程度</div>
+            <div class="option" data-q="15" data-v="4">高程度</div>
+            <div class="option" data-q="15" data-v="5">必須</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q16. 競合薬局の自動化状況は？</div>
+          <div class="options">
+            <div class="option" data-q="16" data-v="1">未導入が多い</div>
+            <div class="option" data-q="16" data-v="2">一部導入</div>
+            <div class="option" data-q="16" data-v="3">標準的に導入</div>
+            <div class="option" data-q="16" data-v="4">多くが導入済み</div>
+            <div class="option" data-q="16" data-v="5">ほぼ全店導入</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q17. 5年後の店舗展開計画は？</div>
+          <div class="options">
+            <div class="option" data-q="17" data-v="1">縮小予定</div>
+            <div class="option" data-q="17" data-v="2">現状維持</div>
+            <div class="option" data-q="17" data-v="3">小幅拡大</div>
+            <div class="option" data-q="17" data-v="4">中規模拡大</div>
+            <div class="option" data-q="17" data-v="5">大規模展開</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- カテゴリ6: 財務指標 -->
+      <div class="category">
+        <div class="category-title">6️⃣ 財務指標・リスク</div>
+        
+        <div class="question">
+          <div class="question-text">Q18. 資金調達の容易さは？</div>
+          <div class="options">
+            <div class="option" data-q="18" data-v="1">困難</div>
+            <div class="option" data-q="18" data-v="2">やや困難</div>
+            <div class="option" data-q="18" data-v="3">標準的</div>
+            <div class="option" data-q="18" data-v="4">容易</div>
+            <div class="option" data-q="18" data-v="5">非常に容易</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q19. 投資回収の目標期間は？</div>
+          <div class="options">
+            <div class="option" data-q="19" data-v="1">1年以内</div>
+            <div class="option" data-q="19" data-v="2">1-2年</div>
+            <div class="option" data-q="19" data-v="3">2-3年</div>
+            <div class="option" data-q="19" data-v="4">3-5年</div>
+            <div class="option" data-q="19" data-v="5">5年以上</div>
+          </div>
+        </div>
+        
+        <div class="question">
+          <div class="question-text">Q20. 技術陳腐化リスクへの懸念は？</div>
+          <div class="options">
+            <div class="option" data-q="20" data-v="1">非常に高い</div>
+            <div class="option" data-q="20" data-v="2">高い</div>
+            <div class="option" data-q="20" data-v="3">中程度</div>
+            <div class="option" data-q="20" data-v="4">低い</div>
+            <div class="option" data-q="20" data-v="5">ほぼなし</div>
+          </div>
+        </div>
+      </div>
+    </form>
+    
+    <button class="calculate-btn" onclick="calculateROI()">📊 ROI診断を実行</button>
+    
+    <div class="result" id="result">
+      <div class="roi-score">
+        <div class="roi-number" id="roiScore">--</div>
+        <div class="roi-label">ROI スコア（100点満点）</div>
+      </div>
+      
+      <div class="payback-period">
+        <div class="payback-value" id="paybackPeriod">--</div>
+        <div class="payback-label">推定投資回収期間</div>
+      </div>
+      
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-value" id="annualSaving">--</div>
+          <div class="metric-label">年間削減効果（万円）</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value" id="costBenefit">--</div>
+          <div class="metric-label">費用対効果比</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value" id="riskLevel">--</div>
+          <div class="metric-label">投資リスクレベル</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value" id="strategicValue">--</div>
+          <div class="metric-label">戦略的価値</div>
+        </div>
+      </div>
+      
+      <div class="recommendations">
+        <h4>💡 推奨アクション</h4>
+        <div id="recommendationList"></div>
+      </div>
+    </div>
+    
+    <div class="cta-section">
+      <h3>🎯 薬局自動化を成功させるには？</h3>
+      <p>AI活用で薬局業務を効率化するプロンプト集を活用し、自動化導入の準備を加速しましょう。</p>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn">AIプロンプト集を確認</a>
+    </div>
+    
+    <footer>
+      <p>薬剤師無料ツール集 - <a href="https://yusuketakuma.github.io/pharma-free-tools/">他57の無料ツールを見る</a></p>
+    </footer>
+  </div>
+  
+  <script>
+    const answers = {};
+    
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', function() {
+        const q = this.dataset.q;
+        const v = parseInt(this.dataset.v);
+        
+        document.querySelectorAll(`.option[data-q="${q}"]`).forEach(opt => {
+          opt.classList.remove('selected');
+        });
+        
+        this.classList.add('selected');
+        answers[q] = v;
+      });
+    });
+    
+    function calculateROI() {
+      const totalQuestions = 20;
+      
+      if (Object.keys(answers).length < totalQuestions) {
+        alert('すべての質問に回答してください');
+        return;
+      }
+      
+      // ROI計算ロジック
+      let roiScore = 0;
+      let annualSaving = 0;
+      let paybackYears = 0;
+      
+      // 現状コストスコア（Q1-4）
+      const costScore = (answers['1'] + answers['2'] + answers['3'] + answers['4']) / 4;
+      
+      // 投資規模スコア（Q5-7）- 逆転（小さい投資ほど高スコア）
+      const investScore = ((6 - answers['5']) + (6 - answers['6']) + (6 - answers['7'])) / 3;
+      
+      // 削減効果スコア（Q8-10）
+      const effectScore = (answers['8'] + answers['9'] + answers['10']) / 3;
+      
+      // 運用環境スコア（Q11-13）
+      const envScore = (answers['11'] + answers['12'] + answers['13']) / 3;
+      
+      // 戦略的価値スコア（Q14-17）
+      const strategyScore = (answers['14'] + answers['15'] + answers['16'] + answers['17']) / 4;
+      
+      // 財務スコア（Q18-20）
+      const financeScore = (answers['18'] + (6 - answers['19']) + answers['20']) / 3;
+      
+      // 総合ROIスコア計算（重み付け）
+      roiScore = Math.round(
+        costScore * 0.2 +
+        investScore * 0.15 +
+        effectScore * 0.25 +
+        envScore * 0.15 +
+        strategyScore * 0.15 +
+        financeScore * 0.1
+      ) * 5;
+      
+      roiScore = Math.min(100, Math.max(0, roiScore));
+      
+      // 年間削減効果推定（簡易計算）
+      const baseCost = answers['3'] * 15; // 月額人件費ベース
+      const timeSaving = answers['8'] / 100;
+      const errorReduction = answers['9'] / 100;
+      annualSaving = Math.round(baseCost * timeSaving * 12 + errorReduction * 50);
+      
+      // 投資回収期間推定
+      const investment = answers['6'] * 750; // 平均投資額推定
+      const maintenance = answers['7'] * 50;
+      const netSaving = Math.max(1, annualSaving - maintenance);
+      paybackYears = (investment / netSaving).toFixed(1);
+      
+      // 費用対効果比
+      const costBenefit = (annualSaving * 5 / Math.max(1, investment)).toFixed(2);
+      
+      // リスクレベル判定
+      let riskLevel = '中';
+      if (roiScore >= 70) riskLevel = '低';
+      else if (roiScore <= 40) riskLevel = '高';
+      
+      // 戦略的価値判定
+      let strategicValue = '標準';
+      if (strategyScore >= 4) strategicValue = '高い';
+      else if (strategyScore <= 2) strategicValue = '低い';
+      
+      // 結果表示
+      document.getElementById('roiScore').textContent = roiScore;
+      document.getElementById('paybackPeriod').textContent = paybackYears + '年';
+      document.getElementById('annualSaving').textContent = annualSaving;
+      document.getElementById('costBenefit').textContent = costBenefit;
+      document.getElementById('riskLevel').textContent = riskLevel;
+      document.getElementById('strategicValue').textContent = strategicValue;
+      
+      // 推奨アクション生成
+      const recommendations = [];
+      
+      if (costScore >= 4) {
+        recommendations.push('✅ 現状コストが高く、自動化のメリットが大きい状況です');
+      }
+      if (effectScore >= 4) {
+        recommendations.push('✅ 削減効果の見込みが高く、ROI改善が期待できます');
+      }
+      if (envScore <= 2) {
+        recommendations.push('⚠️ 運用環境の整備（スペース確保・スタッフ研修）が先決です');
+      }
+      if (strategyScore >= 4) {
+        recommendations.push('✅ 戦略的価値が高く、長期的な競争力強化に寄与します');
+      }
+      if (paybackYears > 5) {
+        recommendations.push('⚠️ 投資回収期間が長めです。段階的導入やリース活用を検討してください');
+      }
+      if (roiScore >= 70) {
+        recommendations.push('🎯 総合的に投資判断がポジティブです。詳細見積取得を推奨');
+      } else if (roiScore <= 40) {
+        recommendations.push('🔄 現状では投資リスクが高めです。小規模パイロットから開始を検討');
+      }
+      
+      const recList = document.getElementById('recommendationList');
+      recList.innerHTML = recommendations.map(r => `<div class="recommendation">${r}</div>`).join('');
+      
+      document.getElementById('result').classList.add('show');
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
