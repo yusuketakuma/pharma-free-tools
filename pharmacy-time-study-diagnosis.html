@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局タイムスタディ診断 | 業務時間を可視化して効率化ポイントを特定</title>
+  <meta name="description" content="薬局の業務時間を5領域20問で可視化。調剤・服薬指導・在庫・事務・在宅の時間配分を診断し、効率化ポイントを特定。タイムスタディ手法で科学的根拠に基づく改善提案を自動生成。">
+  <meta name="keywords" content="薬局,タイムスタディ,業務効率化,時間管理,業務分析,薬剤師,無料ツール">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="薬局タイムスタディ診断 | 業務時間を可視化して効率化ポイントを特定">
+  <meta property="og:description" content="薬局の業務時間を5領域20問で可視化。調剤・服薬指導・在庫・事務・在宅の時間配分を診断し、効率化ポイントを特定。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-time-study-diagnosis.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-time-study-diagnosis.html">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    
+    .progress-bar {
+      background: #e0e0e0;
+      height: 8px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    
+    .category-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .category-header h2 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+    
+    .category-header p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    
+    .question {
+      margin-bottom: 25px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    
+    .question-text {
+      font-weight: 500;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .option:hover {
+      border-color: #667eea;
+      background: #f5f7ff;
+    }
+    
+    .option.selected {
+      border-color: #667eea;
+      background: #e8ecff;
+    }
+    
+    .option input {
+      display: none;
+    }
+    
+    .option-label {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .option-value {
+      font-weight: bold;
+      color: #667eea;
+      margin-right: 10px;
+      min-width: 30px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    
+    .result-section {
+      display: none;
+    }
+    
+    .score-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .total-score {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .score-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .time-chart {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    
+    .time-bar {
+      text-align: center;
+    }
+    
+    .bar-container {
+      height: 150px;
+      background: #e0e0e0;
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    
+    .bar-fill {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px 8px 0 0;
+      width: 100%;
+      transition: height 0.5s ease;
+    }
+    
+    .bar-label {
+      font-size: 0.75rem;
+      color: #666;
+    }
+    
+    .bar-value {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .category-scores {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .category-score-card {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .category-score-card h4 {
+      color: #667eea;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+    
+    .category-score-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .improvements {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    
+    .improvements h3 {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    
+    .improvement-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+    }
+    
+    .improvement-priority {
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-right: 10px;
+      font-size: 0.8rem;
+    }
+    
+    .priority-high {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .priority-medium {
+      background: #fff3e0;
+      color: #e65100;
+    }
+    
+    .priority-low {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .improvement-text {
+      flex: 1;
+      font-size: 0.9rem;
+    }
+    
+    .cta-banner {
+      background: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%);
+      border: 2px solid #ffc107;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .cta-banner h3 {
+      color: #f57c00;
+      margin-bottom: 10px;
+    }
+    
+    .cta-banner p {
+      color: #333;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(245, 124, 0, 0.4);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .time-chart {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+      }
+      
+      .bar-container {
+        height: 100px;
+      }
+      
+      .bar-label {
+        font-size: 0.65rem;
+      }
+      
+      .category-scores {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "薬局タイムスタディ診断",
+    "description": "薬局の業務時間を5領域20問で可視化。調剤・服薬指導・在庫・事務・在宅の時間配分を診断し、効率化ポイントを特定。",
+    "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-time-study-diagnosis.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "yusuketakuma"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⏱️ 薬局タイムスタディ診断</h1>
+      <p class="subtitle">業務時間を可視化して効率化ポイントを特定</p>
+    </header>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    
+    <div id="questionSection">
+      <!-- Questions will be dynamically inserted here -->
+    </div>
+    
+    <div class="buttons">
+      <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()" style="display: none;">← 前へ</button>
+      <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>次へ →</button>
+    </div>
+    
+    <div class="result-section" id="resultSection">
+      <div class="score-card">
+        <div class="total-score" id="totalScore">0%</div>
+        <div class="score-label">タイムスタディ効率化スコア</div>
+      </div>
+      
+      <h3 style="color: #667eea; margin-bottom: 15px;">📊 業務時間配分（推定）</h3>
+      <div class="time-chart" id="timeChart">
+        <!-- Time bars will be inserted here -->
+      </div>
+      
+      <h3 style="color: #667eea; margin-bottom: 15px;">📈 領域別スコア</h3>
+      <div class="category-scores" id="categoryScores">
+        <!-- Category scores will be inserted here -->
+      </div>
+      
+      <div class="improvements">
+        <h3>🎯 優先改善ポイント</h3>
+        <div id="improvementsList">
+          <!-- Improvements will be inserted here -->
+        </div>
+      </div>
+      
+      <div class="cta-banner">
+        <h3>🎁 業務効率化をさらに加速</h3>
+        <p>薬剤師がChatGPT/Claudeで薬歴・疑義照会・報告書を効率化するプロンプト集<br><strong>38セクション・100プロンプト収録</strong></p>
+        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-button">AIプロンプト集をチェック →</a>
+      </div>
+      
+      <div class="buttons" style="margin-top: 30px;">
+        <button class="btn" onclick="location.reload()">もう一度診断する</button>
+      </div>
+    </div>
+    
+    <footer>
+      <p>© 2026 薬剤師無料ツール集 | 完全無料・オフライン動作対応</p>
+      <p style="margin-top: 8px; opacity: 0.8;">データは端末内のみで処理（プライバシー保護）</p>
+    </footer>
+  </div>
+
+  <script>
+    const categories = [
+      {
+        id: 'dispensing',
+        name: '調剤業務',
+        description: '処方鑑別・調剤・鑑査の時間配分',
+        questions: [
+          { text: '1日あたりの調剤枚数に対し、調剤時間は適切ですか？', options: ['大幅に超過（+30%以上）', 'やや超過（+10-30%）', '概ね適切（±10%）', '余裕あり（-10%以下）'] },
+          { text: '処方鑑別の時間を短縮できていると感じますか？', options: ['全くできていない', 'あまりできていない', 'ある程度できている', '十分できている'] },
+          { text: '調剤ミスの再確認に時間を取られることは？', options: ['頻繁にある（週3回以上）', '時々ある（週1-2回）', '稀にある（月1-2回）', 'ほぼない'] },
+          { text: '鑑査の効率化ツール（自動チェック等）を活用していますか？', options: ['活用していない', '一部活用', '積極的に活用', '高度に活用・カスタマイズ'] }
+        ]
+      },
+      {
+        id: 'guidance',
+        name: '服薬指導',
+        description: '患者対応・服薬指導の時間管理',
+        questions: [
+          { text: '服薬指導に十分な時間を確保できていますか？', options: ['全く確保できていない', '不十分', 'ある程度確保', '十分確保'] },
+          { text: '患者待ち時間を短縮する取り組みを実施していますか？', options: ['実施していない', '検討段階', '一部実施', '積極的に実施'] },
+          { text: '服薬指導の内容を標準化・マニュアル化していますか？', options: ['していない', '一部している', 'している', '高度に標準化'] },
+          { text: '服薬フォロー（電話等）の効率化に取り組んでいますか？', options: ['取り組んでいない', '検討中', '一部実施', '積極的に実施'] }
+        ]
+      },
+      {
+        id: 'inventory',
+        name: '在庫管理',
+        description: '発注・在庫確認・棚卸の時間',
+        questions: [
+          { text: '発注業務にかかる時間を短縮できていますか？', options: ['短縮できていない', '少し短縮', 'ある程度短縮', '大幅に短縮'] },
+          { text: '欠品・過剰在庫の発生頻度は？', options: ['頻繁にある', '時々ある', '稀にある', 'ほぼない'] },
+          { text: '在庫管理の自動化（発注点設定等）を導入していますか？', options: ['導入していない', '一部導入', '導入している', '高度に自動化'] },
+          { text: '棚卸業務の効率化に取り組んでいますか？', options: ['取り組んでいない', '検討中', '一部実施', '効率化完了'] }
+        ]
+      },
+      {
+        id: 'admin',
+        name: '事務業務',
+        description: 'レセプト・報告書・メール等の事務作業',
+        questions: [
+          { text: 'レセプト業務の効率化に取り組んでいますか？', options: ['取り組んでいない', '検討中', '一部実施', '効率化完了'] },
+          { text: '報告書作成の時間を短縮できていますか？', options: ['短縮できていない', '少し短縮', 'ある程度短縮', '大幅に短縮'] },
+          { text: 'メール・電話対応の効率化に取り組んでいますか？', options: ['取り組んでいない', '検討中', '一部実施', '効率化完了'] },
+          { text: '事務業務のマニュアル化・分担化を進めていますか？', options: ['進めていない', '一部進めている', '進めている', '高度に体系化'] }
+        ]
+      },
+      {
+        id: 'homecare',
+        name: '在宅業務',
+        description: '訪問薬剤管理・報告書作成の時間',
+        questions: [
+          { text: '在宅医療報告書の作成時間を短縮できていますか？', options: ['短縮できていない', '少し短縮', 'ある程度短縮', '大幅に短縮'] },
+          { text: '訪問計画の効率的な立案に取り組んでいますか？', options: ['取り組んでいない', '検討中', '一部実施', '効率化完了'] },
+          { text: '在宅医療連携（医師・看護師との連携）を効率化していますか？', options: ['効率化できていない', '少し効率化', 'ある程度効率化', '高度に効率化'] },
+          { text: '在宅業務の記録・報告をデジタル化していますか？', options: ['デジタル化していない', '一部デジタル化', 'デジタル化している', '高度にデジタル化'] }
+        ]
+      }
+    ];
+
+    const improvements = {
+      dispensing: {
+        high: ['処方鑑別の自動チェック機能導入を検討', '調剤ミス防止のダブルチェック体制強化', '調剤ロボット導入の費用対効果検討'],
+        medium: ['鑑査チェックリストの標準化', '処方パターン別の効率的な調剤フロー確立'],
+        low: ['現状の調剤フロー維持・定期的な見直し']
+      },
+      guidance: {
+        high: ['服薬指導マニュアルの作成・標準化', '患者待ち時間短縮の取り組み強化', '服薬フォローの効率化（電話時間短縮等）'],
+        medium: ['指導内容のテンプレート化', '患者タイプ別の指導アプローチ確立'],
+        low: ['現状の服薬指導品質維持']
+      },
+      inventory: {
+        high: ['発注点の自動設定導入', '過剰在庫・欠品の防止システム構築', '棚卸業務の効率化ツール導入'],
+        medium: ['発注業務のマニュアル化', '在庫回転率の可視化'],
+        low: ['現状の在庫管理レベル維持']
+      },
+      admin: {
+        high: ['レセプト業務の効率化ツール導入', '報告書テンプレートの活用・標準化', '事務業務の分担化・マニュアル化'],
+        medium: ['メール・電話対応の効率化', '事務フローの見直し'],
+        low: ['現状の事務業務フロー維持']
+      },
+      homecare: {
+        high: ['在宅医療報告書のテンプレート化・自動生成', '訪問計画の効率的なスケジューリング', '在宅医療連携のデジタル化'],
+        medium: ['在宅記録の電子化', '訪問ルートの最適化'],
+        low: ['現状の在宅業務フロー維持']
+      }
+    };
+
+    let currentCategory = 0;
+    let currentQuestion = 0;
+    let answers = {};
+
+    function init() {
+      renderQuestion();
+      updateProgress();
+    }
+
+    function renderQuestion() {
+      const category = categories[currentCategory];
+      const question = category.questions[currentQuestion];
+      const questionIndex = currentCategory * 4 + currentQuestion + 1;
+      const totalQuestions = categories.length * 4;
+      
+      const questionSection = document.getElementById('questionSection');
+      
+      questionSection.innerHTML = `
+        <div class="category-header">
+          <h2>${category.name}</h2>
+          <p>${category.description}</p>
+        </div>
+        <div class="question">
+          <div class="question-text">Q${questionIndex}. ${question.text}</div>
+          <div class="options">
+            ${question.options.map((opt, idx) => `
+              <label class="option ${answers[`${currentCategory}-${currentQuestion}`] === idx ? 'selected' : ''}" onclick="selectOption(${idx})">
+                <input type="radio" name="q${questionIndex}" value="${idx}">
+                <span class="option-label">
+                  <span class="option-value">${String.fromCharCode(65 + idx)}.</span>
+                  ${opt}
+                </span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      updateButtons();
+    }
+
+    function selectOption(idx) {
+      answers[`${currentCategory}-${currentQuestion}`] = idx;
+      renderQuestion();
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < 3) {
+        currentQuestion++;
+        renderQuestion();
+      } else if (currentCategory < categories.length - 1) {
+        currentCategory++;
+        currentQuestion = 0;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+      updateProgress();
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+      } else if (currentCategory > 0) {
+        currentCategory--;
+        currentQuestion = 3;
+      }
+      renderQuestion();
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const questionIndex = currentCategory * 4 + currentQuestion;
+      const totalQuestions = categories.length * 4;
+      const progress = (questionIndex / totalQuestions) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+    }
+
+    function updateButtons() {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      prevBtn.style.display = (currentCategory > 0 || currentQuestion > 0) ? 'inline-block' : 'none';
+      
+      const isLastQuestion = currentCategory === categories.length - 1 && currentQuestion === 3;
+      nextBtn.textContent = isLastQuestion ? '診断結果を見る' : '次へ →';
+      nextBtn.disabled = answers[`${currentCategory}-${currentQuestion}`] === undefined;
+    }
+
+    function calculateScore() {
+      let totalScore = 0;
+      const categoryScores = {};
+      
+      categories.forEach((cat, catIdx) => {
+        let catScore = 0;
+        for (let i = 0; i < 4; i++) {
+          const answer = answers[`${catIdx}-${i}`];
+          if (answer !== undefined) {
+            catScore += (3 - answer) * 25; // 0=75点, 1=50点, 2=25点, 3=0点
+          }
+        }
+        categoryScores[cat.id] = Math.round(catScore / 4);
+        totalScore += catScore / 4;
+      });
+      
+      return {
+        total: Math.round(totalScore / categories.length),
+        categories: categoryScores
+      };
+    }
+
+    function showResults() {
+      document.getElementById('questionSection').style.display = 'none';
+      document.querySelector('.buttons').style.display = 'none';
+      document.getElementById('resultSection').style.display = 'block';
+      
+      const scores = calculateScore();
+      
+      document.getElementById('totalScore').textContent = scores.total + '%';
+      
+      // Time chart
+      const timeChart = document.getElementById('timeChart');
+      const timeLabels = ['調剤', '指導', '在庫', '事務', '在宅'];
+      const timePercents = [35, 25, 15, 15, 10]; // Base percentages
+      
+      timeChart.innerHTML = timeLabels.map((label, idx) => {
+        const catId = categories[idx].id;
+        const score = scores.categories[catId];
+        const height = Math.max(20, 100 - score);
+        return `
+          <div class="time-bar">
+            <div class="bar-container">
+              <div class="bar-fill" style="height: ${height}%"></div>
+            </div>
+            <div class="bar-value">${timePercents[idx]}%</div>
+            <div class="bar-label">${label}</div>
+          </div>
+        `;
+      }).join('');
+      
+      // Category scores
+      const categoryScoresDiv = document.getElementById('categoryScores');
+      categoryScoresDiv.innerHTML = categories.map(cat => `
+        <div class="category-score-card">
+          <h4>${cat.name}</h4>
+          <div class="category-score-value">${scores.categories[cat.id]}%</div>
+        </div>
+      `).join('');
+      
+      // Improvements
+      const improvementsList = document.getElementById('improvementsList');
+      const sortedCategories = categories
+        .map(cat => ({ id: cat.id, name: cat.name, score: scores.categories[cat.id] }))
+        .sort((a, b) => a.score - b.score);
+      
+      let improvementHtml = '';
+      sortedCategories.forEach((cat, idx) => {
+        const priority = idx < 2 ? 'high' : idx < 4 ? 'medium' : 'low';
+        const priorityLabel = priority === 'high' ? '高優先度' : priority === 'medium' ? '中優先度' : '低優先度';
+        const catImprovements = improvements[cat.id][priority];
+        
+        catImprovements.slice(0, idx < 2 ? 2 : 1).forEach(imp => {
+          improvementHtml += `
+            <div class="improvement-item">
+              <span class="improvement-priority priority-${priority}">${priorityLabel}</span>
+              <span class="improvement-text"><strong>${cat.name}:</strong> ${imp}</span>
+            </div>
+          `;
+        });
+      });
+      
+      improvementsList.innerHTML = improvementHtml;
+    }
+
+    init();
+  </script>
+</body>
+</html>
