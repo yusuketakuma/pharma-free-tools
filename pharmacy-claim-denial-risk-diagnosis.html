@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返戻リスク診断 | 薬局運営無料ツール</title>
+    <meta name="description" content="調剤報酬返戻の主要パターンを特定し、再請求成功確率を向上させる診断ツール。処方監査・請求書類不備・算定エラー・書類不備・特定医療費の5領域20問で返戻リスクを可視化。">
+    <meta property="og:title" content="返戻リスク診断 | 薬局運営無料ツール">
+    <meta property="og:description" content="調剤報酬返戻の主要パターンを特定し、再請求成功確率を向上させる診断ツール">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-claim-denial-risk-diagnosis.html">
+    <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-claim-denial-risk-diagnosis.html">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,.25); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; padding: 36px 28px; text-align: center; }
+        .header h1 { font-size: 30px; margin-bottom: 10px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .progress-bar { height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin-bottom: 24px; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #dc2626, #f59e0b); transition: width 0.3s ease; }
+        .question-container { display: none; }
+        .question-container.active { display: block; padding: 24px 28px; border-bottom: 1px solid #e5e7eb; }
+        .category-label { display: inline-block; background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+        .question { font-size: 22px; font-weight: 700; line-height: 1.7; margin-bottom: 18px; }
+        .options { display: grid; gap: 12px; }
+        .option { border: 2px solid #d1d5db; background: #f9fafb; border-radius: 14px; padding: 16px 18px; cursor: pointer; transition: 0.2s ease; line-height: 1.6; }
+        .option:hover { border-color: #dc2626; background: #fef2f2; }
+        .option.selected { border-color: #b91c1c; background: #fee2e2; }
+        .result { display: none; padding: 32px 28px; text-align: center; }
+        .result.active { display: block; }
+        .score-circle { width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-size: 42px; font-weight: 800; color: white; }
+        .score-circle.low { background: linear-gradient(135deg, #10b981, #059669); }
+        .score-circle.medium { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .score-circle.high { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .result-title { font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+        .result-desc { font-size: 16px; color: #6b7280; margin-bottom: 24px; }
+        .breakdown { display: grid; gap: 12px; margin-bottom: 24px; text-align: left; }
+        .breakdown-item { background: #f9fafb; padding: 12px 16px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .breakdown-label { font-weight: 600; font-size: 14px; }
+        .breakdown-score { font-weight: 800; font-size: 18px; }
+        .breakdown-score.low { color: #10b981; }
+        .breakdown-score.medium { color: #f59e0b; }
+        .breakdown-score.high { color: #ef4444; }
+        .improvements { text-align: left; margin-top: 24px; }
+        .improvement-title { font-weight: 700; font-size: 16px; margin-bottom: 12px; color: #374151; }
+        .improvement-item { background: #fef2f2; border-left: 4px solid #dc2626; padding: 12px 16px; margin-bottom: 8px; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .nav-buttons { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; }
+        .btn { border: none; border-radius: 10px; padding: 12px 24px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .btn-primary { color: white; background: linear-gradient(135deg, #dc2626, #b91c1c); }
+        .btn-secondary { background: #e5e7eb; color: #374151; }
+        .cta-section { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 24px 28px; margin-top: 24px; border-radius: 12px; }
+        .cta-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .cta-desc { font-size: 14px; margin-bottom: 16px; opacity: 0.95; }
+        .cta-btn { display: inline-block; background: white; color: #1e3a8a; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; }
+        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 12px; }
+        .footer a { color: #6b7280; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 返戻リスク診断</h1>
+            <p>調剤報酬返戻の主要パターンを特定し、再請求成功確率を向上</p>
+        </div>
+        
+        <div style="padding: 24px 28px 12px;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <p style="text-align: center; color: #6b7280; font-size: 14px;">
+                質問 <span id="current">1</span> / 20
+            </p>
+        </div>
+
+        <!-- Question 1: 処方監査 -->
+        <div class="question-container active" data-category="処方監査" data-question="1">
+            <span class="category-label">📋 処方監査</span>
+            <div class="question">処方監査で適応症・禁忌のチェックを体系的に行っていますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 全処方で体系的に実施している</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 重要な処方で実施している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部の処方で実施している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ ほとんど実施していない</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 全く実施していない</div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-container" data-category="処方監査" data-question="2">
+            <span class="category-label">📋 処方監査</span>
+            <div class="question">重複投与・相互作用の自動チェックシステムを導入していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 全自動チェックシステム導入済み</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 一部自動化している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 手動チェックが中心</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ チェック体制が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ チェックしていない</div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-container" data-category="処方監査" data-question="3">
+            <span class="category-label">📋 処方監査</span>
+            <div class="question">用量・用法の妥当性を確認する手順が標準化されていますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 標準化された手順書がある</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね標準化されている</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部標準化されている</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 標準化されていない</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 確認手順がない</div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-container" data-category="処方監査" data-question="4">
+            <span class="category-label">📋 処方監査</span>
+            <div class="question">指示外の処方について疑義照会を確実に行っていますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 全件で疑義照会している</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 重要なものは照会している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部のみ照会している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ ほとんど照会していない</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 照会していない</div>
+            </div>
+        </div>
+
+        <!-- Question 5: 請求書類不備 -->
+        <div class="question-container" data-category="請求書類不備" data-question="5">
+            <span class="category-label">📝 請求書類不備</span>
+            <div class="question">請求書の剤形・用量・用法が処方箋と完全に一致していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 100%一致確認体制がある</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね一致確認している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部確認している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 確認が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 確認していない</div>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-container" data-category="請求書類不備" data-question="6">
+            <span class="category-label">📝 請求書類不備</span>
+            <div class="question">提出期限を管理し、期限内提出を徹底していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 期限管理システムで徹底している</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね期限内に提出している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部期限切れがある</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 期限管理が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 期限を管理していない</div>
+            </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-container" data-category="請求書類不備" data-question="7">
+            <span class="category-label">📝 請求書類不備</span>
+            <div class="question">署名・押印の不備がないよう確認していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 二重確認体制で完全防止</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね確認している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部確認している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 確認が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 確認していない</div>
+            </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-container" data-category="請求書類不備" data-question="8">
+            <span class="category-label">📝 請求書類不備</span>
+            <div class="question">添付書類の不備（後発品情報・麻薬処方箋等）を防止していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ チェックリストで完全防止</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね防止している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部防止している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 防止が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 防止していない</div>
+            </div>
+        </div>
+
+        <!-- Question 9: 算定エラー -->
+        <div class="question-container" data-category="算定エラー" data-question="9">
+            <span class="category-label">🔢 算定エラー</span>
+            <div class="question">調剤報酬の算定点数を正確に計算していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 自動計算で正確に算定</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね正確に算定</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部手動計算がある</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 計算ミスがある</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 計算が不正確</div>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-container" data-category="算定エラー" data-question="10">
+            <span class="category-label">🔢 算定エラー</span>
+            <div class="question">調剤日数・交付日数のカウントを正確に行っていますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ システムで自動カウント</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね正確にカウント</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部手動カウント</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ カウントミスがある</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ カウントしていない</div>
+            </div>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="question-container" data-category="算定エラー" data-question="11">
+            <span class="category-label">🔢 算定エラー</span>
+            <div class="question">組み合わせ請求のルールを正しく適用していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ ルールを完全に理解・適用</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね正しく適用</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部誤りがある</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 誤りが多い</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ ルールを理解していない</div>
+            </div>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="question-container" data-category="算定エラー" data-question="12">
+            <span class="category-label">🔢 算定エラー</span>
+            <div class="question">月・四半期・年間の請求限度額を管理していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 限度額を完全に管理</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね管理している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部管理している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 管理が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 管理していない</div>
+            </div>
+        </div>
+
+        <!-- Question 13: 書類不備 -->
+        <div class="question-container" data-category="書類不備" data-question="13">
+            <span class="category-label">📄 書類不備</span>
+            <div class="question">薬剤師記載事項の不備を防止していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 記載事項チェックリスト完備</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね防止している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部防止している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 防止が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 防止していない</div>
+            </div>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="question-container" data-category="書類不備" data-question="14">
+            <span class="category-label">📄 書類不備</span>
+            <div class="question">患者情報の記載不備を防止していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 患者情報チェック体制完備</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね防止している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部防止している</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 防止が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 防止していない</div>
+            </div>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="question-container" data-category="書類不備" data-question="15">
+            <span class="category-label">📄 書類不備</span>
+            <div class="question">保存期間を守り、書類を適切に管理していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 保存期間を完全に遵守</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね遵守している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部不備がある</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 管理が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 管理していない</div>
+            </div>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="question-container" data-category="書類不備" data-question="16">
+            <span class="category-label">📄 書類不備</span>
+            <div class="question">電子保存の要件を満たしていますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 電子保存要件を完全に満たす</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね満たしている</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部不備がある</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 要件を満たしていない</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 電子保存していない</div>
+            </div>
+        </div>
+
+        <!-- Question 17: 特定医療費 -->
+        <div class="question-container" data-category="特定医療費" data-question="17">
+            <span class="category-label">🏥 特定医療費</span>
+            <div class="question">特定医療費の算定基準を正しく理解していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 基準を完全に理解・適用</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね理解している</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部理解が不足</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 理解が不十分</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 理解していない</div>
+            </div>
+        </div>
+
+        <!-- Question 18 -->
+        <div class="question-container" data-category="特定医療費" data-question="18">
+            <span class="category-label">🏥 特定医療費</span>
+            <div class="question">後発品への変更可能か否かを確認していますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 全処方で確認している</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 重要な処方で確認</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部のみ確認</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ ほとんど確認していない</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 確認していない</div>
+            </div>
+        </div>
+
+        <!-- Question 19 -->
+        <div class="question-container" data-category="特定医療費" data-question="19">
+            <span class="category-label">🏥 特定医療費</span>
+            <div class="question">基準外医薬品の算定を正しく行っていますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 正確に算定している</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね正確に算定</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部誤りがある</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 誤りが多い</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 算定していない</div>
+            </div>
+        </div>
+
+        <!-- Question 20 -->
+        <div class="question-container" data-category="特定医療費" data-question="20">
+            <span class="category-label">🏥 特定医療費</span>
+            <div class="question">返戻時の再請求手順が標準化されていますか？</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5)">✅ 再請求マニュアル完備</div>
+                <div class="option" onclick="selectOption(this, 4)">◯ 概ね標準化されている</div>
+                <div class="option" onclick="selectOption(this, 3)">△ 一部標準化されている</div>
+                <div class="option" onclick="selectOption(this, 2)">❌ 標準化されていない</div>
+                <div class="option" onclick="selectOption(this, 1)">❌ 手順がない</div>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div class="result" id="result">
+            <div class="score-circle" id="scoreCircle">0</div>
+            <div class="result-title" id="resultTitle">診断結果</div>
+            <div class="result-desc" id="resultDesc">返戻リスクレベルを確認中...</div>
+            
+            <div class="breakdown">
+                <div class="breakdown-item">
+                    <span class="breakdown-label">📋 処方監査</span>
+                    <span class="breakdown-score" id="score1">0</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">📝 請求書類不備</span>
+                    <span class="breakdown-score" id="score2">0</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">🔢 算定エラー</span>
+                    <span class="breakdown-score" id="score3">0</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">📄 書類不備</span>
+                    <span class="breakdown-score" id="score4">0</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">🏥 特定医療費</span>
+                    <span class="breakdown-score" id="score5">0</span>
+                </div>
+            </div>
+
+            <div class="improvements">
+                <div class="improvement-title">🔧 優先改善ポイント</div>
+                <div id="improvementList"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="restart()">もう一度診断する</button>
+                <button class="btn btn-primary" onclick="shareResult()">結果を共有</button>
+            </div>
+
+            <div class="cta-section">
+                <div class="cta-title">📚 返戻対応を効率化しませんか？</div>
+                <div class="cta-desc">AIプロンプト集で返戻理由テンプレート・再請求チェックリストを即座に作成。返戻対応時間を50%削減した薬局事例あり。</div>
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn">AIプロンプト集を見る →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>薬局運営無料ツール | <a href="index.html">ツール一覧に戻る</a></p>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let scores = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+        
+        function selectOption(element, score) {
+            const container = element.closest('.question-container');
+            const options = container.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            const category = container.dataset.category;
+            const categoryMap = {
+                '処方監査': 1,
+                '請求書類不備': 2,
+                '算定エラー': 3,
+                '書類不備': 4,
+                '特定医療費': 5
+            };
+            const categoryNum = categoryMap[category];
+            scores[categoryNum] = score;
+            
+            setTimeout(() => nextQuestion(), 300);
+        }
+        
+        function nextQuestion() {
+            const containers = document.querySelectorAll('.question-container');
+            if (currentQuestion < 20) {
+                containers[currentQuestion - 1].classList.remove('active');
+                currentQuestion++;
+                containers[currentQuestion - 1].classList.add('active');
+                document.getElementById('current').textContent = currentQuestion;
+                document.getElementById('progress').style.width = (currentQuestion / 20 * 100) + '%';
+            } else {
+                showResult();
+            }
+        }
+        
+        function showResult() {
+            document.querySelector('.question-container.active').classList.remove('active');
+            document.getElementById('result').classList.add('active');
+            document.getElementById('progress').style.width = '100%';
+            
+            const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+            const avgScore = totalScore / 5;
+            const percentage = Math.round((totalScore / 25) * 100);
+            
+            const circle = document.getElementById('scoreCircle');
+            circle.textContent = percentage + '%';
+            
+            if (percentage >= 80) {
+                circle.className = 'score-circle low';
+                document.getElementById('resultTitle').textContent = '✅ 返戻リスク低い';
+                document.getElementById('resultDesc').textContent = '返戻防止体制が良好です。現状維持と継続改善を。';
+            } else if (percentage >= 50) {
+                circle.className = 'score-circle medium';
+                document.getElementById('resultTitle').textContent = '⚠️ 返戻リスク中程度';
+                document.getElementById('resultDesc').textContent = '一部領域で改善が必要です。優先改善ポイントに対処を。';
+            } else {
+                circle.className = 'score-circle high';
+                document.getElementById('resultTitle').textContent = '🚨 返戻リスク高い';
+                document.getElementById('resultDesc').textContent = '返戻防止体制に重大な課題があります。早急な改善が必要です。';
+            }
+            
+            const categoryNames = ['処方監査', '請求書類不備', '算定エラー', '書類不備', '特定医療費'];
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById('score' + i);
+                el.textContent = scores[i] + '/5';
+                if (scores[i] >= 4) {
+                    el.className = 'breakdown-score low';
+                } else if (scores[i] >= 3) {
+                    el.className = 'breakdown-score medium';
+                } else {
+                    el.className = 'breakdown-score high';
+                }
+            }
+            
+            const improvements = [];
+            if (scores[1] < 4) improvements.push('処方監査: 適応症・禁忌チェックの標準化と自動チェックシステム導入を検討');
+            if (scores[2] < 4) improvements.push('請求書類: 剤形・用量・用法の一致確認フローを確立、期限管理システム導入');
+            if (scores[3] < 4) improvements.push('算定エラー: 自動計算システム導入、組み合わせ請求ルールの再教育');
+            if (scores[4] < 4) improvements.push('書類不備: 記載事項チェックリスト導入、電子保存要件の確認');
+            if (scores[5] < 4) improvements.push('特定医療費: 算定基準の理解深化、再請求マニュアル作成');
+            
+            const list = document.getElementById('improvementList');
+            list.innerHTML = improvements.length > 0 
+                ? improvements.map(i => '<div class="improvement-item">' + i + '</div>').join('')
+                : '<div class="improvement-item" style="border-color: #10b981; background: #ecfdf5;">✅ すべての領域で良好です。現状維持と継続改善を。</div>';
+        }
+        
+        function restart() {
+            currentQuestion = 1;
+            scores = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.question-container').forEach((c, i) => {
+                c.classList.toggle('active', i === 0);
+            });
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('progress').style.width = '5%';
+            document.getElementById('current').textContent = '1';
+        }
+        
+        function shareResult() {
+            const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+            const percentage = Math.round((totalScore / 25) * 100);
+            const text = '🏥 返戻リスク診断結果: ' + percentage + '%\n処方監査: ' + scores[1] + '/5\n請求書類: ' + scores[2] + '/5\n算定エラー: ' + scores[3] + '/5\n書類不備: ' + scores[4] + '/5\n特定医療費: ' + scores[5] + '/5\n\n#薬局運営 #返戻防止';
+            if (navigator.share) {
+                navigator.share({ title: '返戻リスク診断結果', text: text });
+            } else {
+                navigator.clipboard.writeText(text);
+                alert('結果をクリップボードにコピーしました！');
+            }
+        }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "返戻リスク診断",
+        "description": "調剤報酬返戻の主要パターンを特定し、再請求成功確率を向上させる診断ツール",
+        "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-claim-denial-risk-diagnosis.html",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        }
+    }
+    </script>
+</body>
+</html>

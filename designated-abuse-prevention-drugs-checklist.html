@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>指定濫用防止医薬品販売義務化チェックリスト - 薬剤師無料ツール</title>
+  <meta name="description" content="2026年5月施行の指定濫用防止医薬品販売義務化に向けた対応状況を20項目でチェック。棚札表示・販売記録・研修実施の準備レベルを可視化。">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #e53935 0%, #c62828 100%); min-height: 100vh; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    h1 { color: #c62828; margin-bottom: 10px; font-size: 1.5rem; }
+    .subtitle { color: #666; margin-bottom: 20px; font-size: 0.95rem; }
+    .alert-box { background: #fff3e0; border: 2px solid #ff9800; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+    .alert-box h3 { color: #e65100; margin-bottom: 8px; font-size: 1rem; }
+    .alert-box p { color: #666; font-size: 0.9rem; }
+    .drug-list { background: #ffebee; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+    .drug-list h3 { color: #c62828; margin-bottom: 10px; font-size: 1rem; }
+    .drug-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .drug-item { background: white; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; }
+    .category { margin-bottom: 25px; }
+    .category-title { color: #c62828; font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #c62828; display: flex; justify-content: space-between; }
+    .check-item { display: flex; align-items: flex-start; margin-bottom: 12px; padding: 10px; background: #f8f9fa; border-radius: 8px; }
+    .check-item input { margin-right: 12px; margin-top: 3px; width: 18px; height: 18px; cursor: pointer; }
+    .check-label { flex: 1; }
+    .check-label strong { color: #333; font-size: 0.95rem; }
+    .check-label p { color: #666; font-size: 0.85rem; margin-top: 4px; }
+    .progress-bar { background: #e0e0e0; border-radius: 10px; height: 10px; margin-bottom: 15px; }
+    .progress-fill { background: linear-gradient(135deg, #e53935 0%, #c62828 100%); height: 100%; border-radius: 10px; transition: width 0.3s; }
+    .btn { background: linear-gradient(135deg, #e53935 0%, #c62828 100%); color: white; padding: 12px 30px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; margin-top: 20px; width: 100%; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(198,40,40,0.4); }
+    .results { display: none; margin-top: 20px; }
+    .score-card { background: linear-gradient(135deg, #e53935 0%, #c62828 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
+    .score-number { font-size: 2.5rem; font-weight: bold; }
+    .status-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: bold; margin-top: 10px; }
+    .status-ready { background: #4caf50; }
+    .status-progress { background: #ff9800; }
+    .status-alert { background: #f44336; }
+    .action-list { background: #f8f9fa; padding: 20px; border-radius: 12px; }
+    .action-list h3 { color: #c62828; margin-bottom: 15px; }
+    .action-item { margin-bottom: 10px; padding-left: 20px; position: relative; }
+    .action-item:before { content: "→"; position: absolute; left: 0; color: #c62828; }
+    .cta-box { background: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%); border: 2px solid #ffc107; border-radius: 12px; padding: 20px; text-align: center; margin-top: 20px; }
+    .cta-box h3 { color: #f57c00; margin-bottom: 10px; }
+    .cta-btn { display: inline-block; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚠️ 指定濫用防止医薬品販売義務化チェックリスト</h1>
+    <p class="subtitle">2026年5月施行に向けた対応状況を20項目でチェック</p>
+    
+    <div class="alert-box">
+      <h3>📅 施行まで残り約2ヶ月（2026年5月1日施行予定）</h3>
+      <p>指定濫用防止医薬品（8成分）の販売義務化に向けた準備状況を確認しましょう。</p>
+    </div>
+    
+    <div class="drug-list">
+      <h3>💊 対象成分（8成分）</h3>
+      <div class="drug-grid">
+        <div class="drug-item">ジヒドロコデイン</div>
+        <div class="drug-item">ブロムワレリル尿素</div>
+        <div class="drug-item">エフェドリン</div>
+        <div class="drug-item">プソイドエフェドリン</div>
+        <div class="drug-item">メチルエフェドリン</div>
+        <div class="drug-item">コデイン</div>
+        <div class="drug-item">モルヒネ</div>
+        <div class="drug-item">コカイン</div>
+      </div>
+    </div>
+    
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width: 0%"></div></div>
+    <p id="progressText" style="text-align: center; color: #666; margin-bottom: 20px;">対応状況: 0/20項目</p>
+    
+    <div id="checklist">
+      <!-- 棚札・表示 -->
+      <div class="category">
+        <h2 class="category-title">📋 棚札・表示対応</h2>
+        <div class="check-item">
+          <input type="checkbox" id="c1" onchange="updateProgress()">
+          <label class="check-label" for="c1">
+            <strong>対象医薬品の棚札を作成済み</strong>
+            <p>8成分を含む製品の棚札を準備</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c2" onchange="updateProgress()">
+          <label class="check-label" for="c2">
+            <strong>棚札に「指定濫用防止医薬品」の表示あり</strong>
+            <p>法定表示事項を確認</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c3" onchange="updateProgress()">
+          <label class="check-label" for="c3">
+            <strong>棚札に販売制限の概要を記載</strong>
+            <p>1回2個・1日4個制限等</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c4" onchange="updateProgress()">
+          <label class="check-label" for="c4">
+            <strong>対象製品の在庫棚に設置完了</strong>
+            <p>全対象製品に棚札を設置</p>
+          </label>
+        </div>
+      </div>
+      
+      <!-- 販売記録 -->
+      <div class="category">
+        <h2 class="category-title">📝 販売記録体制</h2>
+        <div class="check-item">
+          <input type="checkbox" id="c5" onchange="updateProgress()">
+          <label class="check-label" for="c5">
+            <strong>販売記録フォームを準備済み</strong>
+            <p>氏名・年齢・購入日時・数量等の記録欄</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c6" onchange="updateProgress()">
+          <label class="check-label" for="c6">
+            <strong>1人当たりの購入制限チェック体制あり</strong>
+            <p>1回2個・1日4個の制限を確認可能</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c7" onchange="updateProgress()">
+          <label class="check-label" for="c7">
+            <strong>販売記録の保存期間を確認</strong>
+            <p>法定保存期間（3年）を確保</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c8" onchange="updateProgress()">
+          <label class="check-label" for="c8">
+            <strong>電子記録または紙記録の運用ルール決定</strong>
+            <p>どちらかで統一して運用</p>
+          </label>
+        </div>
+      </div>
+      
+      <!-- スタッフ研修 -->
+      <div class="category">
+        <h2 class="category-title">👥 スタッフ研修・教育</h2>
+        <div class="check-item">
+          <input type="checkbox" id="c9" onchange="updateProgress()">
+          <label class="check-label" for="c9">
+            <strong>全スタッフに制度概要を周知済み</strong>
+            <p>販売義務化の目的・背景を説明</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c10" onchange="updateProgress()">
+          <label class="check-label" for="c10">
+            <strong>対象成分・製品の特定方法を教育済み</strong>
+            <p>8成分を含む製品の見分け方</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c11" onchange="updateProgress()">
+          <label class="check-label" for="c11">
+            <strong>購入制限の説明方法を教育済み</strong>
+            <p>顧客への説明トークを統一</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c12" onchange="updateProgress()">
+          <label class="check-label" for="c12">
+            <strong>不審な購入者への対応フローを周知</strong>
+            <p>相談窓口・報告ルールを明確化</p>
+          </label>
+        </div>
+      </div>
+      
+      <!-- 運用体制 -->
+      <div class="category">
+        <h2 class="category-title">⚙️ 運用体制</h2>
+        <div class="check-item">
+          <input type="checkbox" id="c13" onchange="updateProgress()">
+          <label class="check-label" for="c13">
+            <strong>責任者・担当者を決定済み</strong>
+            <p>運用の統括者を明確化</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c14" onchange="updateProgress()">
+          <label class="check-label" for="c14">
+            <strong>POSシステムでの制限機能を確認</strong>
+            <p>購入制限のアラート機能等</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c15" onchange="updateProgress()">
+          <label class="check-label" for="c15">
+            <strong>例外対応のルールを策定済み</strong>
+            <p>医療用との併用時等の対応</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c16" onchange="updateProgress()">
+          <label class="check-label" for="c16">
+            <strong>定期的な運用確認のスケジュール決定</strong>
+            <p>月次または四半期での見直し</p>
+          </label>
+        </div>
+      </div>
+      
+      <!-- 法令確認 -->
+      <div class="category">
+        <h2 class="category-title">📜 法令・ガイドライン確認</h2>
+        <div class="check-item">
+          <input type="checkbox" id="c17" onchange="updateProgress()">
+          <label class="check-label" for="c17">
+            <strong>厚労省通知を確認済み</strong>
+            <p>最新の通知・ガイドラインを入手</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c18" onchange="updateProgress()">
+          <label class="check-label" for="c18">
+            <strong>都道府県の届出要件を確認済み</strong>
+            <p>必要な届出の有無を確認</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c19" onchange="updateProgress()">
+          <label class="check-label" for="c19">
+            <strong>違反時のペナルティを理解済み</strong>
+            <p>罰則規定を確認</p>
+          </label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="c20" onchange="updateProgress()">
+          <label class="check-label" for="c20">
+            <strong>施行後の運用開始日を決定済み</strong>
+            <p>5月1日からの運用開始準備完了</p>
+          </label>
+        </div>
+      </div>
+      
+      <button class="btn" onclick="showResults()">診断結果を見る</button>
+    </div>
+    
+    <div class="results" id="results">
+      <div class="score-card">
+        <div class="score-number" id="totalScore">0/20</div>
+        <div>対応完了項目</div>
+        <div class="status-badge" id="statusBadge">判定中</div>
+      </div>
+      
+      <div class="action-list">
+        <h3>📋 優先対応事項</h3>
+        <div id="actionList"></div>
+      </div>
+      
+      <div class="cta-box">
+        <h3>🎁 AIプロンプト集で効率化</h3>
+        <p>薬剤師向けChatGPT/Claude活用プロンプト100選で業務効率化を加速</p>
+        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-btn">詳細を見る →</a>
+      </div>
+      
+      <button class="btn" onclick="location.reload()" style="margin-top: 20px;">もう一度チェックする</button>
+    </div>
+  </div>
+  
+  <script>
+    function updateProgress() {
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      document.getElementById('progress').style.width = (checked / 20 * 100) + '%';
+      document.getElementById('progressText').textContent = `対応状況: ${checked}/20項目`;
+    }
+    
+    function showResults() {
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      document.getElementById('totalScore').textContent = `${checked}/20`;
+      
+      const badge = document.getElementById('statusBadge');
+      if (checked >= 18) {
+        badge.textContent = '✅ 準備完了';
+        badge.className = 'status-badge status-ready';
+      } else if (checked >= 12) {
+        badge.textContent = '⚠️ 準備中';
+        badge.className = 'status-badge status-progress';
+      } else {
+        badge.textContent = '🚨 要急ぎ対応';
+        badge.className = 'status-badge status-alert';
+      }
+      
+      const actions = [];
+      if (!document.getElementById('c1').checked) actions.push('対象医薬品の棚札を作成');
+      if (!document.getElementById('c5').checked) actions.push('販売記録フォームを準備');
+      if (!document.getElementById('c9').checked) actions.push('全スタッフに制度概要を周知');
+      if (!document.getElementById('c13').checked) actions.push('責任者・担当者を決定');
+      if (!document.getElementById('c17').checked) actions.push('厚労省通知を確認');
+      
+      if (actions.length === 0) {
+        actions.push('素晴らしい！すべての項目に対応済みです。施行日に備えて最終確認を行ってください。');
+      }
+      
+      let actionHtml = '';
+      actions.forEach(a => { actionHtml += `<div class="action-item">${a}</div>`; });
+      document.getElementById('actionList').innerHTML = actionHtml;
+      
+      document.getElementById('checklist').style.display = 'none';
+      document.getElementById('results').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

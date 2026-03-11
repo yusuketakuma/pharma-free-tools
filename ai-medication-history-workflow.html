@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI薬歴支援ワークフローチェックリスト - 薬剤師無料ツール集</title>
+  <meta name="description" content="AIに投げる工程と投げない工程を整理し、薬歴作成時間を短縮するチェックリスト。プロンプト例・注意点・最終確認項目を網羅。">
+  <meta name="keywords" content="AI薬歴,薬歴作成,ChatGPT,プロンプト,薬剤師,業務効率化">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    h1 {
+      color: #667eea;
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+    
+    .workflow-section {
+      margin-bottom: 30px;
+    }
+    
+    .workflow-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .workflow-icon {
+      font-size: 1.5rem;
+    }
+    
+    .workflow-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .workflow-badge {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    
+    .badge-ai {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    
+    .badge-human {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+    
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .check-item:hover {
+      background: #e9ecef;
+    }
+    
+    .check-item.checked {
+      background: #d4edda;
+    }
+    
+    .checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #667eea;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    
+    .check-item.checked .checkbox {
+      background: #667eea;
+      color: white;
+    }
+    
+    .check-content {
+      flex: 1;
+    }
+    
+    .check-title {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    
+    .check-desc {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .prompt-box {
+      background: #f0f4f8;
+      border-left: 4px solid #667eea;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #333;
+    }
+    
+    .warning-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #856404;
+    }
+    
+    .progress-container {
+      margin: 30px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+    
+    .progress-bar {
+      height: 20px;
+      background: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    .progress-text {
+      text-align: center;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .cta-section {
+      margin-top: 40px;
+      padding: 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      text-align: center;
+      color: white;
+    }
+    
+    .cta-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+    
+    .cta-section p {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      margin-bottom: 16px;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 14px 32px;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    
+    .related-section {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+    }
+    
+    .related-section h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    
+    .related-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .related-section li {
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .related-section li:last-child {
+      border-bottom: none;
+    }
+    
+    .related-section a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .related-section a:hover {
+      text-decoration: underline;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .workflow-header {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AI薬歴支援ワークフローチェックリスト</h1>
+      <p class="subtitle">AIに投げる工程と投げない工程を整理し、薬歴作成時間を短縮</p>
+    </header>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">0 / 20 完了</div>
+    </div>
+    
+    <!-- Phase 1: AIに投げる工程 -->
+    <div class="workflow-section">
+      <div class="workflow-header">
+        <span class="workflow-icon">🤖</span>
+        <span class="workflow-title">Phase 1: AIに投げる工程（10項目）</span>
+        <span class="workflow-badge badge-ai">AI支援</span>
+      </div>
+      
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">患者背景の論点整理</div>
+            <div class="check-desc">年齢・併用薬・既往歴から重点確認事項を抽出</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「70代男性。高血圧・糖尿病・脂質異常症で通院中。アンジニン、アマリール、クレストール処方中。服薬指導の重点確認事項を3つ挙げて。」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">相互作用の確認事項抽出</div>
+            <div class="check-desc">併用薬の相互作用リスクを優先度付きで整理</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「以下の処方の相互作用リスクを重症度順に3つ挙げて：[処方内容]」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">副作用モニタリング項目の提案</div>
+            <div class="check-desc">薬剤ごとの主要副作用と確認すべき症状を整理</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「[薬剤名]の主な副作用と、患者に確認すべき症状を3つ挙げて。」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">服薬指導の言い回し案作成</div>
+            <div class="check-desc">患者理解度に合わせた説明文を複数パターン生成</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「70代の患者に[薬剤名]の服薬指導をする際の、わかりやすい言い回しを2パターン作成して。」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">患者説明用Q&A準備</div>
+            <div class="check-desc">想定質問と回答案を事前に準備</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「[薬剤名]について患者からよくある質問と回答案を3つ挙げて。」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">薬歴SOAP構成案の作成</div>
+            <div class="check-desc">S-O-A-Pの各要素に入れるべき情報を整理</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「以下の患者情報をSOAP形式で整理して：[患者情報]」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">代替薬候補のリスト化</div>
+            <div class="check-desc">在庫切れ・供給停止時の代替案を事前準備</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「[薬剤名]の後発品一覧と、供給停止時の代替薬候補を挙げて。」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">文献・ガイドライン要約</div>
+            <div class="check-desc">最新エビデンスの要点を簡潔にまとめる</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「[疾患名]の[薬剤名]に関する2024-2025年のガイドライン推奨を要約して。」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">計算・換算の自動化</div>
+            <div class="check-desc">クレアチニンクリアランス・用量換算などを瞬時に計算</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「70歳男性、体重60kg、血清クレアチニン1.2mg/dLのCcrを計算して。」
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">報告書フォーマット生成</div>
+            <div class="check-desc">在宅報告書・疑義照会文書のテンプレート作成</div>
+            <div class="prompt-box">
+              <strong>プロンプト例:</strong><br>
+              「在宅医療報告書のテンプレートを作成して。患者ID・処方内容・観察事項・提案の欄を含めて。」
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Phase 2: AIに投げない工程 -->
+    <div class="workflow-section">
+      <div class="workflow-header">
+        <span class="workflow-icon">👤</span>
+        <span class="workflow-title">Phase 2: AIに投げない工程（10項目）</span>
+        <span class="workflow-badge badge-human">人間判断必須</span>
+      </div>
+      
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">患者の最終確認</div>
+            <div class="check-desc">対面での患者反応・理解度を直接確認</div>
+            <div class="warning-box">
+              ⚠️ AI生成の説明文をそのまま読み上げない。患者の反応を見ながら調整必須。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">処方意図の確認</div>
+            <div class="check-desc">医師の処方意図を推測せず、必要時は疑義照会</div>
+            <div class="warning-box">
+              ⚠️ AIは処方意図を推測する可能性がある。不確実な場合は必ず医師確認。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">アレルギー・禁忌の最終確認</div>
+            <div class="check-desc">患者申告と電子カルテの整合性を直接確認</div>
+            <div class="warning-box">
+              ⚠️ AI出力には含まれない可能性がある患者固有の禁忌情報を確認。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">薬歴の最終記載内容判断</div>
+            <div class="check-desc">AI案を参考にしつつ、実際に記載する内容は薬剤師が決定</div>
+            <div class="warning-box">
+              ⚠️ AI生成文のそのまま転記は不可。薬剤師の専門的判断を反映した内容に書き換え。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">在庫状況の実確認</div>
+            <div class="check-desc">AIは在庫状況を知らない。実棚確認またはシステム確認必須</div>
+            <div class="warning-box">
+              ⚠️ AIが提案した代替薬が実際に在庫があるとは限らない。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">法的責任の明確化</div>
+            <div class="check-desc">薬歴記載・服薬指導の法的責任は薬剤師にある</div>
+            <div class="warning-box">
+              ⚠️ AIの誤りを見逃した場合も、法的責任は薬剤師が負う。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">患者プライバシーの保護</div>
+            <div class="check-desc">AIに入力する患者情報の最小化・匿名化</div>
+            <div class="warning-box">
+              ⚠️ 氏名・住所・電話番号など個人情報をAIに入力しない。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">緊急時の判断</div>
+            <div class="check-desc">副作用・アナフィラキシー等の緊急時は即時対応</div>
+            <div class="warning-box">
+              ⚠️ 緊急時はAIを待たず、医師・救急への連絡を優先。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">AI出力のファクトチェック</div>
+            <div class="check-desc">薬剤名・用量・相互作用など必ず確認</div>
+            <div class="warning-box">
+              ⚠️ AIは「もっともらしい誤り」を出力することがある。必ず添付文書等で確認。
+            </div>
+          </div>
+        </div>
+        
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="checkbox">✓</div>
+          <div class="check-content">
+            <div class="check-title">継続的な品質改善</div>
+            <div class="check-desc">AI活用の振り返りとプロンプト改善</div>
+            <div class="warning-box">
+              💡 効果的だったプロンプトを記録し、次回の効率化に活用。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h3>薬剤師向けAIプロンプト集（100選）</h3>
+      <p>このチェックリストで使えるプロンプト例を100個収録。薬歴作成・服薬指導・疑義照会など、日常業務ですぐに使えるテンプレート満載。</p>
+      <a href="ai-prompts-lp.html" class="cta-button">詳細を見る →</a>
+    </div>
+    
+    <!-- Related Tools -->
+    <div class="related-section">
+      <h3>関連ツール</h3>
+      <ul>
+        <li><a href="pharmacy-ai-readiness.html">薬局AI活用診断</a> - あなたの薬局のAI活用レベルを20問で診断</li>
+        <li><a href="patient-interaction-diagnosis.html">患者対応診断</a> - 患者対応スキルを5領域で評価</li>
+      </ul>
+    </div>
+    
+    <footer>
+      <p>© 2026 薬剤師無料ツール集 | <a href="index.html">ツール一覧に戻る</a></p>
+    </footer>
+  </div>
+  
+  <script>
+    let checkedCount = 0;
+    const totalItems = 20;
+    
+    function toggleCheck(element) {
+      element.classList.toggle('checked');
+      updateProgress();
+      saveProgress();
+    }
+    
+    function updateProgress() {
+      checkedCount = document.querySelectorAll('.check-item.checked').length;
+      const percentage = (checkedCount / totalItems) * 100;
+      document.getElementById('progressFill').style.width = percentage + '%';
+      document.getElementById('progressText').textContent = `${checkedCount} / ${totalItems} 完了`;
+    }
+    
+    function saveProgress() {
+      const checkedItems = [];
+      document.querySelectorAll('.check-item').forEach((item, index) => {
+        if (item.classList.contains('checked')) {
+          checkedItems.push(index);
+        }
+      });
+      localStorage.setItem('ai-medication-history-workflow', JSON.stringify(checkedItems));
+    }
+    
+    function loadProgress() {
+      const saved = localStorage.getItem('ai-medication-history-workflow');
+      if (saved) {
+        const checkedItems = JSON.parse(saved);
+        const allItems = document.querySelectorAll('.check-item');
+        checkedItems.forEach(index => {
+          if (allItems[index]) {
+            allItems[index].classList.add('checked');
+          }
+        });
+        updateProgress();
+      }
+    }
+    
+    // 初期化
+    loadProgress();
+  </script>
+</body>
+</html>
