@@ -1,6 +1,55 @@
 {
-  "lastUpdated": "2026-03-11T10:42:00+09:00",
+  "lastUpdated": "2026-03-11T12:17:00+09:00",
   "reports": [
+    {
+      "timestamp": "2026-03-11T12:17:00+09:00",
+      "source": "sidebiz-30m-maintenance",
+      "status": "alert",
+      "summary": {
+        "status": "alert",
+        "monitor": {
+          "scope": 25,
+          "ok": 22,
+          "ng": 3,
+          "major": [
+            "https://yusuketakuma.github.io/pharma-medication-guidance/",
+            "https://yusuketakuma.github.io/pharma-renal-dose/",
+            "https://yusuketakuma.github.io/pharma-medication-reminder/"
+          ]
+        },
+        "handoff": {
+          "reproductionSteps": [
+            "3URLをブラウザ直接GETすると3件とも404（現時点status=404）",
+            "portal/関連記事導線を経由しても同条件で到達不可"
+          ],
+          "impact": "高: 主要到達導線3件停止（新規導線選択の迷子・既存導線ロスト） / 中: portal回遊導線ノイズ増加による離脱リスク",
+          "workarounds": "guidance/renal-doseは- tool版へ即時誘導可（200）。reminderは現時点で暫定公開先未確定。medication-calendar(200)は候補代替として明示可。",
+          "monitoringPoints": [
+            "major 3URLの到達性をstatus=alert閾値で継続監視（12分以内再確認）",
+            "old/new slug混在リンクの棚卸しを2時間報告に反映"
+          ]
+        },
+        "nextActions": [
+          "guidance/renal-dose/reminder の公開方針を部長承認し、portal・関連記事導線を同一サイクルで更新",
+          "reminder代替先未確定時はポータル上で一時停止表示を統一",
+          "old/new slug混在リンク棚卸し（頻度上位）を2時間サイクルへ明示"
+        ],
+        "requiredPermissions": {
+          "blockers": [
+            "guidance / renal-dose / reminder の最終公開方針決裁",
+            "GitHub Pages編集・再デプロイ権限"
+          ],
+          "selfExecutable": [
+            "major/noise分離ルール維持",
+            "代替導線候補文言の事前整備（reminder暫定表現）"
+          ]
+        },
+        "learningPoints": [
+          "公開方針確定前のslug/公開先変更は、major導線を同時停止させやすいため更新一時停止・方針確定優先のルール化が必須",
+          "majorのみ即時エスカレーションしnoiseは2時間集約する運用はノイズ抑制に有効"
+        ]
+      }
+    },
     {
       "timestamp": "2026-03-11T10:42:00+09:00",
       "source": "sidebiz-30m-maintenance",
