@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>返戻理由テンプレート・再請求チェックリスト - 薬剤師無料ツール</title>
+  <meta name="description" content="調剤報酬返戣対応を効率化するテンプレート集と再請求チェックリスト。返戻理由別の回答例・再請求フロー・進捗管理を無料で提供。">
+  <meta name="keywords" content="調剤報酬,返戣,再請求,薬局,薬剤師,チェックリスト,テンプレート">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="返戣理由テンプレート・再請求チェックリスト - 薬剤師無料ツール">
+  <meta property="og:description" content="調剤報酬返戣対応を効率化するテンプレート集と再請求チェックリスト。返戣理由別の回答例・再請求フロー・進捗管理を無料で提供。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/rejection-template-checklist.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+    
+    .tabs {
+      display: flex;
+      background: #f8f9fa;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+    
+    .tab:hover {
+      background: #e9ecef;
+    }
+    
+    .tab.active {
+      color: #e74c3c;
+      background: white;
+      border-bottom-color: #e74c3c;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      color: #e74c3c;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e74c3c;
+    }
+    
+    .template-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-left: 4px solid #e74c3c;
+    }
+    
+    .template-title {
+      font-weight: bold;
+      color: #c0392b;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    
+    .template-content {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      line-height: 1.8;
+    }
+    
+    .copy-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+    
+    .copy-btn:hover {
+      background: #c0392b;
+    }
+    
+    .copy-btn.copied {
+      background: #27ae60;
+    }
+    
+    .checklist {
+      list-style: none;
+    }
+    
+    .checklist li {
+      background: #f8f9fa;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.3s;
+    }
+    
+    .checklist li:hover {
+      background: #e9ecef;
+    }
+    
+    .checklist input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+    
+    .checklist label {
+      flex: 1;
+      cursor: pointer;
+    }
+    
+    .checklist .done {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    
+    .progress-bar {
+      background: #e9ecef;
+      height: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #e74c3c, #c0392b);
+      height: 100%;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .flow-diagram {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .flow-step {
+      background: #e74c3c;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      position: relative;
+    }
+    
+    .flow-step::after {
+      content: "→";
+      position: absolute;
+      right: -15px;
+      color: #666;
+    }
+    
+    .flow-step:last-child::after {
+      content: "";
+    }
+    
+    .alert-box {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .alert-box strong {
+      color: #856404;
+    }
+    
+    .success-box {
+      background: #d4edda;
+      border: 1px solid #28a745;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .success-box strong {
+      color: #155724;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .cta-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .stat-card {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+    
+    .stat-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .search-box {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+    
+    .search-box:focus {
+      outline: none;
+      border-color: #e74c3c;
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+      
+      .tabs {
+        flex-wrap: wrap;
+      }
+      
+      .tab {
+        flex: 1 1 50%;
+      }
+      
+      .flow-step {
+        font-size: 0.8rem;
+        padding: 10px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📋 返戻理由テンプレート・再請求チェックリスト</h1>
+      <p class="subtitle">調剤報酬返戣対応の効率化と再請求漏れ防止を支援</p>
+    </header>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="templates">📝 テンプレート</div>
+      <div class="tab" data-tab="checklist">✅ チェックリスト</div>
+      <div class="tab" data-tab="flow">🔄 フロー</div>
+      <div class="tab" data-tab="tips">💡 対応のコツ</div>
+    </div>
+    
+    <div class="content">
+      <!-- テンプレートタブ -->
+      <div id="templates" class="tab-content active">
+        <input type="text" class="search-box" id="templateSearch" placeholder="🔍 返戣理由を検索...">
+        
+        <div class="section">
+          <h2 class="section-title">返戣理由別回答テンプレート</h2>
+          
+          <div class="template-card" data-keywords="処方日 受領日 4日">
+            <div class="template-title">1. 処方日から受領日まで4日を超える場合</div>
+            <div class="template-content">【回答書】
+
+返戣理由：処方日から受領日まで4日を超えている
+
+回答内容：
+当該処方箋について、以下の事情により4日を超えての受領となりました。
+
+【具体的な事情】
+・患者様の都合により来局が遅れました
+・処方箋発行日：○年○月○日
+・来局日：○年○月○日
+・遅延理由：[具体的理由を記載]
+
+【添付資料】
+・処方箋の写し
+・患者様からの事情聴取メモ
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+          
+          <div class="template-card" data-keywords="疑義照会 内容不一致">
+            <div class="template-title">2. 疑義照会後の処方内容不一致</div>
+            <div class="template-content">【回答書】
+
+返戣理由：疑義照会後の処方内容と調剤内容が不一致
+
+回答内容：
+当該処方箋について、以下の通り疑義照会を実施し、医師の指示に基づき調剤いたしました。
+
+【疑義照会内容】
+・照会日時：○年○月○日
+・照会医師：○○医院 ○○先生
+・照会内容：[具体的な疑義点]
+・医師指示：[医師からの回答内容]
+
+【調剤内容との整合性】
+疑義照会の結果、医師指示に基づき以下の通り調剤いたしました。
+・調剤内容：[具体的な調剤内容]
+
+【添付資料】
+・疑義照会記録の写し
+・調剤録の該当部分
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+          
+          <div class="template-card" data-keywords="用量 用法 1日分量">
+            <div class="template-title">3. 用法・用量の不適切な記載</div>
+            <div class="template-content">【回答書】
+
+返戣理由：用法・用量の記載が不適切
+
+回答内容：
+当該処方箋の用法・用量について、以下の通り説明申し上げます。
+
+【処方内容】
+・薬剤名：○○
+・処方用量：[用量]
+・処方用法：[用法]
+
+【調剤時の確認事項】
+・用量確認：[確認内容]
+・用法確認：[確認内容]
+・患者様への説明：[説明内容]
+
+【特記事項】
+[特別な事情があれば記載]
+
+【添付資料】
+・調剤録の写し
+・服薬指導記録
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+          
+          <div class="template-card" data-keywords="剤形 規格 不一致">
+            <div class="template-title">4. 剤形・規格の不一致</div>
+            <div class="template-content">【回答書】
+
+返戣理由：剤形・規格が不一致
+
+回答内容：
+当該処方箋について、以下の事情により剤形・規格の変更を行いました。
+
+【変更内容】
+・処方：[処方された剤形・規格]
+・調剤：[実際に調剤した剤形・規格]
+
+【変更理由】
+・在庫状況：[在庫の有無]
+・患者様の状態：[服用しやすさ等の配慮]
+・医師への確認：[確認の有無と内容]
+
+【添付資料】
+・調剤録の写し
+・在庫確認記録（該当する場合）
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+          
+          <div class="template-card" data-keywords="後発品 ジェネリック 先発品">
+            <div class="template-title">5. 後発品への変更に関する返戻</div>
+            <div class="template-content">【回答書】
+
+返戣理由：後発品への変更が適切でない
+
+回答内容：
+当該処方箋の後発品変更について、以下の通り回答申し上げます。
+
+【処方内容】
+・先発品名：○○
+・後発品名：○○
+
+【変更の妥当性】
+・患者様への説明：変更の同意を得ました
+・医師の指示：[変更可否の指示内容]
+・薬学的同等性：[同等性の確認内容]
+
+【患者様の状況】
+・変更理由の理解：確認済み
+・服用上の注意：説明済み
+
+【添付資料】
+・調剤録の写し
+・服薬指導記録
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+          
+          <div class="template-card" data-keywords="在宅医療 訪問 指導">
+            <div class="template-title">6. 在宅医療関連の返戣</div>
+            <div class="template-content">【回答書】
+
+返戣理由：在宅患者指導料等の算定に関する疑義
+
+回答内容：
+当該在宅医療の指導について、以下の通り回答申し上げます。
+
+【実施内容】
+・訪問日：○年○月○日
+・訪問時間：○時○分〜○時○分（○分間）
+・指導内容：[具体的な指導内容]
+
+【患者様の状況】
+・主な疾患：[疾患名]
+・服薬状況：[服薬状況の説明]
+・指導の必要性：[なぜ指導が必要か]
+
+【算定の根拠】
+・[算定要件を満たしている理由]
+
+【添付資料】
+・訪問記録の写し
+・指導記録
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+          
+          <div class="template-card" data-keywords="重複 投薬 期間">
+            <div class="template-title">7. 重複投薬期間の返戣</div>
+            <div class="template-content">【回答書】
+
+返戣理由：重複投薬期間がある
+
+回答内容：
+当該処方箋について、以下の通り重複投薬期間の妥当性を説明申し上げます。
+
+【重複期間の内容】
+・前回処方期間：○年○月○日〜○年○月○日
+・今回処方期間：○年○月○日〜○年○月○日
+・重複日数：○日間
+
+【重複の理由】
+・[具体的な理由：患者の旅行、予備確保等]
+
+【薬学的確認事項】
+・相互作用の有無：確認済み
+・服薬スケジュール：患者様に説明済み
+
+【添付資料】
+・前回調剤録の写し
+・今回調剤録の写し
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+          
+          <div class="template-card" data-keywords="保険 被保険者 資格">
+            <div class="template-title">8. 保険者情報の不備</div>
+            <div class="template-content">【回答書】
+
+返戣理由：被保険者情報等の不備
+
+回答内容：
+当該処方箋の保険情報について、以下の通り回答申し上げます。
+
+【確認内容】
+・保険種別：[健康保険/国民健康保険/後期高齢者等]
+・被保険者番号：[番号]
+・有効期限：[期限]
+
+【不備の内容と対応】
+・[不備の具体的な内容]
+・[実施した確認・対応]
+
+【添付資料】
+・保険証の写し（必要に応じて）
+
+以上、ご査収のほどよろしくお願い申し上げます。</div>
+            <button class="copy-btn" onclick="copyTemplate(this)">📋 コピー</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- チェックリストタブ -->
+      <div id="checklist" class="tab-content">
+        <div class="section">
+          <h2 class="section-title">再請求対応チェックリスト</h2>
+          
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="completedCount">0</div>
+              <div class="stat-label">完了</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="remainingCount">15</div>
+              <div class="stat-label">残り</div>
+            </div>
+          </div>
+          
+          <ul class="checklist" id="recheckList">
+            <li>
+              <input type="checkbox" id="check1" onchange="updateProgress()">
+              <label for="check1">返戣通知書の内容を確認・記録</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check2" onchange="updateProgress()">
+              <label for="check2">返戣理由の分類（技術的/事務的/その他）</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check3" onchange="updateProgress()">
+              <label for="check3">該当調剤録・処方箋の抽出</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check4" onchange="updateProgress()">
+              <label for="check4">疑義照会記録の確認（該当する場合）</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check5" onchange="updateProgress()">
+              <label for="check5">服薬指導記録の確認（該当する場合）</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check6" onchange="updateProgress()">
+              <label for="check6">回答書の作成（テンプレート活用）</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check7" onchange="updateProgress()">
+              <label for="check7">回答書のダブルチェック</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check8" onchange="updateProgress()">
+              <label for="check8">添付資料の準備・確認</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check9" onchange="updateProgress()">
+              <label for="check9">回答期限の確認（通知から○日以内）</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check10" onchange="updateProgress()">
+              <label for="check10">回答書の提出・控えの保存</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check11" onchange="updateProgress()">
+              <label for="check11">再請求結果の確認（○週間後）</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check12" onchange="updateProgress()">
+              <label for="check12">結果の記録・管理台帳への反映</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check13" onchange="updateProgress()">
+              <label for="check13">再発防止策の検討・実施</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check14" onchange="updateProgress()">
+              <label for="check14">スタッフへの共有・教育</label>
+            </li>
+            <li>
+              <input type="checkbox" id="check15" onchange="updateProgress()">
+              <label for="check15">返戣傾向分析・月次レポート作成</label>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="alert-box">
+          <strong>⚠️ 注意事項</strong><br>
+          回答期限は通常、返戣通知到着から30日以内です。期限内の対応を徹底してください。
+        </div>
+      </div>
+      
+      <!-- フロータブ -->
+      <div id="flow" class="tab-content">
+        <div class="section">
+          <h2 class="section-title">再請求対応フロー</h2>
+          
+          <div class="flow-diagram">
+            <div class="flow-step">1. 返戣通知受領</div>
+            <div class="flow-step">2. 内容確認</div>
+            <div class="flow-step">3. 資料収集</div>
+            <div class="flow-step">4. 回答書作成</div>
+            <div class="flow-step">5. 提出</div>
+            <div class="flow-step">6. 結果確認</div>
+            <div class="flow-step">7. 記録・改善</div>
+          </div>
+          
+          <div class="section">
+            <h3 style="margin: 20px 0 15px; color: #c0392b;">📅 タイムライン目安</h3>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="background: #f8f9fa;">
+                <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">フェーズ</th>
+                <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">目安期間</th>
+                <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">重要ポイント</th>
+              </tr>
+              <tr>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">通知受領〜確認</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">当日中</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">期限確認・優先度判定</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">資料収集</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">1〜3日</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">調剤録・処方箋の完全性</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">回答書作成</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">3〜7日</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">根拠明確・ダブルチェック</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">提出〜結果</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">2〜4週間</td>
+                <td style="padding: 12px; border: 1px solid #dee2e6;">フォローアップ・記録</td>
+              </tr>
+            </table>
+          </div>
+          
+          <div class="success-box">
+            <strong>✅ 成功のポイント</strong><br>
+            ・返戣通知は当日中に開封・期限確認<br>
+            ・回答書は根拠を明確に、簡潔に作成<br>
+            ・添付資料は過不足なく準備<br>
+            ・再発防止策まで含めて対応完了とする
+          </div>
+        </div>
+      </div>
+      
+      <!-- 対応のコツタブ -->
+      <div id="tips" class="tab-content">
+        <div class="section">
+          <h2 class="section-title">返戣対応・再請求のコツ</h2>
+          
+          <div class="template-card">
+            <div class="template-title">📌 返戣理由の分類</div>
+            <div class="template-content">
+【技術的返戣】
+・用法・用量の不備
+・剤形・規格の不一致
+・重複投薬期間
+→ 調剤時の確認強化で予防可能
+
+【事務的返戣】
+・保険者情報の不備
+・処方日から4日超過
+・記載漏れ
+→ 受付時の確認強化で予防可能
+
+【その他】
+・在宅医療関連
+・特殊な調剤
+→ 算定要件の再確認で予防可能
+            </div>
+          </div>
+          
+          <div class="template-card">
+            <div class="template-title">📝 回答書作成のポイント</div>
+            <div class="template-content">
+1. **事実関係を明確に**
+   - いつ・何を・どのように確認したか
+   - 数値・日付は正確に記載
+
+2. **根拠を示す**
+   - なぜその対応が妥当だったか
+   - 薬学的判断の根拠
+
+3. **添付資料を過不足なく**
+   - 必要な資料は全て添付
+   - 不必要な資料は添付しない
+
+4. **期限内提出を徹底**
+   - 通常30日以内
+   - 余裕を持って作成開始
+            </div>
+          </div>
+          
+          <div class="template-card">
+            <div class="template-title">🔄 再発防止策の実施</div>
+            <div class="template-content">
+【調剤時】
+・ダブルチェックの徹底
+・疑義照会の記録保存
+・服薬指導記録の整備
+
+【受付時】
+・処方箋の有効期限確認
+・保険証の確認
+・患者情報の更新
+
+【事務処理】
+・請求データの確認
+・レセプト点検の強化
+・定期的な傾向分析
+            </div>
+          </div>
+          
+          <div class="template-card">
+            <div class="template-title">📊 返戣率改善のKPI</div>
+            <div class="template-content">
+【監視指標】
+・月間返戣件数
+・返戣理由別件数
+・再請求成功率
+・平均対応日数
+
+【目標値】
+・返戣率：1%以下
+・再請求成功率：80%以上
+・平均対応日数：7日以内
+
+【改善サイクル】
+1. 月次で返戣傾向を分析
+2. 多発理由の対策を検討
+3. 対策実施・効果測定
+4. 次月の傾向と比較
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="cta-section">
+      <h3>🚀 業務効率化をさらに加速</h3>
+      <p style="margin-bottom: 20px;">AIプロンプト集で調剤報酬業務を自動化・効率化</p>
+      <a href="ai-prompts-lp.html" class="cta-btn">AIプロンプト集を見る →</a>
+    </div>
+  </div>
+  
+  <script>
+    // タブ切り替え
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+    
+    // テンプレートコピー
+    function copyTemplate(btn) {
+      const content = btn.previousElementSibling.textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        btn.textContent = '✓ コピーしました';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '📋 コピー';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+    
+    // 進捗更新
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('#recheckList input[type="checkbox"]');
+      const checked = document.querySelectorAll('#recheckList input[type="checkbox"]:checked').length;
+      const total = checkboxes.length;
+      const percent = Math.round((checked / total) * 100);
+      
+      document.getElementById('progressFill').style.width = percent + '%';
+      document.getElementById('progressFill').textContent = percent + '%';
+      document.getElementById('completedCount').textContent = checked;
+      document.getElementById('remainingCount').textContent = total - checked;
+      
+      // チェックされた項目にスタイル適用
+      checkboxes.forEach(cb => {
+        const label = cb.nextElementSibling;
+        if (cb.checked) {
+          label.classList.add('done');
+        } else {
+          label.classList.remove('done');
+        }
+      });
+      
+      // ローカルストレージに保存
+      const state = {};
+      checkboxes.forEach(cb => {
+        state[cb.id] = cb.checked;
+      });
+      localStorage.setItem('rejectionChecklist', JSON.stringify(state));
+    }
+    
+    // ページ読み込み時に状態復元
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('rejectionChecklist');
+      if (saved) {
+        const state = JSON.parse(saved);
+        Object.keys(state).forEach(id => {
+          const cb = document.getElementById(id);
+          if (cb) cb.checked = state[id];
+        });
+        updateProgress();
+      }
+    });
+    
+    // テンプレート検索
+    document.getElementById('templateSearch').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll('.template-card').forEach(card => {
+        const title = card.querySelector('.template-title').textContent.toLowerCase();
+        const content = card.querySelector('.template-content').textContent.toLowerCase();
+        const keywords = card.dataset.keywords || '';
+        
+        if (title.includes(query) || content.includes(query) || keywords.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
