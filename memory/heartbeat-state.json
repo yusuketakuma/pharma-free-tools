@@ -13,140 +13,148 @@
   "lastBuchoReport": 1773157260,
   "last30mReportToTrainerSent": 1773157620,
   "lastHomecare30m": {
-    "timestamp": 1773264420,
+    "timestamp": 1773375600,
+    "status": "no_progress",
     "tasks": [
-      "外部情報ソース回復確認（CloseDi/PMDA）",
-      "homecare-checklists.md更新（3/11情報反映）"
+      "PMDAトップページ監視（status 200確認完了）",
+      "経過措置Phase 1リマインド内容整理（trainer-2h集約用）",
+      "内部記録更新（heartbeat-state.json）"
     ],
     "alerts": [
-      "[ALERT]経過措置医薬品: 3/31期限まで20日（患者抽出未実施・Phase1-4チェックリスト作成済み）",
-      "[INFO]CloseDi回復: 3/11更新確認（供給停止1/限定出荷13/解除7品目）",
-      "[INFO]PMDA回復: 最新1-2461（3/11付）確認",
-      "[INFO]指定濩用防止: 5/1施行まで51日・印刷設置4/15予定"
+      "[ALERT]経過措置医薬品: 3/31期限まで19日（患者抽出未実施・Phase1-4チェックリスト作成済み）",
+      "[ALERT]Brave Search API制限継続: 4月初旬リセット待ち",
+      "[INFO]PMDAトップページ: 正常（status 200確認済み 23:40）",
+      "[INFO]指定濩用防止: 5/1施行まで50日・印刷設置4/15予定"
     ],
     "next30mCandidates": [
-      "経過措置患者抽出Phase 1実行リマインド（trainer経由でゆうすけへ共有）",
-      "AI薬歴支援ワークフロー整理（AIに投げる/投げない工程分離）",
-      "CloseDi 3/11更新の詳細確認（供給停止1品目の特定）"
+      "経過措置患者抽出Phase 1実行リマインド強化（trainer-2h-regular-report集約）",
+      "AI薬歴支援ワークフロー活用促進検討",
+      "PMDA安全性情報: 新URL手動探索（ゆうすけ依存・ブラウザ経由）"
     ],
     "learningNotes": [
-      "外部ソース回復確認は毎サイクル冒頭で実施・障害時は内部整備へ切り替え",
+      "PMDA監視は定期的に実施し、status 200を確認",
       "経過措置対応はPhase分けで進捗可視化・ゆうすけ操作依存を明確化",
       "trainer-2h-regular-reportへの集約で報告チャネル統一"
     ],
     "selfImprovement": {
       "learningPoints": [
-        "外部ソース回復確認を最初に行う: 障害継続か回復かでタスク選択が変わる",
-        "チェックリスト更新で履歴残す: 最新情報セクションに日付と更新内容を明記",
-        "柔軟なタスク切り替え: 外部ソース不可時は内部整備タスクへ即座に切り替え"
+        "期限管理の可視化: 残り日数（18日）を毎回更新で緊急性を維持",
+        "阻害要因の明確化: ゆうすけ操作依存を明示し、期待する阻害要因除去条件を記録",
+        "報告の一元化: trainer-2h-regular-reportへの集約で重複を回避"
       ],
       "failures": [],
       "improvementProposals": [
         {
           "priority": "高",
-          "feasibility": "実行可能",
-          "proposal": "経過措置患者抽出Phase 1実行リマインドをtrainer-2h-regular-reportに含める"
+          "feasibility": "ゆうすけ依存",
+          "proposal": "経過措置患者抽出Phase 1実行（MedicalCareStation操作）"
         },
         {
           "priority": "中",
-          "feasibility": "次サイクル",
-          "proposal": "CloseDi 3/11更新の供給停止1品目の詳細確認"
+          "feasibility": "可能",
+          "proposal": "AI薬歴支援ワークフローをhomecare実務に導入"
         }
       ]
     }
   },
   "lastBucho30mResearch": {
-    "timestamp": 1773256980,
+    "timestamp": 1773365520,
     "findings": [
-      "【障害】web_search API月間制限到達（402 USAGE_LIMIT_EXCEEDED）・新規リサーチ不可",
-      "【代替】既存学習ポイント（25件以上）を整理し次サイクルへ反映",
-      "【薬局運営】2026年度診療報酬改定DX必須化: DX達成薬局のみ恩恵最大化（3/10リサーチ）",
-      "【薬局運営】薬局自動化市場2033年120億ドル: CAGR 7.0%（3/10リサーチ）",
-      "【薬局運営】AI自動化で薬剤師生産性33%向上（3/10リサーチ）",
-      "【副業自動化】Make 90%機能を10%コストで: Zapierより安価で柔軟（3/10リサーチ）",
-      "【副業自動化】n8n自前ホストでコスト削減: Zapier $50+/月 vs n8n無料（3/10リサーチ）",
-      "【マネジメント】RICE Framework: Reach・Impact・Confidence・Effortで定量的優先順位付け（3/10リサーチ）",
-      "【マネジメント】Impact Scoring Framework: Critical/High/Medium/Lowの4段階分類（3/10リサーチ）",
-      "【マネジメント】Impact-First 1:1構造: 5分Wellness・10分戦略・10分障害除去・5分キャリア（3/10リサーチ）",
-      "【OpenClaw】3種スケジュールタイプ: cron（定期）・every（間隔）・at（一回）で柔軟設計（3/10リサーチ）",
-      "【OpenClaw】Heartbeat vs Cron使い分け: Heartbeatは背景認識・Cronは予定アクション（3/10リサーチ）",
-      "【保守監視】AI予測監視で問題発生前検出（3/10リサーチ）",
-      "【保守監視】リアルタイム監視・予測分析・スケーラビリティが2026年の必須機能（3/10リサーチ）"
+      "【障害】web_search API月間制限到達（402 USAGE_LIMIT_EXCEEDED）・新規リサーチ不可（継続）",
+      "【代替】既存学習ポイント（15件以上）を整理し次サイクルへ反映",
+      "【薬局運営】AI薬歴入力自動化: アインHD事例・薬剤師処理枚数4割増目標",
+      "【薬局運営】医薬品在庫管理最適化: 廃棄ロス削減と業務改善統合",
+      "【薬局運営】PLC分析による経営判断: 段階別戦略転換",
+      "【副業自動化】n8n自動化: 月5万円副業収入実例",
+      "【副業自動化】ChatGPT×Canva×note販売フロー: 月15万円事例",
+      "【副業自動化】デジタル商品＋複数収益導線: 月3〜5万円安定モデル",
+      "【マネジメント】継続的フィードバック: 年次レビュー脱却・信頼中心文化",
+      "【マネジメント】RICE Framework: Reach・Impact・Confidence・Effort（採用済み）",
+      "【マネジメント】Impact-First 1:1構造: 5分Wellness・10分戦略・10分障害除去・5分キャリア",
+      "【OpenClaw】cron runによる手動トリガー: デバッグ効率向上（採用済み）",
+      "【OpenClaw】条件分岐・タスク依存関係: 多段階フロー設計",
+      "【OpenClaw】Heartbeat vs Cron使い分け: 背景認識・予定アクション（採用済み）",
+      "【保守監視】統合監視プラットフォーム: Datadog等で障害特定・運用可視化",
+      "【保守監視】定期メンテナンス・パフォーマンス監視統合"
     ],
     "taskCandidates": {
       "sidebiz_dev": [
-        "51ツール目候補選定: 需要・実装難易度・収益導線の3軸評価",
-        "AIブログ記事転換フロー構築: 無料ツール→ブログ記事→SEO流入の自動化",
-        "ニュースレター登録LP文案作成: メールリスト構築の導線整備"
+        "63ツール目候補RICE評価: 調剤過誤防止Score=13.5・薬歴入力短縮Score=8",
+        "ニュースレターLP HTML実装: Beehiiv選定後",
+        "AIブログ記事転換フロー構築: 無料ツール→ブログ記事→SEO流入"
       ],
       "sidebiz_maintenance": [
-        "link-checker.sh週次cron化: 404予防の自動化",
-        "ポータル件数自動同期チェック: タイトル・OGP・JSON-LD・表示件数の整合性確認",
-        "既存ツール重複チェックスクリプト作成: 新規開発前の重複検知自動化"
+        "link-checker.sh週次cron化: 404予防自動化",
+        "brave-api-usage-monitor動作確認: 次回9:00実行予定",
+        "62ツール目（患者ID確認）監視: localStorage動作確認"
       ],
       "homecare": [
-        "経過措置患者抽出Phase 1実行リマインド準備",
-        "AI薬歴支援ワークフロー整理: AIに投げる/投げない工程の分離・標準化",
-        "CloseDi供給状況次回確認: 3/14頃更新予定の事前リマインド設定"
+        "経過措置患者抽出Phase 1実行リマインド強化: 3/31期限まで18日・最優先",
+        "AI薬歴支援ワークフロー活用促進: 51ツール目活用",
+        "PMDA安全性情報新URL手動探索: ゆうすけ依存・ブラウザ経由"
       ]
     },
     "alerts": [
       "[ALERT]web_search API月間制限到達（402 USAGE_LIMIT_EXCEEDED）・新規インターネットリサーチ不可",
-      "[ALERT]経過措置医薬品: 3/31期限まで20日・患者抽出未着手（ゆうすけ操作必要）",
-      "[ALERT]CloseDi DNS障害継続: ENOTFOUND www.closedi.mhlw.go.jp",
-      "[INFO]sidebiz 50ツール達成: 50ツール目「薬局キャッシュフロー診断」開発完了（18:37）",
-      "[INFO]指定濩用防止: 5/1施行まで51日・印刷設置4/15予定",
-      "[INFO]sidebiz販売プラットフォーム未開設: Gumroad/Note/Beehiiv等アカウント作成待ち",
-      "[INFO]ポータル件数不整合: タイトル59/サブタイトル58/統計57の乖離"
+      "[ALERT]経過措置医薬品: 3/31期限まで18日・患者抽出未着手（ゆうすけ操作必要・最優先）",
+      "[ALERT]外部情報ソース3件アクセス不可: CloseDi（DNS障害）・PMDA詳細（404）・web_search（制限超過）",
+      "[INFO]sidebiz 62ツール達成: 62ツール目「患者ID確認フローチェックリスト」開発完了（22:32）",
+      "[INFO]指定濩用防止: 5/1施行まで50日・印刷設置4/15予定",
+      "[INFO]sidebiz販売プラットフォーム未開設: Gumroad/Note/Beehiiv等アカウント作成待ち"
     ],
     "teamBias": {
-      "homecare": "情報収集・確認中心、実行アクション不足（ゆうすけ依存・CloseDi/PMDA障害）→次: Phase 1実行リマインド準備",
-      "sidebiz_dev": "コンテンツ作成活発（50ツール達成）・収益化実行保留（プラットフォーム未開設）→次: 51ツール目候補選定・ニュースレターLP文案作成",
-      "sidebiz_maintenance": "初期段階・link-checker.sh作成・404修正10件完了→次: link-checker.sh週次cron化・ポータル件数同期チェック",
-      "coding": "本日報告なし・アイドル状態（3/8方針変更で待機）→次: ユーザー指示待ち継続"
+      "homecare": "情報収集中心・実行不足（ゆうすけ依存・外部障害）→次: Phase 1リマインド強化（trainer-2h集約）",
+      "sidebiz_dev": "コンテンツ活発（62ツール達成）・収益化保留（プラットフォーム未開設）→次: 63ツール目RICE評価・LP実装準備",
+      "sidebiz_maintenance": "独立報告なし・統合運用→次: 監視ジョブ動作確認（link-checker/api-monitor）",
+      "coding": "アイドル状態（3/8方針変更で待機）→次: ユーザー指示待ち継続"
     },
     "implications": [
       "web_search不可→代替手段（既存学習ポイント整理）で継続可能",
-      "DX必須化→sidebiz無料ツールの需要裏付け",
-      "n8n自前ホスト→副業インフラ選定で検討",
+      "RICE評価定着→ツール選定の定量化（62ツール目Score=27で即採用）",
+      "経過措置期限逼近→Phase 1リマインド強化が必要",
       "link-checker.sh→週次cron化で404予防"
     ],
     "learningLoop": {
       "adopted": [
-        "RICE Framework: 43ツール目「RICE優先順位スコアリング診断」で実装済み",
+        "RICE Framework: 43ツール目「RICE優先順位スコアリング診断」で実装済み・62ツール目選定で実践",
         "Impact Scoring: 42ツール目「薬局優先順位スコアリング診断」で実装済み",
         "Impact-First 1:1構造: 副業担当/保守担当の週次同期アジェンダに導入",
-        "DX必須化: sidebiz DX関連ツール需要の裏付け",
-        "n8n自前ホスト: 副業インフラ選定で検討中",
+        "継続的フィードバック: 30分サイクルで実践中",
         "link-checker.sh: 404検出自動化で作成済み",
-        "AI薬歴支援ワークフロー: 51ツール目で実装済み（homecare課題との交点）"
+        "brave-api-usage-monitor: 使用量監視で導入済み"
       ],
       "pending": [
-        "Brave Search API使用量監視: 月間制限回避策の検討",
-        "重要安全性情報のローカルキャッシュ: 定期更新の仕組み化",
-        "link-checker.sh週次cron化: 404予防自動化",
-        "既存ツール重複チェックスクリプト: 新規開発前の重複検知自動化"
+        "link-checker.sh週次cron化: 404予防自動化（次サイクル）",
+        "ニュースレターLP HTML実装: Beehiiv選定後",
+        "63ツール目開発: RICE評価後",
+        "販売プラットフォーム開設: ゆうすけ依存"
       ]
     },
     "selfImprovement": {
       "learningPoints": [
-        "Brave Search API制限時の代替手段: 既存学習ポイントの整理・次サイクル反映で継続可能",
-        "link-checker.shの定期実行: 18:20の404修正で学習→週次実行設定で予防的保守へ",
-        "重複検知を先に行う: 新規ツール作成前に既存ツール確認を先行実施"
+        "外部API依存リスク: 単一API（Brave Search）への依存は単一障害点",
+        "代替手段の事前確保: 既存学習ポイント整理でAPI不可時も価値提供可能",
+        "期限管理の可視化: 残り日数（18日）を毎回更新で緊急性維持",
+        "RICE評価で定量的選定: Score=27で迷いなく患者ID確認を選択"
       ],
       "failures": [
         {
           "issue": "web_search API月間制限超過で新規リサーチ不可",
           "cause": "月間使用量5.0到達（USAGE_LIMIT_EXCEEDED）",
-          "prevention": "既存学習ポイントの整理・代替手段の確立・使用量監視",
+          "prevention": "brave-api-usage-monitor導入済み・既存学習ポイント整理で代替",
           "impact": "30分ジョブの核心要件（ベストプラクティス収集）が実行不可"
         }
       ],
       "improvementProposals": [
         {
           "priority": "高",
-          "feasibility": "実行可能",
-          "proposal": "既存学習ポイントの整理・次サイクル反映"
+          "feasibility": "次サイクル",
+          "proposal": "63ツール目RICE評価"
+        },
+        {
+          "priority": "高",
+          "feasibility": "trainer-2h集約",
+          "proposal": "経過措置Phase 1リマインド強化"
         },
         {
           "priority": "高",
@@ -155,13 +163,13 @@
         },
         {
           "priority": "中",
-          "feasibility": "要検討",
-          "proposal": "Brave Search API使用量監視・制限回避策検討"
+          "feasibility": "Beehiiv選定後",
+          "proposal": "ニュースレターLP HTML実装"
         },
         {
-          "priority": "中",
-          "feasibility": "次サイクル",
-          "proposal": "既存ツール重複チェックスクリプト作成"
+          "priority": "低",
+          "feasibility": "4月初旬",
+          "proposal": "web_search復旧後の新規リサーチ"
         }
       ]
     }
@@ -259,31 +267,33 @@
     }
   },
   "lastSidebizSyncToTrainer": {
-    "timestamp": 1773265980,
-    "status": "no_progress",
+    "timestamp": 1773366000,
+    "status": "alert",
     "summary": [
-      "sidebiz: 50ツール目「薬局キャッシュフロー診断」開発完了（18:37）、ポータル58選に更新",
-      "ポータルリンク404修正10件完了、link-checker.sh作成・検証完了",
-      "[ALERT] web_search API月間制限到達継続・代替手段（既存学習ポイント活用）で継続中"
+      "[ALERT] 副業担当サブエージェント障害: sidebiz-30m-assign連続エラー3回（zai/glm-5タイムアウト + openai-codex認証失敗）",
+      "[ALERT] 保守担当サブエージェント障害: sidebiz-30m-maintenance連続エラー28回（openai-codex認証失敗）",
+      "sidebiz: 62ツール目「患者ID確認フローチェックリスト」開発完了維持（22:32）・ポータル62選",
+      "ニュースレター登録LP文案完了（docs/sidebiz/newsletter-lp-draft.md保存）",
+      "[ALERT] 販売プラットフォーム未開設継続（収益化実行不可・ゆうすけ依存）"
     ],
     "next30mActions": [
-      "51ツール目候補選定（需要・実装難易度・収益導線の3軸評価）",
-      "link-checker.sh週次cron化（404予防自動化）",
-      "既存ツール重複チェックスクリプト作成"
+      "sidebiz-30m-assign再実行確認（23:30予定・モデル復旧待ち）",
+      "63ツール目候補RICE評価（調剤過誤防止Score=13.5）",
+      "ニュースレターLP HTML実装準備（Beehiiv選定後）"
     ],
     "desiredActions": [
-      "ポータル件数自動同期チェック実装",
-      "返戻リスク診断とキャッシュフロー診断の相互リンク化",
-      "n8n自前ホスト構築調査（コスト削減効果評価）"
+      "ニュースレターLP HTML実装: メールリスト獲得で収益化基盤強化",
+      "AIブログ記事転換フロー: 無料ツール→ブログ記事→SEO流入の自動化",
+      "63ツール目開発: 調剤過誤防止チェックリスト（RICE Score=13.5）"
     ],
     "requiredEnvironment": {
       "immediate": [
-        "GitHub Pages権限（稼働中）",
-        "read/write/execツール（全て利用可能）"
+        "モデル安定性確保（zai/glm-5タイムアウト解消 / openai-codex認証復旧）",
+        "GitHub Pages権限（稼働中）"
       ],
       "unstable": [
-        "Brave Search API月間制限中（代替: 既存学習ポイント活用）",
-        "MedicalCareStationアクセス（ゆうすけ操作必要）"
+        "Brave Search API月間制限中（4月初旬リセット待ち）",
+        "副業担当・保守担当サブエージェント（モデル障害中）"
       ],
       "userDependent": [
         "販売プラットフォーム開設（Gumroad/Note/Beehiiv等）"
@@ -291,39 +301,44 @@
     },
     "selfImprovement": {
       "learningPoints": [
-        "重複検知を先に行う: 新規ツール作成前にindex.htmlとgrepで既存確認を先行実施",
-        "ポータル更新同期項目: タイトル、OGP、JSON-LD、表示件数、フッターを同時更新",
-        "外部アクセス不可時は内部ドキュメントで対応: 情報鮮度より手元完結重視",
-        "link-checker.sh作成で404検出自動化: 週次実行推奨"
+        "サブエージェント障害の可視化: consecutiveErrors数で障害継続期間を明示（保守担当28連続エラー）",
+        "単一モデル依存リスク: zai/glm-5 + openai-codex両方障害時は代替なし",
+        "待機状態の明示: モデル障害中は準備可能タスク（文案・設計）を先行実行"
       ],
       "failures": [
         {
-          "issue": "品質事故（軽微・未公開）: 返戻診断ツール重複作成",
-          "cause": "実装前の既存ツール棚卸しが不足",
-          "prevention": "index.htmlとgrepで名称・URL重複確認を先行実施",
-          "impact": "未リンクの下書きファイルのみ・本番導線への影響なし"
+          "issue": "[ALERT] 副業担当サブエージェント障害: sidebiz-30m-assign連続エラー3回",
+          "cause": "zai/glm-5 LLM request timed out + openai-codex/gpt-5.4 OAuth token refresh failed",
+          "prevention": "モデル復旧監視・タイムアウト延長検討",
+          "impact": "副業開発の新規活動停止"
+        },
+        {
+          "issue": "[ALERT] 保守担当サブエージェント障害: sidebiz-30m-maintenance連続エラー28回",
+          "cause": "openai-codex OAuth token refresh failed",
+          "prevention": "認証復旧・モデル切り替え検討",
+          "impact": "既存ツール監視停止リスク"
         }
       ],
       "improvementProposals": [
         {
           "priority": "高",
-          "feasibility": "次サイクル",
-          "proposal": "51ツール目候補選定（需要・実装難易度・収益導線の3軸評価）"
+          "feasibility": "モデル復旧待ち",
+          "proposal": "sidebiz-30m-assign再実行"
         },
         {
           "priority": "高",
           "feasibility": "次サイクル",
-          "proposal": "link-checker.sh週次cron化"
+          "proposal": "63ツール目RICE評価"
+        },
+        {
+          "priority": "高",
+          "feasibility": "Beehiiv選定後",
+          "proposal": "ニュースレターLP HTML実装"
         },
         {
           "priority": "中",
-          "feasibility": "次サイクル",
-          "proposal": "既存ツール重複チェックスクリプト作成"
-        },
-        {
-          "priority": "中",
-          "feasibility": "要検討",
-          "proposal": "返戻コスト試算ツール追加開発"
+          "feasibility": "ゆうすけ依存",
+          "proposal": "販売プラットフォーム開設"
         }
       ]
     }
