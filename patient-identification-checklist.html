@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>患者ID確認フローチェックリスト - 薬剤師無料ツール</title>
+  <meta name="description" content="患者取り違え事故を予防する15項目のチェックリスト。受付・調剤・引渡の各段階で二重確認を行い、患者安全を確保する。進捗保存機能付き。">
+  <meta name="keywords" content="患者ID確認,取り違え防止,患者安全,チェックリスト,薬局,薬剤師,医療事故">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="患者ID確認フローチェックリスト - 薬剤師無料ツール">
+  <meta property="og:description" content="患者取り違え事故を予防する15項目のチェックリスト。受付・調剤・引渡の各段階で二重確認を行い、患者安全を確保する。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/patient-identification-checklist.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "患者ID確認フローチェックリスト",
+    "description": "患者取り違え事故を予防する15項目のチェックリスト。受付・調剤・引渡の各段階で二重確認を行う。",
+    "url": "https://yusuketakuma.github.io/pharma-free-tools/patient-identification-checklist.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    .progress-section {
+      background: #f8f9fa;
+      padding: 20px 30px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .progress-bar {
+      background: #e9ecef;
+      height: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #27ae60, #2ecc71);
+      height: 100%;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    .main-content {
+      padding: 30px;
+    }
+    
+    .phase {
+      margin-bottom: 30px;
+    }
+    
+    .phase-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #9b59b6;
+    }
+    
+    .phase-icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+    
+    .phase-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #8e44ad;
+    }
+    
+    .checklist {
+      list-style: none;
+    }
+    
+    .checklist-item {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .checklist-item:hover {
+      background: #f0f0f0;
+      transform: translateX(5px);
+    }
+    
+    .checklist-item.checked {
+      background: #e8f5e9;
+      text-decoration: line-through;
+      color: #666;
+    }
+    
+    .checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #9b59b6;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .checklist-item.checked .checkbox {
+      background: #27ae60;
+      border-color: #27ae60;
+    }
+    
+    .checkbox-mark {
+      color: white;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .checklist-item.checked .checkbox-mark {
+      opacity: 1;
+    }
+    
+    .check-content {
+      flex: 1;
+    }
+    
+    .check-title {
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    
+    .check-desc {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: #9b59b6;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #8e44ad;
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: #e9ecef;
+      color: #333;
+    }
+    
+    .btn-secondary:hover {
+      background: #dee2e6;
+    }
+    
+    .note {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin-top: 30px;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .note-title {
+      font-weight: bold;
+      color: #856404;
+      margin-bottom: 5px;
+    }
+    
+    .note-text {
+      font-size: 0.85rem;
+      color: #856404;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #f8f9fa;
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    footer a {
+      color: #9b59b6;
+      text-decoration: none;
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      
+      header {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.3rem;
+      }
+      
+      .main-content {
+        padding: 20px;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🛡️ 患者ID確認フローチェックリスト</h1>
+      <p class="subtitle">患者取り違え事故を予防する15項目のチェックリスト</p>
+    </header>
+    
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill">0%</div>
+      </div>
+      <div class="stats">
+        <span>完了: <strong id="completedCount">0</strong> / <strong id="totalCount">15</strong> 項目</span>
+        <span id="statusText">未着手</span>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <!-- Phase 1: 受付時 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">📋</span>
+          <span class="phase-title">Phase 1: 受付時の確認</span>
+        </div>
+        <ul class="checklist" id="phase1">
+          <li class="checklist-item" data-id="1">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">患者名をフルネームで呼びかけ</div>
+              <div class="check-desc">名字だけでなく、フルネームで確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="2">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">生年月日の確認</div>
+              <div class="check-desc">同姓同名の患者を識別する重要な要素</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="3">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">保険証の確認</div>
+              <div class="check-desc">有効期限・記号番号・本人/家族区分を確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="4">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">処方箋の患者名と本人の照合</div>
+              <div class="check-desc">処方箋の患者名が目の前の患者と一致するか確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="5">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">受付番号の発行と伝達</div>
+              <div class="check-desc">患者に受付番号を伝え、引渡時の照合に使用</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Phase 2: 調剤時 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">💊</span>
+          <span class="phase-title">Phase 2: 調剤時の確認</span>
+        </div>
+        <ul class="checklist" id="phase2">
+          <li class="checklist-item" data-id="6">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">処方箋と薬袋の患者名照合</div>
+              <div class="check-desc">薬袋作成時に処方箋の患者名と一致するか確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="7">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">薬歴の患者情報確認</div>
+              <div class="check-desc">薬歴画面の患者名・生年月日を確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="8">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">鑑査時の患者名再確認</div>
+              <div class="check-desc">鑑査工程で薬袋と処方箋の患者名を再照合</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="9">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">薬剤の最終確認と患者名照合</div>
+              <div class="check-desc">最終確認時に薬袋・処方箋・薬剤の整合性を確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="10">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">複数処方箋の場合の患者統一確認</div>
+              <div class="check-desc">同一患者の複数処方箋であることを確認</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Phase 3: 引渡時 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">🤝</span>
+          <span class="phase-title">Phase 3: 引渡時の確認</span>
+        </div>
+        <ul class="checklist" id="phase3">
+          <li class="checklist-item" data-id="11">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">受付番号の照合</div>
+              <div class="check-desc">患者が持つ受付番号と薬袋の番号を照合</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="12">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">患者名の呼びかけ確認</div>
+              <div class="check-desc">フルネームで呼びかけ、患者が応答するか確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="13">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">生年月日の口頭確認</div>
+              <div class="check-desc">「生年月日をお願いします」と尋ねて照合</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="14">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">薬袋の患者名最終確認</div>
+              <div class="check-desc">引渡直前に薬袋の患者名を目視確認</div>
+            </div>
+          </li>
+          <li class="checklist-item" data-id="15">
+            <div class="checkbox"><span class="checkbox-mark">✓</span></div>
+            <div class="check-content">
+              <div class="check-title">服薬指導時の患者名確認</div>
+              <div class="check-desc">服薬指導中も薬袋の患者名を確認しながら実施</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="actions">
+        <button class="btn btn-primary" onclick="resetChecklist()">🔄 リセット</button>
+        <button class="btn btn-secondary" onclick="exportChecklist()">📄 結果をコピー</button>
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ 印刷</button>
+      </div>
+      
+      <div class="note">
+        <div class="note-title">⚠️ 重要な注意点</div>
+        <div class="note-text">
+          患者取り違えは医療事故の中でも重大な結果を招く可能性があります。忙しい時こそ、各段階での二重確認を徹底してください。同姓同名の患者には特に注意が必要です。
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p><a href="https://yusuketakuma.github.io/pharma-free-tools/">薬剤師無料ツール集</a> | 62ツール目</p>
+    </footer>
+  </div>
+  
+  <script>
+    const STORAGE_KEY = 'patient-id-checklist';
+    
+    // チェックリストの読み込み
+    function loadChecklist() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const checkedIds = JSON.parse(saved);
+        checkedIds.forEach(id => {
+          const item = document.querySelector(`[data-id="${id}"]`);
+          if (item) {
+            item.classList.add('checked');
+          }
+        });
+      }
+      updateProgress();
+    }
+    
+    // チェックリストの保存
+    function saveChecklist() {
+      const checkedItems = document.querySelectorAll('.checklist-item.checked');
+      const checkedIds = Array.from(checkedItems).map(item => item.dataset.id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedIds));
+    }
+    
+    // 進捗の更新
+    function updateProgress() {
+      const total = document.querySelectorAll('.checklist-item').length;
+      const completed = document.querySelectorAll('.checklist-item.checked').length;
+      const percentage = Math.round((completed / total) * 100);
+      
+      document.getElementById('progressFill').style.width = percentage + '%';
+      document.getElementById('progressFill').textContent = percentage + '%';
+      document.getElementById('completedCount').textContent = completed;
+      document.getElementById('totalCount').textContent = total;
+      
+      let statusText = '未着手';
+      if (percentage === 100) {
+        statusText = '✅ 完了';
+      } else if (percentage >= 66) {
+        statusText = '🔵 ほぼ完了';
+      } else if (percentage >= 33) {
+        statusText = '🟡 進行中';
+      }
+      document.getElementById('statusText').textContent = statusText;
+    }
+    
+    // チェックリストのリセット
+    function resetChecklist() {
+      if (confirm('チェックリストをリセットしますか？')) {
+        document.querySelectorAll('.checklist-item').forEach(item => {
+          item.classList.remove('checked');
+        });
+        localStorage.removeItem(STORAGE_KEY);
+        updateProgress();
+      }
+    }
+    
+    // 結果のエクスポート
+    function exportChecklist() {
+      const total = document.querySelectorAll('.checklist-item').length;
+      const completed = document.querySelectorAll('.checklist-item.checked').length;
+      const percentage = Math.round((completed / total) * 100);
+      
+      let text = `患者ID確認フローチェックリスト\n`;
+      text += `完了: ${completed}/${total} (${percentage}%)\n\n`;
+      
+      document.querySelectorAll('.checklist-item').forEach(item => {
+        const status = item.classList.contains('checked') ? '✅' : '⬜';
+        const title = item.querySelector('.check-title').textContent;
+        text += `${status} ${title}\n`;
+      });
+      
+      navigator.clipboard.writeText(text).then(() => {
+        alert('クリップボードにコピーしました');
+      });
+    }
+    
+    // クリックイベントの設定
+    document.querySelectorAll('.checklist-item').forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('checked');
+        saveChecklist();
+        updateProgress();
+      });
+    });
+    
+    // 初期化
+    loadChecklist();
+  </script>
+</body>
+</html>
