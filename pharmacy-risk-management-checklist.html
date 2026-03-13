@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局リスクマネジメントチェックリスト | 薬局無料ツール77選</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { font-size: 16px; opacity: 0.9; }
+        .risk-indicator { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: bold; margin-top: 15px; }
+        .risk-high { background: #e74c3c; }
+        .risk-medium { background: #f39c12; }
+        .risk-low { background: #27ae60; }
+        .content { padding: 30px; }
+        .progress-bar { background: #ecf0f1; border-radius: 10px; height: 24px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #27ae60, #2ecc71); transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; }
+        .category { margin-bottom: 25px; border: 2px solid #ecf0f1; border-radius: 12px; overflow: hidden; }
+        .category-header { background: #34495e; color: white; padding: 15px 20px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .category-header:hover { background: #2c3e50; }
+        .category-count { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 15px; font-size: 14px; }
+        .category-content { padding: 15px; display: none; }
+        .category-content.active { display: block; }
+        .item { display: flex; align-items: flex-start; padding: 12px; border-bottom: 1px solid #ecf0f1; }
+        .item:last-child { border-bottom: none; }
+        .item:hover { background: #f8f9fa; }
+        .checkbox { width: 24px; height: 24px; border: 2px solid #bdc3c7; border-radius: 6px; margin-right: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+        .checkbox.checked { background: #27ae60; border-color: #27ae60; }
+        .checkbox.checked::after { content: '✓'; color: white; font-weight: bold; }
+        .item-content { flex: 1; }
+        .item-title { font-weight: 600; color: #2c3e50; margin-bottom: 4px; }
+        .item-desc { font-size: 13px; color: #7f8c8d; }
+        .risk-badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-left: 10px; }
+        .badge-high { background: #fee; color: #c0392b; }
+        .badge-medium { background: #fff3cd; color: #856404; }
+        .badge-low { background: #d4edda; color: #155724; }
+        .actions { display: flex; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52,152,219,0.4); }
+        .btn-secondary { background: #95a5a6; color: white; }
+        .btn-secondary:hover { background: #7f8c8d; }
+        .btn-success { background: linear-gradient(135deg, #27ae60, #229954); color: white; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(39,174,96,0.4); }
+        .summary { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 20px; }
+        .summary h3 { color: #2c3e50; margin-bottom: 15px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .summary-item { text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .summary-number { font-size: 32px; font-weight: bold; color: #2c3e50; }
+        .summary-label { font-size: 13px; color: #7f8c8d; margin-top: 5px; }
+        .recommendations { background: #fff3cd; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; }
+        .recommendations h3 { color: #856404; margin-bottom: 15px; }
+        .recommendation-item { background: white; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #f39c12; }
+        .recommendation-item:last-child { margin-bottom: 0; }
+        @media print { body { background: white; padding: 0; } .container { box-shadow: none; } .actions { display: none; } }
+        @media (max-width: 600px) { .header h1 { font-size: 22px; } .content { padding: 15px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ 薬局リスクマネジメントチェックリスト</h1>
+            <p>法令遵守・事故防止・経営リスク削減を体系的に管理</p>
+            <div id="overallRisk" class="risk-indicator risk-medium">リスク評価: 中</div>
+        </div>
+        <div class="content">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill" style="width: 0%;">0%</div>
+            </div>
+
+            <div id="categories"></div>
+
+            <div class="summary" id="summary" style="display: none;">
+                <h3>📊 評価サマリー</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div id="checkedCount" class="summary-number">0</div>
+                        <div class="summary-label">完了項目</div>
+                    </div>
+                    <div class="summary-item">
+                        <div id="highRiskCount" class="summary-number">0</div>
+                        <div class="summary-label">高リスク</div>
+                    </div>
+                    <div class="summary-item">
+                        <div id="mediumRiskCount" class="summary-number">0</div>
+                        <div class="summary-label">中リスク</div>
+                    </div>
+                    <div class="summary-item">
+                        <div id="completionRate" class="summary-number">0%</div>
+                        <div class="summary-label">達成率</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendations" id="recommendations">
+                <h3>💡 改善アクション提案</h3>
+                <div id="recommendationList"></div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="saveData()">💾 保存</button>
+                <button class="btn btn-secondary" onclick="resetData()">🔄 リセット</button>
+                <button class="btn btn-success" onclick="window.print()">🖨️ 印刷</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const checklistData = {
+            categories: [
+                {
+                    name: "📋 法令遵守・届出管理",
+                    items: [
+                        { id: "legal1", title: "薬局開設許可証の有効期限管理", desc: "許可証の更新期限を把握し、期限3ヶ月前に更新手続き開始", risk: "high" },
+                        { id: "legal2", title: "薬剤師勤務体制の届出", desc: "勤務薬剤師の変更・休職時に10日以内に届出", risk: "high" },
+                        { id: "legal3", title: "構造設備の基準遵守", desc: "調剤室・待合室の面積・設備が基準を満たしている", risk: "medium" },
+                        { id: "legal4", title: "医薬品医療機器等法遵守", desc: "販売・授与・広告等の規制を遵守", risk: "high" },
+                        { id: "legal5", title: "個人情報保護法遵守", desc: "患者情報の適切な管理・廃棄手順の整備", risk: "high" }
+                    ]
+                },
+                {
+                    name: "⚠️ 安全管理・事故防止",
+                    items: [
+                        { id: "safety1", title: "調剤過誤防止体制", desc: "ダブルチェック体制・確認手順の標準化", risk: "high" },
+                        { id: "safety2", title: "医薬品管理体制", desc: "有効期限管理・保管条件・在庫棚卸の定期実施", risk: "high" },
+                        { id: "safety3", title: "麻薬・向精神薬管理", desc: "帳簿管理・施錠・在庫確認の徹底", risk: "high" },
+                        { id: "safety4", title: "事故・ヒヤリハット報告体制", desc: "報告フロー・原因分析・再発防止策の標準化", risk: "medium" },
+                        { id: "safety5", title: "緊急時対応マニュアル", desc: "火災・地震・不審者対応の手順書作成・周知", risk: "medium" }
+                    ]
+                },
+                {
+                    name: "🏢 業務リスク管理",
+                    items: [
+                        { id: "business1", title: "レセプト請求管理", desc: "請求ミス・返戻の防止・対応フロー整備", risk: "medium" },
+                        { id: "business2", title: "在庫リスク管理", desc: "欠品・過剰在庫・廃棄ロスの防止体制", risk: "medium" },
+                        { id: "business3", title: "患者クレーム対応", desc: "対応マニュアル・エスカレーション基準の明確化", risk: "medium" },
+                        { id: "business4", title: "従業員労務管理", desc: "労働基準法遵守・シフト管理・健康管理", risk: "medium" },
+                        { id: "business5", title: "BCP（事業継続計画）", desc: "災害・パンデミック時の継続計画策定", risk: "low" }
+                    ]
+                },
+                {
+                    name: "🧼 衛生・環境管理",
+                    items: [
+                        { id: "hygiene1", title: "調剤室衛生管理", desc: "清掃計画・消毒手順の標準化・実施記録", risk: "medium" },
+                        { id: "hygiene2", title: "医療廃棄物管理", desc: "分別・保管・委託処理の適正管理", risk: "medium" },
+                        { id: "hygiene3", title: "空調・換気管理", desc: "定期的なフィルター清掃・換気確認", risk: "low" },
+                        { id: "hygiene4", title: "ペストコントロール", desc: "ネズミ・ゴキブリ等の防除対策", risk: "low" },
+                        { id: "hygiene5", title: "感染症対策", desc: "手指衛生・マスク着用・環境消毒の徹底", risk: "high" }
+                    ]
+                },
+                {
+                    name: "📞 緊急対応・危機管理",
+                    items: [
+                        { id: "emergency1", title: "連絡体制の整備", desc: "緊急連絡網・関係機関の連絡先一覧", risk: "medium" },
+                        { id: "emergency2", title: "医薬品副作用報告", desc: "副作用報告フロー・PMDAへの報告手順", risk: "high" },
+                        { id: "emergency3", title: "医薬品回収対応", desc: "自主回収・行政命令時の対応手順", risk: "high" },
+                        { id: "emergency4", title: "情報セキュリティ事故対応", desc: "情報漏洩・システム障害時の対応フロー", risk: "medium" },
+                        { id: "emergency5", title: "メディア対応", desc: "取材・報道時の対応方針・発言者指定", risk: "low" }
+                    ]
+                }
+            ]
+        };
+
+        let state = { checked: {}, expanded: {} };
+
+        function init() {
+            loadData();
+            renderCategories();
+            updateProgress();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            container.innerHTML = checklistData.categories.map((cat, idx) => `
+                <div class="category">
+                    <div class="category-header" onclick="toggleCategory(${idx})">
+                        <span>${cat.name}</span>
+                        <span class="category-count">${getCategoryProgress(idx)}</span>
+                    </div>
+                    <div class="category-content ${state.expanded[idx] ? 'active' : ''}" id="cat-${idx}">
+                        ${cat.items.map(item => `
+                            <div class="item">
+                                <div class="checkbox ${state.checked[item.id] ? 'checked' : ''}" 
+                                     onclick="toggleItem('${item.id}')"></div>
+                                <div class="item-content">
+                                    <div class="item-title">${item.title}</div>
+                                    <div class="item-desc">${item.desc}</div>
+                                </div>
+                                <span class="risk-badge badge-${item.risk}">${getRiskLabel(item.risk)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRiskLabel(risk) {
+            const labels = { high: '高', medium: '中', low: '低' };
+            return labels[risk] || risk;
+        }
+
+        function getCategoryProgress(catIdx) {
+            const cat = checklistData.categories[catIdx];
+            const checked = cat.items.filter(i => state.checked[i.id]).length;
+            return `${checked}/${cat.items.length}`;
+        }
+
+        function toggleCategory(idx) {
+            state.expanded[idx] = !state.expanded[idx];
+            const content = document.getElementById(`cat-${idx}`);
+            content.classList.toggle('active');
+            renderCategories();
+        }
+
+        function toggleItem(id) {
+            state.checked[id] = !state.checked[id];
+            renderCategories();
+            updateProgress();
+            saveData();
+        }
+
+        function updateProgress() {
+            const allItems = checklistData.categories.flatMap(c => c.items);
+            const checkedCount = allItems.filter(i => state.checked[i.id]).length;
+            const total = allItems.length;
+            const percent = Math.round((checkedCount / total) * 100);
+            
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('progressFill').textContent = `${percent}%`;
+            
+            const highRiskItems = allItems.filter(i => i.risk === 'high' && !state.checked[i.id]);
+            const mediumRiskItems = allItems.filter(i => i.risk === 'medium' && !state.checked[i.id]);
+            
+            document.getElementById('checkedCount').textContent = checkedCount;
+            document.getElementById('highRiskCount').textContent = highRiskItems.length;
+            document.getElementById('mediumRiskCount').textContent = mediumRiskItems.length;
+            document.getElementById('completionRate').textContent = `${percent}%`;
+            document.getElementById('summary').style.display = 'block';
+            
+            // Update overall risk
+            const overallRisk = document.getElementById('overallRisk');
+            if (highRiskItems.length > 0) {
+                overallRisk.className = 'risk-indicator risk-high';
+                overallRisk.textContent = `リスク評価: 高（${highRiskItems.length}件未対応）`;
+            } else if (mediumRiskItems.length > 0) {
+                overallRisk.className = 'risk-indicator risk-medium';
+                overallRisk.textContent = `リスク評価: 中（${mediumRiskItems.length}件未対応）`;
+            } else {
+                overallRisk.className = 'risk-indicator risk-low';
+                overallRisk.textContent = 'リスク評価: 低';
+            }
+            
+            // Generate recommendations
+            generateRecommendations(highRiskItems, mediumRiskItems);
+        }
+
+        function generateRecommendations(highRisk, mediumRisk) {
+            const recDiv = document.getElementById('recommendations');
+            const recList = document.getElementById('recommendationList');
+            
+            if (highRisk.length === 0 && mediumRisk.length === 0) {
+                recDiv.style.display = 'none';
+                return;
+            }
+            
+            recDiv.style.display = 'block';
+            let html = '';
+            
+            if (highRisk.length > 0) {
+                html += highRisk.slice(0, 3).map(item => 
+                    `<div class="recommendation-item">🔴 <strong>${item.title}</strong>: 速やかに対応が必要です</div>`
+                ).join('');
+            }
+            
+            if (mediumRisk.length > 0 && highRisk.length < 3) {
+                html += mediumRisk.slice(0, 3 - highRisk.length).map(item => 
+                    `<div class="recommendation-item">🟡 <strong>${item.title}</strong>: 計画的に対応してください</div>`
+                ).join('');
+            }
+            
+            recList.innerHTML = html;
+        }
+
+        function saveData() {
+            localStorage.setItem('pharmacy-risk-management', JSON.stringify(state));
+            alert('保存しました');
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('pharmacy-risk-management');
+            if (saved) {
+                state = JSON.parse(saved);
+            }
+        }
+
+        function resetData() {
+            if (confirm('すべてのチェックをリセットしますか？')) {
+                state = { checked: {}, expanded: {} };
+                renderCategories();
+                updateProgress();
+                saveData();
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
