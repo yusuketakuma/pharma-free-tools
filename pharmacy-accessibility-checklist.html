@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局アクセシビリティ改善チェックリスト - バリアフリー・高齢者対応</title>
+  <meta name="description" content="薬局のアクセシビリティ改善を支援するチェックリスト。バリアフリー化、高齢者・障害者対応、ユニバーサルデザインの観点から評価し、改善提案を提示します。">
+  <meta name="keywords" content="薬局,アクセシビリティ,バリアフリー,高齢者対応,障害者対応,ユニバーサルデザイン,ADA,バリアフリー法">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    .intro {
+      background: #e8f5e9;
+      border-left: 4px solid #11998e;
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .intro h3 {
+      color: #11998e;
+      margin-bottom: 8px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      color: #11998e;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8f5e9;
+    }
+    
+    .section-icon {
+      font-size: 1.5rem;
+    }
+    
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    
+    .check-item:hover {
+      background: #e8f5e9;
+    }
+    
+    .check-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: #11998e;
+    }
+    
+    .check-label {
+      flex: 1;
+    }
+    
+    .check-label strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+    
+    .check-label small {
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    .score-section {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 15px;
+      margin: 30px 0;
+      text-align: center;
+    }
+    
+    .score-title {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+    
+    .score-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .score-item {
+      text-align: center;
+    }
+    
+    .score-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    
+    .score-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .score-bar {
+      width: 100%;
+      height: 20px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 10px;
+      margin-top: 15px;
+      overflow: hidden;
+    }
+    
+    .score-fill {
+      height: 100%;
+      background: white;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+    
+    .result-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    
+    .result-title {
+      font-size: 1.1rem;
+      color: #11998e;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .result-grade {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .grade-s { background: #4caf50; color: white; }
+    .grade-a { background: #8bc34a; color: white; }
+    .grade-b { background: #ffc107; color: #333; }
+    .grade-c { background: #ff9800; color: white; }
+    .grade-d { background: #f44336; color: white; }
+    
+    .improvement-list {
+      margin-top: 15px;
+    }
+    
+    .improvement-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .improvement-icon {
+      font-size: 1.2rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+    
+    .legal-note {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin-top: 25px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+    
+    .legal-note h4 {
+      color: #856404;
+      margin-bottom: 8px;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.85rem;
+      border-top: 1px solid #eee;
+    }
+    
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .container {
+        box-shadow: none;
+      }
+      .btn {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+      .content {
+        padding: 20px;
+      }
+      .score-display {
+        gap: 15px;
+      }
+      .score-value {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏥 薬局アクセシビリティ改善チェックリスト</h1>
+      <p class="subtitle">バリアフリー・高齢者・障害者対応の総合評価</p>
+    </header>
+    
+    <div class="content">
+      <div class="intro">
+        <h3>📋 このチェックリストについて</h3>
+        <p>薬局のアクセシビリティ（利用しやすさ）を5つの領域から評価します。バリアフリー法改正や高齢化社会への対応として、すべての患者さんが利用しやすい薬局づくりの現状を把握し、改善点を特定できます。</p>
+      </div>
+      
+      <!-- 領域1: 物理的アクセシビリティ -->
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">🚪</span>
+          1. 物理的アクセシビリティ
+        </h2>
+        
+        <div class="check-item">
+          <input type="checkbox" id="p1" onchange="calculateScore()">
+          <label class="check-label" for="p1">
+            <strong>入口にスロープまたは段差解消措置がある</strong>
+            <small>車椅子・歩行器でのアクセス確保</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="p2" onchange="calculateScore()">
+          <label class="check-label" for="p2">
+            <strong>入口扉が自動ドアまたは押しボタン式</strong>
+            <small>開閉困難な方への配慮</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="p3" onchange="calculateScore()">
+          <label class="check-label" for="p3">
+            <strong>通路幅が車椅子通行可能（90cm以上）</strong>
+            <small>店内移動の確保</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="p4" onchange="calculateScore()">
+          <label class="check-label" for="p4">
+            <strong>車椅子対応トイレがある</strong>
+            <small>介助スペース確保・手すり設置</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="p5" onchange="calculateScore()">
+          <label class="check-label" for="p5">
+            <strong>受付カウンターが車椅子対応（低い位置）</strong>
+            <small>座ったままの対応可能</small>
+          </label>
+        </div>
+      </div>
+      
+      <!-- 領域2: 視覚アクセシビリティ -->
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">👁️</span>
+          2. 視覚アクセシビリティ
+        </h2>
+        
+        <div class="check-item">
+          <input type="checkbox" id="v1" onchange="calculateScore()">
+          <label class="check-label" for="v1">
+            <strong>案内表示が大きな文字・高コントラスト</strong>
+            <small>視力低下した方にも判読可能</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="v2" onchange="calculateScore()">
+          <label class="check-label" for="v2">
+            <strong>点字・触知案内がある</strong>
+            <small>視覚障害者への情報提供</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="v3" onchange="calculateScore()">
+          <label class="check-label" for="v3">
+            <strong>照明が十分明るい</strong>
+            <small>高齢者・弱視の方への配慮</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="v4" onchange="calculateScore()">
+          <label class="check-label" for="v4">
+            <strong>薬袋に大きな文字・読みやすいフォント使用</strong>
+            <small>服用指示の視認性向上</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="v5" onchange="calculateScore()">
+          <label class="check-label" for="v5">
+            <strong>床面の段差・傾斜が視覚的に強調</strong>
+            <small>転倒防止の色分け・警告表示</small>
+          </label>
+        </div>
+      </div>
+      
+      <!-- 領域3: 聴覚・コミュニケーション -->
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">👂</span>
+          3. 聴覚・コミュニケーション
+        </h2>
+        
+        <div class="check-item">
+          <input type="checkbox" id="h1" onchange="calculateScore()">
+          <label class="check-label" for="h1">
+            <strong>筆談用具・ホワイトボードを常備</strong>
+            <small>聴覚障害者との円滑なコミュニケーション</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="h2" onchange="calculateScore()">
+          <label class="check-label" for="h2">
+            <strong>呼び出しブザー・振動通知システム</strong>
+            <small>待ち時間の視覚・振動通知</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="h3" onchange="calculateScore()">
+          <label class="check-label" for="h3">
+            <strong>手話対応または手話通訳アプリ活用</strong>
+            <small>手話ユーザーへの対応</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="h4" onchange="calculateScore()">
+          <label class="check-label" for="h4">
+            <strong>ゆっくり・はっきり話す対応マニュアル</strong>
+            <small>高齢者・難聴者への配慮</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="h5" onchange="calculateScore()">
+          <label class="check-label" for="h5">
+            <strong>多言語対応（英語・中国語等）</strong>
+            <small>外国人患者への情報提供</small>
+          </label>
+        </div>
+      </div>
+      
+      <!-- 領域4: 認知・精神的配慮 -->
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">🧠</span>
+          4. 認知・精神的配慮
+        </h2>
+        
+        <div class="check-item">
+          <input type="checkbox" id="c1" onchange="calculateScore()">
+          <label class="check-label" for="c1">
+            <strong>薬の説明を分かりやすく（イラスト・図解）</strong>
+            <small>認知症・理解困難な方への工夫</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="c2" onchange="calculateScore()">
+          <label class="check-label" for="c2">
+            <strong>静かな待合スペース確保</strong>
+            <small>感覚過敏・精神疾患の方への配慮</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="c3" onchange="calculateScore()">
+          <label class="check-label" for="c3">
+            <strong>服薬支援ツール紹介（薬カレンダー等）</strong>
+            <small>服薬管理困難な方への支援</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="c4" onchange="calculateScore()">
+          <label class="check-label" for="c4">
+            <strong>プライバシー配慮した相談スペース</strong>
+            <small>周囲を気にせず相談可能</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="c5" onchange="calculateScore()">
+          <label class="check-label" for="c5">
+            <strong>介護者・支援者同伴時の配慮</strong>
+            <small>付き添いスペース・相談対応</small>
+          </label>
+        </div>
+      </div>
+      
+      <!-- 領域5: 情報アクセシビリティ -->
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">📱</span>
+          5. 情報アクセシビリティ
+        </h2>
+        
+        <div class="check-item">
+          <input type="checkbox" id="i1" onchange="calculateScore()">
+          <label class="check-label" for="i1">
+            <strong>Webサイトがアクセシビリティ対応</strong>
+            <small>スクリーンリーダー対応・高コントラスト</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="i2" onchange="calculateScore()">
+          <label class="check-label" for="i2">
+            <strong>お薬情報を電子データ提供可能</strong>
+            <small>お薬手帳アプリ連携・PDF送付</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="i3" onchange="calculateScore()">
+          <label class="check-label" for="i3">
+            <strong>電話・FAX・メールで事前相談可能</strong>
+            <small>来店困難な方への対応</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="i4" onchange="calculateScore()">
+          <label class="check-label" for="i4">
+            <strong>障害者手帳・介護保険証提示時の配慮</strong>
+            <small>優先対応・丁寧な説明</small>
+          </label>
+        </div>
+        
+        <div class="check-item">
+          <input type="checkbox" id="i5" onchange="calculateScore()">
+          <label class="check-label" for="i5">
+            <strong>バリアフリー情報の公開（HP・チラシ）</strong>
+            <small>事前のアクセシビリティ情報提供</small>
+          </label>
+        </div>
+      </div>
+      
+      <!-- スコア表示 -->
+      <div class="score-section">
+        <h3 class="score-title">📊 アクセシビリティスコア</h3>
+        <div class="score-display">
+          <div class="score-item">
+            <div class="score-value" id="totalScore">0</div>
+            <div class="score-label">/ 25項目</div>
+          </div>
+          <div class="score-item">
+            <div class="score-value" id="percentage">0%</div>
+            <div class="score-label">達成率</div>
+          </div>
+          <div class="score-item">
+            <div class="score-value" id="grade">-</div>
+            <div class="score-label">評価</div>
+          </div>
+        </div>
+        <div class="score-bar">
+          <div class="score-fill" id="scoreBar" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <!-- 結果・改善提案 -->
+      <div class="result-section" id="resultSection" style="display: none;">
+        <h3 class="result-title">📋 評価結果と改善提案</h3>
+        <div id="resultContent"></div>
+      </div>
+      
+      <div class="button-group">
+        <button class="btn" onclick="window.print()">📄 印刷・PDF保存</button>
+        <button class="btn btn-secondary" onclick="resetAll()">🔄 リセット</button>
+      </div>
+      
+      <div class="legal-note">
+        <h4>⚠️ 法的背景</h4>
+        <p>【バリアフリー法（建築物）】2024年4月施行の改正法により、一定規模以上の医療機関・薬局はバリアフリー化が義務化されています。【合理的配慮】障害者差別解消法に基づき、障害者からの求めに応じた合理的配慮の提供が事業者に求められています。詳細は厚生労働省・各自治体のガイドラインをご確認ください。</p>
+      </div>
+    </div>
+    
+    <footer>
+      <p>薬剤師無料ツール集 - 業務効率化・在宅医療支援ツール71選</p>
+      <p><a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank">https://yusuketakuma.github.io/pharma-free-tools/</a></p>
+    </footer>
+  </div>
+  
+  <script>
+    function calculateScore() {
+      const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+      let checked = 0;
+      allCheckboxes.forEach(cb => {
+        if (cb.checked) checked++;
+      });
+      
+      const total = allCheckboxes.length;
+      const percentage = Math.round((checked / total) * 100);
+      
+      document.getElementById('totalScore').textContent = checked;
+      document.getElementById('percentage').textContent = percentage + '%';
+      document.getElementById('scoreBar').style.width = percentage + '%';
+      
+      // 評価ランク
+      let grade, gradeClass;
+      if (percentage >= 90) { grade = 'S'; gradeClass = 'grade-s'; }
+      else if (percentage >= 75) { grade = 'A'; gradeClass = 'grade-a'; }
+      else if (percentage >= 50) { grade = 'B'; gradeClass = 'grade-b'; }
+      else if (percentage >= 25) { grade = 'C'; gradeClass = 'grade-c'; }
+      else { grade = 'D'; gradeClass = 'grade-d'; }
+      
+      const gradeEl = document.getElementById('grade');
+      gradeEl.textContent = grade;
+      gradeEl.className = '';
+      
+      // 結果表示
+      showResult(checked, total, percentage, grade, gradeClass);
+    }
+    
+    function showResult(checked, total, percentage, grade, gradeClass) {
+      const resultSection = document.getElementById('resultSection');
+      const resultContent = document.getElementById('resultContent');
+      
+      // 未チェック項目を収集
+      const uncheckedItems = [];
+      const categories = [
+        { prefix: 'p', name: '物理的アクセシビリティ' },
+        { prefix: 'v', name: '視覚アクセシビリティ' },
+        { prefix: 'h', name: '聴覚・コミュニケーション' },
+        { prefix: 'c', name: '認知・精神的配慮' },
+        { prefix: 'i', name: '情報アクセシビリティ' }
+      ];
+      
+      for (let i = 1; i <= 5; i++) {
+        ['p', 'v', 'h', 'c', 'i'].forEach(prefix => {
+          const cb = document.getElementById(prefix + i);
+          if (cb && !cb.checked) {
+            const label = cb.nextElementSibling.querySelector('strong').textContent;
+            const cat = categories.find(c => c.prefix === prefix);
+            uncheckedItems.push({ category: cat.name, label: label });
+          }
+        });
+      }
+      
+      let html = `
+        <span class="result-grade ${gradeClass}">評価: ${grade} (${percentage}%)</span>
+        <p style="margin: 10px 0;">
+          ${grade === 'S' ? '🌟 素晴らしい！すべての患者さんが利用しやすい環境が整っています。' :
+            grade === 'A' ? '✨ 素晴らしい！高いアクセシビリティ基準を達成しています。' :
+            grade === 'B' ? '👍 良好です。いくつかの改善でさらに良くなります。' :
+            grade === 'C' ? '📈 改善の余地があります。優先項目から着手を。' :
+            '⚠️ アクセシビリティ改善が急務です。法的要件も確認してください。'}
+        </p>
+      `;
+      
+      if (uncheckedItems.length > 0) {
+        html += `
+          <div class="improvement-list">
+            <h4 style="margin-bottom: 10px;">🔧 改善推奨項目 (${uncheckedItems.length}件)</h4>
+        `;
+        
+        // カテゴリ別に表示（最大10件）
+        const itemsToShow = uncheckedItems.slice(0, 10);
+        itemsToShow.forEach(item => {
+          html += `
+            <div class="improvement-item">
+              <span class="improvement-icon">□</span>
+              <div>
+                <strong>${item.label}</strong>
+                <div style="font-size: 0.85rem; color: #666;">${item.category}</div>
+              </div>
+            </div>
+          `;
+        });
+        
+        if (uncheckedItems.length > 10) {
+          html += `<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">他 ${uncheckedItems.length - 10} 件</p>`;
+        }
+        
+        html += '</div>';
+      }
+      
+      resultContent.innerHTML = html;
+      resultSection.style.display = 'block';
+    }
+    
+    function resetAll() {
+      const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+      allCheckboxes.forEach(cb => cb.checked = false);
+      calculateScore();
+    }
+    
+    // 初期計算
+    calculateScore();
+  </script>
+</body>
+</html>
