@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局5S診断チェックリスト｜薬剤師向け無料ツール</title>
+    <meta name="description" content="調剤室の整理整頓を5S（整理・整頓・清掃・清潔・躾）で診断。10項目のチェックで現状を把握し、業務効率化を実現。無料で使える薬剤師専用ツール。">
+    <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-5s-diagnosis.html">
+    <meta property="og:title" content="薬局5S診断チェックリスト｜薬剤師向け無料ツール">
+    <meta property="og:description" content="調剤室の整理整頓を5Sで診断。10項目チェックで業務効率化を実現。">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-5s-diagnosis.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px 20px; text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 1.8rem; margin-bottom: 10px; }
+        .subtitle { font-size: 0.95rem; opacity: 0.95; }
+        .card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .category { background: #ecfdf5; padding: 12px 15px; border-radius: 8px; margin: 20px 0 15px; font-weight: bold; color: #047857; border-left: 4px solid #10b981; }
+        .check-item { display: flex; align-items: flex-start; padding: 15px; margin-bottom: 10px; background: #f9fafb; border-radius: 8px; transition: all 0.2s; }
+        .check-item:hover { background: #f3f4f6; }
+        .check-item input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; margin-top: 2px; cursor: pointer; accent-color: #10b981; }
+        .check-item label { flex: 1; cursor: pointer; font-size: 0.95rem; }
+        .score-display { text-align: center; padding: 30px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 12px; margin: 20px 0; }
+        .score-number { font-size: 4rem; font-weight: bold; color: #059669; }
+        .score-label { font-size: 1.1rem; color: #047857; margin-top: 5px; }
+        .result-level { display: inline-block; padding: 8px 20px; border-radius: 20px; font-weight: bold; margin-top: 15px; }
+        .level-excellent { background: #dcfce7; color: #166534; }
+        .level-good { background: #fef3c7; color: #92400e; }
+        .level-needs-work { background: #fee2e2; color: #991b1b; }
+        .btn { display: inline-block; padding: 14px 28px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; text-decoration: none; transition: all 0.2s; margin: 5px; }
+        .btn:hover { background: #059669; transform: translateY(-1px); }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .cta-box { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 25px; border-radius: 12px; text-align: center; margin: 30px 0; }
+        .cta-box h3 { margin-bottom: 15px; }
+        .cta-box a { background: white; color: #7c3aed; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #6b7280; text-decoration: none; }
+        .back-link:hover { color: #10b981; }
+        .tips { background: #fef3c7; padding: 15px; border-radius: 8px; margin-top: 20px; font-size: 0.9rem; }
+        .tips h4 { color: #92400e; margin-bottom: 8px; }
+        @media (max-width: 600px) { h1 { font-size: 1.5rem; } .container { padding: 15px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← ツール一覧に戻る</a>
+        
+        <header>
+            <h1>🏥 薬局5S診断チェックリスト</h1>
+            <p class="subtitle">調剤室の整理整頓を10項目でチェック</p>
+        </header>
+
+        <div class="card">
+            <p>調剤室の「5S（整理・整頓・清掃・清潔・躾）」レベルを診断します。各項目を確認し、該当する場合はチェックを入れてください。</p>
+        </div>
+
+        <form id="checklist-form">
+            <div class="category">整理（SEIRI）- 必要なものだけを残す</div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q1" data-points="10">
+                <label for="q1">使用頻度の低い医薬品・器材が整理され、必要なものだけが配置されている</label>
+            </div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q2" data-points="10">
+                <label for="q2">期限切れ医薬品・不要書類が定期的に廃棄されている</label>
+            </div>
+
+            <div class="category">整頓（SEITON）- 決められた場所に置く</div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q3" data-points="10">
+                <label for="q3">医薬品の配置場所が明確で、誰でもすぐに取り出せる</label>
+            </div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q4" data-points="10">
+                <label for="q4">調剤台・作業台の上が整理され、作業スペースが確保されている</label>
+            </div>
+
+            <div class="category">清掃（SEISO）- 常にきれいに保つ</div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q5" data-points="10">
+                <label for="q5">調剤室の床・棚が毎日清掃されている</label>
+            </div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q6" data-points="10">
+                <label for="q6">器具・設備が清潔に保たれ、消毒・手入れが行われている</label>
+            </div>
+
+            <div class="category">清潔（SEIKETSU）- 衛生的な状態を維持</div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q7" data-points="10">
+                <label for="q7">調剤室の温度・湿度・換気が適切に管理されている</label>
+            </div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q8" data-points="10">
+                <label for="q8">手洗い・手指消毒設備が整備され、適切に使用されている</label>
+            </div>
+
+            <div class="category">躾（SHITSUKE）- 習慣化・定着化</div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q9" data-points="10">
+                <label for="q9">5Sのルール・手順が文書化され、全職員に周知されている</label>
+            </div>
+            
+            <div class="check-item">
+                <input type="checkbox" id="q10" data-points="10">
+                <label for="q10">定期的な5S点検・改善活動が行われている</label>
+            </div>
+
+            <div class="score-display">
+                <div class="score-number" id="score">0</div>
+                <div class="score-label">/ 100点</div>
+                <div class="result-level" id="level">診断中</div>
+            </div>
+
+            <div style="text-align: center;">
+                <button type="button" class="btn" onclick="saveResults()">💾 結果を保存</button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 リセット</button>
+            </div>
+        </form>
+
+        <div class="tips card">
+            <h4>💡 5S改善のヒント</h4>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>50点未満: 緊急改善が必要。小さな改善から始めましょう</li>
+                <li>50-79点: 改善余地あり。週次で5S時間を設けましょう</li>
+                <li>80点以上: 良好。維持・定着化を重点に</li>
+            </ul>
+        </div>
+
+        <div class="cta-box">
+            <h3>📝 5S改善計画を立てる</h3>
+            <p>診断結果をもとに、具体的な改善アクションを設定しましょう</p>
+            <a href="index.html">他の無料ツールを見る →</a>
+        </div>
+    </div>
+
+    <script>
+        // チェックボックス変更時にスコア更新
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', calculateScore);
+        });
+
+        // スコア計算
+        function calculateScore() {
+            let total = 0;
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                total += parseInt(cb.dataset.points) || 0;
+            });
+            
+            document.getElementById('score').textContent = total;
+            updateLevel(total);
+            return total;
+        }
+
+        // レベル更新
+        function updateLevel(score) {
+            const levelEl = document.getElementById('level');
+            if (score >= 80) {
+                levelEl.textContent = '✅ 優秀（良好）';
+                levelEl.className = 'result-level level-excellent';
+            } else if (score >= 50) {
+                levelEl.textContent = '⚠️ 改善余地あり';
+                levelEl.className = 'result-level level-good';
+            } else {
+                levelEl.textContent = '🔴 緊急改善必要';
+                levelEl.className = 'result-level level-needs-work';
+            }
+        }
+
+        // 結果保存
+        function saveResults() {
+            const score = calculateScore();
+            const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.id);
+            const data = {
+                date: new Date().toISOString(),
+                score: score,
+                checkedItems: checked,
+                totalItems: 10
+            };
+            localStorage.setItem('pharmacy-5s-diagnosis', JSON.stringify(data));
+            alert('✅ 診断結果を保存しました（スコア: ' + score + '点）');
+        }
+
+        // 保存データ読み込み
+        function loadSavedData() {
+            const saved = localStorage.getItem('pharmacy-5s-diagnosis');
+            if (saved) {
+                const data = JSON.parse(saved);
+                data.checkedItems.forEach(id => {
+                    const cb = document.getElementById(id);
+                    if (cb) cb.checked = true;
+                });
+                calculateScore();
+            }
+        }
+
+        // リセット
+        function resetForm() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            calculateScore();
+            localStorage.removeItem('pharmacy-5s-diagnosis');
+        }
+
+        // 初期化
+        loadSavedData();
+    </script>
+</body>
+</html>
