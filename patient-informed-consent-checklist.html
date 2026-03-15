@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>患者説明・インフォームドコンセントチェックリスト | 薬局無料ツール</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Hiragino Sans', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 24px; color: #1a5f7a; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
+        .progress-bar { background: #e0e0e0; border-radius: 10px; height: 20px; margin: 20px 0; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #4CAF50, #8BC34A); height: 100%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; }
+        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .section-title { font-size: 18px; color: #1a5f7a; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
+        .section-progress { font-size: 14px; color: #666; }
+        .check-item { display: flex; align-items: flex-start; padding: 12px; margin: 8px 0; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #ddd; transition: all 0.2s; }
+        .check-item:hover { background: #f0f0f0; }
+        .check-item.completed { background: #e8f5e9; border-left-color: #4CAF50; }
+        .check-item input[type="checkbox"] { margin-right: 12px; margin-top: 3px; width: 18px; height: 18px; cursor: pointer; }
+        .check-content { flex: 1; }
+        .check-title { font-weight: 500; margin-bottom: 4px; }
+        .check-desc { font-size: 13px; color: #666; }
+        .risk-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; margin-left: 8px; }
+        .risk-high { background: #ffebee; color: #c62828; }
+        .risk-medium { background: #fff3e0; color: #ef6c00; }
+        .risk-low { background: #e8f5e9; color: #2e7d32; }
+        .summary { background: linear-gradient(135deg, #1a5f7a 0%, #2d8eb5 100%); color: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; }
+        .summary h2 { margin-bottom: 15px; font-size: 20px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .summary-item { text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+        .summary-value { font-size: 28px; font-weight: bold; }
+        .summary-label { font-size: 12px; opacity: 0.9; margin-top: 5px; }
+        .actions { background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .actions h3 { color: #856404; margin-bottom: 10px; }
+        .action-list { list-style: none; }
+        .action-list li { padding: 8px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative; }
+        .action-list li:before { content: '→'; position: absolute; left: 0; color: #856404; }
+        .btn { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; margin: 5px; transition: all 0.2s; }
+        .btn-primary { background: #1a5f7a; color: white; }
+        .btn-primary:hover { background: #145068; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+        .btn-group { text-align: center; margin: 20px 0; }
+        .notes { background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .notes h4 { color: #1565c0; margin-bottom: 10px; }
+        .notes textarea { width: 100%; min-height: 80px; border: 1px solid #90caf9; border-radius: 4px; padding: 10px; font-size: 14px; resize: vertical; }
+        .score-display { font-size: 36px; font-weight: bold; color: #4CAF50; }
+        .score-label { font-size: 14px; color: #666; }
+        @media print { .btn-group, .notes { display: none; } .section { break-inside: avoid; } }
+        @media (max-width: 600px) { .container { padding: 10px; } h1 { font-size: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 患者説明・インフォームドコンセントチェックリスト</h1>
+        <p class="subtitle">患者への適切な説明と同意取得の標準化・品質向上ツール</p>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+        </div>
+
+        <div class="summary">
+            <h2>📊 コンプライアンス状況</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-value" id="totalChecked">0</div>
+                    <div class="summary-label">完了項目</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value" id="totalItems">20</div>
+                    <div class="summary-label">全項目</div>
+                </div>
+                <div class="summary-item">
+                    <div class="score-display" id="complianceScore">0%</div>
+                    <div class="summary-label">達成率</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                1️⃣ 薬剤の基本説明
+                <span class="section-progress" id="section1Progress">0/4</span>
+            </div>
+            <div class="check-item" data-section="1">
+                <input type="checkbox" id="item1" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">薬剤名と効能・効果の説明 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">一般的名称と商品名、期待される効果を患者が理解できる言葉で説明</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="1">
+                <input type="checkbox" id="item2" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">用法・用量の確認 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">1回の服用量、服用回数、服用タイミング（食前・食後等）</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="1">
+                <input type="checkbox" id="item3" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">服用期間の説明 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">処方日数、継続の必要性、自己判断中止の可否</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="1">
+                <input type="checkbox" id="item4" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">剤形・保管方法の説明 <span class="risk-badge risk-low">確認</span></div>
+                    <div class="check-desc">錠剤・カプセル等の特徴、室温・冷蔵等の保管条件</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                2️⃣ 副作用・リスク説明
+                <span class="section-progress" id="section2Progress">0/4</span>
+            </div>
+            <div class="check-item" data-section="2">
+                <input type="checkbox" id="item5" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">主な副作用の説明 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">頻度の高い副作用、発現時期、通常の経過</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="2">
+                <input type="checkbox" id="item6" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">重大な副作用の警告 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">アナフィラキシー等の緊急対応が必要な症状</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="2">
+                <input type="checkbox" id="item7" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">副作用時の対応方法 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">服用継続の可否、相談タイミング、連絡先</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="2">
+                <input type="checkbox" id="item8" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">禁忌事項の確認 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">併用禁忌薬、既往歴・アレルギーとの関係</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                3️⃣ 相互作用・注意事項
+                <span class="section-progress" id="section3Progress">0/4</span>
+            </div>
+            <div class="check-item" data-section="3">
+                <input type="checkbox" id="item9" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">併用薬との相互作用 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">現在服用中の薬剤との飲み合わせ</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="3">
+                <input type="checkbox" id="item10" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">食品・サプリメントとの相互作用 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">グレープフルーツ等の注意食品、サプリメント</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="3">
+                <input type="checkbox" id="item11" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">日常生活上の注意 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">車の運転、飲酒、日焼け止め等の生活注意事項</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="3">
+                <input type="checkbox" id="item12" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">特定患者への注意 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">妊婦・授乳婦、小児・高齢者、肝腎機能障害者への配慮</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                4️⃣ 患者理解の確認
+                <span class="section-progress" id="section4Progress">0/4</span>
+            </div>
+            <div class="check-item" data-section="4">
+                <input type="checkbox" id="item13" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">理解度の確認（質問促進） <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">「ご質問はありますか？」で患者の疑問を解消</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="4">
+                <input type="checkbox" id="item14" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">説明内容の復唱確認 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">重要事項を患者自身の言葉で確認</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="4">
+                <input type="checkbox" id="item15" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">薬剤情報の提供 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">薬袋記載、薬情・お薬手帳への記録</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="4">
+                <input type="checkbox" id="item16" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">相談窓口の案内 <span class="risk-badge risk-low">確認</span></div>
+                    <div class="check-desc">不明点時の連絡先、再相談の呼びかけ</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                5️⃣ 同意取得・記録
+                <span class="section-progress" id="section5Progress">0/4</span>
+            </div>
+            <div class="check-item" data-section="5">
+                <input type="checkbox" id="item17" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">患者の同意確認 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">説明内容への理解と服用への同意</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="5">
+                <input type="checkbox" id="item18" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">服薬指導記録の作成 <span class="risk-badge risk-high">必須</span></div>
+                    <div class="check-desc">説明内容、患者反応、理解度の記録</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="5">
+                <input type="checkbox" id="item19" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">次回指導ポイントの明確化 <span class="risk-badge risk-medium">重要</span></div>
+                    <div class="check-desc">継続確認事項、次回フォローアップ内容</div>
+                </div>
+            </div>
+            <div class="check-item" data-section="5">
+                <input type="checkbox" id="item20" onchange="updateProgress()">
+                <div class="check-content">
+                    <div class="check-title">特記事項の共有 <span class="risk-badge risk-low">確認</span></div>
+                    <div class="check-desc">医師報告事項、他スタッフへの引き継ぎ</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions" id="actionPanel">
+            <h3>⚡ 優先アクション</h3>
+            <ul class="action-list" id="actionList">
+                <li>チェックリストを進めてください</li>
+            </ul>
+        </div>
+
+        <div class="notes">
+            <h4>📝 特記事項・補足</h4>
+            <textarea id="notes" placeholder="患者ごとの特記事項、補足説明内容等を記録..."></textarea>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="saveData()">💾 保存</button>
+            <button class="btn btn-secondary" onclick="loadData()">📂 読込</button>
+            <button class="btn btn-secondary" onclick="resetData()">🔄 リセット</button>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ 印刷</button>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'patient-informed-consent-checklist';
+        const totalItems = 20;
+
+        function updateProgress() {
+            let checked = 0;
+            const sections = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+
+            for (let i = 1; i <= totalItems; i++) {
+                const checkbox = document.getElementById(`item${i}`);
+                const item = checkbox.closest('.check-item');
+                if (checkbox.checked) {
+                    checked++;
+                    item.classList.add('completed');
+                    const section = item.dataset.section;
+                    sections[section]++;
+                } else {
+                    item.classList.remove('completed');
+                }
+            }
+
+            const percentage = Math.round((checked / totalItems) * 100);
+            document.getElementById('totalChecked').textContent = checked;
+            document.getElementById('complianceScore').textContent = percentage + '%';
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressFill').textContent = percentage + '%';
+
+            for (let s = 1; s <= 5; s++) {
+                const sectionCount = document.querySelectorAll(`.check-item[data-section="${s}"]`).length;
+                document.getElementById(`section${s}Progress`).textContent = `${sections[s]}/${sectionCount}`;
+            }
+
+            updateActions(checked, percentage);
+            updateProgressColor(percentage);
+        }
+
+        function updateActions(checked, percentage) {
+            const actionList = document.getElementById('actionList');
+            const actions = [];
+
+            if (percentage < 50) {
+                actions.push('基本説明項目（必須）から確実に進めてください');
+                actions.push('副作用・リスク説明を省略しないでください');
+            } else if (percentage < 80) {
+                actions.push('患者理解の確認を丁寧に行ってください');
+                actions.push('質問を促し、疑問を解消してください');
+            } else if (percentage < 100) {
+                actions.push('残り項目を完了し、記録を作成してください');
+                actions.push('次回指導ポイントを明確化してください');
+            } else {
+                actions.push('✅ 全項目完了 - 適切なインフォームドコンセント取得');
+                actions.push('服薬指導記録を保存してください');
+            }
+
+            actionList.innerHTML = actions.map(a => `<li>${a}</li>`).join('');
+        }
+
+        function updateProgressColor(percentage) {
+            const fill = document.getElementById('progressFill');
+            if (percentage < 50) {
+                fill.style.background = 'linear-gradient(90deg, #f44336, #ff9800)';
+            } else if (percentage < 80) {
+                fill.style.background = 'linear-gradient(90deg, #ff9800, #ffeb3b)';
+            } else {
+                fill.style.background = 'linear-gradient(90deg, #4CAF50, #8BC34A)';
+            }
+        }
+
+        function saveData() {
+            const data = {
+                checked: [],
+                notes: document.getElementById('notes').value,
+                timestamp: new Date().toISOString()
+            };
+            for (let i = 1; i <= totalItems; i++) {
+                if (document.getElementById(`item${i}`).checked) {
+                    data.checked.push(i);
+                }
+            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            alert('保存しました');
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (!saved) {
+                alert('保存データがありません');
+                return;
+            }
+            const data = JSON.parse(saved);
+            for (let i = 1; i <= totalItems; i++) {
+                document.getElementById(`item${i}`).checked = data.checked.includes(i);
+            }
+            document.getElementById('notes').value = data.notes || '';
+            updateProgress();
+            alert(`読込完了: ${new Date(data.timestamp).toLocaleString()}`);
+        }
+
+        function resetData() {
+            if (!confirm('リセットしますか？')) return;
+            for (let i = 1; i <= totalItems; i++) {
+                document.getElementById(`item${i}`).checked = false;
+            }
+            document.getElementById('notes').value = '';
+            updateProgress();
+        }
+
+        // 初期化
+        updateProgress();
+    </script>
+</body>
+</html>
