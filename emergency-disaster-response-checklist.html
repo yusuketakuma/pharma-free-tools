@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>緊急時対応・災害対策チェックリスト | 薬局運営80選</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .checklist-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .checklist-header { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; }
+        .checklist-header h1 { margin: 0 0 10px 0; font-size: 1.6em; }
+        .checklist-header p { margin: 5px 0; opacity: 0.9; }
+        .category-section { background: white; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+        .category-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 2px solid #e74c3c; display: flex; justify-content: space-between; align-items: center; }
+        .category-header h2 { margin: 0; font-size: 1.1em; color: #2c3e50; }
+        .category-progress { font-size: 0.9em; color: #7f8c8d; }
+        .check-item { padding: 15px 20px; border-bottom: 1px solid #ecf0f1; display: flex; align-items: flex-start; gap: 12px; }
+        .check-item:last-child { border-bottom: none; }
+        .check-item:hover { background: #f8f9fa; }
+        .check-item input[type="checkbox"] { margin-top: 3px; width: 18px; height: 18px; cursor: pointer; }
+        .check-item label { flex: 1; cursor: pointer; line-height: 1.5; }
+        .check-item.completed { background: #e8f5e9; }
+        .check-item.completed label { text-decoration: line-through; color: #7f8c8d; }
+        .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; font-weight: bold; margin-left: 8px; }
+        .priority-high { background: #ffebee; color: #c62828; }
+        .priority-medium { background: #fff3e0; color: #e65100; }
+        .priority-low { background: #e3f2fd; color: #1565c0; }
+        .summary-panel { background: linear-gradient(135deg, #34495e, #2c3e50); color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; }
+        .summary-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { font-size: 0.85em; opacity: 0.8; }
+        .action-panel { background: #fff3e0; border-left: 4px solid #ff9800; padding: 15px 20px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
+        .action-panel h3 { margin: 0 0 10px 0; color: #e65100; }
+        .action-list { margin: 0; padding-left: 20px; }
+        .action-list li { margin: 5px 0; color: #5d4037; }
+        .btn-print { background: #3498db; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1em; }
+        .btn-print:hover { background: #2980b9; }
+        .btn-reset { background: #e74c3c; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1em; margin-left: 10px; }
+        .btn-reset:hover { background: #c0392b; }
+        .disaster-level { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .level-major { background: #c62828; color: white; }
+        .level-moderate { background: #ff9800; color: white; }
+        .level-minor { background: #4caf50; color: white; }
+        @media print {
+            .btn-print, .btn-reset, .action-panel { display: none; }
+            .checklist-header { background: #e74c3c !important; -webkit-print-color-adjust: exact; }
+        }
+        @media (max-width: 600px) {
+            .summary-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="checklist-container">
+        <div class="checklist-header">
+            <h1>🚨 緊急時対応・災害対策チェックリスト</h1>
+            <p>薬局の安全運営と事業継続（BCP）のための包括的チェックリスト</p>
+            <p>作成日: <span id="created-date"></span> | 最終更新: <span id="updated-date"></span></p>
+        </div>
+
+        <div class="summary-panel">
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-checked">0</div>
+                    <div class="stat-label">完了項目</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="total-items">25</div>
+                    <div class="stat-label">全項目</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="completion-rate">0%</div>
+                    <div class="stat-label">達成率</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="preparedness-level">未評価</div>
+                    <div class="stat-label">備えレベル</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-panel" id="action-panel" style="display: none;">
+            <h3>⚡ 優先アクション提案</h3>
+            <ul class="action-list" id="action-list"></ul>
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <h2>1. 緊急時体制・連絡網</h2>
+                <span class="category-progress" id="cat1-progress">0/5</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item1" data-category="1" data-priority="high">
+                <label for="item1">緊急連絡網が整備され、全職員に配布されている<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item2" data-category="1" data-priority="high">
+                <label for="item2">役所・消防・警察の緊急連絡先を確認・掲示している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item3" data-category="1" data-priority="high">
+                <label for="item3">地域薬剤師会・近隣医療機関の緊急連絡先を把握している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item4" data-category="1" data-priority="medium">
+                <label for="item4">非常時の責任者・代替責任者を明確にしている<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item5" data-category="1" data-priority="medium">
+                <label for="item5">連絡網の年1回以上の更新・確認を行っている<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <h2>2. 防災備蓄・資材管理</h2>
+                <span class="category-progress" id="cat2-progress">0/5</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item6" data-category="2" data-priority="high">
+                <label for="item6">飲料水（3日分以上）を備蓄している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item7" data-category="2" data-priority="high">
+                <label for="item7">非常食（カップ麺・缶詰等）を備蓄している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item8" data-category="2" data-priority="high">
+                <label for="item8">懐中電灯・電池・携帯ラジオを準備している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item9" data-category="2" data-priority="medium">
+                <label for="item9">簡易トイレ・衛生用品を備蓄している<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item10" data-category="2" data-priority="medium">
+                <label for="item10">備蓄品の在庫管理・期限確認を定期的に行っている<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <h2>3. 医薬品・医療資材の確保</h2>
+                <span class="category-progress" id="cat3-progress">0/5</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item11" data-category="3" data-priority="high">
+                <label for="item11">救急医療用医薬品の最低在庫を確保している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item12" data-category="3" data-priority="high">
+                <label for="item12">慢性疾患患者用医薬品の備蓄計画がある<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item13" data-category="3" data-priority="high">
+                <label for="item13">医薬品の温度管理（冷蔵品）の非常対応策がある<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item14" data-category="3" data-priority="medium">
+                <label for="item14">卸業者との緊急時供給体制を確認している<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item15" data-category="3" data-priority="medium">
+                <label for="item15">地域医療機関との医薬品融通体制がある<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <h2>4. 施設・設備の安全対策</h2>
+                <span class="category-progress" id="cat4-progress">0/5</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item16" data-category="4" data-priority="high">
+                <label for="item16">薬品棚・機器の転倒防止措置を実施している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item17" data-category="4" data-priority="high">
+                <label for="item17">消火器・消火設備の配置・点検を実施している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item18" data-category="4" data-priority="high">
+                <label for="item18">非常口・避難経路を明示し、確保している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item19" data-category="4" data-priority="medium">
+                <label for="item19">停電時の対応（発電機・ポータブル電源）を準備している<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item20" data-category="4" data-priority="medium">
+                <label for="item20">ガス漏れ・水漏れ検知・遮断策を講じている<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <h2>5. 事業継続計画（BCP）・訓練</h2>
+                <span class="category-progress" id="cat5-progress">0/5</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item21" data-category="5" data-priority="high">
+                <label for="item21">事業継続計画（BCP）を策定している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item22" data-category="5" data-priority="high">
+                <label for="item22">年1回以上の防災訓練を実施している<span class="priority-badge priority-high">最重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item23" data-category="5" data-priority="medium">
+                <label for="item23">データのバックアップ（クラウド・外部保管）を実施している<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item24" data-category="5" data-priority="medium">
+                <label for="item24">代替営業場所・遠隔対応の方針を決定している<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="item25" data-category="5" data-priority="medium">
+                <label for="item25">災害時の患者対応マニュアルを整備している<span class="priority-badge priority-medium">重要</span></label>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center;">
+            <button class="btn-print" onclick="window.print()">🖨️ 印刷する</button>
+            <button class="btn-reset" onclick="resetChecklist()">🔄 リセット</button>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'emergency-disaster-checklist';
+        const TOTAL_ITEMS = 25;
+
+        function initChecklist() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                data.checked.forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        checkbox.closest('.check-item').classList.add('completed');
+                    }
+                });
+                if (data.created) {
+                    document.getElementById('created-date').textContent = data.created;
+                } else {
+                    document.getElementById('created-date').textContent = new Date().toLocaleDateString('ja-JP');
+                }
+                if (data.updated) {
+                    document.getElementById('updated-date').textContent = data.updated;
+                }
+            } else {
+                const today = new Date().toLocaleDateString('ja-JP');
+                document.getElementById('created-date').textContent = today;
+                document.getElementById('updated-date').textContent = today;
+            }
+            updateSummary();
+        }
+
+        function saveChecklist() {
+            const checked = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                checked.push(cb.id);
+            });
+            const created = document.getElementById('created-date').textContent;
+            const updated = new Date().toLocaleDateString('ja-JP');
+            document.getElementById('updated-date').textContent = updated;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ checked, created, updated }));
+        }
+
+        function updateSummary() {
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const rate = Math.round((checked / TOTAL_ITEMS) * 100);
+            
+            document.getElementById('total-checked').textContent = checked;
+            document.getElementById('total-items').textContent = TOTAL_ITEMS;
+            document.getElementById('completion-rate').textContent = rate + '%';
+
+            // 備えレベル判定
+            let level = '未評価';
+            if (rate >= 90) level = '優秀';
+            else if (rate >= 70) level = '良好';
+            else if (rate >= 50) level = '要注意';
+            else if (rate >= 30) level = '不足';
+            else if (rate > 0) level = '早急改善';
+            document.getElementById('preparedness-level').textContent = level;
+
+            // カテゴリ別進捗
+            for (let i = 1; i <= 5; i++) {
+                const catItems = document.querySelectorAll(`input[data-category="${i}"]`);
+                const catChecked = document.querySelectorAll(`input[data-category="${i}"]:checked`).length;
+                document.getElementById(`cat${i}-progress`).textContent = `${catChecked}/${catItems.length}`;
+            }
+
+            // アクション提案
+            generateActions();
+        }
+
+        function generateActions() {
+            const unchecked = [];
+            document.querySelectorAll('input[type="checkbox"]:not(:checked)').forEach(cb => {
+                const priority = cb.dataset.priority;
+                if (priority === 'high') {
+                    unchecked.push(cb.nextElementSibling.textContent.replace('最重要', '').trim());
+                }
+            });
+
+            const actionPanel = document.getElementById('action-panel');
+            const actionList = document.getElementById('action-list');
+            
+            if (unchecked.length > 0) {
+                actionPanel.style.display = 'block';
+                actionList.innerHTML = unchecked.slice(0, 5).map(item => `<li>${item}</li>`).join('');
+            } else {
+                actionPanel.style.display = 'none';
+            }
+        }
+
+        function resetChecklist() {
+            if (confirm('全てのチェックをリセットしますか？')) {
+                localStorage.removeItem(STORAGE_KEY);
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                    cb.closest('.check-item').classList.remove('completed');
+                });
+                const today = new Date().toLocaleDateString('ja-JP');
+                document.getElementById('created-date').textContent = today;
+                document.getElementById('updated-date').textContent = today;
+                updateSummary();
+            }
+        }
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    this.closest('.check-item').classList.add('completed');
+                } else {
+                    this.closest('.check-item').classList.remove('completed');
+                }
+                saveChecklist();
+                updateSummary();
+            });
+        });
+
+        initChecklist();
+    </script>
+</body>
+</html>
