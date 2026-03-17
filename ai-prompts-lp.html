@@ -405,6 +405,15 @@
             }
         }
     </style>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
 </head>
 <body>
     <!-- Hero Section -->
@@ -416,7 +425,7 @@
                 ¥500 <span>¥1,500</span>
             </div>
             <br>
-            <a href="#purchase" class="cta-button">今すぐ入手する</a>
+            <a href="#purchase" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': '100_prompts_lp', 'event_label': 'hero_cta', 'value': 500})">今すぐ入手する</a>
         </div>
     </section>
     
@@ -466,7 +475,7 @@
                 このプロンプト集は、現場の薬剤師が<strong>今日から使える100の型</strong>を収録。<br>
                 コピペするだけで、AIがあなたの「第二の脳」になります。
             </p>
-            <a href="#purchase" class="cta-button">今すぐ入手する</a>
+            <a href="#purchase" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': '100_prompts_lp', 'event_label': 'mid_cta', 'value': 500})">今すぐ入手する</a>
         </div>
     </section>
     
@@ -676,7 +685,7 @@
             <p style="margin-bottom: 30px; opacity: 0.9;">
                 100プロンプト × 38領域 = 業務効率化の武器
             </p>
-            <a href="https://payhip.com/b/XXXXX" class="cta-button">購入ページへ進む</a>
+            <a href="https://payhip.com/b/XXXXX" class="cta-button" onclick="gtag('event', 'purchase_click', {'event_category': '100_prompts_lp', 'event_label': 'payhip_cta', 'value': 500})">購入ページへ進む</a>
             <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
                 ※ Payhipの安全な決済ページに移動します<br>
                 クレジットカード / デビットカード / Apple Pay 対応
