@@ -303,6 +303,15 @@
       }
     }
   </style>
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
 <body>
   <div class="container">
@@ -556,7 +565,7 @@
       <div class="cta-section">
         <h3>🎁 医療安全強化の具体策を知りたい方へ</h3>
         <p>AIプロンプト集（安全管理セクション）で<br>ヒヤリハット分析・インシデント報告の実践的テンプレートを提供</p>
-        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-button">詳細を見る →</a>
+        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': 'safety_diagnosis', 'event_label': 'ai_prompts_cta', 'value': 500});">詳細を見る →</a>
       </div>
     </div>
     

@@ -333,6 +333,15 @@
             }
         }
     </style>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
 </head>
 <body>
     <div class="container">
@@ -631,7 +640,7 @@
             <div class="cta-section">
                 <h3>🚀 患者対応スキルを強化しませんか？</h3>
                 <p>AIを活用した服薬指導シナリオ作成・薬歴自動生成で<br>対人業務時間を最大化</p>
-                <a href="ai-prompts-lp.html" class="cta-button">AIプロンプト集を見る →</a>
+                <a href="ai-prompts-lp.html" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': 'patient_communication', 'event_label': 'ai_prompts_cta', 'value': 500});">AIプロンプト集を見る →</a>
             </div>
         </div>
         

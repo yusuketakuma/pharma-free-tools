@@ -349,6 +349,15 @@
       }
     }
   </style>
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
 <body>
   <div class="container">
@@ -391,7 +400,7 @@
       <div class="cta-banner">
         <h3>🎁 AIプロンプト集で自動化を加速</h3>
         <p>ChatGPT/Claudeで業務を効率化するプロンプトテンプレート集<br><strong>38セクション・100プロンプト収録</strong></p>
-        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-button">今すぐチェック →</a>
+        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': 'automation_roi', 'event_label': 'ai_prompts_cta', 'value': 500});">今すぐチェック →</a>
       </div>
       
       <a href="index.html" class="back-link">← ツール一覧に戻る</a>
