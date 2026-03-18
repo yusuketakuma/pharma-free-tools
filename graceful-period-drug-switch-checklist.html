@@ -385,6 +385,34 @@
       }
     }
   </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'graceful-period-drug-switch-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'graceful-period-drug-switch-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'graceful-period-drug-switch-checklist-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -585,7 +613,7 @@
       <div class="actions">
         <button class="btn btn-primary" onclick="saveProgress()">💾 進捗を保存</button>
         <button class="btn btn-secondary" onclick="loadProgress()">📂 保存データを読込</button>
-        <button class="btn btn-danger" onclick="resetProgress()">🔄 リセット</button>
+        <button class="btn btn-danger" onclick="reset; trackToolUsage('restart')"Progress()">🔄 リセット</button>
       </div>
       
       <div class="save-indicator" id="save-indicator">
@@ -747,5 +775,20 @@
       setInterval(updateCountdown, 60000);
     });
   </script>
+
+<!-- 関連ツール セクション (自動追加: Batch2 crosslink) -->
+<section style="max-width:800px;margin:2rem auto;padding:1.5rem;background:linear-gradient(135deg,#f0f9ff,#e8f4fd);border-radius:12px;border:1px solid #bde0fe;">
+  <h3 style="margin:0 0 1rem;color:#1e3a5f;font-size:1.1rem;">🔗 関連ツール</h3>
+  <ul style="list-style:none;padding:0;margin:0;display:grid;gap:0.5rem;">
+    <li><a href="generic-drug-switch-revenue-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">後発医薬品切替え収益改善チェックリスト</a></li>
+    <li><a href="graceful-period-patient-followup-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">経過措置患者フォローアップチェックリスト</a></li>
+    <li><a href="pharmacy-inventory-diagnosis.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">薬局在庫管理診断</a></li>
+    <li><a href="pharmacy-reorder-point-calculator.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">発注点計算ツール</a></li>
+  </ul>
+  <div style="margin-top:1rem;text-align:center;">
+    <a href="index.html" style="color:#2563eb;text-decoration:none;font-size:0.9rem;">📋 全ツール一覧を見る →</a>
+  </div>
+</section>
+
 </body>
 </html>

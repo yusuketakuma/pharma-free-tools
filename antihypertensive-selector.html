@@ -361,6 +361,35 @@
       background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
     }
   </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'antihypertensive-selector-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'antihypertensive-selector-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'antihypertensive-selector-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -459,7 +488,7 @@
         </div>
       </div>
       
-      <button class="btn" onclick="generateRecommendation()">降圧薬を推奨する</button>
+      <button class="btn" onclick="trackToolUsage('generate'); generateRecommendation()">降圧薬を推奨する</button>
       
       <div id="result" class="result" style="display: none;"></div>
     </main>
@@ -469,8 +498,8 @@
       <h3>🎁 さらに業務を効率化しませんか？</h3>
       <p>薬剤師向けAIプロンプト集（100個）とNotionテンプレートで、鑑別・服薬指導・薬歴作成を自動化</p>
       <div class="cta-links">
-        <a href="#" class="cta-link">AIプロンプト集を見る (¥500)</a>
-        <a href="#" class="cta-link secondary">Notionテンプレート (¥500)</a>
+        <a href="#" class="cta-link" onclick="trackPromptCTA()">AIプロンプト集を見る (¥500)</a>
+        <a href="#" class="cta-link secondary" onclick="trackPromptCTA()">Notionテンプレート (¥500)</a>
       </div>
     </div>
     
@@ -732,7 +761,7 @@
             <li>最終的な処方判断は医師が行います</li>
           </ul>
         </div>
-        <button class="copy-btn" onclick="copyResult()">📋 結果をコピー</button>
+        <button class="copy-btn" onclick="trackCopyAction(); copyResult()">📋 結果をコピー</button>
       `;
       
       document.getElementById('result').innerHTML = html;

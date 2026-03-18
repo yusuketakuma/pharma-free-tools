@@ -6,22 +6,22 @@
   <title>スタッフ育成診断 | 薬剤師無料ツール集</title>
   <meta name="description" content="薬局のスタッフ育成レベルを5領域20問で診断。OJT・知識習得・スキル評価・コミュニケーション・キャリアパスの包括的評価と改善提案を無料提供。">
   <meta name="keywords" content="薬剤師,スタッフ育成,OJT,教育プログラム,スキル評価,キャリアパス,薬局経営">
-  
+
   <!-- OGP -->
   <meta property="og:title" content="スタッフ育成診断 | 薬剤師無料ツール集">
   <meta property="og:description" content="薬局のスタッフ育成レベルを5領域20問で診断。OJT・知識習得・スキル評価・コミュニケーション・キャリアパスの包括的評価と改善提案を無料提供。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-staff-development.html">
   <meta property="og:locale" content="ja_JP">
-  
+
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="スタッフ育成診断 | 薬剤師無料ツール集">
   <meta name="twitter:description" content="薬局のスタッフ育成レベルを5領域20問で診断。OJT・知識習得・スキル評価・コミュニケーション・キャリアパスの包括的評価。">
-  
+
   <!-- Canonical -->
   <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-staff-development.html">
-  
+
   <!-- JSON-LD -->
   <script type="application/ld+json">
   {
@@ -43,14 +43,14 @@
     }
   }
   </script>
-  
+
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       line-height: 1.6;
@@ -59,7 +59,7 @@
       min-height: 100vh;
       padding: 20px;
     }
-    
+
     .container {
       max-width: 800px;
       margin: 0 auto;
@@ -68,23 +68,95 @@
       padding: 40px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
-    
+
     header {
       text-align: center;
       margin-bottom: 30px;
     }
-    
+
     h1 {
       color: #667eea;
       font-size: 2rem;
       margin-bottom: 10px;
     }
-    
+
     .subtitle {
       color: #666;
       font-size: 1rem;
     }
-    
+
+    /* --- Intro section (transplanted from talent-development) --- */
+    .intro-section {
+      margin-bottom: 30px;
+    }
+
+    .intro-box {
+      background: #f8f9fa;
+      padding: 20px 25px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border-left: 4px solid #667eea;
+    }
+
+    .intro-box h2 {
+      color: #667eea;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .intro-box ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .intro-box li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+      font-size: 0.95rem;
+    }
+
+    .intro-box li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: bold;
+    }
+
+    .badge-inline {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .start-btn {
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      margin: 24px auto 0;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102,126,234,0.35);
+    }
+
+    .start-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(102,126,234,0.45);
+    }
+
+    /* --- Quiz section --- */
     .progress-bar {
       width: 100%;
       height: 8px;
@@ -93,36 +165,36 @@
       margin: 20px 0;
       overflow: hidden;
     }
-    
+
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
       transition: width 0.3s ease;
     }
-    
+
     .question-container {
       margin: 20px 0;
     }
-    
+
     .category {
       color: #667eea;
       font-size: 0.9rem;
       font-weight: bold;
       margin-bottom: 8px;
     }
-    
+
     .question {
       font-size: 1.1rem;
       margin-bottom: 15px;
       font-weight: 500;
     }
-    
+
     .options {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-    
+
     .option {
       padding: 12px 20px;
       border: 2px solid #e0e0e0;
@@ -131,24 +203,24 @@
       transition: all 0.3s ease;
       background: white;
     }
-    
+
     .option:hover {
       border-color: #667eea;
       background: #f8f9ff;
     }
-    
+
     .option.selected {
       border-color: #667eea;
       background: #667eea;
       color: white;
     }
-    
+
     .buttons {
       display: flex;
       justify-content: space-between;
       margin-top: 30px;
     }
-    
+
     button {
       padding: 12px 30px;
       border: none;
@@ -157,27 +229,28 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    
+
     .btn-prev {
       background: #e0e0e0;
       color: #333;
     }
-    
+
     .btn-next {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
     }
-    
+
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-    
+
+    /* --- Result section --- */
     .result {
       display: none;
       text-align: center;
     }
-    
+
     .score-circle {
       width: 200px;
       height: 200px;
@@ -192,14 +265,15 @@
       font-weight: bold;
       box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
     }
-    
+
     .level {
       font-size: 1.5rem;
       color: #667eea;
       margin: 20px 0;
       font-weight: bold;
     }
-    
+
+    /* --- Category breakdown with progress bars (transplanted) --- */
     .breakdown {
       text-align: left;
       margin: 30px 0;
@@ -207,78 +281,141 @@
       background: #f8f9ff;
       border-radius: 12px;
     }
-    
+
     .breakdown h3 {
       color: #667eea;
       margin-bottom: 15px;
     }
-    
-    .category-score {
+
+    .category-score-item {
+      margin-bottom: 14px;
+    }
+
+    .category-header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 5px;
     }
-    
-    .category-score:last-child {
-      border-bottom: none;
-    }
-    
+
     .category-name {
       font-weight: 500;
+      font-size: 0.95rem;
     }
-    
+
     .category-points {
       color: #667eea;
       font-weight: bold;
+      font-size: 0.9rem;
     }
-    
-    .recommendations {
+
+    .category-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .category-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.5s ease;
+      border-radius: 10px;
+    }
+
+    /* --- Improvements / Strengths sections (transplanted) --- */
+    .improvements {
       text-align: left;
-      margin: 30px 0;
+      margin: 20px 0;
       padding: 20px;
-      background: #fff8e1;
+      background: #fff5f5;
       border-radius: 12px;
-      border-left: 4px solid #ffa726;
+      border-left: 4px solid #fc8181;
     }
-    
-    .recommendations h3 {
-      color: #f57c00;
-      margin-bottom: 15px;
+
+    .improvements h3 {
+      color: #c53030;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
     }
-    
-    .recommendations ul {
+
+    .improvements ul {
       list-style: none;
       padding: 0;
     }
-    
-    .recommendations li {
-      padding: 8px 0;
-      padding-left: 24px;
+
+    .improvements li {
+      padding: 8px 0 8px 26px;
       position: relative;
+      border-bottom: 1px solid #fed7d7;
+      font-size: 0.9rem;
     }
-    
-    .recommendations li:before {
-      content: "💡";
+
+    .improvements li:last-child {
+      border-bottom: none;
+    }
+
+    .improvements li:before {
+      content: "→";
       position: absolute;
       left: 0;
+      color: #fc8181;
+      font-weight: bold;
     }
-    
+
+    .strengths {
+      text-align: left;
+      margin: 20px 0;
+      padding: 20px;
+      background: #f0fff4;
+      border-radius: 12px;
+      border-left: 4px solid #48bb78;
+    }
+
+    .strengths h3 {
+      color: #276749;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .strengths ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .strengths li {
+      padding: 8px 0 8px 26px;
+      position: relative;
+      border-bottom: 1px solid #c6f6d5;
+      font-size: 0.9rem;
+    }
+
+    .strengths li:last-child {
+      border-bottom: none;
+    }
+
+    .strengths li:before {
+      content: "★";
+      position: absolute;
+      left: 0;
+      color: #48bb78;
+    }
+
+    /* --- CTA --- */
     .cta-section {
-      margin-top: 40px;
+      margin-top: 30px;
       padding: 30px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 12px;
       color: white;
       text-align: center;
     }
-    
+
     .cta-section h3 {
       margin-bottom: 15px;
       font-size: 1.3rem;
     }
-    
+
     .cta-button {
       display: inline-block;
       padding: 15px 40px;
@@ -290,27 +427,74 @@
       margin-top: 15px;
       transition: transform 0.3s ease;
     }
-    
+
     .cta-button:hover {
       transform: translateY(-2px);
     }
-    
+
+    /* --- Related tools (transplanted) --- */
+    .related-tools {
+      text-align: left;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    .related-tools h3 {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      color: #2d3748;
+    }
+
+    .related-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .related-tool-card {
+      background: #f8f9fa;
+      padding: 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #2d3748;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .related-tool-card:hover {
+      border-color: #667eea;
+      background: #f0f4ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102,126,234,0.15);
+    }
+
+    .related-tool-card h4 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+
+    .related-tool-card p {
+      font-size: 0.85rem;
+      color: #718096;
+    }
+
     .back-link {
       display: inline-block;
       margin-top: 30px;
       color: #667eea;
       text-decoration: none;
     }
-    
+
     @media (max-width: 600px) {
       .container {
         padding: 20px;
       }
-      
+
       h1 {
         font-size: 1.5rem;
       }
-      
+
       .score-circle {
         width: 150px;
         height: 150px;
@@ -325,45 +509,98 @@
       <h1>🏥 スタッフ育成診断</h1>
       <p class="subtitle">薬局のスタッフ育成レベルを5領域20問で診断</p>
     </header>
-    
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill" style="width: 5%"></div>
+
+    <!-- Intro Section (transplanted from pharmacy-talent-development.html) -->
+    <div id="introSection" class="intro-section">
+      <div class="intro-box">
+        <h2>この診断ツールでわかること</h2>
+        <ul>
+          <li><strong>OJT・実地研修</strong>の体系化状況と指導担当者の明確さ</li>
+          <li><strong>知識習得・研修</strong>の実施頻度と外部研修支援体制</li>
+          <li><strong>スキル評価</strong>の客観性と評価基準の整備状況</li>
+          <li><strong>コミュニケーション</strong>の面談頻度とフィードバック文化</li>
+          <li><strong>キャリアパス</strong>の明確さと資格取得支援の充実度</li>
+        </ul>
+      </div>
+      <div class="intro-box">
+        <h2>診断の特徴</h2>
+        <ul>
+          <li>所要時間：<strong>3〜5分</strong></li>
+          <li>5領域20問の包括的評価</li>
+          <li>即座にスコアと<strong>領域別改善提案</strong>を表示</li>
+          <li>強み・改善ポイントを同時に可視化</li>
+          <li>完全無料・登録不要<span class="badge-inline">無料</span></li>
+        </ul>
+      </div>
+      <button class="start-btn" onclick="startQuiz()">診断を開始する →</button>
     </div>
-    
-    <div id="quizContainer" class="question-container">
-      <!-- Questions will be loaded here -->
+
+    <!-- Quiz Section -->
+    <div id="quizSection" style="display:none;">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 5%"></div>
+      </div>
+
+      <div id="quizContainer" class="question-container">
+        <!-- Questions loaded here -->
+      </div>
+
+      <div class="buttons">
+        <button class="btn-prev" id="prevBtn" onclick="prevQuestion()" disabled>← 前へ</button>
+        <button class="btn-next" id="nextBtn" onclick="nextQuestion()">次へ →</button>
+      </div>
     </div>
-    
-    <div class="buttons">
-      <button class="btn-prev" id="prevBtn" onclick="prevQuestion()" disabled>← 前へ</button>
-      <button class="btn-next" id="nextBtn" onclick="nextQuestion()">次へ →</button>
-    </div>
-    
+
+    <!-- Result Section (enhanced with category bars, improvements/strengths) -->
     <div id="result" class="result">
       <h2>診断結果</h2>
       <div class="score-circle" id="scoreCircle">0</div>
       <div class="level" id="levelText">判定中...</div>
-      
+
       <div class="breakdown">
         <h3>📊 領域別スコア</h3>
         <div id="breakdownList"></div>
       </div>
-      
-      <div class="recommendations" id="recommendations">
-        <h3>💡 改善提案</h3>
-        <ul id="recommendationList"></ul>
+
+      <div class="improvements" id="improvementsSection">
+        <h3>🎯 優先改善ポイント</h3>
+        <ul id="improvementList"></ul>
       </div>
-      
+
+      <div class="strengths" id="strengthsSection">
+        <h3>⭐ 現在の強み</h3>
+        <ul id="strengthList"></ul>
+      </div>
+
       <div class="cta-section">
         <h3>🎯 スタッフ育成を加速させる</h3>
-        <p>AIプロンプト集で教育プログラム作成を効率化</p>
+        <p>AIプロンプト集で教育プログラム作成・評価シート作成を効率化</p>
         <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-button">AIプロンプト集を見る →</a>
       </div>
-      
+
+      <!-- Related tools (transplanted from pharmacy-talent-development.html) -->
+      <div class="related-tools">
+        <h3>🔍 関連する無料診断ツール</h3>
+        <div class="related-tools-grid">
+          <a href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-bottleneck-diagnosis.html" class="related-tool-card">
+            <h4>薬局業務ボトルネック診断</h4>
+            <p>業務プロセス全体の効率化ポイントを特定</p>
+          </a>
+          <a href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-ai-readiness.html" class="related-tool-card">
+            <h4>薬局AI活用診断</h4>
+            <p>AI導入の準備状況と活用可能性を評価</p>
+          </a>
+          <a href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-role-clarity-diagnosis.html" class="related-tool-card">
+            <h4>薬局役割明確化診断</h4>
+            <p>チームの役割分担と責任範囲を診断</p>
+          </a>
+        </div>
+      </div>
+
       <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="back-link">← ツール一覧に戻る</a>
     </div>
   </div>
-  
+
   <script>
     const questions = [
       // OJT・実地研修 (4問)
@@ -371,35 +608,65 @@
       { category: "OJT・実地研修", question: "指導担当者が明確に決まっている", options: ["決まっていない", "曖昧", "決まっている", "明確で役割も定義されている"] },
       { category: "OJT・実地研修", question: "実地研修の進捗を定期的に評価している", options: ["評価していない", "非公式に評価", "定期的に評価", "評価結果を記録・活用"] },
       { category: "OJT・実地研修", question: "現場での指導時間が確保されている", options: ["確保されていない", "不十分", "ある程度確保", "十分に確保"] },
-      
+
       // 知識習得・研修 (4問)
       { category: "知識習得・研修", question: "定期的な社内研修が実施されている", options: ["実施していない", "不定期", "月1回以上", "週1回以上"] },
       { category: "知識習得・研修", question: "外部研修への参加を支援している", options: ["支援していない", "一部支援", "積極的に支援", "参加を推奨・費用負担"] },
       { category: "知識習得・研修", question: "学習教材・資料が整備されている", options: ["整備されていない", "最低限", "ある程度整備", "充実した教材あり"] },
       { category: "知識習得・研修", question: "継続勉強の仕組みがある", options: ["ない", "推奨のみ", "制度あり", "評価にも反映"] },
-      
+
       // スキル評価 (4問)
       { category: "スキル評価", question: "スキル評価シートを活用している", options: ["活用していない", "一部活用", "定期的に活用", "評価結果を人事に反映"] },
       { category: "スキル評価", question: "調剤スキルの評価基準が明確である", options: ["明確でない", "曖昧", "明確", "詳細な基準あり"] },
       { category: "スキル評価", question: "服薬指導スキルを評価している", options: ["評価していない", "主観的評価", "客観的評価", "評価基準あり"] },
       { category: "スキル評価", question: "評価結果をフィードバックしている", options: ["フィードバックなし", "口頭のみ", "書面でフィードバック", "改善計画も策定"] },
-      
+
       // コミュニケーション (4問)
       { category: "コミュニケーション", question: "定期的な個人面談を実施している", options: ["実施していない", "年1回", "四半期ごと", "月1回以上"] },
       { category: "コミュニケーション", question: "スタッフ間の情報共有が円滑である", options: ["円滑でない", "一部共有", "ある程度円滑", "非常に円滑"] },
       { category: "コミュニケーション", question: "フィードバック文化が定着している", options: ["定着していない", "上から下のみ", "双方向あり", "日常的に実施"] },
       { category: "コミュニケーション", question: "悩みや相談を受け止める体制がある", options: ["ない", "受動的対応", "相談窓口あり", "メンター制度あり"] },
-      
+
       // キャリアパス (4問)
       { category: "キャリアパス", question: "キャリアパスが明確に示されている", options: ["示されていない", "曖昧", "明確", "詳細なパスあり"] },
       { category: "キャリアパス", question: "昇進・昇格基準が透明である", options: ["透明でない", "一部透明", "透明", "詳細な基準公開"] },
       { category: "キャリアパス", question: "資格取得を支援している", options: ["支援していない", "一部支援", "積極的に支援", "取得推奨・費用負担"] },
       { category: "キャリアパス", question: "長期キャリア計画を立てている", options: ["立てていない", "一部計画", "個別に計画", "全員で計画"] }
     ];
-    
+
+    // Per-category specific recommendations (transplanted from pharmacy-talent-development.html)
+    const categoryRecommendations = {
+      'OJT・実地研修': {
+        low: 'OJTプログラムの体系化と指導担当者の明確化が急務です。まずマニュアル作成から始めましょう。',
+        mid: '指導時間の安定確保と評価記録の充実を図りましょう。指導者向けフィードバック研修も有効です。'
+      },
+      '知識習得・研修': {
+        low: '定期的な社内研修の実施と学習教材の整備から始めましょう。月1回の勉強会設定が目標です。',
+        mid: '外部研修参加支援の拡大と継続学習の仕組み（評価反映）を強化しましょう。'
+      },
+      'スキル評価': {
+        low: '評価シートの導入と明確な評価基準の策定が必要です。調剤・服薬指導の基準を文書化しましょう。',
+        mid: 'フィードバックの質向上と評価結果の改善計画への活用を進めましょう。評価頻度も見直しを。'
+      },
+      'コミュニケーション': {
+        low: '定期個人面談の導入とスタッフ相談体制の整備が急務です。月1回の面談から始めましょう。',
+        mid: 'フィードバック文化の定着（双方向）と情報共有の活性化（ツール活用等）を図りましょう。'
+      },
+      'キャリアパス': {
+        low: 'キャリアパスの文書化と昇進基準の透明化が必要です。全スタッフへの周知も重要です。',
+        mid: '資格取得支援の充実（費用補助等）と長期キャリア計画の策定を進めましょう。'
+      }
+    };
+
     let currentQuestion = 0;
     let answers = new Array(questions.length).fill(null);
-    
+
+    function startQuiz() {
+      document.getElementById('introSection').style.display = 'none';
+      document.getElementById('quizSection').style.display = 'block';
+      loadQuestion();
+    }
+
     function loadQuestion() {
       const q = questions[currentQuestion];
       document.getElementById('quizContainer').innerHTML = `
@@ -413,23 +680,23 @@
           `).join('')}
         </div>
       `;
-      
+
       document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
       document.getElementById('prevBtn').disabled = currentQuestion === 0;
       document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? '結果を見る' : '次へ →';
     }
-    
+
     function selectOption(idx) {
       answers[currentQuestion] = idx;
       loadQuestion();
     }
-    
+
     function nextQuestion() {
       if (answers[currentQuestion] === null) {
         alert('選択してください');
         return;
       }
-      
+
       if (currentQuestion < questions.length - 1) {
         currentQuestion++;
         loadQuestion();
@@ -437,24 +704,22 @@
         showResult();
       }
     }
-    
+
     function prevQuestion() {
       if (currentQuestion > 0) {
         currentQuestion--;
         loadQuestion();
       }
     }
-    
+
     function showResult() {
-      document.getElementById('quizContainer').style.display = 'none';
-      document.querySelector('.buttons').style.display = 'none';
-      document.querySelector('.progress-bar').style.display = 'none';
+      document.getElementById('quizSection').style.display = 'none';
       document.getElementById('result').style.display = 'block';
-      
+
       // Calculate scores
       const categoryScores = {};
       const categoryCounts = {};
-      
+
       questions.forEach((q, idx) => {
         if (!categoryScores[q.category]) {
           categoryScores[q.category] = 0;
@@ -463,18 +728,18 @@
         categoryScores[q.category] += answers[idx];
         categoryCounts[q.category]++;
       });
-      
+
       let totalScore = 0;
       let maxScore = 0;
-      
+
       Object.keys(categoryScores).forEach(cat => {
         totalScore += categoryScores[cat];
         maxScore += (categoryCounts[cat] * 3);
       });
-      
+
       const percentage = Math.round((totalScore / maxScore) * 100);
-      
-      // Animate score
+
+      // Animate score (from pharmacy-staff-development.html)
       let currentScore = 0;
       const scoreInterval = setInterval(() => {
         currentScore += 2;
@@ -484,64 +749,69 @@
         }
         document.getElementById('scoreCircle').textContent = currentScore;
       }, 20);
-      
+
       // Determine level
-      let level, recommendations;
+      let level;
       if (percentage >= 80) {
         level = '🏆 優秀レベル - スタッフ育成が非常に進んでいます';
-        recommendations = [
-          '他薬局へのノウハウ共有を検討',
-          'メンター制度のさらなる強化',
-          '外部研修講師としての展開も視野に',
-          '育成成果の定量評価を実施'
-        ];
       } else if (percentage >= 60) {
         level = '👍 良好レベル - 一定の取り組みができています';
-        recommendations = [
-          '評価基準のさらなる明確化',
-          'フィードバック頻度の向上',
-          '外部研修参加の拡大',
-          'キャリアパスの可視化'
-        ];
       } else if (percentage >= 40) {
         level = '⚠️ 改善が必要 - 育成体制の強化が急務です';
-        recommendations = [
-          'OJTプログラムの体系化',
-          '指導担当者の明確化',
-          '定期的な評価シートの導入',
-          '個人面談の実施頻度向上'
-        ];
       } else {
         level = '🚨 要対策 - スタッフ育成の基盤構築が必要です';
-        recommendations = [
-          '育成方針の策定から開始',
-          '指導担当者の任命',
-          '基本的な評価シートの導入',
-          '研修時間の確保'
-        ];
       }
-      
       document.getElementById('levelText').textContent = level;
-      
-      // Show breakdown
+
+      // Category breakdown with progress bars (transplanted from pharmacy-talent-development.html)
       const breakdownHTML = Object.keys(categoryScores).map(cat => {
         const score = categoryScores[cat];
         const max = categoryCounts[cat] * 3;
         const pct = Math.round((score / max) * 100);
         return `
-          <div class="category-score">
-            <span class="category-name">${cat}</span>
-            <span class="category-points">${score}/${max} (${pct}%)</span>
+          <div class="category-score-item">
+            <div class="category-header-row">
+              <span class="category-name">${cat}</span>
+              <span class="category-points">${score}/${max} (${pct}%)</span>
+            </div>
+            <div class="category-bar">
+              <div class="category-fill" style="width: ${pct}%"></div>
+            </div>
           </div>
         `;
       }).join('');
       document.getElementById('breakdownList').innerHTML = breakdownHTML;
-      
-      // Show recommendations
-      const recHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
-      document.getElementById('recommendationList').innerHTML = recHTML;
-      
-      // Track result view
+
+      // Per-category improvements and strengths (transplanted from pharmacy-talent-development.html)
+      const improvements = [];
+      const strengths = [];
+
+      Object.keys(categoryScores).forEach(cat => {
+        const score = categoryScores[cat];
+        const max = categoryCounts[cat] * 3;
+        const pct = Math.round((score / max) * 100);
+        const recs = categoryRecommendations[cat];
+
+        if (pct < 50) {
+          improvements.push(`<strong>${cat}（${pct}%）</strong>：${recs ? recs.low : '重点的な改善が必要です'}`);
+        } else if (pct < 70) {
+          improvements.push(`<strong>${cat}（${pct}%）</strong>：${recs ? recs.mid : 'さらなる強化が望ましいです'}`);
+        } else {
+          strengths.push(`${cat}（${pct}%）：良好な状態を維持しています`);
+        }
+      });
+
+      if (improvements.length === 0) {
+        improvements.push('すべての領域で良好です。継続的な改善を維持してください。');
+      }
+      if (strengths.length === 0) {
+        strengths.push('まずは優先度の高い領域から改善を始めましょう。');
+      }
+
+      document.getElementById('improvementList').innerHTML = improvements.map(i => `<li>${i}</li>`).join('');
+      document.getElementById('strengthList').innerHTML = strengths.map(s => `<li>${s}</li>`).join('');
+
+      // Track result view (GA4)
       if (typeof gtag !== 'undefined') {
         gtag('event', 'quiz_complete', {
           'event_category': 'Staff Development Quiz',
@@ -550,11 +820,8 @@
         });
       }
     }
-    
-    // Initialize
-    loadQuestion();
   </script>
-  
+
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>

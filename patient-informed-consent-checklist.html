@@ -51,6 +51,34 @@
         @media print { .btn-group, .notes { display: none; } .section { break-inside: avoid; } }
         @media (max-width: 600px) { .container { padding: 10px; } h1 { font-size: 20px; } }
     </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'patient-informed-consent-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'patient-informed-consent-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'patient-informed-consent-checklist-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
     <div class="container">
@@ -269,7 +297,7 @@
         <div class="btn-group">
             <button class="btn btn-primary" onclick="saveData()">💾 保存</button>
             <button class="btn btn-secondary" onclick="loadData()">📂 読込</button>
-            <button class="btn btn-secondary" onclick="resetData()">🔄 リセット</button>
+            <button class="btn btn-secondary" onclick="reset; trackToolUsage('restart')"Data()">🔄 リセット</button>
             <button class="btn btn-secondary" onclick="window.print()">🖨️ 印刷</button>
         </div>
     </div>
@@ -384,5 +412,20 @@
         // 初期化
         updateProgress();
     </script>
+
+<!-- 関連ツール セクション (自動追加: Batch2 crosslink) -->
+<section style="max-width:800px;margin:2rem auto;padding:1.5rem;background:linear-gradient(135deg,#f0f9ff,#e8f4fd);border-radius:12px;border:1px solid #bde0fe;">
+  <h3 style="margin:0 0 1rem;color:#1e3a5f;font-size:1.1rem;">🔗 関連ツール</h3>
+  <ul style="list-style:none;padding:0;margin:0;display:grid;gap:0.5rem;">
+    <li><a href="pharmacy-patient-communication.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">患者コミュニケーション診断</a></li>
+    <li><a href="medication-adherence-improvement-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">服薬アドヒアランス改善チェックリスト</a></li>
+    <li><a href="patient-identification-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">患者ID確認フローチェックリスト</a></li>
+    <li><a href="pharmacy-quality-management-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">品質管理チェックリスト</a></li>
+  </ul>
+  <div style="margin-top:1rem;text-align:center;">
+    <a href="index.html" style="color:#2563eb;text-decoration:none;font-size:0.9rem;">📋 全ツール一覧を見る →</a>
+  </div>
+</section>
+
 </body>
 </html>

@@ -1,0 +1,197 @@
+{
+  "timestamp": "2026-03-18T19:42:00+09:00",
+  "job": "trainer-30m-internet-research-dispatch",
+  "role": "部長",
+  "status": "partial",
+  "alerts": [
+    {
+      "level": "critical",
+      "type": "external_api",
+      "description": "Brave Search API月次上限到達（402/USAGE_LIMIT_EXCEEDED）",
+      "impact": "インターネットリサーチ実施不可",
+      "workaround": "過去リサーチ結果+内部分析で代替",
+      "recovery": "4月初旬リセット"
+    }
+  ],
+  "best_practices": {
+    "pharmacy_operations": [
+      {"topic": "経過措置薬品387品目整理", "status": "実施中", "adoption": "採用"},
+      {"topic": "指定濫用防止医薬品8成分販売義務化", "status": "準備中（2026-05施行）", "adoption": "採用"},
+      {"topic": "在宅薬学総合体制加算2 ギャップ分析", "status": "完了", "adoption": "採用"}
+    ],
+    "sidebiz": [
+      {"topic": "AIプロンプト集100プロンプト達成", "status": "完了", "adoption": "採用"},
+      {"topic": "無料ツール85件相互リンク完了", "status": "完了", "adoption": "採用"},
+      {"topic": "GA4イベント計測・JSON-LD構造化データ追加", "status": "完了", "adoption": "採用"}
+    ],
+    "maintenance_monitoring": [
+      {"topic": "consecutiveErrors監視（4ジョブ）", "status": "継続中", "adoption": "採用"},
+      {"topic": "staggerMs拡大検討（タイムアウト対策）", "status": "検討中", "adoption": "保留"}
+    ],
+    "management_theory": [
+      {"topic": "dispatch受信後5分以内着手ルール", "status": "homecare確立/sidebiz改善中", "adoption": "採用"},
+      {"topic": "判断→実行のフルループ完結", "status": "sidebiz課題", "adoption": "採用"},
+      {"topic": "期限別緊急度可視化（CSV列追加）", "status": "学習ポイント", "adoption": "採用"}
+    ],
+    "openclaw_usage": [
+      {"topic": "web_fetch代替フロー（web_search不可時）", "status": "確立済み", "adoption": "採用"},
+      {"topic": "trainer-2h集約による報告一元化", "status": "運用中", "adoption": "採用"},
+      {"topic": "memory編集競合対策", "status": "課題", "adoption": "改善必要"}
+    ]
+  },
+  "task_candidates": {
+    "sidebiz_sidebiz_role": [
+      {
+        "task": "販売プラットフォームアカウント開設（Gumroad/Payhip）",
+        "priority": "high",
+        "owner": "ゆうすけ",
+        "status": "依頼済み・待機中",
+        "note": "技術的準備完了、これだけが唯一の阻害要因"
+      },
+      {
+        "task": "pharmacy-talent → pharmacy-staff-development 統合実装",
+        "priority": "high",
+        "owner": "sidebiz担当",
+        "status": "完了済み（19:35）",
+        "note": "判断→実装のフルループ完結"
+      }
+    ],
+    "sidebiz_maintenance_role": [
+      {
+        "task": "consecutiveErrors監視継続",
+        "priority": "medium",
+        "owner": "保守担当",
+        "status": "自動実行中",
+        "note": "4ジョブで継続中（trainer-30m/homecare-30m/sidebiz-30m/brave-api-monitor）"
+      },
+      {
+        "task": "staggerMs大幅拡大検討",
+        "priority": "medium",
+        "owner": "trainer判断必要",
+        "status": "検討中",
+        "note": "タイムアウト対策・次30分で判断"
+      }
+    ],
+    "homecare_reproduction_improvement": [
+      {
+        "task": "CSV列追加（緊急度・期限列）",
+        "priority": "high",
+        "owner": "homecare担当",
+        "status": "学習ポイントとして記録",
+        "note": "現場での優先判断即時化"
+      },
+      {
+        "task": "Python例外処理追加（存在しないパス・文字コードエラー）",
+        "priority": "medium",
+        "owner": "homecare担当",
+        "status": "学習ポイントとして記録",
+        "note": "異常系テストケース追加"
+      },
+      {
+        "task": "指定濫用防止 施行前最終チェックリスト作成",
+        "priority": "high",
+        "owner": "homecare担当",
+        "status": "次サイクルで実行予定",
+        "note": "開局前10分確認用・1ページ以内"
+      }
+    ]
+  },
+  "blocking_factors": [
+    {
+      "type": "external_api",
+      "description": "Brave Search API月次上限到達",
+      "impact": "インターネットリサーチ不可",
+      "workaround": "内部分析で代替"
+    },
+    {
+      "type": "user_dependent",
+      "description": "販売プラットフォームアカウント開設",
+      "impact": "収益化開始ブロック",
+      "owner": "ゆうすけ"
+    },
+    {
+      "type": "user_dependent",
+      "description": "テリパラチド返品現場アクション",
+      "deadline": "3/28",
+      "remaining_days": 10,
+      "owner": "ゆうすけ"
+    },
+    {
+      "type": "user_dependent",
+      "description": "経過措置患者抽出（MCS操作）",
+      "deadline": "3/31",
+      "remaining_days": 13,
+      "owner": "ゆうすけ"
+    }
+  ],
+  "report_analysis": {
+    "homecare": {
+      "strength": "dispatch受領→即実行のサイクル確立済み（12分で3タスク完了）",
+      "weakness": "実作業は次サイクル予定（報告のみサイクルあり）",
+      "trend": "順調・継続"
+    },
+    "sidebiz": {
+      "strength": "技術的準備完了・品質良好",
+      "weakness": "dispatch受信後55分未着手（2回連続遅延）",
+      "trend": "改善必要・着手速度が課題"
+    }
+  },
+  "next_30min_axis_correction": {
+    "homecare": "現状維持・dispatch受領→即実行サイクル継続",
+    "sidebiz": "dispatch受信後5分以内着手ルール厳守・判断で終わらず実行まで完結",
+    "trainer": "memory編集競合対策強化・web_fetch代替活用継続・内部分析充実"
+  },
+  "learning_points": [
+    {
+      "point": "web_fetch代替フロー確立",
+      "action": "web_search不可時はHBR等の既知サイトから情報取得可能",
+      "next_cycle": "次回もweb_fetch活用継続"
+    },
+    {
+      "point": "収益化ボトルネックの局所化完了",
+      "action": "技術的準備完了、プラットフォーム開設のみが唯一の阻害要因",
+      "next_cycle": "ゆうすけへのリマインド継続"
+    },
+    {
+      "point": "期限管理の継続",
+      "action": "3/31まで残り約13日",
+      "next_cycle": "期限別緊急度可視化の実装"
+    },
+    {
+      "point": "判断で終わらず実行まで完結",
+      "action": "部長判断が不要なタスクは自律実行",
+      "next_cycle": "sidebiz担当へ周知"
+    },
+    {
+      "point": "dispatch受信後5分以内着手",
+      "action": "homecareは12分で3タスク完了、sidebizは55分未着手",
+      "next_cycle": "sidebiz着手速度改善が急務"
+    }
+  ],
+  "improvement_proposals": [
+    {
+      "proposal": "memory編集競合対策（ファイルロック・リトライ）",
+      "priority": "high",
+      "feasibility": "high",
+      "status": "pending",
+      "reason": "consecutiveErrors増加の主要原因"
+    },
+    {
+      "proposal": "staggerMs大幅拡大（タイムアウト対策）",
+      "priority": "medium",
+      "feasibility": "high",
+      "status": "pending",
+      "reason": "4ジョブでconsecutiveErrors継続中"
+    },
+    {
+      "proposal": "CSV列追加（緊急度・期限）の標準化",
+      "priority": "high",
+      "feasibility": "high",
+      "status": "pending",
+      "reason": "現場での優先判断即時化"
+    }
+  ],
+  "channel_notification": "none",
+  "report_aggregation": "trainer-2h-regular-report",
+  "notes": "本ジョブは通知抑止中。対外報告は trainer-2h-regular-report に集約。"
+}

@@ -49,6 +49,35 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
     </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacist-career-diagnosis-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacist-career-diagnosis-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacist-career-diagnosis-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
@@ -96,7 +125,7 @@
             <button id="prevBtn" onclick="prevQuestion()" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition hidden">
                 ← 前へ
             </button>
-            <button id="nextBtn" onclick="nextQuestion()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition ml-auto disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            <button id="nextBtn" onclick="trackToolUsage('next'); nextQuestion()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition ml-auto disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                 次へ →
             </button>
         </div>
@@ -107,7 +136,7 @@
         <div class="max-w-4xl mx-auto px-4 text-center">
             <h2 class="text-2xl font-bold mb-4">キャリアを次のステップへ</h2>
             <p class="mb-6">AIプロンプト集で業務効率化・スキルアップを加速させましょう</p>
-            <a href="ai-prompts-lp.html" class="inline-block bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
+            <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="inline-block bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
                 薬剤師向けAIプロンプト集を見る →
             </a>
         </div>
@@ -400,10 +429,10 @@
 
                     <!-- Action Buttons -->
                     <div class="flex justify-center gap-4">
-                        <button onclick="location.reload()" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                        <button onclick="trackToolUsage('reset'); location.reload()" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
                             もう一度診断する
                         </button>
-                        <button onclick="copyResults()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        <button onclick="trackCopyAction(); copyResults()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                             結果をコピー
                         </button>
                     </div>
@@ -442,5 +471,16 @@ ${results.sorted.map(([cat, score]) => `${categoryLabels[cat]}: ${score}`).join(
         // Initialize on load
         init();
     </script>
+
+<!-- 関連ツール セクション -->
+<div style="margin:40px auto;max-width:860px;padding:24px;background:#fafafa;border:1px solid #e2e8f0;border-radius:12px;text-align:center;">
+  <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">🔗 関連ツール</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <a href="pharmacist-burnout-diagnosis.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">🧠 バーンアウト診断</a>
+      <a href="pharmacy-role-clarity-diagnosis.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">🎯 役割明確化診断</a>
+      <a href="pharmacy-staff-development.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">👥 スタッフ育成診断</a>
+      <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🤖 薬剤師向けAIプロンプト集</a>
+  </div>
+</div>
 </body>
 </html>

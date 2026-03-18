@@ -3,6 +3,9 @@
     "email": null,
     "calendar": null,
     "weather": null,
-    "homecare30m": 1710285600
+    "homecare30m": 1742310540,
+    "homecare30mSync": 1742299800,
+    "sidebiz30mSync": 1710778440,
+    "sidebiz30mAssign": 1742301600
   }
 }

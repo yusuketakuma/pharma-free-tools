@@ -51,6 +51,35 @@
     .cta a { display: inline-block; margin-top: 12px; background: white; color: #1e3a8a; text-decoration: none; padding: 10px 16px; border-radius: 10px; font-weight: 700; }
     .footer { text-align: center; padding: 24px; color: #64748b; font-size: 13px; }
   </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-cashflow-diagnosis-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-cashflow-diagnosis-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-cashflow-diagnosis-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -185,13 +214,13 @@
           </ul>
         </div>
         <div class="nav-buttons">
-          <button class="btn btn-secondary" onclick="restart()">もう一度診断する</button>
-          <button class="btn btn-primary" onclick="copyResult()">結果をコピー</button>
+          <button class="btn btn-secondary" onclick="trackToolUsage('restart'); restart()">もう一度診断する</button>
+          <button class="btn btn-primary" onclick="trackCopyAction(); copyResult()">結果をコピー</button>
         </div>
         <div class="cta">
           <strong>関連ツール</strong><br>
           収益改善や返戻対策もあわせて確認すると、資金繰りの原因特定が速くなります。<br>
-          <a href="index.html">無料ツール一覧を見る →</a>
+          <a href="index.html" onclick="trackPromptCTA()">無料ツール一覧を見る →</a>
         </div>
       `;
     }

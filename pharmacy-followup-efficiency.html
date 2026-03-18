@@ -73,6 +73,35 @@
         footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
         @media (max-width: 600px) { h1 { font-size: 22px; } .container { padding: 10px; } .question-section { padding: 15px; } }
     </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-followup-efficiency-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-followup-efficiency-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-followup-efficiency-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
     <div class="container">
@@ -361,13 +390,13 @@
                 <div id="recommendationsList"></div>
             </div>
 
-            <button onclick="location.reload()" class="btn">再診断する</button>
+            <button onclick="trackToolUsage('reset'); location.reload()" class="btn">再診断する</button>
         </div>
 
         <div class="cta-section">
             <h3>🚀 さらに効率化を進めたい方へ</h3>
             <p>服薬フォロー自動化・AI活用のプロンプト集を販売中</p>
-            <a href="ai-prompts-lp.html" class="cta-btn">AIプロンプト集を見る →</a>
+            <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-btn">AIプロンプト集を見る →</a>
         </div>
 
         <footer>
@@ -453,5 +482,16 @@
             document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
+
+<!-- 関連ツール セクション -->
+<div style="margin:40px auto;max-width:860px;padding:24px;background:#fafafa;border:1px solid #e2e8f0;border-radius:12px;text-align:center;">
+  <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">🔗 関連ツール</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <a href="pharmacy-dispensing-time-diagnosis.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">⏱️ 調剤時間短縮診断</a>
+      <a href="homecare-efficiency-diagnosis.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">🏠 在宅効率診断</a>
+      <a href="pharmacy-medication-history-efficiency.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">📖 薬歴効率化診断</a>
+      <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🤖 薬剤師向けAIプロンプト集</a>
+  </div>
+</div>
 </body>
 </html>

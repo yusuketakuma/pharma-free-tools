@@ -1,0 +1,124 @@
+{
+  "timestamp": "2026-03-18T20:49:00+09:00",
+  "jobId": "373b3be6-adc7-4c5e-9029-d352dc1d8a9a",
+  "reportType": "sidebiz-30m-report-to-trainer",
+  "status": "done",
+  "summary": {
+    "status": "done",
+    "headline": "品質問題解消完了（数値86統一・3サイクル連続品質問題終息）",
+    "keyAchievements": [
+      "tool-card数86件に全数値統一（title/meta/OGP/Twitter/JSON-LD/stat-number）",
+      "sitemap.xml再生成完了（73→87 URL）",
+      "完了宣言前grep検証ステップ導入"
+    ]
+  },
+  "developmentContent": {
+    "completed": [
+      {
+        "task": "index.html数値統一（86統一）",
+        "details": "89/85混在→86に統一（9箇所）",
+        "verification": "grep検証で全箇所統一確認"
+      },
+      {
+        "task": "sitemap.xml再生成",
+        "details": "73 URL→87 URL（index 1 + ツール86）",
+        "verification": "grep -c '<url>' sitemap.xml → 87"
+      },
+      {
+        "task": "ポータルコピー同期",
+        "details": "free-tool-portal/index.html ← sidebiz/index.html",
+        "verification": "差分なし確認"
+      }
+    ],
+    "inProgress": [],
+    "notStarted": [
+      "OGP画像 ogp-ai-prompts.png 作成",
+      "pharmacy-talent-development.html 削除準備レポート",
+      "GA4 Measurement ID設定（ゆうすけ確認後）"
+    ]
+  },
+  "handoverInfo": {
+    "reproductionSteps": {
+      "toolCount": "grep -c 'class=\"tool-card\"' index.html",
+      "unifiedCheck": "grep -E '(86|87)' index.html | head -20",
+      "sitemapCheck": "grep -c '<url>' sitemap.xml"
+    },
+    "workarounds": [
+      "新ツール追加時: tool-card追加 + 全9箇所の数値更新 + sitemap再生成",
+      "編集後必ずgrep検証で全箇所統一確認"
+    ],
+    "dependencyRisks": [
+      "数値乖離は品質問題として優先検出",
+      "GA4未設定でアクセス解析不可（ゆうすけ確認待ち）"
+    ]
+  },
+  "next30MinActions": [
+    {
+      "priority": "高",
+      "task": "OGP画像 ogp-ai-prompts.png 作成",
+      "estimatedTime": "15分",
+      "reason": "SNSシェア機会損失解消"
+    },
+    {
+      "priority": "中",
+      "task": "pharmacy-talent-development.html 削除準備レポート",
+      "estimatedTime": "10分",
+      "reason": "重複ファイル整理"
+    },
+    {
+      "priority": "低",
+      "task": "GA4 Measurement ID設定",
+      "estimatedTime": "5分",
+      "reason": "アクセス解析開始",
+      "blocker": "ゆうすけ確認後"
+    }
+  ],
+  "requiredPermissions": {
+    "tools": ["read/write権限", "PIL/Pillow（OGP画像生成）"],
+    "info": ["GA4 Measurement ID（実ID未判明）"],
+    "blockers": [
+      "販売プラットフォーム開設（ゆうすけ依存）— 収益化開始遅延",
+      "Brave Search API月次上限（4月初旬リセット）— 外部リサーチ停止継続"
+    ]
+  },
+  "qualityIncident": {
+    "resolved": true,
+    "incidentType": "完了宣言と実態乖離（3サイクル連続）",
+    "rootCauseHypothesis": "編集後にgrep等での検証を行わず、一部修正のみで完了と判断",
+    "preventionMeasures": [
+      "完了宣言前にgrep -E '(tool-card|86)'等で全箇所の統一を確認",
+      "実態（tool-card数）を唯一の真実とする",
+      "ポータルコピー忘れ防止：本体修正後にコピー元も更新"
+    ],
+    "impactScope": "ユーザー信頼性低下・SEO評価への影響・SNSシェア時の表示不整合"
+  },
+  "learningPoints": [
+    {
+      "point": "完了宣言前のgrep検証ステップ必須化",
+      "application": "品質問題再発防止・全サイクルで実施"
+    },
+    {
+      "point": "実態（tool-card数）を唯一の真実とする",
+      "application": "dispatch記載や前回報告の数値ではなく実ファイル確認"
+    },
+    {
+      "point": "5分以内着手ルール",
+      "application": "dispatch受信後5分以内に着手（homecare実績をsidebizへ展開）"
+    }
+  ],
+  "crossObservations": {
+    "homecare": {
+      "status": "優良",
+      "observation": "4サイクル連続全タスク完了・高品質稼働継続"
+    },
+    "trainer": {
+      "status": "alert",
+      "observation": "Brave Search API上限継続（9回連続・4月復旧見込）"
+    }
+  },
+  "consecutiveErrorsMonitoring": {
+    "sidebiz-30m-assign": "consecutiveErrors=1（timeout）",
+    "brave-api-usage-monitor": "consecutiveErrors=1（memory編集競合）",
+    "others": "正常"
+  }
+}

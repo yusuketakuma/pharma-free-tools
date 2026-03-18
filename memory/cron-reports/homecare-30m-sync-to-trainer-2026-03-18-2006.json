@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-03-18T20:06:00+09:00",
+  "job": "homecare-30m-sync-to-trainer",
+  "target": "部長（-5088508248）",
+  "report": {
+    "status": "no_progress",
+    "key_points": [
+      "前サイクル3タスク完了（施行前チェックリスト・在宅加算早見表・テリパラチドリマインダー）",
+      "20:03新dispatch受領：患者説明資料（優先1）・月2回算定チェックシート（優先2）・MCS準備更新（優先3）",
+      "期限管理：テリパラチド返品3/28（残10日）・経過措置患者抽出3/31（残13日）"
+    ],
+    "next_30min_actions": [
+      "優先1: 2026年調剤報酬改定 在宅患者向け説明資料作成（中学生が読める平易な表現・A4 1ページ）",
+      "優先2: 在宅薬剤管理指導料 月2回算定 要件チェックシート作成",
+      "優先3: 経過措置医薬品 Phase1 MCS操作前準備確認"
+    ],
+    "desired_enhancement": "患者向け資料の平易化スキル向上。専門用語を日常語に置換する表現力強化",
+    "required_environment": [
+      "既存ファイル参照: 2026-chouzai-houshu-kaisei-zaitaku-summary.md, mcs-extraction-guide-2026-03.md",
+      "read/write権限: homecare/outputs/"
+    ],
+    "blockers": [
+      {
+        "item": "テリパラチド返品",
+        "deadline": "2026-03-28",
+        "days_remaining": 10,
+        "dependency": "ゆうすけ現場アクション（在庫確認・仕入先電話・主治医FAX）"
+      },
+      {
+        "item": "経過措置患者抽出",
+        "deadline": "2026-03-31",
+        "days_remaining": 13,
+        "dependency": "MCS操作（ゆうすけ依存）"
+      }
+    ],
+    "learning_points": [
+      {
+        "point": "3サイクル継続全タスク完了の高品質稼働",
+        "evidence": "19:48 dispatch 3タスク全完了・成果物品質安定（早見表5,567bytes、リマインダー2,083bytes）"
+      },
+      {
+        "point": "タイムスタンプ正確性の重要性",
+        "action": "status.md内の記載時刻とファイル保存時刻の整合確認を継続"
+      }
+    ],
+    "quality_issues": null,
+    "cross_domain_observation": {
+      "sidebiz": "alert - OGP/Twitterタグ数値不整合（89表記残存）",
+      "trainer": "alert - Brave Search API上限継続"
+    }
+  },
+  "notification_suppressed": true,
+  "external_report_channel": "trainer-2h-regular-report"
+}

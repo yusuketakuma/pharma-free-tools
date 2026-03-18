@@ -483,6 +483,34 @@
       }
     }
   </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'prescription-reception-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'prescription-reception-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'prescription-reception-checklist-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -766,14 +794,14 @@
       <div class="btn-group">
         <button class="btn btn-primary" onclick="saveChecklist()">💾 結果を保存</button>
         <button class="btn btn-secondary" onclick="printChecklist()">🖨️ 印刷</button>
-        <button class="btn btn-secondary" onclick="resetChecklist()">🔄 リセット</button>
+        <button class="btn btn-secondary" onclick="reset; trackToolUsage('restart')"Checklist()">🔄 リセット</button>
       </div>
       
       <!-- CTAセクション -->
       <div class="cta-section">
         <h3 class="cta-title">薬剤師向け100プロンプト集</h3>
         <p class="cta-desc">業務効率化・患者対応・マネジメントに使えるAI活用プロンプト集を無料公開中</p>
-        <a href="ai-prompts-lp.html" class="cta-btn">プロンプト集を見る →</a>
+        <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-btn">プロンプト集を見る →</a>
       </div>
       
       <a href="index.html" class="back-link">← ツール一覧に戻る</a>
@@ -954,5 +982,20 @@
     // 初期化
     loadFromLocalStorage();
   </script>
+
+<!-- 関連ツール セクション (自動追加: Batch2 crosslink) -->
+<section style="max-width:800px;margin:2rem auto;padding:1.5rem;background:linear-gradient(135deg,#f0f9ff,#e8f4fd);border-radius:12px;border:1px solid #bde0fe;">
+  <h3 style="margin:0 0 1rem;color:#1e3a5f;font-size:1.1rem;">🔗 関連ツール</h3>
+  <ul style="list-style:none;padding:0;margin:0;display:grid;gap:0.5rem;">
+    <li><a href="patient-identification-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">患者ID確認フローチェックリスト</a></li>
+    <li><a href="dispensing-error-prevention-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">調剤過誤防止チェックリスト</a></li>
+    <li><a href="pharmacy-billing-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">調剤報酬算定チェックリスト</a></li>
+    <li><a href="e-prescription-migration-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">処方箋電子化移行支援チェックリスト</a></li>
+  </ul>
+  <div style="margin-top:1rem;text-align:center;">
+    <a href="index.html" style="color:#2563eb;text-decoration:none;font-size:0.9rem;">📋 全ツール一覧を見る →</a>
+  </div>
+</section>
+
 </body>
 </html>

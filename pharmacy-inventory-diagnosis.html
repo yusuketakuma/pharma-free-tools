@@ -381,6 +381,35 @@
             }
         }
     </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-inventory-diagnosis-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-inventory-diagnosis-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-inventory-diagnosis-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
     <div class="container">
@@ -879,7 +908,7 @@
 
                 <div class="nav-buttons">
                     <button class="btn btn-secondary" onclick="prevSection(5)">← 前へ</button>
-                    <button class="btn btn-primary" onclick="showResults()">診断結果を見る →</button>
+                    <button class="btn btn-primary" onclick="trackToolUsage('show-results'); showResults()">診断結果を見る →</button>
                 </div>
             </div>
 
@@ -907,10 +936,10 @@
                 <div class="cta-section">
                     <h3>🚀 在庫管理を自動化しませんか？</h3>
                     <p>薬剤師向けAIプロンプト集で、在庫管理の効率化・自動化アイデアを100以上収録。<br>Excel→自動化への移行も具体的に解説しています。</p>
-                    <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-button">詳細を見る →</a>
+                    <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-button">詳細を見る →</a>
                 </div>
 
-                <button class="restart-btn" onclick="location.reload()">もう一度診断する</button>
+                <button class="restart-btn" onclick="trackToolUsage('reset'); location.reload()">もう一度診断する</button>
             </div>
         </div>
     </div>

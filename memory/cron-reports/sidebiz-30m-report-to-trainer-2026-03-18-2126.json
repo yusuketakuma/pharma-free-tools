@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-03-18T21:26:00+09:00",
+  "jobId": "373b3be6-adc7-4c5e-9029-d352dc1d8a9a",
+  "status": "alert",
+  "summary": "ポータル404エラー・数値不整合再発検出",
+  "developments": {
+    "completed": [
+      "20:30: 数値三方乖離を86統一完了",
+      "sitemap.xml再生成: 87 URL",
+      "完了宣言前grep検証ステップ導入"
+    ],
+    "alerts": [
+      "ポータル404エラー: https://pharma-free-tools.vercel.app/",
+      "数値不整合再発: title/meta/OGP = 89表記"
+    ]
+  },
+  "handover": {
+    "reproduction": [
+      "curl -s -o /dev/null -w '%{http_code}' https://pharma-free-tools.vercel.app/ → 404",
+      "grep -E 'property=\"og:title\"|property=\"og:description\"' sidebiz/index.html → 89"
+    ],
+    "workarounds": [
+      "Vercelダッシュボードで手動デプロイトリガー",
+      "sed -i '' 's/89選/86選/g; s/89個/86個/g' sidebiz/index.html"
+    ],
+    "dependencies": [
+      "Vercelデプロイ連携の安定性",
+      "新ツール追加時の全9箇所更新忘れリスク"
+    ]
+  },
+  "nextActions": [
+    {"priority": "high", "task": "Vercelデプロイ確認・修復", "eta": "10min"},
+    {"priority": "high", "task": "title/meta/OGP 89→86統一", "eta": "5min"},
+    {"priority": "high", "task": "git commit & push", "eta": "5min"},
+    {"priority": "medium", "task": "OGP画像 ogp-ai-prompts.png 作成", "eta": "15min"}
+  ],
+  "learningPoints": [
+    "デプロイ確認の追加: 修正→git push後にVercelデプロイステータス確認",
+    "grep検証の全箇所カバー: 全9箇所を列挙してチェックリスト化",
+    "保守チェックの精度向上: ポータルアクセス確認を追加"
+  ],
+  "qualityIncident": {
+    "type": "修正漏れによる数値不整合再発",
+    "cause": "grep検証で一部箇所のみ確認し、title/meta/OGPを見落とし",
+    "prevention": "全9箇所のチェックリスト作成→grep検証時に全行確認",
+    "impact": "SNSシェア時の表示不整合（OGP 89表記）"
+  },
+  "crossObservation": {
+    "homecare": "5サイクル連続全タスク完了・モデル部門継続",
+    "trainer": "Brave Search API上限継続（11回連続・4月復旧見込）"
+  },
+  "notificationSuppressed": true
+}

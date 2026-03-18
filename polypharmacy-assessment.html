@@ -139,6 +139,35 @@
             .checkbox-group { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'polypharmacy-assessment-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'polypharmacy-assessment-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'polypharmacy-assessment-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
     <div class="container">
@@ -294,8 +323,8 @@
             <h3>🎁 さらに業務を効率化しませんか？</h3>
             <p>薬剤師向けAIプロンプト集（100個）とNotionテンプレートで、鑑別・服薬指導・薬歴作成を自動化</p>
             <div class="cta-links">
-                <a href="ai-prompts-lp.html" class="cta-link">AIプロンプト集を見る (¥500)</a>
-                <a href="ai-prompts-lp.html" class="cta-link secondary">Notionテンプレート (¥500)</a>
+                <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-link">AIプロンプト集を見る (¥500)</a>
+                <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-link secondary">Notionテンプレート (¥500)</a>
             </div>
         </div>
         
@@ -699,5 +728,16 @@
             });
         });
     </script>
+
+<!-- 関連ツール セクション -->
+<div style="margin:40px auto;max-width:860px;padding:24px;background:#fafafa;border:1px solid #e2e8f0;border-radius:12px;text-align:center;">
+  <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">🔗 関連ツール</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <a href="renal-drug-dosing.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">🔬 腎機能別投与量計算</a>
+      <a href="doac-dosing.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">💊 DOAC投与量チェッカー</a>
+      <a href="antihypertensive-selector.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">❤️ 降圧薬選択ガイド</a>
+      <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🤖 薬剤師向けAIプロンプト集</a>
+  </div>
+</div>
 </body>
 </html>

@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-03-18T22:53:00+09:00",
+  "job": "sidebiz-30m-maintenance",
+  "status": "alert",
+  "monitoring": {
+    "vercel_portal": 404,
+    "github_pages": 200,
+    "tool_count": 95,
+    "number_unification": {
+      "title": 93,
+      "meta_description": 93,
+      "og_title": 93,
+      "og_description": 93,
+      "twitter_title": 93,
+      "twitter_description": 93,
+      "jsonld_numberOfItems": 93,
+      "stat_number": 93,
+      "status": "mismatch",
+      "expected": 95,
+      "actual": 93
+    },
+    "sitemap_urls": 86,
+    "sitemap_expected": 95,
+    "sitemap_status": "mismatch",
+    "ga4_configured_files": 34,
+    "ga4_total_files": 72,
+    "ga4_coverage": "47%",
+    "git_status": "clean"
+  },
+  "alerts": [
+    {
+      "type": "number_mismatch",
+      "severity": "high",
+      "message": "数値三方乖離検出: 実ツール95件 vs 表示93 vs sitemap 86",
+      "workaround": "sed一括置換で93→95統一 + sitemap再生成"
+    },
+    {
+      "type": "vercel_404",
+      "severity": "high",
+      "message": "Vercelポータル404エラー継続（5サイクル連続）",
+      "workaround": "GitHub Pages代替稼働中"
+    }
+  ],
+  "consecutiveErrors": {
+    "sidebiz-30m-assign": 1,
+    "others": 0
+  },
+  "learning_points": [
+    "ツール追加時の数値更新フロー: 新ツール追加時に全9箇所の数値更新を忘れないチェックリスト適用",
+    "sitemap自動生成: ツール追加時にsitemapを自動再生成する仕組み導入",
+    "保守チェックの定期実施: 30分サイクルで数値整合性を自動確認"
+  ],
+  "next_actions": [
+    {"priority": "high", "task": "index.html全数値を95に統一（title/meta/OGP/Twitter/JSON-LD/stat-number）"},
+    {"priority": "high", "task": "sitemap.xml再生成（95ツール分）"},
+    {"priority": "medium", "task": "Vercel設定調査（vercel.json作成またはGitHub Pages統一判断）"},
+    {"priority": "low", "task": "GA4 Measurement ID設定（ゆうすけ確認後）"}
+  ],
+  "required_permissions": [
+    "read/write権限",
+    "git push権限",
+    "Vercelダッシュボードアクセス（設定調査時）",
+    "GA4実ID（未判明）"
+  ],
+  "handoff_to_development": {
+    "reproduction_steps": [
+      "grep -c 'class=\"tool-card\"' index.html → 95",
+      "grep -oE '[0-9]+選' index.html | sort | uniq -c → 93選が4件",
+      "grep -c '<url>' sitemap.xml → 86"
+    ],
+    "workarounds": [
+      "sed -i '' 's/93選/95選/g; s/93個/95個/g' index.html で一括置換",
+      "95ツール分のsitemap再生成",
+      "GitHub Pages（https://yusuketakuma.github.io/pharma-free-tools/）を本番環境として運用"
+    ],
+    "dependency_risks": [
+      "ツール追加時: tool-card追加 + 全9箇所の数値更新 + sitemap再生成が必要",
+      "Vercel設定: vercel.json不在またはプロジェクト設定不備の可能性"
+    ]
+  }
+}

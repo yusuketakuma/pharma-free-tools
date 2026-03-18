@@ -370,6 +370,35 @@
       }
     }
   </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-priority-scoring-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-priority-scoring-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-priority-scoring-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -854,7 +883,7 @@
         </div>
       </div>
       
-      <button type="button" class="btn" onclick="calculateResult()">📊 スコアを計算する</button>
+      <button type="button" class="btn" onclick="trackToolUsage('calculate'); calculateResult()">📊 スコアを計算する</button>
     </form>
     
     <div class="result" id="result">
@@ -897,7 +926,7 @@
       <div class="cta-section">
         <h3>🎯 更なる業務効率化を目指すなら</h3>
         <p>AIプロンプト集で薬局業務の自動化・効率化を加速させよう</p>
-        <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="cta-btn">他の無料ツールを見る</a>
+        <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="cta-btn" onclick="trackPromptCTA()">他の無料ツールを見る</a>
       </div>
     </div>
     

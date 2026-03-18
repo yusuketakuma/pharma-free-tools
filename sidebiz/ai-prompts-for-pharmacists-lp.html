@@ -389,6 +389,96 @@
             font-size: 0.9rem;
         }
         
+        /* Sample Prompts Section */
+        .samples {
+            background: white;
+            padding: 60px 20px;
+        }
+        
+        .samples h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .sample-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .sample-tab {
+            background: #f0f0f0;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .sample-tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .sample-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .sample-content {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .sample-content.active {
+            display: block;
+        }
+        
+        .prompt-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .prompt-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .prompt-card .usage {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .prompt-code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .prompt-card .expected {
+            color: #27ae60;
+            font-size: 0.9rem;
+        }
+        
+        .prompt-card .expected::before {
+            content: "✅ ";
+        }
+        
         /* Responsive */
         @media (max-width: 600px) {
             .hero h1 {
@@ -402,6 +492,20 @@
             .cta-button {
                 padding: 15px 35px;
                 font-size: 1.1rem;
+            }
+            
+            .sample-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .sample-tab {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .prompt-code {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -657,6 +761,121 @@
         </div>
     </section>
     
+    <!-- Sample Prompts Section -->
+    <section class="samples" id="samples">
+        <div class="container">
+            <h2>📋 こんなプロンプトが入っています</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">
+                購入前に「実際の質」をご確認ください。以下は収録100プロンプトの中から3領域・各2本を抜粋したサンプルです。<br>
+                コピーしてすぐにChatGPT / Claude / Geminiでお使いいただけます。
+            </p>
+            
+            <!-- Tab Navigation -->
+            <div class="sample-tabs">
+                <button class="sample-tab active" data-tab="shido">💊 服薬指導</button>
+                <button class="sample-tab" data-tab="zaitaku">🏠 在宅業務</button>
+                <button class="sample-tab" data-tab="hoshu">📋 調剤報酬</button>
+            </div>
+            
+            <!-- Tab Content: 服薬指導 -->
+            <div class="sample-content active" id="tab-shido">
+                <div class="prompt-card">
+                    <h3>#1 初回服薬指導トーク生成</h3>
+                    <p class="usage">用途: 新規患者への初回説明トークを即時生成</p>
+                    <pre class="prompt-code">あなたは経験豊富な薬剤師です。
+患者情報: [年齢]歳・[性別]・[主疾患]
+処方薬: [薬剤名・用法用量]
+以下の構成で服薬指導トークを作成してください。
+1. 薬の目的（患者が理解しやすい言葉で1〜2文）
+2. 正しい飲み方（具体的なタイミング・注意点）
+3. よくある副作用と対処法（2〜3点）
+4. 「こんな時はすぐ連絡を」の症状（1〜2点）
+5. 生活上の注意（食事・運動・禁忌）
+出力は患者に直接読み上げられる口語体で。</pre>
+                    <p class="expected">期待出力: 「〇〇さん、今日から始まる血圧の薬についてご説明します…」から始まる自然なトーク文</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <h3>#3 患者説明書（ひらがな多め）作成</h3>
+                    <p class="usage">用途: 高齢者・認知症患者向けのやさしい説明書を即時作成</p>
+                    <pre class="prompt-code">以下の薬について、80歳以上の高齢者でも理解できる服薬説明書を作成してください。
+薬剤名: [薬剤名]
+用法用量: [用法]
+条件:
+- 漢字にはひらがなのふりがなを付ける
+- 一文は20字以内
+- 絵文字を使って視覚的に分かりやすく（💊⚠️✅など）
+- A4半ページ程度のボリューム</pre>
+                    <p class="expected">期待出力: 「💊 のみかた」「✅ こんなときはれんらくください」のようなシンプルな見出し構成</p>
+                </div>
+            </div>
+            
+            <!-- Tab Content: 在宅業務 -->
+            <div class="sample-content" id="tab-zaitaku">
+                <div class="prompt-card">
+                    <h3>#6 在宅訪問記録 SOAP形式作成</h3>
+                    <p class="usage">用途: 訪問後の記録を素早くSOAP形式で作成</p>
+                    <pre class="prompt-code">在宅訪問の情報を基にSOAP形式の薬学的管理指導記録を作成してください。
+患者: [年齢・性別・疾患名]
+訪問日: [日付]
+情報（箇条書きで入力）:
+- S（主観情報）: [患者・家族から聞いたこと]
+- O（客観情報）: [バイタル・残薬数・服薬状況]
+- A（評価）: [気になる点・課題]
+- P（計画）: [次回への対応・医師連携事項]
+保険請求にも使えるフォーマットで、専門用語を適切に使用してください。</pre>
+                    <p class="expected">期待出力: 「S: 患者より『最近足がむくむ気がする』との申告あり…」の構造化された記録</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <h3>#10 緊急時・夜間対応マニュアル（患者・家族向け）</h3>
+                    <p class="usage">用途: 在宅患者家族向けの緊急連絡・対応マニュアルを作成</p>
+                    <pre class="prompt-code">患者: [年齢・主疾患・処方薬（特に注意が必要なもの）]
+以下の在宅患者緊急時マニュアルを家族向けに作成してください。
+1. 今すぐ119番を呼ぶ症状（3〜5点）
+2. 薬局・訪問看護師に電話する症状（3〜5点）
+3. 様子を見てよい症状（2〜3点）
+4. 薬に関して絶対してはいけないこと
+言葉は中学生でも理解できる平易な表現で。A4一枚に収まる量で。</pre>
+                    <p class="expected">期待出力: 「すぐに119番！」「薬局に電話」「様子見OK」の3段階整理マニュアル</p>
+                </div>
+            </div>
+            
+            <!-- Tab Content: 調剤報酬 -->
+            <div class="sample-content" id="tab-hoshu">
+                <div class="prompt-card">
+                    <h3>#13 疑義照会 照会文案作成</h3>
+                    <p class="usage">用途: 処方箋の疑義照会時の連絡文案を素早く生成</p>
+                    <pre class="prompt-code">疑義内容: [用量超過/禁忌薬/相互作用/重複処方/用法不明など]
+処方薬: [薬剤名・用量・用法]
+患者情報: [年齢・性別・主疾患・アレルギー]
+以下を作成してください。
+1. 処方医への電話照会トーク（30秒以内に要点を伝えられるもの）
+2. 照会内容の記録文（薬歴・疑義照会記録欄に記載できる形式）
+3. 代替案の提案文（あれば）
+専門的かつ丁寧なトーンで。</pre>
+                    <p class="expected">期待出力: 「○○クリニックの△△先生でしょうか…本日の処方につきまして確認させてください…」のトーク</p>
+                </div>
+                
+                <div class="prompt-card">
+                    <h3>#14 特定薬剤管理指導加算 算定根拠文作成</h3>
+                    <p class="usage">用途: 特定薬剤（ハイリスク薬等）の管理指導加算算定に必要な記載文を生成</p>
+                    <pre class="prompt-code">処方薬（ハイリスク薬）: [薬剤名]
+指導内容: [副作用説明・血中濃度モニタリング依頼・手帳記載など]
+患者の反応: [理解した/不安あり/質問あり]
+特定薬剤管理指導加算（1または2）の算定要件を満たす薬歴記載文例を作成してください。
+算定根拠が明確になるよう、指導した具体的内容を含めること。150〜200字程度。</pre>
+                    <p class="expected">期待出力: 「本日、〇〇（ハイリスク薬）の投与開始に際し、重篤な副作用として□□について詳細に説明…」</p>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px; padding: 20px; background: #f0f7ff; border-radius: 10px;">
+                <strong>▶ 残り88本はご購入後に公開。</strong><br>
+                すべてコピー&ペーストで即使用可能。服薬指導25本・在宅業務30本・調剤報酬25本・その他20本を収録。
+            </p>
+        </div>
+    </section>
+    
     <!-- Guarantee Section -->
     <section class="guarantee">
         <div class="container">
@@ -723,6 +942,29 @@
             </p>
         </div>
     </footer>
+    
+    <!-- Tab Switching Script -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.sample-tab');
+        const contents = document.querySelectorAll('.sample-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById('tab-' + tabId).classList.add('active');
+            });
+        });
+    });
+    </script>
     
     <!-- JSON-LD for Product -->
     <script type="application/ld+json">

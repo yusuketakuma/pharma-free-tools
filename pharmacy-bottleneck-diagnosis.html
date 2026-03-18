@@ -300,6 +300,35 @@
       .category-scores { grid-template-columns: 1fr 1fr; }
     }
   </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-bottleneck-diagnosis-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-bottleneck-diagnosis-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-bottleneck-diagnosis-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -324,7 +353,7 @@
         <li><strong style="color: #9b59b6;">在宅医療</strong> - 訪問業務・連携体制</li>
         <li><strong style="color: #e74c3c;">事務作業</strong> - 請求・報告・書類作成</li>
       </ul>
-      <button class="option" onclick="startDiagnosis()" style="text-align: center; font-size: 1.1rem;">
+      <button class="option" onclick="trackToolUsage('start'); startDiagnosis()" style="text-align: center; font-size: 1.1rem;">
         診断を始める →
       </button>
     </div>
@@ -355,11 +384,11 @@
         <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">
           AIプロンプト集で、業務効率化を即実践
         </p>
-        <a href="ai-prompts-lp.html" class="cta-btn">AIプロンプト集を見る →</a>
+        <a href="ai-prompts-lp.html" class="cta-btn" onclick="trackPromptCTA()">AIプロンプト集を見る →</a>
       </div>
       
-      <button class="copy-btn" onclick="copyResult()">📋 結果をコピー</button>
-      <button class="restart-btn" onclick="location.reload()">もう一度診断する</button>
+      <button class="copy-btn" onclick="trackCopyAction(); copyResult()">📋 結果をコピー</button>
+      <button class="restart-btn" onclick="trackToolUsage('restart'); location.reload()">もう一度診断する</button>
     </div>
   </div>
   

@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-03-18T19:33:00+09:00",
+  "job": "homecare-30m-sync-to-trainer",
+  "report_to": "trainer-2h-regular-report",
+  "status": "no_progress",
+  "summary": [
+    "前サイクル3タスク完了済み（OJTシート・ギャップ分析・テリパラチドキット）",
+    "新dispatch 3タスク受領（施行前チェックリスト・在宅加算早見表・テリパラチドリマインダー）",
+    "本サイクルは報告のみ・実作業未着手（次サイクルで実行予定）"
+  ],
+  "next_actions": [
+    "優先1: 指定濫用防止 施行前最終チェックリスト作成（開局前10分確認用・1ページ以内）",
+    "優先2: 2026在宅加算早見表作成（A4 1枚・4列表形式）",
+    "優先3: テリパラチドリマインダー作成（ゆうすけ向け30秒読める形式）"
+  ],
+  "desired_work": "新dispatch 3タスクを順次実行。まず優先度1の施行前最終チェックリストから着手",
+  "required_environment": [
+    "既存ファイル参照: designated-abuse-prevention-drugs-staff-training.md, 2026-chouzai-houshu-kaisei-zaitaku-summary.md, teriparatide-action-kit-2026-03.md",
+    "read/write権限: homecare/outputs/"
+  ],
+  "blocking_factors": [
+    "テリパラチド返品: 3/28期限（残10日）・ゆうすけ現場アクション必要",
+    "経過措置患者抽出: 3/31期限（残13日）・MCS操作依存"
+  ],
+  "learning_points": [
+    "期限別緊急度の可視化: CSV・一覧資料には「緊急度」「期限」列を標準追加",
+    "異常系テストの実装: Python例外処理とテストケース追加"
+  ],
+  "note": "通知抑止中。対外報告はtrainer-2h-regular-reportに集約。"
+}

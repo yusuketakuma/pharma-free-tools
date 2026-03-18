@@ -36,6 +36,35 @@
     .cta-box h3 { color: #f57c00; margin-bottom: 10px; }
     .cta-btn { display: inline-block; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
   </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-dx-roadmap-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-dx-roadmap-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-dx-roadmap-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -91,7 +120,7 @@
         <div class="question"><p class="question-text">20. 経営層のDXへのコミットメント</p><div class="options" data-q="20"><div class="option">低い</div><div class="option">関心あり</div><div class="option">積極的</div><div class="option">リーダーシップ</div></div></div>
       </div>
       
-      <button class="btn" onclick="showResults()">診断結果を見る</button>
+      <button class="btn" onclick="trackToolUsage('show-results'); showResults()">診断結果を見る</button>
     </div>
     
     <div class="results" id="results">
@@ -110,10 +139,10 @@
       <div class="cta-box">
         <h3>🎁 AIプロンプト集でDX加速</h3>
         <p>薬剤師向けChatGPT/Claude活用プロンプト100選で業務効率化を加速</p>
-        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-btn">詳細を見る →</a>
+        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-btn" onclick="trackPromptCTA()">詳細を見る →</a>
       </div>
       
-      <button class="btn" onclick="location.reload()" style="margin-top: 20px; width: 100%;">もう一度診断する</button>
+      <button class="btn" onclick="trackToolUsage('restart'); location.reload()" style="margin-top: 20px; width: 100%;">もう一度診断する</button>
     </div>
   </div>
   

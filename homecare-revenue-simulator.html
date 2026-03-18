@@ -414,9 +414,10 @@
           <select id="kasan">
             <option value="0">なし</option>
             <option value="1" selected>加算1（30点）</option>
-            <option value="2">加算2（45点）</option>
+            <option value="2A">加算2（A・100点）</option>
+            <option value="2B">加算2（B・50点）</option>
           </select>
-          <small>2026改定: 加算1=30点/加算2=45点</small>
+          <small>2026改定: 加算1=30点/加算2A=100点（個人宅・緊急対応）/加算2B=50点（施設在宅）</small>
         </div>
         <div class="input-item">
           <label>医師同時訪問割合（%）</label>
@@ -548,7 +549,7 @@
       trackToolUsage('calculate');
       const patients = parseInt(document.getElementById('patients').value) || 0;
       const visits = parseFloat(document.getElementById('visits').value) || 0;
-      const kasan = parseInt(document.getElementById('kasan').value);
+      const kasan = document.getElementById('kasan').value; // '0','1','2A','2B'
       const jointVisitRate = parseInt(document.getElementById('jointVisit').value) || 0;
       const laborCost = parseInt(document.getElementById('laborCost').value) || 0;
       const transportCost = parseInt(document.getElementById('transportCost').value) || 0;
@@ -562,18 +563,19 @@
       // 2026改定対応点数
       const POINT_YEN = 10; // 1点=10円
       const visitPoint = 425; // 訪問薬剤管理指導料（外来）425点
-      const kasan1Point = 30; // 在宅薬学総合体制加算1: 30点
-      const kasan2Point = 45; // 在宅薬学総合体制加算2: 45点
+      const kasan1Point = 30;  // 在宅薬学総合体制加算1: 30点
+      const kasan2APoint = 100; // 在宅薬学総合体制加算2（A・個人宅・緊急対応）: 100点（2026改定）
+      const kasan2BPoint = 50;  // 在宅薬学総合体制加算2（B・施設在宅）: 50点（2026改定）
       const jointVisitPoint = 300; // 医師同時訪問指導料: 300点（2026新設）
-      
+
       const totalVisits = patients * visits;
       const jointVisits = Math.floor(totalVisits * jointVisitRate / 100);
       const normalVisits = totalVisits - jointVisits;
-      
+
       // 収益計算
       const normalRevenue = normalVisits * visitPoint * POINT_YEN;
       const jointRevenue = jointVisits * (visitPoint + jointVisitPoint) * POINT_YEN;
-      const kasanPoint = kasan === 2 ? kasan2Point : (kasan === 1 ? kasan1Point : 0);
+      const kasanPoint = kasan === '2A' ? kasan2APoint : (kasan === '2B' ? kasan2BPoint : (kasan === '1' ? kasan1Point : 0));
       const kasanRevenue = patients * kasanPoint * POINT_YEN;
       const totalRevenue = normalRevenue + jointRevenue + kasanRevenue;
       
@@ -604,9 +606,9 @@
           <td>${jointVisits}回</td>
           <td>¥${jointRevenue.toLocaleString()}</td>
         </tr>
-        ${kasan > 0 ? `
+        ${kasan !== '0' ? `
         <tr>
-          <td>在宅薬学総合体制加算${kasan === 2 ? '2' : '1'}</td>
+          <td>在宅薬学総合体制加算${kasan === '2A' ? '2（A）' : kasan === '2B' ? '2（B）' : '1'}</td>
           <td>${kasanPoint}点</td>
           <td>${patients}人</td>
           <td>¥${kasanRevenue.toLocaleString()}</td>
@@ -632,7 +634,7 @@
       if (jointVisitRate < 20 && patients > 10) {
         recs.push('医師同時訪問の割合を増やすと、同時指導料300点で収益向上');
       }
-      if (kasan === 0 && patients >= 20) {
+      if (kasan === '0' && patients >= 20) {
         recs.push('在宅薬学総合体制加算の届出を検討（要件: 在宅患者20人以上・常時勤務薬剤師等）');
       }
       if (profitRate < 20) {

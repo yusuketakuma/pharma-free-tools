@@ -1,0 +1,74 @@
+{
+  "timestamp": "2026-03-18T23:16:00+09:00",
+  "job": "sidebiz-30m-maintenance",
+  "status": "alert",
+  "alerts": [
+    {
+      "type": "portal_404",
+      "severity": "high",
+      "target": "Vercelポータル",
+      "url": "https://pharma-free-tools.vercel.app/",
+      "http_code": 404,
+      "duration_cycles": 6,
+      "workaround": "GitHub Pages（https://yusuketakuma.github.io/pharma-free-tools/）代替稼働中"
+    },
+    {
+      "type": "number_mismatch",
+      "severity": "medium",
+      "target": "JSON-LD description",
+      "actual": 86,
+      "displayed": 66,
+      "location": "index.html:790",
+      "impact": "SEO構造化データ不整合"
+    }
+  ],
+  "monitoring": {
+    "portal_access": {
+      "vercel": {"status": 404, "healthy": false},
+      "github_pages": {"status": 200, "healthy": true}
+    },
+    "tool_count": {
+      "tool_card_count": 86,
+      "display_numbers": {
+        "title": "86選",
+        "meta": "86個",
+        "jsonld_description": "66個",
+        "jsonld_numberOfItems": 86
+      },
+      "mismatch_detected": true
+    },
+    "sitemap": {
+      "url_count": 87,
+      "expected": 87,
+      "healthy": true
+    },
+    "ga4": {
+      "files_with_script": 92,
+      "total_files": 129,
+      "coverage_percent": 71
+    },
+    "git": {
+      "uncommitted_files": 20,
+      "status": "modified"
+    }
+  },
+  "next_actions": [
+    {"priority": "high", "task": "JSON-LD description「66個」→「86個」修正", "assignee": "sidebiz"},
+    {"priority": "high", "task": "未コミット変更のgit commit & push", "assignee": "sidebiz"},
+    {"priority": "medium", "task": "Vercel 404原因調査（vercel.json確認）", "assignee": "sidebiz"},
+    {"priority": "low", "task": "GA4 Measurement ID設定", "assignee": "sidebiz", "dependency": "ゆうすけ確認後"}
+  ],
+  "consecutive_errors": {
+    "sidebiz-30m-assign": 1,
+    "others": 0
+  },
+  "learning_points": [
+    "JSON-LDの見落とし防止: description内の数値もgrep検証対象に含める",
+    "git commit忘れ防止: 修正完了後に必ずgit statusで確認する習慣化",
+    "9箇所チェックリスト適用: title/meta/OGP/Twitter/JSON-LD(description)/JSON-LD(numberOfItems)/subtitle/stat-number/sitemap"
+  ],
+  "workaround_active": {
+    "primary_portal": "GitHub Pages",
+    "reason": "Vercel 404継続中（6サイクル連続）"
+  }
+}

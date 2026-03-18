@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-18T10:10:00Z",
+  "job": "homecare-30m-sync-to-trainer",
+  "targetChatId": "-5088508248",
+  "report": {
+    "status": "no_progress",
+    "keyPoints": [
+      "経過措置医薬品（3/31期限・残13日）: 患者抽出Phase1がゆうすけ操作待ちで停滞中",
+      "代替薬リスト・チェックリスト整備は完了済み、実行の起点はMCS抽出のみ",
+      "外部情報（CloseDi/PMDA）は正常アクセス確認済み、新規アラートなし"
+    ],
+    "next30minActions": [
+      "ゆうすけへのMCS操作リマインド継続（trainer-2h経由で共有済み）",
+      "CloseDi平日更新の確認（3/18更新があれば反映）",
+      "経過措置患者抽出準備資料の最終確認"
+    ],
+    "desiredWork": {
+      "current": "患者抽出フローの待機状態。自動化検討もMCS API未確認のため保留。",
+      "reinforcement": "MCS操作の代行または半自動化が可能であれば着手したい"
+    },
+    "requiredEnvironment": {
+      "tools": ["MedicalCareStation（ゆうすけ操作必須）"],
+      "permissions": ["MCS患者検索・CSV出力権限"],
+      "information": ["検索対象成分の最終確認", "出力フォーマット指定"]
+    }
+  },
+  "alerts": [
+    {
+      "level": "ALERT",
+      "issue": "経過措置医薬品患者抽出未着手",
+      "deadline": "2026-03-31",
+      "remaining": "13日",
+      "blocker": "ゆうすけによるMedicalCareStation操作が必要",
+      "impact": "在宅患者への服薬継続リスク"
+    }
+  ],
+  "learningPoints": [
+    {
+      "cycle": "30m/2h",
+      "learning": "外部依存タスクの期限管理: ギャップ発生（7日間）の原因は定期ジョブの実行間隔または設定不備の可能性。trainer-2hでの集約確認が必要。",
+      "action": "次サイクルでheartbeat-state.jsonの更新確認とtrainer連携の健全性検証"
+    }
+  ],
+  "blockers": [
+    {
+      "type": "user_dependent",
+      "description": "MedicalCareStation患者抽出",
+      "owner": "ゆうすけ",
+      "escalationPath": "trainer-2h-regular-report経由で部長→社長共有",
+      "sidebizImpact": "なし（homecare固有）"
+    }
+  ],
+  "channelNotification": "none",
+  "reportAggregation": "trainer-2h-regular-report"
+}

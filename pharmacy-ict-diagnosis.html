@@ -251,6 +251,35 @@
             }
         }
     </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-ict-diagnosis-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-ict-diagnosis-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-ict-diagnosis-prompt-cta'
+      });
+    }
+  </script>
 </head>
 <body>
     <div class="container">
@@ -282,7 +311,7 @@
                 </div>
                 <div class="nav-buttons">
                     <div></div>
-                    <button class="btn btn-primary" onclick="nextSection()">診断を開始 →</button>
+                    <button class="btn btn-primary" onclick="trackToolUsage('start'); nextSection()">診断を開始 →</button>
                 </div>
             </div>
 
@@ -552,7 +581,7 @@
 
                 <div class="nav-buttons">
                     <button class="btn btn-secondary" onclick="prevSection()">← 戻る</button>
-                    <button class="btn btn-primary" onclick="showResults()">診断結果を見る →</button>
+                    <button class="btn btn-primary" onclick="trackToolUsage('show-results'); showResults()">診断結果を見る →</button>
                 </div>
             </div>
 
@@ -632,7 +661,7 @@
                 </div>
 
                 <div class="nav-buttons" style="margin-top: 30px;">
-                    <button class="btn btn-secondary" onclick="location.reload()">← 再診断</button>
+                    <button class="btn btn-secondary" onclick="trackToolUsage('restart'); location.reload()">← 再診断</button>
                     <button class="btn print-btn" onclick="window.print()">🖨️ 印刷</button>
                 </div>
             </div>
