@@ -354,7 +354,37 @@
       }
     }
   </style>
-</head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'dementia-elderly-medication-support-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'dementia-elderly-medication-support-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'dementia-elderly-medication-support-checklist-prompt-cta'
+      });
+    }
+  </script>
+
+  </head>
 <body>
   <div class="container">
     <header>
@@ -574,9 +604,9 @@
       </div>
       
       <div class="actions">
-        <button class="btn btn-primary" onclick="showResult()">📊 結果を表示</button>
-        <button class="btn btn-secondary" onclick="resetAll()">🔄 リセット</button>
-        <button class="btn btn-secondary" onclick="printChecklist()">🖨️ 印刷</button>
+        <button class="btn btn-primary" onclick="showResult(); trackToolUsage('show-results')">📊 結果を表示</button>
+        <button class="btn btn-secondary" onclick="resetAll(); trackToolUsage('reset')">🔄 リセット</button>
+        <button class="btn btn-secondary" onclick="printChecklist(); trackToolUsage('print')">🖨️ 印刷</button>
       </div>
       
       <div class="result-box" id="resultBox">

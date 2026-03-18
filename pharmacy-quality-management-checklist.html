@@ -82,7 +82,37 @@
             .card { box-shadow: none; border: 1px solid #ddd; }
         }
     </style>
-</head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-quality-management-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-quality-management-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-quality-management-checklist-prompt-cta'
+      });
+    }
+  </script>
+
+  </head>
 <body>
     <div class="container">
         <h1>🏥 薬局品質管理・自己点検チェックリスト</h1>
@@ -407,10 +437,10 @@
             </div>
             
             <div class="btn-group">
-                <button type="button" class="btn-primary" onclick="saveProgress()">💾 進捗保存</button>
-                <button type="button" class="btn-secondary" onclick="loadProgress()">📂 進捗読込</button>
-                <button type="button" class="btn-secondary" onclick="resetForm()">🔄 リセット</button>
-                <button type="button" class="btn-success" onclick="window.print()">🖨️ 印刷</button>
+                <button type="button" class="btn-primary" onclick="saveProgress(); trackToolUsage('save')">💾 進捗保存</button>
+                <button type="button" class="btn-secondary" onclick="loadProgress(); trackToolUsage('load')">📂 進捗読込</button>
+                <button type="button" class="btn-secondary" onclick="resetForm(); trackToolUsage('reset')">🔄 リセット</button>
+                <button type="button" class="btn-success" onclick="window.print(); trackToolUsage('print')">🖨️ 印刷</button>
             </div>
         </form>
         

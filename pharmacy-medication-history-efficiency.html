@@ -61,7 +61,37 @@
     .back-link { display: block; text-align: center; margin-top: 20px; color: #667eea; text-decoration: none; }
     @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 1.5rem; } .score-circle { width: 150px; height: 150px; } .score-number { font-size: 2.5rem; } }
   </style>
-</head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-medication-history-efficiency-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-medication-history-efficiency-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-medication-history-efficiency-prompt-cta'
+      });
+    }
+  </script>
+
+  </head>
 <body>
   <div class="container">
     <header>

@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-03-19T06:52:00+09:00",
+  "job": "homecare-30m-report-to-trainer",
+  "target": "trainer (-5088508248)",
+  "report": {
+    "status": "alert",
+    "summary": [
+      "[ALERT] Vercel 404エラー9サイクル連続: 根本原因はダッシュボード設定推定。GitHub Pages代替稼働中。",
+      "homecare朝タスク完了: 既知ソース再取得・優先チェックリスト作成済み。",
+      "Brave API上限継続: 新規検索不可、既知URL巡回で鮮度確認中。"
+    ],
+    "nextActions": [
+      {"priority": "high", "task": "テリパラチド在庫・返品対象確認", "duration": "10min"},
+      {"priority": "high", "task": "Vercel設定確認（ゆうすけ依存）", "duration": "10min"},
+      {"priority": "medium", "task": "MCS患者抽出準備資料維持", "duration": "5min"}
+    ],
+    "currentDesire": "Vercel問題の根本解決・テリパラチド実務確認の完了",
+    "requiredEnvironment": {
+      "tools": "web_fetch/read/write（利用可能）",
+      "permissions": "Vercelダッシュボードアクセス（ゆうすけ依存）",
+      "information": "MCS操作（ゆうすけ依存）"
+    }
+  },
+  "learningPoints": [
+    "web_search停止時は既知URL巡回で鮮度確認継続可能: CloseDiアーカイブ等の既知ソース活用が実務的",
+    "固定残日数表記は運用事故の元: 現場資料は期限日中心管理が安全",
+    "障害継続サイクルの可視化: 9サイクル連続追跡で根本解決必要性を明確化"
+  ],
+  "improvementProposals": [
+    {"proposal": "Vercel→GitHub Pages統一", "feasibility": "高（ゆうすけ判断のみ）", "priority": "高", "status": "未実装（判断待ち）"},
+    {"proposal": "現場資料の期限日表記統一", "feasibility": "高", "priority": "中", "status": "未実装（テンプレート作成必要）"}
+  ],
+  "blockers": [
+    {"issue": "Brave API上限", "resolution": "4月リセットで自動解決予定"},
+    {"issue": "Vercel 404", "resolution": "ダッシュボード設定変更で解決見込み"}
+  ],
+  "notificationSuppressed": true,
+  "aggregatedTo": "trainer-2h-regular-report"
+}

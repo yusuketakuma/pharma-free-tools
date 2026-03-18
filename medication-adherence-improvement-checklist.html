@@ -95,7 +95,37 @@
             .category-card { break-inside: avoid; }
         }
     </style>
-</head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'medication-adherence-improvement-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'medication-adherence-improvement-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'medication-adherence-improvement-checklist-prompt-cta'
+      });
+    }
+  </script>
+
+  </head>
 <body>
     <div class="header">
         <div class="container">
@@ -128,10 +158,10 @@
                         </div>
                     </div>
                     <div class="col-md-3 text-end no-print">
-                        <button class="btn btn-outline-primary me-2" onclick="resetAll()">
+                        <button class="btn btn-outline-primary me-2" onclick="resetAll(); trackToolUsage('reset')">
                             🔄 リセット
                         </button>
-                        <button class="btn btn-primary" onclick="window.print()">
+                        <button class="btn btn-primary" onclick="window.print(); trackToolUsage('print')">
                             🖨️ 印刷
                         </button>
                     </div>

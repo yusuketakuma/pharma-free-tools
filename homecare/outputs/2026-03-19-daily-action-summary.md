@@ -10,7 +10,7 @@
 
 ### 1. テリパラチド「サワイ」在庫確認 【約15分】
 
-**期限**: 3/28（残り10日）
+**期限**: 3/28（残り9日）
 **参照**: `outputs/teriparatide-3day-action-2026-03-19.md`
 
 - [ ] 冷蔵庫でテリボン皮下注オートインジェクター56.5μg「サワイ」の本数・ロット番号・使用期限をメモ
@@ -85,7 +85,7 @@ MCS → 患者検索 → 薬剤検索タブ
 | MCS操作手順 | `outputs/mcs-phase1-preparation-update-2026-03-18.md` |
 | 加算2アクションプラン | `outputs/kazan2-gap-action-plan-2026-03.md` |
 | 加算2ルート比較 | `outputs/kazan2-route-simulation-2026-03.md` |
-| 経過措置6成分カード | `outputs/transition-6-drug-cards-2026-03.md` |
+| 経過措置6成分カード | `outputs/transition-priority-6-cards-2026-03.md` |
 
 ---
 

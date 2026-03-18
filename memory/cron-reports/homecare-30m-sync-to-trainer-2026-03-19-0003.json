@@ -1,0 +1,52 @@
+{
+  "jobId": "8133e6d2-5c3e-4c99-8b6f-f9b9fabb752b",
+  "jobName": "homecare-30m-sync-to-trainer",
+  "timestamp": "2026-03-19T00:03:00+09:00",
+  "target": "部長（-5088508248）",
+  "report": {
+    "status": "done",
+    "keyPoints": [
+      "12サイクル連続全タスク完了: 本日成果物25件以上（歴代最高生産性）",
+      "期限管理: テリパラチド3/28（残9日）・経過措置抽出3/31（残12日）— 本日3/19ゆうすけ実行開始",
+      "阻害要因継続: MCS操作・現場アクションはゆうすけ依存・技術的準備完了"
+    ],
+    "nextActions": [
+      {"priority": "高", "task": "本日成果物ファイル整合性チェック", "duration": "10分", "owner": "homecare"},
+      {"priority": "高", "task": "翌朝ゆうすけ向け通知テンプレート準備", "duration": "10分", "owner": "homecare"},
+      {"priority": "中", "task": "severe-patient-ratio HTMLパッチ適用判断", "duration": "5分", "owner": "dispatch判断"},
+      {"priority": "中", "task": "joint-visit HTMLパッチ適用判断", "duration": "5分", "owner": "dispatch判断"}
+    ],
+    "reinforcement": [
+      "翌朝ゆうすけが全体像を素早く把握できる通知テンプレートの整備",
+      "3/19実行開始のテリパラチド返品手配を冒頭に配置した優先順位設計",
+      "成果物ファイルの整合性確認で翌朝のトラブル防止"
+    ],
+    "requiredEnvironment": {
+      "tools": ["read/write権限", "ls -la", "grep"],
+      "permissions": ["homecare/outputs/ 編集権限"],
+      "information": ["既存成果物25件のパス一覧"]
+    }
+  },
+  "selfImprovement": {
+    "learningPoints": [
+      "12サイクル連続全完了の要因分析: テンプレート化による効率化・所要時間明記による時間管理・チェックボックス形式による進捗可視化",
+      "成果物25件の生産性指標: 歴代最高を更新・他部門（sidebiz）へテンプレート展開で同様の効率化可能",
+      "静音モード運用の確立: 23:00-08:00は内部整理のみ・ユーザー通知なしで夜間の安眠確保"
+    ],
+    "qualityIncidents": [],
+    "improvementProposals": [
+      {"priority": "高", "feasibility": "実装可", "proposal": "成果物インデックス自動生成", "duration": "10分"},
+      {"priority": "中", "feasibility": "検討中", "proposal": "テンプレートライブラリ化", "duration": "30分"},
+      {"priority": "低", "feasibility": "次サイクル実践", "proposal": "能動的提案増加（dispatch指示外の改善提案1件以上/サイクル）", "duration": "-"}
+    ]
+  },
+  "crossObservation": {
+    "blockers": [
+      {"item": "テリパラチド返品", "deadline": "2026-03-28", "daysRemaining": 9, "action": "本日3/19ゆうすけ実行開始必要"},
+      {"item": "経過措置抽出", "deadline": "2026-03-31", "daysRemaining": 12, "action": "MCS操作推奨期間3/19〜22"}
+    ],
+    "sidebizImpact": "なし（homecare阻害はゆうすけ現場アクション依存のため、副業自動化には直接影響なし）"
+  },
+  "notificationSuppressed": true,
+  "aggregatedTo": "trainer-2h-regular-report"
+}

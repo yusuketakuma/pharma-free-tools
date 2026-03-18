@@ -44,7 +44,37 @@
     .cta-box h3 { color: #f57c00; margin-bottom: 10px; }
     .cta-btn { display: inline-block; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
   </style>
-</head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'designated-abuse-prevention-drugs-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'designated-abuse-prevention-drugs-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'designated-abuse-prevention-drugs-checklist-prompt-cta'
+      });
+    }
+  </script>
+
+  </head>
 <body>
   <div class="container">
     <h1>⚠️ 指定濫用防止医薬品販売義務化チェックリスト</h1>
@@ -238,7 +268,7 @@
         </div>
       </div>
       
-      <button class="btn" onclick="showResults()">診断結果を見る</button>
+      <button class="btn" onclick="showResults(); trackToolUsage('show-results')">診断結果を見る</button>
     </div>
     
     <div class="results" id="results">
@@ -259,7 +289,7 @@
         <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-btn">詳細を見る →</a>
       </div>
       
-      <button class="btn" onclick="location.reload()" style="margin-top: 20px;">もう一度チェックする</button>
+      <button class="btn" onclick="location.reload(); trackToolUsage('reset')" style="margin-top: 20px;">もう一度チェックする</button>
     </div>
   </div>
   
