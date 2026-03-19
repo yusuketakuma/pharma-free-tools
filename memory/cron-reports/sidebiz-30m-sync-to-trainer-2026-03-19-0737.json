@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-03-19T07:37:00+09:00",
+  "job": "sidebiz-30m-sync-to-trainer",
+  "target": "部長（-5088508248）",
+  "report": {
+    "status": "alert",
+    "要点": [
+      "【ALERT】Vercel 404エラー継続（10サイクル連続）・根本原因はダッシュボード設定の可能性",
+      "収益化影響なし: GitHub Pages代替稼働中・全86ツール正常アクセス",
+      "GA4 Batch4完了: カバレッジ65%→98.6%・クロスリンク最適化61.1%→95.8%達成"
+    ],
+    "次30分アクション": [
+      "【高】Vercelダッシュボード設定確認・Framework Preset='Other'変更（ゆうすけ依存）",
+      "【高】GitHub Pages統一判断（ゆうすけ判断のみ・5分）",
+      "【中】Vercelプロジェクト再作成（ゆうすけ判断後・15分）"
+    ],
+    "今やりたい施策": "GitHub Pages一本化で二重ホスティングの保守負荷を削減。Vercel不具合継続時は統一を推奨。",
+    "必要環境": {
+      "ツール": "curl, read/write権限, web_fetch",
+      "権限": "Vercelダッシュボードアクセス（ゆうすけ依存）",
+      "情報": "Framework Preset設定状況, 最新デプロイログ"
+    }
+  },
+  "学習ポイント": [
+    "vercel.json≠即解決: 設定ファイルが存在してもダッシュボード設定が優先される場合がある",
+    "二重ホスティングは障害継続時に保守負荷となる",
+    "障害継続サイクルの可視化: 10サイクル連続で同一問題を追跡し根本解決の必要性を明確化"
+  ],
+  "consecutiveErrors監視": {
+    "homecare-30m-sync-to-trainer": 0,
+    "trainer-30m-internet-research": 0,
+    "sidebiz-30m-assign": 0,
+    "sidebiz-30m-maintenance": 0,
+    "brave-api-usage-monitor": 0
+  },
+  "阻害要因": {
+    "販売プラットフォーム開設": "ゆうすけ依存・技術的準備完了",
+    "Vercel 404エラー": "10サイクル連続・GitHub Pages代替稼働中",
+    "Brave Search API月次上限": "4月初旬リセット・外部リサーチ停止継続"
+  },
+  "通知抑止": true,
+  "注記": "本ジョブは通知抑止中。対外報告は trainer-2h-regular-report に集約。"
+}
