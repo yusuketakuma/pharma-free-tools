@@ -1,0 +1,244 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1771863765907,
+      "tag": "0000_daffy_king_bedlam",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771906847688,
+      "tag": "0001_amused_tyrannus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771911141942,
+      "tag": "0002_boring_princess_powerful",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771922219049,
+      "tag": "0003_chief_wilson_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1771924295734,
+      "tag": "0004_abnormal_frank_castle",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1771937821698,
+      "tag": "0005_complex_triathlon",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1771945466347,
+      "tag": "0006_freezing_hellfire_club",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1771970666573,
+      "tag": "0007_parched_warlock",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1772003015730,
+      "tag": "0008_deep_green_goblin",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1772006839988,
+      "tag": "0009_perpetual_rogue",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1772064000000,
+      "tag": "0010_add_trgm_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1772100000000,
+      "tag": "0011_matching_reservations_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1772146200000,
+      "tag": "0012_matching_queue_hardening",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1772150400000,
+      "tag": "0013_add_optimistic_lock_versions",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1772154000000,
+      "tag": "0014_frontend_feature_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1772106017116,
+      "tag": "0015_yummy_carmella_unuscione",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1772203700343,
+      "tag": "0016_add_is_test_account_flag",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1772205233609,
+      "tag": "0017_chemical_cloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1772233120967,
+      "tag": "0018_tricky_gauntlet",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1772562000000,
+      "tag": "0019_upload_confirm_jobs",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1772565600000,
+      "tag": "0020_uploads_requested_at",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1772569200000,
+      "tag": "0021_upload_job_idempotency_cancel",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1772572800000,
+      "tag": "0022_activity_logs_resource_metadata",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1772576400000,
+      "tag": "0023_upload_row_issues",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1772668800000,
+      "tag": "0024_matching_rule_profiles",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1772672400000,
+      "tag": "0025_predictive_alerts",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1772740800000,
+      "tag": "0026_system_events_and_registration_reviews",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1772827200000,
+      "tag": "0027_performance_scale_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1772830800000,
+      "tag": "0028_safe_ender_wiggin",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1772834400000,
+      "tag": "0029_equal_captain_midlands",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1772838000000,
+      "tag": "0030_unusual_starbolt",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1772841600000,
+      "tag": "0031_drug_master_source_state",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1772845200000,
+      "tag": "0032_dry_shooting_star",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1772786283642,
+      "tag": "0033_good_sir_ram",
+      "breakpoints": true
+    }
+  ]
+}

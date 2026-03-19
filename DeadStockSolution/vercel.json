@@ -1,0 +1,31 @@
+{
+  "framework": "vite",
+  "installCommand": "sh scripts/vercel-install.sh || sh ../scripts/vercel-install.sh",
+  "buildCommand": "sh scripts/vercel-build.sh || sh ../scripts/vercel-build.sh",
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "main": true,
+      "preview": true
+    }
+  },
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index.ts" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "crons": [
+    {
+      "path": "/api/internal/matching-refresh/retry",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/internal/upload-jobs/retry",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/internal/monthly-reports/run",
+      "schedule": "0 1 1 * *"
+    }
+  ]
+}

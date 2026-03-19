@@ -1,0 +1,163 @@
+{
+  "job": "sidebiz-30m-maintenance",
+  "timestamp": "2026-03-19T00:10:00Z",
+  "timestampJST": "2026-03-19 09:10 JST",
+  "status": "alert",
+  "alerts": [
+    {
+      "type": "vercel_404",
+      "severity": "high",
+      "message": "Vercel 404エラー14サイクル連続",
+      "detail": "https://pharma-free-tools.vercel.app/ → 404"
+    },
+    {
+      "type": "vercel_json_missing",
+      "severity": "critical",
+      "message": "vercel.json不在を発見",
+      "detail": "前回レポート「存在」は誤り。free-tool-portal/にvercel.json不存在"
+    },
+    {
+      "type": "ga4_coverage_mismatch",
+      "severity": "high",
+      "message": "GA4カバレッジ実態と報告乖離",
+      "detail": "実測18/73(24.7%) vs 前回報告100%"
+    }
+  ],
+  "monitoringResults": {
+    "vercelPortal": {
+      "url": "https://pharma-free-tools.vercel.app/",
+      "statusCode": 404,
+      "status": "FAIL",
+      "cycles": 14
+    },
+    "githubPages": {
+      "url": "https://yusuketakuma.github.io/pharma-free-tools/",
+      "statusCode": 200,
+      "status": "OK"
+    },
+    "vercelJson": {
+      "exists": false,
+      "path": "sidebiz/free-tool-portal/vercel.json",
+      "previousReport": "存在（699 bytes）",
+      "discrepancy": "CRITICAL"
+    },
+    "toolCount": {
+      "indexHtml": 86,
+      "sitemap": 87,
+      "discrepancy": 1
+    },
+    "ga4Coverage": {
+      "measured": "18/73",
+      "percentage": 24.7,
+      "previousReport": "100%",
+      "discrepancy": "CRITICAL"
+    },
+    "gitStatus": {
+      "uncommittedChanges": true,
+      "details": [
+        "claim-denial-reduction-simulator.html (untracked)",
+        "sitemap.xml (untracked in free-tool-portal)"
+      ]
+    }
+  },
+  "rootCauseAnalysis": {
+    "vercel404": {
+      "hypothesis": "vercel.json不在が根本原因",
+      "evidence": "find検索でvercel.jsonが見つからない",
+      "previousMisreport": "前回保守担当が存在確認を誤った可能性"
+    },
+    "ga4Discrepancy": {
+      "hypothesis": "測定方法の違いまたは前回報告の誤り",
+      "evidence": "grep -l gtag/GA4/googletagmanager で18ファイルのみヒット"
+    }
+  },
+  "impactAssessment": {
+    "userAccess": "LOW - GitHub Pages代替稼働中",
+    "seo": "LOW - sitemap・構造化データ正常",
+    "developmentEfficiency": "MEDIUM - 二重ホスティング保守負荷",
+    "dataIntegrity": "HIGH - 報告信頼性の問題"
+  },
+  "workaround": {
+    "active": true,
+    "method": "GitHub Pages（https://yusuketakuma.github.io/pharma-free-tools/）を本番環境として継続利用",
+    "status": "200 OKで正常稼働中"
+  },
+  "nextActions": [
+    {
+      "priority": "CRITICAL",
+      "task": "vercel.json作成・push",
+      "assignee": "sidebiz開発担当",
+      "estimatedTime": "5分",
+      "dependency": "なし"
+    },
+    {
+      "priority": "HIGH",
+      "task": "GA4カバレッジ実態確認・必要に応じ追加実装",
+      "assignee": "sidebiz開発担当",
+      "estimatedTime": "15分",
+      "dependency": "なし"
+    },
+    {
+      "priority": "MEDIUM",
+      "task": "未コミットファイル（sitemap.xml等）のコミット",
+      "assignee": "sidebiz保守担当",
+      "estimatedTime": "5分",
+      "dependency": "なし"
+    },
+    {
+      "priority": "LOW",
+      "task": "GitHub Pages統一判断",
+      "assignee": "ゆうすけ",
+      "estimatedTime": "5分",
+      "dependency": "判断のみ"
+    }
+  ],
+  "qualityIncidents": [
+    {
+      "type": "報告乖離",
+      "severity": "HIGH",
+      "description": "前回保守レポートでvercel.json存在と報告されたが、実際には不存在",
+      "rootCause": "存在確認方法の誤りまたはパス指定ミスの可能性",
+      "prevention": "find検索または絶対パス確認を標準手順化"
+    },
+    {
+      "type": "データ乖離",
+      "severity": "MEDIUM",
+      "description": "GA4カバレッジ100%と報告されたが、実測24.7%",
+      "rootCause": "測定方法の違いまたはコミット漏れの可能性",
+      "prevention": "カバレッジ測定コマンドの標準化"
+    }
+  ],
+  "learningPoints": [
+    {
+      "point": "存在確認はfind検索または絶対パスで実施",
+      "context": "ls -laの相対パス確認だけで「存在」と判定しない"
+    },
+    {
+      "point": "カバレッジ測定は標準コマンドで統一",
+      "context": "grep -l 'gtag\\|GA4\\|googletagmanager' *.html | wc -l / ls *.html | wc -l"
+    },
+    {
+      "point": "障害サイクル可視化の効果継続",
+      "context": "14サイクル連続で根本解決必要性明確化"
+    }
+  ],
+  "consecutiveErrorsMonitor": {
+    "homecare-30m-sync-to-trainer": 0,
+    "trainer-30m-internet-research": 0,
+    "sidebiz-30m-assign": 0,
+    "sidebiz-30m-maintenance": 0,
+    "brave-api-usage-monitor": 0,
+    "note": "全ジョブconsecutiveErrors=0維持"
+  },
+  "requiredPermissions": {
+    "tools": ["read", "write", "curl"],
+    "access": "sidebiz/ 編集権限",
+    "external": "Vercelダッシュボードアクセス（ゆうすけ依存）"
+  },
+  "reportFiles": [
+    "memory/cron-reports/sidebiz-30m-maintenance-2026-03-19-0910.json"
+  ],
+  "notificationSuppression": true,
+  "externalReportTarget": "trainer-2h-regular-report"
+}
