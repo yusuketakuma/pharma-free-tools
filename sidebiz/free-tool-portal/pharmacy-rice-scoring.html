@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICE優先順位スコアリング診断 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="RICE Framework（Reach・Impact・Confidence・Effort）で薬局業務の優先順位を科学的にスコアリング。Critical/High/Medium/Lowの4段階分類で意思決定品質向上。">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "RICE優先順位スコアリング診断",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"},
+        "description": "RICE Frameworkで薬局業務の優先順位を定量的に評価する無料ツール"
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        h1 { text-align: center; color: #333; margin-bottom: 10px; font-size: 24px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
+        .framework { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 25px; font-size: 13px; }
+        .framework strong { color: #667eea; }
+        .category { background: #f0f4ff; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .category-title { font-weight: bold; color: #333; margin-bottom: 15px; font-size: 16px; }
+        .question { margin-bottom: 15px; }
+        .question-text { font-size: 14px; color: #444; margin-bottom: 8px; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .option { padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; text-align: center; font-size: 13px; transition: all 0.3s; }
+        .option:hover { border-color: #667eea; background: #f0f4ff; }
+        .option.selected { border-color: #667eea; background: #667eea; color: white; }
+        .calculate-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .calculate-btn:hover { opacity: 0.9; }
+        .result { display: none; margin-top: 25px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; }
+        .score-display { text-align: center; margin-bottom: 20px; }
+        .rice-score { font-size: 48px; font-weight: bold; margin-bottom: 5px; }
+        .priority-level { font-size: 24px; margin-bottom: 10px; }
+        .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .breakdown-item { background: rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; text-align: center; }
+        .breakdown-label { font-size: 12px; opacity: 0.9; }
+        .breakdown-value { font-size: 20px; font-weight: bold; }
+        .recommendations { background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; margin-top: 15px; }
+        .recommendations h3 { margin-bottom: 10px; font-size: 16px; }
+        .recommendations ul { padding-left: 20px; font-size: 14px; line-height: 1.6; }
+        .cta { margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px; text-align: center; }
+        .cta h3 { color: #333; margin-bottom: 10px; font-size: 16px; }
+        .cta p { color: #666; font-size: 14px; margin-bottom: 15px; }
+        .cta-btn { display: inline-block; padding: 12px 25px; background: #28a745; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }
+    </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-rice-scoring-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-rice-scoring-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-rice-scoring-prompt-cta'
+      });
+    }
+  </script>
+    <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 RICE優先順位スコアリング診断</h1>
+        <p class="subtitle">科学的フレームワークで薬局業務の優先順位を定量化</p>
+        
+        <div class="framework">
+            <strong>RICE Framework:</strong> 
+            R: Reach（到達数）・I: Impact（影響度）・C: Confidence（確信度）・E: Effort（工数）
+            <br>スコア = (R × I × C) ÷ E
+        </div>
+
+        <form id="quiz">
+            <div class="category">
+                <div class="category-title">📊 Reach（到達数・影響範囲）</div>
+                
+                <div class="question">
+                    <div class="question-text">1. このタスクは何人の患者/スタッフに影響しますか？</div>
+                    <div class="options">
+                        <div class="option" data-q="1" data-v="1">1-10人</div>
+                        <div class="option" data-q="1" data-v="3">11-50人</div>
+                        <div class="option" data-q="1" data-v="6">51-200人</div>
+                        <div class="option" data-q="1" data-v="10">201人以上</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">2. 影響の頻度は？</div>
+                    <div class="options">
+                        <div class="option" data-q="2" data-v="1">月1回以下</div>
+                        <div class="option" data-q="2" data-v="3">週1回程度</div>
+                        <div class="option" data-q="2" data-v="6">毎日発生</div>
+                        <div class="option" data-q="2" data-v="10">1日複数回</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">3. 部門をまたぐ影響がありますか？</div>
+                    <div class="options">
+                        <div class="option" data-q="3" data-v="1">単一部門のみ</div>
+                        <div class="option" data-q="3" data-v="4">2-3部門</div>
+                        <div class="option" data-q="3" data-v="7">4-5部門</div>
+                        <div class="option" data-q="3" data-v="10">全社・全薬局</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">4. 外部（患者・医療機関）への影響度は？</div>
+                    <div class="options">
+                        <div class="option" data-q="4" data-v="1">内部のみ</div>
+                        <div class="option" data-q="4" data-v="4">一部患者</div>
+                        <div class="option" data-q="4" data-v="7">多数の患者</div>
+                        <div class="option" data-q="4" data-v="10">地域医療全体</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">💥 Impact（影響度・重要性）</div>
+                
+                <div class="question">
+                    <div class="question-text">5. 業務効率への影響は？</div>
+                    <div class="options">
+                        <div class="option" data-q="5" data-v="1">微減（〜5%）</div>
+                        <div class="option" data-q="5" data-v="3">小減（5-15%）</div>
+                        <div class="option" data-q="5" data-v="6">中減（15-30%）</div>
+                        <div class="option" data-q="5" data-v="10">大減（30%+）</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">6. 患者安全への影響は？</div>
+                    <div class="options">
+                        <div class="option" data-q="6" data-v="1">影響小</div>
+                        <div class="option" data-q="6" data-v="4">中等度</div>
+                        <div class="option" data-q="6" data-v="7">高い</div>
+                        <div class="option" data-q="6" data-v="10">極めて高い</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">7. 収益・コストへの影響は？</div>
+                    <div class="options">
+                        <div class="option" data-q="7" data-v="1">〜1万円</div>
+                        <div class="option" data-q="7" data-v="3">1-5万円</div>
+                        <div class="option" data-q="7" data-v="6">5-20万円</div>
+                        <div class="option" data-q="7" data-v="10">20万円+</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">8. 法令・ガイドライン関連度は？</div>
+                    <div class="options">
+                        <div class="option" data-q="8" data-v="1">無関係</div>
+                        <div class="option" data-q="8" data-v="3">推奨事項</div>
+                        <div class="option" data-q="8" data-v="6">指針準拠</div>
+                        <div class="option" data-q="8" data-v="10">法的義務</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🎯 Confidence（確信度・実現可能性）</div>
+                
+                <div class="question">
+                    <div class="question-text">9. 成功の確実性は？</div>
+                    <div class="options">
+                        <div class="option" data-q="9" data-v="2">不確実（〜30%）</div>
+                        <div class="option" data-q="9" data-v="5">中程度（30-60%）</div>
+                        <div class="option" data-q="9" data-v="8">高い（60-90%）</div>
+                        <div class="option" data-q="9" data-v="10">確実（90%+）</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">10. 過去の類似成功事例は？</div>
+                    <div class="options">
+                        <div class="option" data-q="10" data-v="2">なし</div>
+                        <div class="option" data-q="10" data-v="5">他業界あり</div>
+                        <div class="option" data-q="10" data-v="8">薬局あり</div>
+                        <div class="option" data-q="10" data-v="10">自薬局で実績あり</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">11. 必要リソースの確保状況は？</div>
+                    <div class="options">
+                        <div class="option" data-q="11" data-v="2">未確保</div>
+                        <div class="option" data-q="11" data-v="5">一部確保</div>
+                        <div class="option" data-q="11" data-v="8">概ね確保</div>
+                        <div class="option" data-q="11" data-v="10">完全確保</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">12. チームの習熟度は？</div>
+                    <div class="options">
+                        <div class="option" data-q="12" data-v="2">要学習</div>
+                        <div class="option" data-q="12" data-v="5">基礎知識あり</div>
+                        <div class="option" data-q="12" data-v="8">経験あり</div>
+                        <div class="option" data-q="12" data-v="10">専門レベル</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">⏱️ Effort（工数・コスト）</div>
+                
+                <div class="question">
+                    <div class="question-text">13. 実装にかかる時間は？</div>
+                    <div class="options">
+                        <div class="option" data-q="13" data-v="10">1時間以内</div>
+                        <div class="option" data-q="13" data-v="7">半日〜1日</div>
+                        <div class="option" data-q="13" data-v="4">1週間程度</div>
+                        <div class="option" data-q="13" data-v="1">1ヶ月以上</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">14. 必要な予算は？</div>
+                    <div class="options">
+                        <div class="option" data-q="14" data-v="10">無料</div>
+                        <div class="option" data-q="14" data-v="7">〜1万円</div>
+                        <div class="option" data-q="14" data-v="4">1-10万円</div>
+                        <div class="option" data-q="14" data-v="1">10万円+</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">15. 関係者の調整難易度は？</div>
+                    <div class="options">
+                        <div class="option" data-q="15" data-v="10">自分だけで可</div>
+                        <div class="option" data-q="15" data-v="7">1-2人の協力</div>
+                        <div class="option" data-q="15" data-v="4">チーム全体</div>
+                        <div class="option" data-q="15" data-v="1">外部調整必要</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">16. 技術的複雑さは？</div>
+                    <div class="options">
+                        <div class="option" data-q="16" data-v="10">既存ツールで可</div>
+                        <div class="option" data-q="16" data-v="7">設定変更程度</div>
+                        <div class="option" data-q="16" data-v="4">新規導入必要</div>
+                        <div class="option" data-q="16" data-v="1">開発・構築必要</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🔄 持続性・拡張性</div>
+                
+                <div class="question">
+                    <div class="question-text">17. 効果の持続期間は？</div>
+                    <div class="options">
+                        <div class="option" data-q="17" data-v="1">一時的</div>
+                        <div class="option" data-q="17" data-v="4">数ヶ月</div>
+                        <div class="option" data-q="17" data-v="7">1-2年</div>
+                        <div class="option" data-q="17" data-v="10">半永久的</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">18. 他業務への横展開可能性は？</div>
+                    <div class="options">
+                        <div class="option" data-q="18" data-v="1">困難</div>
+                        <div class="option" data-q="18" data-v="4">限定的</div>
+                        <div class="option" data-q="18" data-v="7">可能</div>
+                        <div class="option" data-q="18" data-v="10">容易に展開可</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">19. メンテナンス負荷は？</div>
+                    <div class="options">
+                        <div class="option" data-q="19" data-v="1">高負荷</div>
+                        <div class="option" data-q="19" data-v="4">中程度</div>
+                        <div class="option" data-q="19" data-v="7">低負荷</div>
+                        <div class="option" data-q="19" data-v="10">ほぼ不要</div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">20. 将来の拡張性は？</div>
+                    <div class="options">
+                        <div class="option" data-q="20" data-v="1">限定的</div>
+                        <div class="option" data-q="20" data-v="4">標準的</div>
+                        <div class="option" data-q="20" data-v="7">高い</div>
+                        <div class="option" data-q="20" data-v="10">非常に高い</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculate()">📊 RICEスコアを計算</button>
+        </form>
+
+        <div id="result" class="result">
+            <div class="score-display">
+                <div class="rice-score" id="riceScore">0</div>
+                <div class="priority-level" id="priorityLevel">-</div>
+            </div>
+            <div class="breakdown">
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Reach</div>
+                    <div class="breakdown-value" id="reachScore">0</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Impact</div>
+                    <div class="breakdown-value" id="impactScore">0</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Confidence</div>
+                    <div class="breakdown-value" id="confidenceScore">0</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Effort</div>
+                    <div class="breakdown-value" id="effortScore">0</div>
+                </div>
+            </div>
+            <div class="recommendations">
+                <h3>📝 推奨アクション</h3>
+                <ul id="recommendations"></ul>
+            </div>
+        </div>
+
+        <div class="cta">
+            <h3>🚀 業務効率化をもっと進めたい方へ</h3>
+            <p>薬剤師向けAIプロンプト集100選で、調剤・服薬指導・在庫管理を自動化</p>
+            <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="cta-btn">無料ツール一覧を見る</a>
+        </div>
+    </div>
+
+    <script>
+        const answers = {};
+        
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const q = this.dataset.q;
+                const v = parseInt(this.dataset.v);
+                answers[q] = v;
+                
+                document.querySelectorAll(`.option[data-q="${q}"]`).forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        function calculate() {
+            if (Object.keys(answers).length < 20) {
+                alert('すべての項目を選択してください');
+                return;
+            }
+
+            const reach = (answers[1] + answers[2] + answers[3] + answers[4]) / 4;
+            const impact = (answers[5] + answers[6] + answers[7] + answers[8]) / 4;
+            const confidence = (answers[9] + answers[10] + answers[11] + answers[12]) / 4;
+            const effort = Math.max(1, (answers[13] + answers[14] + answers[15] + answers[16]) / 4);
+            const sustainability = (answers[17] + answers[18] + answers[19] + answers[20]) / 4;
+
+            const riceScore = Math.round((reach * impact * confidence) / effort * 10);
+            const finalScore = Math.round(riceScore * (1 + sustainability / 50));
+
+            let priority, recommendations;
+            if (finalScore >= 600) {
+                priority = '🔥 Critical（最優先）';
+                recommendations = [
+                    '即座に着手すべきタスク',
+                    '経営層への報告と承認取得',
+                    '専任チームの配置を検討',
+                    '進捗の毎日モニタリング',
+                    '成功事例として記録・展開'
+                ];
+            } else if (finalScore >= 400) {
+                priority = '⚡ High（高優先）';
+                recommendations = [
+                    '今週中に着手を推奨',
+                    '必要リソースの確保計画',
+                    '2週間以内の完了目標',
+                    '関係者への事前共有',
+                    '効果測定方法の準備'
+                ];
+            } else if (finalScore >= 200) {
+                priority = '📋 Medium（中優先）';
+                recommendations = [
+                    '今月中に着手を検討',
+                    'Critical/Highタスクの後に配置',
+                    '簡易的なPoCから開始',
+                    '月次で進捗確認',
+                    '優先度の定期再評価'
+                ];
+            } else {
+                priority = '📌 Low（低優先）';
+                recommendations = [
+                    'リソースに余裕がある時に検討',
+                    '自動化・効率化の候補として保持',
+                    '四半期ごとに再評価',
+                    '他タスクとの統合可能性を検討',
+                    '廃止・委託の選択肢も検討'
+                ];
+            }
+
+            document.getElementById('riceScore').textContent = finalScore;
+            document.getElementById('priorityLevel').textContent = priority;
+            document.getElementById('reachScore').textContent = reach.toFixed(1);
+            document.getElementById('impactScore').textContent = impact.toFixed(1);
+            document.getElementById('confidenceScore').textContent = confidence.toFixed(1);
+            document.getElementById('effortScore').textContent = effort.toFixed(1);
+            
+            const recList = document.getElementById('recommendations');
+            recList.innerHTML = recommendations.map(r => `<li>${r}</li>`).join('');
+            
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+<!-- 関連ツール セクション -->
+<div style="margin:40px auto;max-width:860px;padding:24px;background:#fafafa;border:1px solid #e2e8f0;border-radius:12px;text-align:center;">
+  <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">🔗 関連ツール</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <a href="pharmacy-priority-scoring.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">📊 優先度スコアリング</a>
+      <a href="pharmacy-bottleneck-diagnosis.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">🔍 業務ボトルネック診断</a>
+      <a href="pharmacy-dx-roadmap.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">🗺️ DXロードマップ診断</a>
+      <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🤖 薬剤師向けAIプロンプト集</a>
+  </div>
+</div>
+</body>
+</html>

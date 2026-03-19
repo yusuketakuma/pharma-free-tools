@@ -1,0 +1,259 @@
+{
+  "timestamp": "2026-03-11T17:27:00+09:00",
+  "source": "trainer-30m-internet-research-dispatch",
+  "status": "partial",
+  "alert": "[BLOCKER] web_search API月間制限到達（402）→外部リサーチ不可",
+  "workaround": "web_fetchで個別ページ取得可能・過去リサーチ結果再活用",
+  "research": {
+    "pharmacyOps": {
+      "source": "internal_knowledge",
+      "practices": [
+        {
+          "title": "AI薬歴入力自動化",
+          "detail": "アインHD事例：薬剤師1人あたり処方箋処理枚数4割増目標",
+          "adoptability": "△検討",
+          "reason": "大規模薬局向け、小規模ではROI検証必要"
+        },
+        {
+          "title": "改正薬機法対応",
+          "detail": "調剤補助業務の外部委託円滑化",
+          "adoptability": "◎採用",
+          "reason": "2025年施行済み、早期対応必須"
+        },
+        {
+          "title": "医薬品在庫管理最適化",
+          "detail": "廃棄ロス削減と業務改善の統合アプローチ",
+          "adoptability": "◎採用",
+          "reason": "DeadStockSolution保守と親和性高い"
+        }
+      ]
+    },
+    "sidebiz": {
+      "source": "internal_knowledge",
+      "practices": [
+        {
+          "title": "n8n自前ホスト構築",
+          "detail": "Zapier $50+/月 vs n8n無料で完全無料化可能",
+          "adoptability": "◎採用",
+          "reason": "低コスト高効果、即実装可能"
+        },
+        {
+          "title": "ChatGPT×Canva×note販売フロー",
+          "detail": "月15万円事例、GPTsで質問対応自動化",
+          "adoptability": "◎採用",
+          "reason": "AIプロンプト集100プロンプト達成済み、商品化可能"
+        },
+        {
+          "title": "デジタル商品＋複数収益導線",
+          "detail": "月3〜5万円安定モデル",
+          "adoptability": "◎採用",
+          "reason": "無料ツール51件達成、収益導線強化済み"
+        }
+      ]
+    },
+    "management": {
+      "source": "internal_knowledge",
+      "practices": [
+        {
+          "title": "継続的フィードバック",
+          "detail": "年次レビューから脱却、41%組織が定例1on1優先",
+          "adoptability": "◎採用",
+          "reason": "現行30分サイクルと親和性高い"
+        },
+        {
+          "title": "フィードバック優先順位付け",
+          "detail": "影響度ベースで優先順位決定",
+          "adoptability": "◎採用",
+          "reason": "trainer 30分タスク選定に適用可能"
+        },
+        {
+          "title": "AI活用アジェンダ作成",
+          "detail": "戦略的コンテンツに集中、管理タスクから解放",
+          "adoptability": "△検討",
+          "reason": "手動運用でも代替可能"
+        }
+      ]
+    },
+    "openclaw": {
+      "source": "internal_knowledge",
+      "practices": [
+        {
+          "title": "cron多段階フロー",
+          "detail": "at/every/cron 3種スケジュールで柔軟設計",
+          "adoptability": "◎採用",
+          "reason": "既存インフラで即活用中"
+        },
+        {
+          "title": "条件分岐・タスク依存関係",
+          "detail": "ディスク容量チェック等の条件分岐",
+          "adoptability": "◎採用",
+          "reason": "複雑な自動化実現可能"
+        },
+        {
+          "title": "新規クライアントオンボーディング自動化",
+          "detail": "プロジェクトフォルダ作成〜フォローアップ一貫実行",
+          "adoptability": "○参考",
+          "reason": "副業自動化フロー設計に転用"
+        }
+      ]
+    },
+    "maintenance": {
+      "source": "internal_knowledge",
+      "practices": [
+        {
+          "title": "統合監視プラットフォーム",
+          "detail": "Datadog等で障害特定・運用可視化",
+          "adoptability": "○参考",
+          "reason": "OpenClaw cron監視ダッシュボード構築参考"
+        },
+        {
+          "title": "IoT+RPA+iPaaS連携",
+          "detail": "異常検知自動化",
+          "adoptability": "◎採用",
+          "reason": "n8n連携で実装可能"
+        },
+        {
+          "title": "24時間365日サポート",
+          "detail": "予防保守・定期メンテナンス統合",
+          "adoptability": "○参考",
+          "reason": "trainer監視フロー設計参考"
+        }
+      ]
+    }
+  },
+  "taskCandidates": {
+    "sidebiz_dev": [
+      {
+        "task": "ポータルリンク3件404修正（guidance/renal-dose/reminder）",
+        "priority": "高",
+        "feasibility": "実行可能",
+        "blocker": "公開方針決裁待ち"
+      },
+      {
+        "task": "n8n自前ホスト構築調査（月5万円事例の再現性評価）",
+        "priority": "高",
+        "feasibility": "実行可能",
+        "blocker": "なし"
+      },
+      {
+        "task": "AIプロンプトガイド商品化（PDF化・OGP画像作成）",
+        "priority": "中",
+        "feasibility": "実行可能",
+        "blocker": "販売プラットフォーム未開設"
+      }
+    ],
+    "sidebiz_maintenance": [
+      {
+        "task": "OpenClaw cron job稼働監視ダッシュボード設計",
+        "priority": "高",
+        "feasibility": "実行可能",
+        "blocker": "なし"
+      },
+      {
+        "task": "IoT+RPA+iPaaS連携チェックリスト作成",
+        "priority": "中",
+        "feasibility": "実行可能",
+        "blocker": "なし"
+      },
+      {
+        "task": "DeadStockSolution CI異常（カバレッジ不足）原因調査",
+        "priority": "低",
+        "feasibility": "要検討",
+        "blocker": "3/8方針変更で待機中"
+      }
+    ],
+    "homecare": [
+      {
+        "task": "患者抽出チェックリスト化（段階的マニュアル整備）",
+        "priority": "高",
+        "feasibility": "実行可能",
+        "blocker": "ゆうすけ操作必要"
+      },
+      {
+        "task": "AI薬歴入力支援ワークフロー設計",
+        "priority": "中",
+        "feasibility": "実行可能",
+        "blocker": "なし"
+      },
+      {
+        "task": "調剤補助業務外部委託チェックリスト作成（2025年改正薬機法対応）",
+        "priority": "中",
+        "feasibility": "実行可能",
+        "blocker": "なし"
+      }
+    ]
+  },
+  "alerts": [
+    "[ALERT]web_search API月間制限到達（402）→外部リサーチ不可",
+    "[ALERT]経過措置: 3/31期限まで20日・患者抽出未着手（ゆうすけ操作必要）",
+    "[ALERT]ポータルリンク3件404継続（guidance/renal-dose/reminder）",
+    "[INFO]指定濩用防止: 5/1施行まで52日・印刷設置4/15予定",
+    "[INFO]sidebiz販売プラットフォーム未開設（Gumroad/Note/Beehiiv等アカウント作成待ち）"
+  ],
+  "teamBias": {
+    "homecare": "情報収集中心・実行アクション不足（ゆうすけ依存）→次: 患者抽出チェックリスト化",
+    "sidebiz_dev": "コンテンツ作成活発（51ツール達成）・収益化実行保留→次: n8n自前ホスト調査",
+    "sidebiz_maintenance": "監視稼働中・404検出済み→次: 監視ダッシュボード設計",
+    "coding": "アイドル状態（3/8方針変更で待機）"
+  },
+  "learningLoop": {
+    "adopted": [
+      "継続的フィードバック: 30分サイクル運用継続",
+      "n8n自前ホスト: 副業インフラ選定で検討",
+      "cron多段階フロー: 既存活用中",
+      "フィードバック優先順位付け: trainerタスク選定に適用"
+    ],
+    "pending": [
+      "AI会議アジェンダ作成: 手動運用で代替可能なため優先度低"
+    ]
+  },
+  "selfImprovement": {
+    "learningPoints": [
+      "外部API依存の単一障害点を解消するため、代替手段（web_fetch/qmd）の活用を次サイクル指示へ反映",
+      "過去リサーチ結果の再活用で、API制限時もタスク候補抽出可能",
+      "ポータルリンク404は公開方針未確定が根本原因→方針確定→同一サイクル反映のルール化必要"
+    ],
+    "failures": [
+      {
+        "issue": "web_search API月間制限到達で外部リサーチ完全不可",
+        "cause": "月額制限（$5）到達",
+        "prevention": "代替手段（web_fetch/qmd）の活用・月初にリミット確認",
+        "impact": "30分ジョブの核心要件（ベストプラクティス収集）が部分的実行"
+      }
+    ],
+    "improvementProposals": [
+      {
+        "priority": "高",
+        "feasibility": "実行可能",
+        "proposal": "web_fetch代替手段の活用（個別ページ取得）"
+      },
+      {
+        "priority": "高",
+        "feasibility": "実行可能",
+        "proposal": "ポータルリンク3件404修正（公開方針確定後）"
+      },
+      {
+        "priority": "中",
+        "feasibility": "要検討",
+        "proposal": "qmd（ローカル検索）の活用検討"
+      },
+      {
+        "priority": "中",
+        "feasibility": "要検討",
+        "proposal": "n8n自前ホスト構築調査"
+      }
+    ]
+  },
+  "nextCycleInstructions": {
+    "externalResearch": "web_fetchで個別ページ取得に切替（Brave Search API制限中）",
+    "priorityTasks": [
+      "患者抽出チェックリスト化（homecare）",
+      "n8n自前ホスト構築調査（sidebiz_dev）",
+      "監視ダッシュボード設計（sidebiz_maintenance）"
+    ],
+    "alerts": [
+      "経過措置3/31期限まで20日",
+      "ポータルリンク3件404継続"
+    ]
+  }
+}

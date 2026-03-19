@@ -1,0 +1,10 @@
+{
+  "id": "1772539618122",
+  "generated_at": "2026-03-03T12:06:58.122Z",
+  "company_name": "Diagnostic Pharmacy B 20260303 2106",
+  "total_stock_value": 55306,
+  "demand_match_rate": 82,
+  "four_week_recovery_estimate": 38543,
+  "priority_score": 86,
+  "recommendation": "48h以内にアプローチ推奨"
+}

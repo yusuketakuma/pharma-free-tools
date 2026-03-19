@@ -1,0 +1,36 @@
+{
+  "lastUpdated": "2026-03-19 06:01",
+  "agents": {
+    "coding": {
+      "status": "異常",
+      "lastUpdate": "2026-03-08",
+      "currentTask": "未稼働（40サイクル未応答・社長報告済み）",
+      "summary": "status.md未作成。エージェント自体が起動していない。翌朝ゆうすけ再起動確認待ち"
+    },
+    "homecare": {
+      "status": "正常",
+      "lastUpdate": "2026-03-19 05:47",
+      "currentTask": "スリープ中（翌朝08:00以降dispatch待ち）",
+      "summary": "28サイクル連続全完了。成果物26件以上。テリパラチド返品3/28・経過措置3/31期限管理中。翌朝HTMLパッチ適用予定"
+    },
+    "sidebiz": {
+      "status": "正常",
+      "lastUpdate": "2026-03-19 05:38",
+      "currentTask": "スリープ中（翌朝08:00以降dispatch待ち）",
+      "summary": "24サイクル連続全完了。GA4 65%→翌朝Batch4で100%予定。Notion商品ページ準備完了。GA4実ID・販売アカウント待ち"
+    }
+  },
+  "alerts": [
+    "coding: 40サイクル連続未応答（社長報告済み・翌朝対応待ち）",
+    "homecare: テリパラチド返品期限 3/28（残9日）— 本日ゆうすけアクション開始",
+    "homecare: 経過措置患者抽出期限 3/31（残12日）— 本日〜22日MCS操作推奨",
+    "sidebiz: GA4 Measurement ID プレースホルダー未差し替え"
+  ],
+  "nextActions": [
+    "08:00 静音モード解除 → 社長定例報告",
+    "coding再起動確認（ゆうすけ対応）",
+    "homecare: HTMLパッチ適用・revenue-simulator確認",
+    "sidebiz: GA4 Batch4実行（25ファイル→100%）",
+    "ゆうすけリマインド: GA4実ID・Notionアカウント・テリパラチド在庫確認・MCS患者抽出"
+  ]
+}

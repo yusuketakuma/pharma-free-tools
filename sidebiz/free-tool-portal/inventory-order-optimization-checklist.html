@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局在庫発注最適化チェックリスト - 薬剤師無料ツール</title>
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+  <meta name="description" content="薬局の在庫発注を最適化する20項目のチェックリスト。廃棄ロス削減、欠品防止、キャッシュフロー改善で薬局経営を支援。進捗保存機能付き。">
+  <meta name="keywords" content="在庫管理,発注最適化,廃棄ロス,欠品防止,薬局経営,チェックリスト,薬剤師,コスト削減">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="薬局在庫発注最適化チェックリスト - 薬剤師無料ツール">
+  <meta property="og:description" content="薬局の在庫発注を最適化する20項目のチェックリスト。廃棄ロス削減、欠品防止、キャッシュフロー改善で薬局経営を支援。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/inventory-order-optimization-checklist.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "薬局在庫発注最適化チェックリスト",
+    "description": "薬局の在庫発注を最適化する20項目のチェックリスト。廃棄ロス削減、欠品防止、キャッシュフロー改善。",
+    "url": "https://yusuketakuma.github.io/pharma-free-tools/inventory-order-optimization-checklist.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    .benefit-box {
+      background: #e8f4fc;
+      border-left: 4px solid #3498db;
+      padding: 15px 20px;
+      margin: 20px 30px;
+      border-radius: 8px;
+    }
+    
+    .benefit-box strong {
+      color: #2980b9;
+    }
+    
+    .progress-section {
+      background: #f8f9fa;
+      padding: 20px 30px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .progress-bar {
+      background: #e9ecef;
+      height: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #27ae60, #2ecc71);
+      height: 100%;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+      font-size: 0.85rem;
+    }
+    
+    .main-content {
+      padding: 30px;
+    }
+    
+    .phase {
+      margin-bottom: 30px;
+    }
+    
+    .phase-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #3498db;
+    }
+    
+    .phase-icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+    
+    .phase-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #2980b9;
+    }
+    
+    .checklist {
+      list-style: none;
+    }
+    
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      padding: 12px 15px;
+      background: #f8f9fa;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .checklist li:hover {
+      background: #e3f2fd;
+    }
+    
+    .checklist li.checked {
+      background: #d4edda;
+      text-decoration: line-through;
+      color: #666;
+    }
+    
+    .checklist input[type="checkbox"] {
+      margin-right: 12px;
+      transform: scale(1.3);
+      accent-color: #27ae60;
+    }
+    
+    .checklist .item-content {
+      flex: 1;
+    }
+    
+    .checklist .item-title {
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+    
+    .checklist .item-desc {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #e9ecef;
+      color: #495057;
+    }
+    
+    .btn-secondary:hover {
+      background: #dee2e6;
+    }
+    
+    .tips-section {
+      background: #fff9e6;
+      border-left: 4px solid #f1c40f;
+      padding: 15px 20px;
+      margin: 30px;
+      border-radius: 8px;
+    }
+    
+    .tips-section h4 {
+      color: #d68910;
+      margin-bottom: 10px;
+    }
+    
+    .tips-section ul {
+      margin-left: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .tips-section li {
+      margin-bottom: 5px;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 15px;
+    }
+    
+    .cta-section p {
+      opacity: 0.9;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.85rem;
+      border-top: 1px solid #e9ecef;
+    }
+    
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.3rem;
+      }
+      
+      .main-content {
+        padding: 20px;
+      }
+      
+      .stats {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'inventory-order-optimization-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'inventory-order-optimization-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'inventory-order-optimization-checklist-prompt-cta'
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📦 薬局在庫発注最適化チェックリスト</h1>
+      <p class="subtitle">廃棄ロス削減 × 欠品防止 × キャッシュフロー改善</p>
+    </header>
+    
+    <div class="benefit-box">
+      <strong>💡 期待される効果：</strong>
+      廃棄ロス30%削減、欠品率50%低減、発注工数40%削減、キャッシュフロー改善
+    </div>
+    
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+      </div>
+      <div class="stats">
+        <span>完了: <strong id="completedCount">0</strong> / 20項目</span>
+        <span id="saveStatus">自動保存済み</span>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <!-- Phase 1: 現状分析 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">📊</span>
+          <span class="phase-title">Phase 1: 現状分析（5項目）</span>
+        </div>
+        <ul class="checklist" data-phase="1">
+          <li>
+            <input type="checkbox" id="item1">
+            <div class="item-content">
+              <div class="item-title">過去3ヶ月の廃棄金額を把握</div>
+              <div class="item-desc">有効期限切れ、調剤不可等の廃棄ロスを可視化</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item2">
+            <div class="item-content">
+              <div class="item-title">欠品発生頻度と機会損失を算出</div>
+              <div class="item-desc">欠品により他薬局へ紹介した件数・推定売上損失</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item3">
+            <div class="item-content">
+              <div class="item-title">ABC分析で重点管理品目を特定</div>
+              <div class="item-desc">売上上位20%で全売上の80%を占める品目を抽出</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item4">
+            <div class="item-content">
+              <div class="item-title">発注リードタイムを品目別に整理</div>
+              <div class="item-desc">通常品・特納品・麻薬等の納期を把握</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item5">
+            <div class="item-content">
+              <div class="item-title">現在の発注頻度と発注工数を測定</div>
+              <div class="item-desc">1日あたり発注時間・発注回数を記録</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Phase 2: 発注ルール策定 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">📐</span>
+          <span class="phase-title">Phase 2: 発注ルール策定（5項目）</span>
+        </div>
+        <ul class="checklist" data-phase="2">
+          <li>
+            <input type="checkbox" id="item6">
+            <div class="item-content">
+              <div class="item-title">品目別の適正在庫量を設定</div>
+              <div class="item-desc">平均調剤量 × リードタイム + 安全在庫で算出</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item7">
+            <div class="item-content">
+              <div class="item-title">発注点（再発注ライン）を決定</div>
+              <div class="item-desc">在庫が何個になったら発注するか明確化</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item8">
+            <div class="item-content">
+              <div class="item-title">定期発注品と不定点発注品を分類</div>
+              <div class="item-desc">高回転品は定期、低回転品は不定点で効率化</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item9">
+            <div class="item-content">
+              <div class="item-title">有効期限管理ルールを策定</div>
+              <div class="item-desc">先入先出し徹底・期限3ヶ月前アラート設定</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item10">
+            <div class="item-content">
+              <div class="item-title">発注担当者の役割分担を明確化</div>
+              <div class="item-desc">日常発注・緊急発注・金額上限の責任範囲</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Phase 3: サプライヤー最適化 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">🤝</span>
+          <span class="phase-title">Phase 3: サプライヤー最適化（4項目）</span>
+        </div>
+        <ul class="checklist" data-phase="3">
+          <li>
+            <input type="checkbox" id="item11">
+            <div class="item-content">
+              <div class="item-title">取引卸売業者の納品精度を評価</div>
+              <div class="item-desc">納期遵守率・欠品率・誤納率をスコア化</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item12">
+            <div class="item-content">
+              <div class="item-title">卸別の配送スケジュールを確認</div>
+              <div class="item-desc">週3回・週5回等の配送頻度と締め切り時間</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item13">
+            <div class="item-content">
+              <div class="item-title">緊急時の対応可能卸を確保</div>
+              <div class="item-desc">メイン卸が欠品時の代替調達ルート</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item14">
+            <div class="item-content">
+              <div class="item-title">購入条件・割引制度を見直し</div>
+              <div class="item-desc">ボリュームディスカウント・リベート条件確認</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Phase 4: システム活用 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">💻</span>
+          <span class="phase-title">Phase 4: システム活用（3項目）</span>
+        </div>
+        <ul class="checklist" data-phase="4">
+          <li>
+            <input type="checkbox" id="item15">
+            <div class="item-content">
+              <div class="item-title">調剤システムの在庫管理機能を活用</div>
+              <div class="item-desc">自動発注アラート・在庫一覧機能の設定</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item16">
+            <div class="item-content">
+              <div class="item-title">発注データの電子化・自動連携</div>
+              <div class="item-desc">手書き発注書を廃止し、システム経由で効率化</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item17">
+            <div class="item-content">
+              <div class="item-title">実在庫とシステム在庫の照合頻度設定</div>
+              <div class="item-desc">月1回棚卸・高額品は週1回確認</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Phase 5: 継続改善 -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-icon">📈</span>
+          <span class="phase-title">Phase 5: 継続改善（3項目）</span>
+        </div>
+        <ul class="checklist" data-phase="5">
+          <li>
+            <input type="checkbox" id="item18">
+            <div class="item-content">
+              <div class="item-title">月次で在庫回転率をモニタリング</div>
+              <div class="item-desc">目標回転率との乖離分析・改善アクション</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item19">
+            <div class="item-content">
+              <div class="item-title">季節変動品の発注計画を策定</div>
+              <div class="item-desc">インフルエンザ期・花粉期等の事前準備</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" id="item20">
+            <div class="item-content">
+              <div class="item-title">在庫管理KPIをスタッフと共有</div>
+              <div class="item-desc">廃棄率・欠品率の見える化と目標設定</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="actions">
+        <button class="btn btn-primary" onclick="reset; trackToolUsage('restart')"Checklist()">🔄 リセット</button>
+        <button class="btn btn-secondary" onclick="exportChecklist()">📄 結果を出力</button>
+        <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="btn btn-secondary">🏠 ツール一覧へ</a>
+      </div>
+    </div>
+    
+    <div class="tips-section">
+      <h4>💡 在庫発注最適化のコツ</h4>
+      <ul>
+        <li><strong>80:20の法則：</strong>売上上位20%の品目に管理リソースを集中</li>
+        <li><strong>発注サイクル統一：</strong>発注曜日を固定してルーチン化</li>
+        <li><strong>安全在庫の見直し：</strong>過剰在庫はキャッシュフローを圧迫</li>
+        <li><strong>期限管理の徹底：</strong>先入先出しで廃棄ロス削減</li>
+      </ul>
+    </div>
+    
+    <div class="cta-section">
+      <h3>🎯 収益化を本格的に目指しませんか？</h3>
+      <p>薬剤師向けAIプロンプト集100選で、業務効率化から副業収入まで幅広くサポート</p>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn">AIプロンプト集を見る →</a>
+    </div>
+    
+    <footer>
+      <p>💊 薬剤師無料ツール集 | <a href="https://yusuketakuma.github.io/pharma-free-tools/">トップページ</a></p>
+      <p>© 2026 Pharma Free Tools</p>
+    </footer>
+  </div>
+  
+  <script>
+    const STORAGE_KEY = 'inventory-order-optimization-checklist';
+    const TOTAL_ITEMS = 20;
+    
+    // ページ読み込み時に保存データを復元
+    document.addEventListener('DOMContentLoaded', () => {
+      loadChecklist();
+      updateProgress();
+    });
+    
+    // チェックボックス変更時の処理
+    document.querySelectorAll('.checklist input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        saveChecklist();
+        updateProgress();
+        updateItemStyle(checkbox);
+      });
+    });
+    
+    // スタイル更新
+    function updateItemStyle(checkbox) {
+      const li = checkbox.closest('li');
+      if (checkbox.checked) {
+        li.classList.add('checked');
+      } else {
+        li.classList.remove('checked');
+      }
+    }
+    
+    // 進捗更新
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+      const checked = document.querySelectorAll('.checklist input[type="checkbox"]:checked').length;
+      const percentage = Math.round((checked / TOTAL_ITEMS) * 100);
+      
+      document.getElementById('progressFill').style.width = percentage + '%';
+      document.getElementById('progressFill').textContent = percentage + '%';
+      document.getElementById('completedCount').textContent = checked;
+      
+      // 色変更
+      const fill = document.getElementById('progressFill');
+      if (percentage < 30) {
+        fill.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
+      } else if (percentage < 70) {
+        fill.style.background = 'linear-gradient(90deg, #f39c12, #e67e22)';
+      } else {
+        fill.style.background = 'linear-gradient(90deg, #27ae60, #2ecc71)';
+      }
+    }
+    
+    // 保存
+    function saveChecklist() {
+      const data = {};
+      document.querySelectorAll('.checklist input[type="checkbox"]').forEach(checkbox => {
+        data[checkbox.id] = checkbox.checked;
+      });
+      data.timestamp = new Date().toISOString();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      
+      document.getElementById('saveStatus').textContent = '保存済み: ' + new Date().toLocaleTimeString('ja-JP');
+    }
+    
+    // 読み込み
+    function loadChecklist() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        document.querySelectorAll('.checklist input[type="checkbox"]').forEach(checkbox => {
+          if (data[checkbox.id]) {
+            checkbox.checked = true;
+            updateItemStyle(checkbox);
+          }
+        });
+        if (data.timestamp) {
+          document.getElementById('saveStatus').textContent = '前回保存: ' + new Date(data.timestamp).toLocaleString('ja-JP');
+        }
+      }
+    }
+    
+    // リセット
+    function resetChecklist() {
+      if (confirm('チェックリストをリセットしますか？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        document.querySelectorAll('.checklist input[type="checkbox"]').forEach(checkbox => {
+          checkbox.checked = false;
+          updateItemStyle(checkbox);
+        });
+        updateProgress();
+        document.getElementById('saveStatus').textContent = 'リセット済み';
+      }
+    }
+    
+    // 結果出力
+    function exportChecklist() {
+      const checked = document.querySelectorAll('.checklist input[type="checkbox"]:checked').length;
+      const percentage = Math.round((checked / TOTAL_ITEMS) * 100);
+      
+      let text = '【薬局在庫発注最適化チェックリスト】\n';
+      text += `完了: ${checked}/${TOTAL_ITEMS}項目 (${percentage}%)\n`;
+      text += `出力日時: ${new Date().toLocaleString('ja-JP')}\n\n`;
+      
+      document.querySelectorAll('.phase').forEach(phase => {
+        const phaseTitle = phase.querySelector('.phase-title').textContent;
+        text += `■ ${phaseTitle}\n`;
+        
+        phase.querySelectorAll('.checklist li').forEach(li => {
+          const checkbox = li.querySelector('input[type="checkbox"]');
+          const title = li.querySelector('.item-title').textContent;
+          const mark = checkbox.checked ? '✅' : '⬜';
+          text += `${mark} ${title}\n`;
+        });
+        text += '\n';
+      });
+      
+      // クリップボードにコピー
+      navigator.clipboard.writeText(text).then(() => {
+        alert('チェックリスト結果をクリップボードにコピーしました！');
+      }).catch(() => {
+        alert('コピーに失敗しました。手動でコピーしてください。');
+      });
+    }
+  </script>
+
+<!-- 関連ツール セクション (自動追加: Batch2 crosslink) -->
+<section style="max-width:800px;margin:2rem auto;padding:1.5rem;background:linear-gradient(135deg,#f0f9ff,#e8f4fd);border-radius:12px;border:1px solid #bde0fe;">
+  <h3 style="margin:0 0 1rem;color:#1e3a5f;font-size:1.1rem;">🔗 関連ツール</h3>
+  <ul style="list-style:none;padding:0;margin:0;display:grid;gap:0.5rem;">
+    <li><a href="pharmacy-inventory-diagnosis.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">薬局在庫管理診断</a></li>
+    <li><a href="pharmacy-reorder-point-calculator.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">発注点計算ツール</a></li>
+    <li><a href="pharmacy-cashflow-diagnosis.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">薬局キャッシュフロー診断</a></li>
+    <li><a href="pharmacy-5s-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">薬局5Sチェックリスト</a></li>
+  </ul>
+  <div style="margin-top:1rem;text-align:center;">
+    <a href="index.html" style="color:#2563eb;text-decoration:none;font-size:0.9rem;">📋 全ツール一覧を見る →</a>
+  </div>
+</section>
+
+</body>
+</html>

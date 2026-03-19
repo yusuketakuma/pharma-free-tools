@@ -1,0 +1,774 @@
+---
+redirect_from:
+  - /pharma-renal-dose/
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>腎機能別用量調整計算ツール | 薬剤師向け無料ツール</title>
+  <meta name="description" content="患者の腎機能（eGFR/Cr）から薬剤の用量調整を確認する無料ツール。高齢者・CKD患者の処方チェックに。薬剤師の実務効率化。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "腎機能別用量調整計算ツール",
+    "description": "患者の腎機能（eGFR/Cr）から薬剤の用量調整を確認する無料ツール。高齢者・CKD患者の処方チェックに。薬剤師の実務効率化。",
+    "url": "https://yusuketakuma.github.io/pharma-renal-dose-tool/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  <meta property="og:title" content="腎機能別用量調整計算ツール | 薬剤師向け無料">
+  <meta property="og:description" content="患者の腎機能から薬剤の用量調整を確認。高齢者・CKD患者の処方チェックに。">
+  <meta property="og:type" content="website">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 16px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 1.5rem;
+      color: #667eea;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+    .section-title {
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+    .input-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .input-field {
+      flex: 1;
+      min-width: 120px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    .calc-result {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .calc-result .value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .calc-result .unit {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .stage-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    .stage-g1 { background: #4caf50; color: white; }
+    .stage-g2 { background: #8bc34a; color: white; }
+    .stage-g3a { background: #ffeb3b; color: #333; }
+    .stage-g3b { background: #ff9800; color: white; }
+    .stage-g4 { background: #ff5722; color: white; }
+    .stage-g5 { background: #f44336; color: white; }
+    .drug-list {
+      margin-top: 16px;
+    }
+    .drug-item {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .drug-item.caution {
+      border-color: #ff9800;
+      background: #fff8e1;
+    }
+    .drug-item.danger {
+      border-color: #f44336;
+      background: #ffebee;
+    }
+    .drug-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .drug-category {
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    .dose-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .dose-box {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .dose-box.normal { background: #e8f5e9; }
+    .dose-box.adjusted { background: #fff3e0; }
+    .dose-label {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    .dose-value {
+      font-weight: 600;
+      color: #333;
+    }
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 8px;
+      padding: 8px;
+      background: #f0f0f0;
+      border-radius: 6px;
+    }
+    .copy-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+    .reference {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .reference h3 {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: #555;
+    }
+    .reference ul {
+      padding-left: 20px;
+    }
+    .reference li {
+      margin-bottom: 4px;
+    }
+    .cta-section {
+      margin-top: 24px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .cta-title {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .cta-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .cta-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .cta-link:hover {
+      transform: translateY(-2px);
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: #999;
+    }
+    @media (max-width: 600px) {
+      .dose-info {
+        grid-template-columns: 1fr;
+      }
+      .input-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+  <!-- Google tag (gtag.js) - 測定IDを差し替えてください -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'ai_prompts',
+        'product_name': 'AIプロンプト集',
+        'price': 300
+      });
+    }
+
+    function trackNotionCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'notion_template',
+        'product_name': 'Notionテンプレート',
+        'price': 500
+      });
+    }
+
+    function trackToolUsage(actionType) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': '腎機能別用量調整',
+        'action_type': actionType
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'renal_dose_result'
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>🩺 腎機能別用量調整計算ツール</h1>
+    <p class="subtitle">患者の腎機能から薬剤の用量調整を確認</p>
+
+    <!-- 患者情報入力 -->
+    <div class="section">
+      <div class="section-title">📊 患者情報を入力</div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="age">年齢</label>
+          <input type="number" id="age" placeholder="75" min="1" max="120">
+        </div>
+        <div class="input-field">
+          <label for="gender">性別</label>
+          <select id="gender">
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label for="scr">血清クレアチニン (mg/dL)</label>
+          <input type="number" id="scr" placeholder="1.2" step="0.01" min="0.1" max="20">
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="weight">体重 (kg) ※任意</label>
+          <input type="number" id="weight" placeholder="60" min="20" max="200">
+        </div>
+      </div>
+      <button class="copy-btn" onclick="calculateEGFR(); trackToolUsage('calculate_egfr');">腎機能を計算</button>
+      
+      <div class="calc-result" id="egfrResult" style="display: none;">
+        <div class="value" id="egfrValue">--</div>
+        <div class="unit">eGFR (mL/min/1.73m²)</div>
+        <div class="stage-badge" id="stageBadge">--</div>
+      </div>
+    </div>
+
+    <!-- 薬剤選択 -->
+    <div class="section">
+      <div class="section-title">💊 用量調整を確認する薬剤</div>
+      <div class="input-group">
+        <div class="input-field" style="flex: 2;">
+          <label for="drugSearch">薬剤名で検索</label>
+          <input type="text" id="drugSearch" placeholder="例: ジゴキシン、メトホルミン" oninput="filterDrugs()">
+        </div>
+        <div class="input-field" style="flex: 1;">
+          <label for="drugCategory">カテゴリ</label>
+          <select id="drugCategory" onchange="filterDrugs()">
+            <option value="all">すべて</option>
+            <option value="antidiabetic">糖尿病薬</option>
+            <option value="antibiotic">抗生物質</option>
+            <option value="cardiovascular">循環器用薬</option>
+            <option value="analgesic">鎮痛薬</option>
+            <option value="gout">痛風治療薬</option>
+            <option value="antiviral">抗ウイルス薬</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="drug-list" id="drugList">
+        <!-- 動的に生成 -->
+      </div>
+    </div>
+
+    <!-- 患者説明用コピー -->
+    <div class="section">
+      <div class="section-title">📋 患者説明用テキスト</div>
+      <textarea id="explanationText" style="width: 100%; height: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; resize: vertical;" readonly placeholder="腎機能を計算すると、患者説明用テキストが表示されます"></textarea>
+      <button class="copy-btn" onclick="copyExplanation()">コピーして薬歴に貼り付け</button>
+    </div>
+
+    <!-- 参考文献 -->
+    <div class="reference">
+      <h3>📚 参考情報源</h3>
+      <ul>
+        <li>日本腎臓学会 CKD診療ガイド2023</li>
+        <li>医療薬学 改訂第7版</li>
+        <li>各薬剤添付文書（用量・用法欄）</li>
+      </ul>
+      <p style="margin-top: 8px; color: #e53935;">⚠️ このツールは参考情報です。実際の用量調整は添付文書・ガイドラインを確認し、医師と相談してください。</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <div class="cta-title">🎁 このツールを使ったあなたへ</div>
+      <p style="margin:0 0 12px;font-size:0.9rem;">薬歴入力や疑義照会を効率化するテンプレート・プロンプトを無料で提供しています。</p>
+      <div class="cta-links">
+        <a href="https://forms.gle/placeholder" target="_blank" class="cta-link">📩 無料テンプレートを受け取る</a>
+        <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/" class="cta-link">📊 業務効率化診断</a>
+        <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/" class="cta-link">💊 薬価シミュレーター</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/" class="cta-link">📋 薬歴テンプレート</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/" class="cta-link">✅ 服薬指導チェックリスト</a>
+        <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/" class="cta-link">📋 処方チェックリスト生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-inquiry-email/" class="cta-link">📧 疑義照会メール生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-summary/" class="cta-link">📋 薬歴サマリー生成</a>
+      </div>
+      <p style="margin:10px 0 0;font-size:0.82rem;">※有料製品（AIプロンプト集/Notionテンプレート）は回答者限定価格で案内中。</p>
+    </div>
+
+    <div class="footer">
+      © 2026 薬剤師向け無料ツールシリーズ
+    </div>
+  </div>
+
+  <script>
+    // 薬剤データ（用量調整が必要な代表的薬剤）
+    const drugs = [
+      {
+        name: 'メトホルミン',
+        generic: 'メトホルミン塩酸塩',
+        category: 'antidiabetic',
+        categoryName: '糖尿病薬',
+        normalDose: '250-750mg/日',
+        gfr30to45: '250mg/日以下',
+        gfrBelow30: '禁忌',
+        gfrBelow45: '250mg/日以下',
+        note: 'eGFR < 30で禁忌。eGFR 30-45では最大250mg/日。ヨード造影剤投与前後は一時中止。'
+      },
+      {
+        name: 'ジゴキシン',
+        generic: 'ジゴキシン',
+        category: 'cardiovascular',
+        categoryName: '循環器用薬',
+        normalDose: '0.125-0.25mg/日',
+        gfr30to45: '0.125mg/日',
+        gfrBelow30: '0.0625-0.125mg/日',
+        gfrBelow45: '0.125mg/日以下',
+        note: '腎排泄型。高齢者では0.125mg/日から開始。血中濃度モニタリング必須。'
+      },
+      {
+        name: 'シタグリプチン',
+        generic: 'シタグリプチンリン酸塩水和物',
+        category: 'antidiabetic',
+        categoryName: '糖尿病薬',
+        normalDose: '50mg/日',
+        gfr30to45: '25mg/日',
+        gfrBelow30: '25mg/日',
+        gfrBelow45: '25mg/日',
+        note: 'eGFR < 50では用量減少。中等度以上の腎機能障害で半量に。'
+      },
+      {
+        name: 'アロプリノール',
+        generic: 'アロプリノール',
+        category: 'gout',
+        categoryName: '痛風治療薬',
+        normalDose: '100-300mg/日',
+        gfr30to45: '100-200mg/日',
+        gfrBelow30: '50-100mg/日',
+        gfrBelow45: '100mg/日以下から開始',
+        note: '重篤な皮膚障害リスクあり。eGFR < 30では少量から開始し、徐々に増量。'
+      },
+      {
+        name: 'セファゾリン',
+        generic: 'セファゾリンナトリウム',
+        category: 'antibiotic',
+        categoryName: '抗生物質',
+        normalDose: '1-2g/日 分2',
+        gfr30to45: '0.5-1g/日 分2',
+        gfrBelow30: '0.5g/日 分1-2',
+        gfrBelow45: '0.5-1g/日',
+        note: 'CrCl 10-35mL/minでは通常量の25-50%に減量。'
+      },
+      {
+        name: 'レボフロキサシン',
+        generic: 'レボフロキサシン水和物',
+        category: 'antibiotic',
+        categoryName: '抗生物質',
+        normalDose: '500mg/日',
+        gfr30to45: '250mg/日（初回500mg）',
+        gfrBelow30: '250mg/48時間',
+        gfrBelow45: '250mg/日以下',
+        note: 'eGFR < 50では用量調整必要。腱炎・腱断裂リスクに注意。'
+      },
+      {
+        name: 'バンコマイシン',
+        generic: 'バンコマイシン塩酸塩',
+        category: 'antibiotic',
+        categoryName: '抗生物質',
+        normalDose: '1-2g/日 分2',
+        gfr30to45: 'TDMに基づき調整',
+        gfrBelow30: 'TDMに基づき調整',
+        gfrBelow45: 'TDM必須',
+        note: '腎機能に応じて投与間隔を延長。TDM（血中濃度モニタリング）が必須。'
+      },
+      {
+        name: 'ガバペンチン',
+        generic: 'ガバペンチン',
+        category: 'analgesic',
+        categoryName: '鎮痛薬・神経障害性疼痛',
+        normalDose: '900-1800mg/日',
+        gfr30to45: '200-700mg/日',
+        gfrBelow30: '100-300mg/日',
+        gfrBelow45: '用量減少',
+        note: 'CrCl < 30mL/minでは大幅な減量が必要。眠気・ふらつきに注意。'
+      },
+      {
+        name: 'プレガバリン',
+        generic: 'プレガバリン',
+        category: 'analgesic',
+        categoryName: '鎮痛薬・神経障害性疼痛',
+        normalDose: '150-300mg/日',
+        gfr30to45: '75-150mg/日',
+        gfrBelow30: '25-75mg/日',
+        gfrBelow45: '用量減少',
+        note: 'CrCl 30-60mL/minで1日2回、<30mL/minで1日1回に。'
+      },
+      {
+        name: 'オセルタミビル',
+        generic: 'オセルタミビルリン酸塩',
+        category: 'antiviral',
+        categoryName: '抗ウイルス薬',
+        normalDose: '75mg 1日2回',
+        gfr30to45: '75mg 1日1回',
+        gfrBelow30: '30mg 1日1回',
+        gfrBelow45: '75mg 1日1回以下',
+        note: 'インフルエンザ治療。CrCl 10-30mL/minでは用量減少。'
+      },
+      {
+        name: 'リシルマブ',
+        generic: 'リシルマブ',
+        category: 'cardiovascular',
+        categoryName: '循環器用薬（心不全）',
+        normalDose: '2.5-5mg 1日1回',
+        gfr30to45: '慎重投与',
+        gfrBelow30: '慎重投与',
+        gfrBelow45: 'eGFR低下時はモニタリング',
+        note: 'eGFR < 30またはeGFR < 60で併用薬に注意。高カリウム血症リスク。'
+      },
+      {
+        name: 'ダパグリフロジン',
+        generic: 'ダパグリフロジンプロピレングリコール水和物',
+        category: 'antidiabetic',
+        categoryName: '糖尿病薬（SGLT2阻害薬）',
+        normalDose: '5-10mg/日',
+        gfr30to45: '効果減弱、継続可',
+        gfrBelow30: '開始不可',
+        gfrBelow45: 'eGFR < 30で開始不可',
+        note: 'eGFR < 30で新規開始不可。既服用中は継続可能な場合あり。'
+      }
+    ];
+
+    let currentEGFR = null;
+    let currentStage = null;
+
+    // eGFR計算（日本人修正Cockcroft-Gault式を簡易化したSwedish式）
+    function calculateEGFR() {
+      const age = parseFloat(document.getElementById('age').value);
+      const scr = parseFloat(document.getElementById('scr').value);
+      const gender = document.getElementById('gender').value;
+      const weight = parseFloat(document.getElementById('weight').value);
+
+      if (!age || !scr || scr <= 0) {
+        alert('年齢と血清クレアチニンを入力してください');
+        return;
+      }
+
+      // 簡易eGFR計算（Japanese eGFR equation）
+      let eGFR;
+      if (gender === 'male') {
+        eGFR = 194 * Math.pow(scr, -1.094) * Math.pow(age, -0.287);
+      } else {
+        eGFR = 194 * Math.pow(scr, -1.094) * Math.pow(age, -0.287) * 0.739;
+      }
+
+      eGFR = Math.round(eGFR * 10) / 10;
+      currentEGFR = eGFR;
+
+      // CKD病期判定
+      if (eGFR >= 90) {
+        currentStage = { stage: 'G1', class: 'stage-g1', label: 'CKD G1（正常以上）' };
+      } else if (eGFR >= 60) {
+        currentStage = { stage: 'G2', class: 'stage-g2', label: 'CKD G2（正常〜軽度低下）' };
+      } else if (eGFR >= 45) {
+        currentStage = { stage: 'G3a', class: 'stage-g3a', label: 'CKD G3a（中等度低下）' };
+      } else if (eGFR >= 30) {
+        currentStage = { stage: 'G3b', class: 'stage-g3b', label: 'CKD G3b（中等度〜高度低下）' };
+      } else if (eGFR >= 15) {
+        currentStage = { stage: 'G4', class: 'stage-g4', label: 'CKD G4（高度低下）' };
+      } else {
+        currentStage = { stage: 'G5', class: 'stage-g5', label: 'CKD G5（末期腎不全）' };
+      }
+
+      // 結果表示
+      document.getElementById('egfrResult').style.display = 'block';
+      document.getElementById('egfrValue').textContent = eGFR;
+      const badge = document.getElementById('stageBadge');
+      badge.textContent = currentStage.label;
+      badge.className = 'stage-badge ' + currentStage.class;
+
+      // 薬剤リスト更新
+      renderDrugs();
+      
+      // 説明文生成
+      generateExplanation(age, gender, scr, eGFR, currentStage);
+    }
+
+    // 薬剤フィルタリング
+    function filterDrugs() {
+      renderDrugs();
+    }
+
+    // 薬剤リスト表示
+    function renderDrugs() {
+      const searchTerm = document.getElementById('drugSearch').value.toLowerCase();
+      const categoryFilter = document.getElementById('drugCategory').value;
+      
+      let filteredDrugs = drugs.filter(drug => {
+        const matchSearch = drug.name.toLowerCase().includes(searchTerm) || 
+                           drug.generic.toLowerCase().includes(searchTerm);
+        const matchCategory = categoryFilter === 'all' || drug.category === categoryFilter;
+        return matchSearch && matchCategory;
+      });
+
+      const container = document.getElementById('drugList');
+      container.innerHTML = '';
+
+      if (filteredDrugs.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">該当する薬剤がありません</p>';
+        return;
+      }
+
+      filteredDrugs.forEach(drug => {
+        let adjustedDose = drug.normalDose;
+        let status = 'normal';
+        let note = drug.note;
+
+        if (currentEGFR !== null) {
+          if (currentEGFR < 30) {
+            adjustedDose = drug.gfrBelow30;
+            status = 'danger';
+          } else if (currentEGFR < 45) {
+            adjustedDose = drug.gfrBelow45;
+            status = 'caution';
+          } else if (currentEGFR < 50) {
+            adjustedDose = drug.gfrBelow45;
+            status = 'caution';
+          }
+        }
+
+        const itemClass = status === 'danger' ? 'drug-item danger' : 
+                         status === 'caution' ? 'drug-item caution' : 'drug-item';
+
+        const html = `
+          <div class="${itemClass}">
+            <div class="drug-name">${drug.name}</div>
+            <div class="drug-category">${drug.categoryName} / ${drug.generic}</div>
+            <div class="dose-info">
+              <div class="dose-box normal">
+                <div class="dose-label">通常用量</div>
+                <div class="dose-value">${drug.normalDose}</div>
+              </div>
+              <div class="dose-box ${status === 'normal' ? 'normal' : 'adjusted'}">
+                <div class="dose-label">${currentEGFR !== null ? '推奨用量' : '腎機能低下時'}</div>
+                <div class="dose-value">${currentEGFR !== null ? adjustedDose : drug.gfrBelow45}</div>
+              </div>
+            </div>
+            <div class="note">💡 ${note}</div>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
+    }
+
+    // 患者説明文生成
+    function generateExplanation(age, gender, scr, eGFR, stage) {
+      const genderText = gender === 'male' ? '男性' : '女性';
+      const text = `【腎機能評価】
+${age}歳 ${genderText}
+血清クレアチニン: ${scr} mg/dL
+eGFR: ${eGFR} mL/min/1.73m²
+CKD病期: ${stage.label}
+
+用量調整が必要な薬剤については、添付文書を確認し医師と相談。
+腎機能低下に伴う副作用リスクについて患者に説明済み。`;
+
+      document.getElementById('explanationText').value = text;
+    }
+
+    // コピー機能
+    function copyExplanation() {
+      const text = document.getElementById('explanationText').value;
+      if (!text) {
+        alert('まず腎機能を計算してください');
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✓ コピーしました！';
+        btn.style.background = '#4caf50';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+        }, 2000);
+      });
+    }
+
+    // 初期表示
+    renderDrugs();
+  </script>
+
+  <!-- 収益化CTA -->
+  <section style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af;">🎁 さらに業務を効率化しませんか？</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 12px;">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" style="display: block; padding: 16px; background: white; border-radius: 12px; text-decoration: none; box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);">
+        <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 4px;">🤖 AIプロンプト集</div>
+        <div style="font-size: 0.85rem; color: #4b5563;">薬歴・疑義照会を3倍速く。実務直結の16プロンプト</div>
+        <div style="margin-top: 8px; font-size: 0.8rem; color: #059669; font-weight: 600;">¥300 で入手 →</div>
+      </a>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" style="display: block; padding: 16px; background: white; border-radius: 12px; text-decoration: none; box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);">
+        <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 4px;">📊 Notionテンプレート</div>
+        <div style="font-size: 0.85rem; color: #4b5563;">患者・処方・在庫を一元管理。CSVインポート対応</div>
+        <div style="margin-top: 8px; font-size: 0.8rem; color: #059669; font-weight: 600;">¥500 で入手 →</div>
+      </a>
+    </div>
+    <p style="font-size: 0.8rem; color: #6b7280; margin: 0;">※ 販売ページ準備中。公開までお待ちください。</p>
+  </section>
+
+  <footer class="other-tools" style="margin-top: 24px; padding: 20px; background: #f3f4f6; border-radius: 12px;">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; margin-bottom: 16px; padding: 8px 16px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">🏠 全ツール一覧（ポータル）</a><br><br>
+    <h3 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; color: #4b5563;">🔧 その他の無料ツール（全22種）</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px;">
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 薬価シミュレーター</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📝 薬歴テンプレート</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🗣️ 服薬指導チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📊 業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">✅ 処方チェックリスト</a>
+      <a href="https://yusuketakuma.github.io/pharma-inquiry-email/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📧 疑義照会メール</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-summary/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📋 薬歴サマリー</a>
+      <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">⚠️ 副作用リスク評価</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-calendar/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🗓️ 服薬カレンダー</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-screening/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔍 処方鑑別チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-di-query/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📞 DI照会生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔔 服薬リマインダー生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 持参薬チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inventory-alert/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📦 在庫アラート通知</a>
+      <a href="https://yusuketakuma.github.io/pharma-adherence-check/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 服薬アドヒアランス評価</a>
+      <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔤 類似薬名チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-polypharmacy/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 ポリファーマシー検出</a>
+      <a href="https://yusuketakuma.github.io/pharma-homecare-report/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🏥 在宅医療報告書生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-fee-calculator/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💰 調剤報酬シミュレーター</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🗣️ 服薬指導シナリオ生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-patient-explanation/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">👨‍⚕️ 患者向けお薬説明文</a>
+    </div>
+  </footer>
+</body>
+</html>

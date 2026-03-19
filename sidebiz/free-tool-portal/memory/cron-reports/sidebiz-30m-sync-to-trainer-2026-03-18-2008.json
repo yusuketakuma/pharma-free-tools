@@ -1,0 +1,38 @@
+{
+  "reportId": "sidebiz-30m-sync-to-trainer-2026-03-18-2008",
+  "timestamp": "2026-03-18T20:08:00+09:00",
+  "status": "alert",
+  "summary": [
+    "【品質問題】OGP/Twitterタグが89表記のまま未修正（19:40完了宣言と実態乖離）",
+    "dispatch指示3タスク（OGP画像・削除準備レポート・GA4チェックリスト）未着手",
+    "収益化ボトルネックは販売プラットフォーム開設のみ（技術的準備完了）"
+  ],
+  "nextActions": [
+    "【最優先】OGP/Twitterタグ 89→85統一（5分）",
+    "OGP画像 ogp-ai-prompts.png 作成（15分）",
+    "pharmacy-talent-development.html 削除準備レポート（10分）"
+  ],
+  "proposedInitiatives": [
+    "品質問題を即時解消し、完了宣言前の検証ステップを標準化",
+    "OGP画像作成でSNSシェア機会損失を解消",
+    "GA4実ID差替準備でアクセス解析基盤を整備"
+  ],
+  "requiredEnvironment": {
+    "tools": ["read/write権限", "PIL/Pillow（OGP画像生成）", "grep/sed（数値統一）"],
+    "permissions": "workspace内ファイル編集権限",
+    "information": "GA4 Measurement ID（実ID未判明・プレースホルダ運用中）"
+  },
+  "blockingFactors": [
+    "販売プラットフォーム開設（ゆうすけ依存）",
+    "Brave Search API月次上限（4月初旬リセット待ち）"
+  ],
+  "learningPoints": [
+    "完了宣言前にgrep/diffで全変更箇所を検証するステップ必須化",
+    "編集後の品質チェックを自動化（CI的アプローチ）"
+  ],
+  "crossSessionObservations": {
+    "homecare": "3サイクル連続全タスク完了・高品質稼働継続",
+    "trainer": "Brave Search API上限継続（7回連続）"
+  },
+  "note": "本ジョブは通知抑止中。対外報告は trainer-2h-regular-report に集約。"
+}

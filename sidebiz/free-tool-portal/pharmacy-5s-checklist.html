@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-5s-checklist-' + action
+      });
+    }
+  </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>調剤室整理整頓チェックリスト | 薬剤師無料ツール集</title>
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="description" content="調剤室の5S（整理・整頓・清掃・清潔・躾）を実践するためのチェックリスト。業務効率向上と事故防止に貢献。無料で使える薬剤師向けツール。">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        h1 { color: #2d3748; font-size: 1.8rem; margin-bottom: 10px; text-align: center; }
+        .subtitle { color: #718096; text-align: center; margin-bottom: 30px; font-size: 0.95rem; }
+        .section { margin-bottom: 25px; }
+        .section-title { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 8px; font-size: 1.1rem; margin-bottom: 15px; }
+        .check-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        .check-item:hover { background: #f7fafc; }
+        .check-item input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; cursor: pointer; accent-color: #667eea; }
+        .check-item label { flex: 1; cursor: pointer; font-size: 0.95rem; color: #2d3748; }
+        .score-display { text-align: center; padding: 20px; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); border-radius: 12px; margin-top: 30px; }
+        .score-display.warning { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
+        .score-display.danger { background: linear-gradient(135deg, #fc8181 0%, #f56565 100%); }
+        .score-number { font-size: 3rem; font-weight: bold; color: white; }
+        .score-label { color: rgba(255,255,255,0.9); font-size: 1rem; }
+        .btn { display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; margin: 5px; transition: transform 0.2s, box-shadow 0.2s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
+        .btn-reset { background: linear-gradient(135deg, #fc8181 0%, #f56565 100%); }
+        .buttons { text-align: center; margin-top: 25px; }
+        .info-box { background: #ebf8ff; border-left: 4px solid #4299e1; padding: 15px; margin-bottom: 25px; border-radius: 0 8px 8px 0; }
+        .info-box h3 { color: #2b6cb0; margin-bottom: 8px; font-size: 1rem; }
+        .info-box p { color: #2c5282; font-size: 0.9rem; line-height: 1.6; }
+        .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; margin-top: 15px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); transition: width 0.3s ease; }
+        .progress-text { text-align: center; color: #718096; font-size: 0.85rem; margin-top: 5px; }
+        @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 1.5rem; } }
+    </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-5s-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-5s-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-5s-checklist-prompt-cta'
+      });
+    }
+  </script>
+
+  </head>
+<body>
+    <div class="container">
+        <h1>🏥 調剤室整理整頓チェックリスト</h1>
+        <p class="subtitle">5S活動で業務効率向上・事故防止を目指す</p>
+
+        <div class="info-box">
+            <h3>📌 5Sとは</h3>
+            <p>整理（不要なものを捨てる）・整頓（必要なものを使いやすい場所に）・清掃（常に清潔に）・清潔（3Sを維持）・躾（ルールを守る習慣化）。調剤室では業務効率と調剤過誤防止に直結します。</p>
+        </div>
+
+        <form id="checklistForm">
+            <!-- 整理 -->
+            <div class="section">
+                <h2 class="section-title">1️⃣ 整理（Seiri）- 不要なものを捨てる</h2>
+                <div class="check-item"><input type="checkbox" id="s1-1" data-section="seiri"><label for="s1-1">期限切れ医薬品・試薬が廃棄されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s1-2" data-section="seiri"><label for="s1-2">使用頻度の低い器具・備品が整理されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s1-3" data-section="seiri"><label for="s1-3">古いマニュアル・資料が処分されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s1-4" data-section="seiri"><label for="s1-4">不要な在庫（動きの悪い薬）が削減されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s1-5" data-section="seiri"><label for="s1-5">私物が指定場所に整理されている</label></div>
+            </div>
+
+            <!-- 整頓 -->
+            <div class="section">
+                <h2 class="section-title">2️⃣ 整頓（Seiton）- 必要なものを使いやすい場所に</h2>
+                <div class="check-item"><input type="checkbox" id="s2-1" data-section="seiton"><label for="s2-1">医薬品棚が番号順・50音順に整理されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s2-2" data-section="seiton"><label for="s2-2">頻用薬が取りやすい位置に配置されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s2-3" data-section="seiton"><label for="s2-3">外用薬・特殊医薬品の配置が明確表示されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s2-4" data-section="seiton"><label for="s2-4">計量器具（天秤・メスシリンダー等）の定位置が決まっている</label></div>
+                <div class="check-item"><input type="checkbox" id="s2-5" data-section="seiton"><label for="s2-5">ラベル・薬袋・袋詰め用品の補充場所が整理されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s2-6" data-section="seiton"><label for="s2-6">処方箋・薬歴入力スペースが整理されている</label></div>
+            </div>
+
+            <!-- 清掃 -->
+            <div class="section">
+                <h2 class="section-title">3️⃣ 清掃（Seiso）- 常に清潔に保つ</h2>
+                <div class="check-item"><input type="checkbox" id="s3-1" data-section="seiso"><label for="s3-1">調剤台が終業後に清掃されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s3-2" data-section="seiso"><label for="s3-2">医薬品棚のホコリ・汚れが定期的に除去されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s3-3" data-section="seiso"><label for="s3-3">床・通路が清潔に保たれている</label></div>
+                <div class="check-item"><input type="checkbox" id="s3-4" data-section="seiso"><label for="s3-4">冷蔵庫内が定期的に清掃・整理されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s3-5" data-section="seiso"><label for="s3-5">器具類（乳鉢・乳棒等）が使用後に洗浄されている</label></div>
+            </div>
+
+            <!-- 清潔 -->
+            <div class="section">
+                <h2 class="section-title">4️⃣ 清潔（Seiketsu）- 3Sを維持する</h2>
+                <div class="check-item"><input type="checkbox" id="s4-1" data-section="seiketsu"><label for="s4-1">5Sチェックシートが毎日実施されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s4-2" data-section="seiketsu"><label for="s4-2">不具合箇所の改善記録が残されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s4-3" data-section="seiketsu"><label for="s4-3">清掃用具の定位置・交換時期が明確化されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s4-4" data-section="seiketsu"><label for="s4-4">温度・湿度管理の記録が適切に実施されている</label></div>
+            </div>
+
+            <!-- 躾 -->
+            <div class="section">
+                <h2 class="section-title">5️⃣ 躾（Shitsuke）- ルールを守る習慣化</h2>
+                <div class="check-item"><input type="checkbox" id="s5-1" data-section="shitsuke"><label for="s5-1">5S活動の担当者・スケジュールが決まっている</label></div>
+                <div class="check-item"><input type="checkbox" id="s5-2" data-section="shitsuke"><label for="s5-2">新入職員への5S教育が実施されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s5-3" data-section="shitsuke"><label for="s5-3">定期的な5S見直し会議が実施されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s5-4" data-section="shitsuke"><label for="s5-4">改善提案制度が活用されている</label></div>
+                <div class="check-item"><input type="checkbox" id="s5-5" data-section="shitsuke"><label for="s5-5">5S意識がチーム全体に浸透している</label></div>
+            </div>
+
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p class="progress-text" id="progressText">0 / 25 項目達成</p>
+
+            <div class="score-display" id="scoreDisplay">
+                <div class="score-number" id="scoreNumber">0%</div>
+                <div class="score-label">5S達成度</div>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="btn" onclick="saveChecklist(); trackToolUsage('save')">💾 保存</button>
+                <button type="button" class="btn btn-reset" onclick="resetChecklist(); trackToolUsage('reset')">🔄 リセット</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const totalItems = checkboxes.length;
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const scoreNumber = document.getElementById('scoreNumber');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        function updateScore() {
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const percentage = Math.round((checked / totalItems) * 100);
+            
+            scoreNumber.textContent = percentage + '%';
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = `${checked} / ${totalItems} 項目達成`;
+            
+            scoreDisplay.classList.remove('warning', 'danger');
+            if (percentage < 40) {
+                scoreDisplay.classList.add('danger');
+            } else if (percentage < 70) {
+                scoreDisplay.classList.add('warning');
+            }
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateScore);
+        });
+
+        function saveChecklist() {
+            const data = {};
+            checkboxes.forEach(cb => {
+                data[cb.id] = cb.checked;
+            });
+            localStorage.setItem('pharmacy5SChecklist', JSON.stringify(data));
+            alert('✅ チェックリストを保存しました');
+        }
+
+        function loadChecklist() {
+            const saved = localStorage.getItem('pharmacy5SChecklist');
+            if (saved) {
+                const data = JSON.parse(saved);
+                checkboxes.forEach(cb => {
+                    if (data[cb.id]) cb.checked = true;
+                });
+                updateScore();
+            }
+        }
+
+        function resetChecklist() {
+            if (confirm('すべてのチェックをリセットしますか？')) {
+                checkboxes.forEach(cb => cb.checked = false);
+                localStorage.removeItem('pharmacy5SChecklist');
+                updateScore();
+            }
+        }
+
+        loadChecklist();
+    </script>
+
+  <!-- 関連ツール -->
+  <section class="related-tools" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📦 関連ツール</h3>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <li><a href="pharmacy-5s-diagnosis.html" style="color: #3498db; text-decoration: none;">5S診断ツール</a></li>
+      <li><a href="pharmacy-inventory-diagnosis.html" style="color: #3498db; text-decoration: none;">在庫診断</a></li>
+      <li><a href="pharmacy-safety-diagnosis.html" style="color: #3498db; text-decoration: none;">安全管理診断</a></li>
+      <li><a href="index.html" style="color: #3498db; text-decoration: none;">🏠ツール一覧</a></li>
+    </ul>
+  </section>
+
+</body>
+</html>

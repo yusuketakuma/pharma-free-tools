@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局役割分担診断 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="薬局の役割分担を診断し、業務効率化の改善点を特定する無料ツール。タスク依存関係・資格要件・役割構造の可視化でチーム生産性を向上。">
+    <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-role-clarity-diagnosis.html">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "薬局役割分担診断",
+        "description": "薬局の役割分担を診断し、業務効率化の改善点を特定する無料ツール",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "薬剤師向け無料ツール"
+        }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        h1 { color: #2d3748; font-size: 28px; margin-bottom: 10px; text-align: center; }
+        .subtitle { color: #718096; text-align: center; margin-bottom: 30px; font-size: 14px; }
+        .progress { background: #e2e8f0; height: 8px; border-radius: 4px; margin-bottom: 20px; }
+        .progress-bar { background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .question { display: none; }
+        .question.active { display: block; }
+        .question h3 { color: #2d3748; font-size: 18px; margin-bottom: 20px; line-height: 1.6; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option { background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; cursor: pointer; transition: all 0.2s; font-size: 15px; color: #4a5568; }
+        .option:hover { border-color: #667eea; background: #edf2f7; }
+        .option.selected { border-color: #667eea; background: #ebf4ff; color: #2d3748; font-weight: 600; }
+        .btn { background: linear-gradient(90deg, #667eea, #764ba2); color: white; border: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; width: 100%; font-weight: 600; }
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled { background: #cbd5e0; cursor: not-allowed; }
+        .result { display: none; }
+        .score-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; }
+        .score { font-size: 48px; font-weight: 700; }
+        .score-label { font-size: 18px; opacity: 0.9; }
+        .category { background: #f7fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        .category h4 { color: #2d3748; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .category-score { font-weight: 700; }
+        .bar { background: #e2e8f0; height: 8px; border-radius: 4px; margin-top: 10px; }
+        .bar-fill { height: 100%; border-radius: 4px; }
+        .recommendations { margin-top: 30px; }
+        .recommendations h3 { color: #2d3748; margin-bottom: 15px; }
+        .rec-item { background: #edf2f7; border-left: 4px solid #667eea; padding: 15px 20px; margin-bottom: 10px; border-radius: 0 8px 8px 0; }
+        .rec-item h4 { color: #2d3748; margin-bottom: 5px; font-size: 15px; }
+        .rec-item p { color: #718096; font-size: 14px; line-height: 1.6; }
+        .cta-section { margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%); border-radius: 12px; text-align: center; }
+        .cta-section h3 { color: white; margin-bottom: 10px; }
+        .cta-section p { color: white; opacity: 0.9; margin-bottom: 15px; font-size: 14px; }
+        .cta-btn { background: white; color: #ed8936; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; }
+        .cta-btn:hover { opacity: 0.9; }
+        .related-tools { margin-top: 30px; }
+        .related-tools h3 { color: #2d3748; margin-bottom: 15px; }
+        .related-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .related-item { background: #f7fafc; padding: 15px; border-radius: 8px; text-decoration: none; color: #4a5568; font-size: 14px; transition: all 0.2s; }
+        .related-item:hover { background: #edf2f7; color: #667eea; }
+        @media (max-width: 600px) { .related-grid { grid-template-columns: 1fr; } }
+    </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-role-clarity-diagnosis-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-role-clarity-diagnosis-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-role-clarity-diagnosis-prompt-cta'
+      });
+    }
+  </script>
+    <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 薬局役割分担診断</h1>
+        <p class="subtitle">チームの役割と責任を明確化し、業務効率を最大化</p>
+        
+        <div class="progress"><div class="progress-bar" id="progressBar" style="width: 5%;"></div></div>
+        
+        <div id="questionContainer"></div>
+        
+        <div class="result" id="result">
+            <div class="score-card">
+                <div class="score" id="totalScore">0</div>
+                <div class="score-label">役割分担スコア（100点満点）</div>
+            </div>
+            
+            <div id="categoryScores"></div>
+            
+            <div class="recommendations">
+                <h3>📋 改善提案</h3>
+                <div id="recommendationList"></div>
+            </div>
+            
+            <div class="cta-section">
+                <h3>💼 業務効率化をさらに進める</h3>
+                <p>薬剤師向けAIプロンプト集で、役割分担・業務マニュアル作成を自動化</p>
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-btn">AIプロンプト集を見る →</a>
+            </div>
+            
+            <div class="related-tools">
+                <h3>🔗 関連ツール</h3>
+                <div class="related-grid">
+                    <a href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-bottleneck-diagnosis.html" class="related-item">🔧 ボトルネック診断</a>
+                    <a href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-talent-development.html" class="related-item">👥 スタッフ育成診断</a>
+                    <a href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-workflow-efficiency.html" class="related-item">⚡ ワークフロー効率診断</a>
+                    <a href="https://yusuketakuma.github.io/pharma-free-tools/pharmacist-efficiency-diagnosis-v2.html" class="related-item">📈 薬剤師効率診断v2</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+            // タスクの可視化（4問）
+            { id: 1, category: 'taskVisibility', text: '薬局内の全タスク（電話対応・発注・調剤・在庫管理等）がリスト化されていますか？', options: ['リスト化されていない', '一部リスト化されている', 'ほぼ全てリスト化されている', '全てリスト化・文書化されている'] },
+            { id: 2, category: 'taskVisibility', text: 'タスク間の依存関係（例：調剤前にシステム更新が必要）が明確になっていますか？', options: ['明確ではない', '一部明確', 'ほぼ明確', '全て明確・文書化済み'] },
+            { id: 3, category: 'taskVisibility', text: '各タスクに必要な知識・資格・スキルが定義されていますか？', options: ['定義されていない', '一部定義されている', 'ほぼ定義されている', '全て定義・文書化済み'] },
+            { id: 4, category: 'taskVisibility', text: 'タスクの優先順位が明確に示されていますか？', options: ['示されていない', '口頭で伝達のみ', '一部文書化', '全て文書化・周知済み'] },
+            
+            // 役割の明確化（4問）
+            { id: 5, category: 'roleClarity', text: '各スタッフの役割と責任範囲が明確な職務記述書として文書化されていますか？', options: ['文書化されていない', '一部文書化', 'ほぼ文書化', '全員分が文書化・周知済み'] },
+            { id: 6, category: 'roleClarity', text: '役割の重複や空白（誰も担当していないタスク）が発生していますか？', options: ['頻繁に発生', '時々発生', '稀に発生', 'ほぼ発生なし'] },
+            { id: 7, category: 'roleClarity', text: '代理担当者（特定スタッフ不在時の代替）が明確に定義されていますか？', options: ['定義されていない', '一部定義', 'ほぼ定義', '全タスクで代理担当者明確'] },
+            { id: 8, category: 'roleClarity', text: '新スタッフのオンボーディング（役割理解）プロセスが標準化されていますか？', options: ['標準化されていない', '口頭のみ', '一部文書化', '完全に標準化・文書化済み'] },
+            
+            // デレゲーション（4問）
+            { id: 9, category: 'delegation', text: '薬剤師が専門業務に集中できるよう、事務・調剤補助へのデレゲーションが進んでいますか？', options: ['進んでいない', '一部進んでいる', 'かなり進んでいる', '最適化されている'] },
+            { id: 10, category: 'delegation', text: 'デレゲーション可能なタスクの基準（資格・経験要件）が明確ですか？', options: ['不明確', '一部明確', 'ほぼ明確', '完全に明確・文書化済み'] },
+            { id: 11, category: 'delegation', text: 'デレゲーション後の品質確認プロセスが確立されていますか？', options: ['確立されていない', '一部確立', 'ほぼ確立', '完全に確立・標準化済み'] },
+            { id: 12, category: 'delegation', text: 'デレゲーションにより薬剤師の対人業務時間が増加していますか？', options: ['減少している', '変わらない', 'やや増加', '大幅に増加'] },
+            
+            // チーム連携（4問）
+            { id: 13, category: 'teamCoordination', text: '定期的なチームミーティング（優先事項共有・課題確認）が実施されていますか？', options: ['実施されていない', '不定期', '週1回以上', '毎日+週次振り返り'] },
+            { id: 14, category: 'teamCoordination', text: 'チーム内のコミュニケーションツール・ルールが標準化されていますか？', options: ['標準化されていない', '一部標準化', 'ほぼ標準化', '完全に標準化・効率的'] },
+            { id: 15, category: 'teamCoordination', text: 'スタッフのエンゲージメント（業務への熱意・貢献意欲）が高いと感じますか？', options: ['低い', 'やや低い', '高い', '非常に高い'] },
+            { id: 16, category: 'teamCoordination', text: 'スタッフのスキル・強みを活かした役割配置ができていますか？', options: ['できていない', '一部できている', 'かなりできている', '最適化されている'] },
+            
+            // 継続改善（4問）
+            { id: 17, category: 'continuousImprovement', text: '業務フローの定期レビュー（摩擦点・非効率の特定）が実施されていますか？', options: ['実施されていない', '年1回以下', '四半期に1回', '月次+随時改善'] },
+            { id: 18, category: 'continuousImprovement', text: 'インシデント・ヒヤリハット報告から業務改善につなげていますか？', options: ['つなげていない', '一部つなげている', 'かなりつなげている', '体系的につなげている'] },
+            { id: 19, category: 'continuousImprovement', text: 'スタッフからの改善提案が活発に出されていますか？', options: ['出されていない', '稀', '時々', '活発に出されている'] },
+            { id: 20, category: 'continuousImprovement', text: '改善施策の効果測定（前後比較）が実施されていますか？', options: ['実施されていない', '一部実施', 'ほぼ実施', '全施策で実施・データ蓄積'] }
+        ];
+        
+        const categoryNames = {
+            taskVisibility: 'タスクの可視化',
+            roleClarity: '役割の明確化',
+            delegation: 'デレゲーション',
+            teamCoordination: 'チーム連携',
+            continuousImprovement: '継続改善'
+        };
+        
+        const categoryColors = {
+            taskVisibility: '#667eea',
+            roleClarity: '#764ba2',
+            delegation: '#f6ad55',
+            teamCoordination: '#48bb78',
+            continuousImprovement: '#ed64a6'
+        };
+        
+        let currentQuestion = 0;
+        let answers = {};
+        
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question active">
+                    <h3>Q${q.id}. ${q.text}</h3>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <div class="option ${answers[q.id] === i ? 'selected' : ''}" onclick="selectOption(${q.id}, ${i})">
+                                ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="btn" id="nextBtn" onclick="trackToolUsage('next'); nextQuestion()" ${answers[q.id] === undefined ? 'disabled' : ''}>
+                        ${currentQuestion === questions.length - 1 ? '結果を見る' : '次の質問'}
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('progressBar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+        }
+        
+        function selectOption(qId, optIndex) {
+            answers[qId] = optIndex;
+            renderQuestion();
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+        
+        function showResult() {
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            
+            // カテゴリ別スコア計算
+            const categoryScores = {};
+            for (const cat of Object.keys(categoryNames)) {
+                const catQuestions = questions.filter(q => q.category === cat);
+                let total = 0;
+                for (const q of catQuestions) {
+                    total += (answers[q.id] || 0);
+                }
+                categoryScores[cat] = Math.round((total / (catQuestions.length * 3)) * 100);
+            }
+            
+            // 総合スコア
+            const totalScore = Math.round(Object.values(categoryScores).reduce((a, b) => a + b, 0) / Object.keys(categoryNames).length);
+            document.getElementById('totalScore').textContent = totalScore;
+            
+            // カテゴリ別表示
+            const categoryContainer = document.getElementById('categoryScores');
+            categoryContainer.innerHTML = Object.entries(categoryScores).map(([cat, score]) => `
+                <div class="category">
+                    <h4>${categoryNames[cat]} <span class="category-score">${score}点</span></h4>
+                    <div class="bar"><div class="bar-fill" style="width: ${score}%; background: ${categoryColors[cat]};"></div></div>
+                </div>
+            `).join('');
+            
+            // 改善提案生成
+            const recommendations = generateRecommendations(categoryScores);
+            document.getElementById('recommendationList').innerHTML = recommendations.map(rec => `
+                <div class="rec-item">
+                    <h4>${rec.title}</h4>
+                    <p>${rec.text}</p>
+                </div>
+            `).join('');
+        }
+        
+        function generateRecommendations(scores) {
+            const recs = [];
+            
+            if (scores.taskVisibility < 60) {
+                recs.push({ title: '📋 タスクリストの作成', text: '薬局内の全タスク（電話対応・発注・調剤・在庫管理等）をリスト化し、タスク間の依存関係・必要資格・優先順位を文書化しましょう。' });
+            }
+            
+            if (scores.roleClarity < 60) {
+                recs.push({ title: '👤 職務記述書の整備', text: '各スタッフの役割・責任範囲を職務記述書として文書化し、役割の重複・空白を解消。代理担当者も明確に定義しましょう。' });
+            }
+            
+            if (scores.delegation < 60) {
+                recs.push({ title: '📤 デレゲーションの推進', text: '薬剤師が専門業務に集中できるよう、事務・調剤補助へデレゲーション可能なタスクを特定。基準と品質確認プロセスを明確化しましょう。' });
+            }
+            
+            if (scores.teamCoordination < 60) {
+                recs.push({ title: '🤝 チーム連携の強化', text: '定期的なチームミーティング（毎日5分+週次30分）を導入。スタッフのスキル・強みを活かした役割配置を検討しましょう。' });
+            }
+            
+            if (scores.continuousImprovement < 60) {
+                recs.push({ title: '🔄 継続改善サイクルの確立', text: '業務フローの定期レビュー（月次）を導入。インシデント報告から改善につなげるプロセスと効果測定を標準化しましょう。' });
+            }
+            
+            if (recs.length === 0) {
+                recs.push({ title: '✅ 素晴らしい状態です', text: '役割分担が最適化されています。継続的な改善を維持し、他薬局へのベストプラクティス共有も検討してください。' });
+            }
+            
+            return recs;
+        }
+        
+        // 初期化
+        renderQuestion();
+    </script>
+</body>
+</html>

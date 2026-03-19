@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-03-18T23:30:00+09:00",
+  "job": "sidebiz-30m-assign",
+  "status": "done",
+  "summary": "JSON-LD数値不整合解消・gitコミット＆プッシュ完了",
+  "completed": [
+    {
+      "task": "JSON-LD 66個→86個修正",
+      "status": "done",
+      "note": "リモート最新で既に修正済み（--theirs採用で解決）"
+    },
+    {
+      "task": "コンフリクト8ファイル解決",
+      "status": "done",
+      "files": [
+        "index.html",
+        "sitemap.xml",
+        "claim-denial-prevention-checklist.html",
+        "pharmacy-ai-readiness.html",
+        "pharmacy-automation-roi.html",
+        "pharmacy-patient-communication.html",
+        "pharmacy-safety-diagnosis.html",
+        "pharmacy-time-study-diagnosis.html"
+      ]
+    },
+    {
+      "task": "git commit & push",
+      "status": "done",
+      "commit": "ae6b8eb"
+    }
+  ],
+  "verification": {
+    "tool_card_count": 86,
+    "title": "86選",
+    "meta_description": "86個",
+    "og_description": "86個",
+    "twitter_description": "86個"
+  },
+  "next_actions": [
+    {
+      "priority": "高",
+      "task": "Vercel 404原因調査",
+      "estimate": "20分"
+    },
+    {
+      "priority": "中",
+      "task": "GitHub Pages統一検討",
+      "estimate": "10分"
+    }
+  ],
+  "learnings": [
+    {
+      "topic": "コンフリクト解決手順",
+      "detail": "rebase→コンフリクト→abort→pull --no-rebase→--theirs採用→commit→pushの順で解決"
+    },
+    {
+      "topic": "リモート優先原則",
+      "detail": "並行作業時はリモート最新を優先し、必要な修正のみ再適用"
+    }
+  ],
+  "alerts": [
+    {
+      "type": "Vercel 404",
+      "status": "継続",
+      "workaround": "GitHub Pages代替稼働中"
+    }
+  ],
+  "notification_suppressed": true,
+  "report_target": "trainer-2h-regular-report"
+}

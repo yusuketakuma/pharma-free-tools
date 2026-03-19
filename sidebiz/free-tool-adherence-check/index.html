@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服薬アドヒアランス評価ツール - 薬剤師向け無料Webツール</title>
+  <meta name="description" content="患者の服薬アドヒアランス（服薬遵守）を簡易評価する無料ツール。8項目のチェックでリスク判定と改善提案を自動生成。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "服薬アドヒアランス評価ツール",
+    "description": "患者の服薬アドヒアランス（服薬遵守）を簡易評価する無料ツール。8項目のチェックでリスク判定と改善提案を自動生成。",
+    "url": "https://yusuketakuma.github.io/pharma-adherence-check/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 1.5rem;
+      color: #1f2937;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+    }
+    .section {
+      margin-bottom: 25px;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 12px;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .field {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #4b5563;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .checkbox-group {
+      display: grid;
+      gap: 10px;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .checkbox-label {
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.4;
+    }
+    .checkbox-desc {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 3px;
+    }
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    .result {
+      margin-top: 25px;
+      padding: 25px;
+      background: #f0fdf4;
+      border-radius: 12px;
+      border: 2px solid #22c55e;
+      display: none;
+    }
+    .result.warning {
+      background: #fefce8;
+      border-color: #eab308;
+    }
+    .result.danger {
+      background: #fef2f2;
+      border-color: #ef4444;
+    }
+    .result-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .score-display {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .score-label {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+    .risk-items {
+      margin: 15px 0;
+    }
+    .risk-item {
+      padding: 10px 15px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .suggestions {
+      margin-top: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+    }
+    .suggestions-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #374151;
+    }
+    .suggestions ul {
+      margin-left: 20px;
+    }
+    .suggestions li {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+    .copy-btn {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #374151;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .copy-btn:hover {
+      background: #1f2937;
+    }
+    .tools-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f3f4f6;
+      border-radius: 12px;
+    }
+    .tools-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #4b5563;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+    }
+    .tool-link {
+      display: block;
+      padding: 10px 12px;
+      background: white;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 0.85rem;
+      border: 1px solid #e5e7eb;
+    }
+    .tool-link:hover {
+      background: #f9fafb;
+      border-color: #667eea;
+    }
+  </style>
+  <!-- Google tag (gtag.js) - 測定IDを差し替えてください -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'ai_prompts',
+        'product_name': 'AIプロンプト集',
+        'price': 300
+      });
+    }
+
+    function trackNotionCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'notion_template',
+        'product_name': 'Notionテンプレート',
+        'price': 500
+      });
+    }
+
+    function trackToolUsage(actionType) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': '服薬アドヒアランス評価',
+        'action_type': actionType
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'adherence_result'
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>💊 服薬アドヒアランス評価ツール</h1>
+    <p class="subtitle">患者の服薬遵守リスクを8項目で簡易評価し、改善提案を自動生成</p>
+
+    <div class="section">
+      <div class="section-title">👤 患者基本情報</div>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+        <div class="field">
+          <label>患者氏名（イニシャル可）</label>
+          <input type="text" id="patientName" placeholder="例: T.T">
+        </div>
+        <div class="field">
+          <label>年齢</label>
+          <input type="number" id="age" placeholder="75">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📋 アドヒアランス評価項目</div>
+      <p style="font-size: 0.85rem; color: #6b7280; margin-bottom: 15px;">該当する項目にチェックを入れてください（複数選択可）</p>
+      
+      <div class="checkbox-group">
+        <div class="checkbox-item">
+          <input type="checkbox" id="r1" data-points="3">
+          <div>
+            <div class="checkbox-label">処方薬が5種類以上（ポリファーマシー）</div>
+            <div class="checkbox-desc">多剤併用は服薬負担を増大させます</div>
+          </div>
+        </div>
+        
+        <div class="checkbox-item">
+          <input type="checkbox" id="r2" data-points="2">
+          <div>
+            <div class="checkbox-label">1日3回以上の服薬タイミング</div>
+            <div class="checkbox-desc">服薬回数が多いと飲み忘れリスクが上昇</div>
+          </div>
+        </div>
+        
+        <div class="checkbox-item">
+          <input type="checkbox" id="r3" data-points="3">
+          <div>
+            <div class="checkbox-label">過去3ヶ月以内に飲み忘れの報告あり</div>
+            <div class="checkbox-desc">実際の服薬不遵守の実績</div>
+          </div>
+        </div>
+        
+        <div class="checkbox-item">
+          <input type="checkbox" id="r4" data-points="2">
+          <div>
+            <div class="checkbox-label">服薬管理の手間を感じている</div>
+            <div class="checkbox-desc">患者の主観的な負担感</div>
+          </div>
+        </div>
+        
+        <div class="checkbox-item">
+          <input type="checkbox" id="r5" data-points="2">
+          <div>
+            <div class="checkbox-label">薬の効果を感じていない</div>
+            <div class="checkbox-desc">治療効果への認識不足は継続意欲を低下</div>
+          </div>
+        </div>
+        
+        <div class="checkbox-item">
+          <input type="checkbox" id="r6" data-points="3">
+          <div>
+            <div class="checkbox-label">副作用の経験・懸念あり</div>
+            <div class="checkbox-desc">副作用は中断の主要因</div>
+          </div>
+        </div>
+        
+        <div class="checkbox-item">
+          <input type="checkbox" id="r7" data-points="2">
+          <div>
+            <div class="checkbox-label">服薬を自分で管理できていない</div>
+            <div class="checkbox-desc">介助が必要な状態</div>
+          </div>
+        </div>
+        
+        <div class="checkbox-item">
+          <input type="checkbox" id="r8" data-points="2">
+          <div>
+            <div class="checkbox-label">薬の必要性を十分理解していない</div>
+            <div class="checkbox-desc">疾患・治療への理解不足</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="evaluate()">📊 アドヒアランスを評価する</button>
+
+    <div class="result" id="result">
+      <div class="result-title" id="resultTitle"></div>
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="score-label">アドヒアランススコア（100点満点）</div>
+      
+      <div class="risk-items" id="riskItems"></div>
+      
+      <div class="suggestions">
+        <div class="suggestions-title">💡 改善提案</div>
+        <ul id="suggestions"></ul>
+      </div>
+      
+      <button class="copy-btn" onclick="copyResult()">📋 評価結果をコピー</button>
+    </div>
+
+    <div class="tools-section">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; margin-bottom: 16px; padding: 8px 16px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">🏠 全ツール一覧（ポータル）</a><br><br>
+      <div class="tools-title">🔧 その他の無料ツール</div>
+      <div class="tools-grid">
+        <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/" class="tool-link">💰 薬価シミュレーター</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/" class="tool-link">📝 薬歴テンプレート</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/" class="tool-link">🗣️ 服薬指導チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/" class="tool-link">🫘 腎機能別用量</a>
+        <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/" class="tool-link">📊 業務効率化診断</a>
+        <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/" class="tool-link">✅ 処方チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-inquiry-email/" class="tool-link">📧 疑義照会メール</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-summary/" class="tool-link">📋 薬歴サマリー</a>
+        <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/" class="tool-link">⚠️ 副作用リスク評価</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-calendar/" class="tool-link">🗓️ 服薬カレンダー</a>
+        <a href="https://yusuketakuma.github.io/pharma-prescription-screening/" class="tool-link">🔍 処方鑑別チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-di-query/" class="tool-link">📞 DI照会生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔔 服薬リマインダー生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/" class="tool-link">💊 持参薬チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-inventory-alert/" class="tool-link">📦 在庫アラート通知</a>
+        <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/" class="tool-link">🔤 類似薬名チェック</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function evaluate() {
+      const patientName = document.getElementById('patientName').value || '患者';
+      const age = parseInt(document.getElementById('age').value) || 0;
+      
+      // リスク項目を収集
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      let totalPoints = 0;
+      const risks = [];
+      
+      checkboxes.forEach(cb => {
+        const points = parseInt(cb.dataset.points);
+        totalPoints += points;
+        const label = cb.parentElement.querySelector('.checkbox-label').textContent;
+        risks.push({ label, points });
+      });
+      
+      // 年齢による追加リスク
+      if (age >= 75) {
+        totalPoints += 1;
+        risks.unshift({ label: '高齢者（75歳以上）', points: 1 });
+      }
+      
+      // スコア計算（19点満点 → 100点満点に変換）
+      const maxPoints = 19;
+      const score = Math.max(0, 100 - Math.round((totalPoints / maxPoints) * 100));
+      
+      // リスクレベル判定
+      let level, levelClass, emoji;
+      if (score >= 80) {
+        level = '良好';
+        levelClass = '';
+        emoji = '✅';
+      } else if (score >= 50) {
+        level = '要注意';
+        levelClass = 'warning';
+        emoji = '⚠️';
+      } else {
+        level = '高リスク';
+        levelClass = 'danger';
+        emoji = '🚨';
+      }
+      
+      // 結果表示
+      const result = document.getElementById('result');
+      result.style.display = 'block';
+      result.className = 'result ' + levelClass;
+      
+      document.getElementById('resultTitle').innerHTML = `${emoji} アドヒアランス評価: ${level}`;
+      document.getElementById('scoreDisplay').innerHTML = score + '点';
+      
+      // リスク項目表示
+      const riskItems = document.getElementById('riskItems');
+      if (risks.length > 0) {
+        riskItems.innerHTML = '<div style="font-weight: 600; margin-bottom: 10px;">検出されたリスク因子:</div>' +
+          risks.map(r => `<div class="risk-item"><span style="color: #ef4444;">●</span> ${r.label} (+${r.points}点)</div>`).join('');
+      } else {
+        riskItems.innerHTML = '<div style="color: #22c55e; font-weight: 600;">✅ リスク因子は検出されませんでした</div>';
+      }
+      
+      // 改善提案
+      const suggestions = [];
+      if (document.getElementById('r1').checked || document.getElementById('r2').checked) {
+        suggestions.push('処方の整理・一包化・OD錠への変更を検討');
+      }
+      if (document.getElementById('r3').checked) {
+        suggestions.push('服薬カレンダー・お薬手帳の活用を提案');
+      }
+      if (document.getElementById('r4').checked) {
+        suggestions.push('服薬負担軽減の工夫（一包化、RP導入）を検討');
+      }
+      if (document.getElementById('r5').checked) {
+        suggestions.push('薬の効果・意義について患者教育を実施');
+      }
+      if (document.getElementById('r6').checked) {
+        suggestions.push('副作用の予防・対処法を説明、必要時は処方医へ照会');
+      }
+      if (document.getElementById('r7').checked) {
+        suggestions.push('家族・介護者の協力得る、服薬支援グッズの活用');
+      }
+      if (document.getElementById('r8').checked) {
+        suggestions.push('疾患・治療の重要性について服薬指導を強化');
+      }
+      if (age >= 75) {
+        suggestions.push('高齢者向けの服薬サポート（カレンダー、RP、訪問指導）を検討');
+      }
+      if (suggestions.length === 0) {
+        suggestions.push('現在の服薬状況を維持するよう継続的なフォローを実施');
+      }
+      
+      document.getElementById('suggestions').innerHTML = suggestions.map(s => `<li>${s}</li>`).join('');
+      
+      // スクロール
+      result.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function copyResult() {
+      const patientName = document.getElementById('patientName').value || '患者';
+      const score = document.getElementById('scoreDisplay').textContent;
+      const level = document.getElementById('resultTitle').textContent.replace(/^[^\s]+\s/, '');
+      
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      const risks = Array.from(checkboxes).map(cb => 
+        cb.parentElement.querySelector('.checkbox-label').textContent
+      );
+      
+      const suggestions = Array.from(document.querySelectorAll('#suggestions li')).map(li => li.textContent);
+      
+      let text = `【服薬アドヒアランス評価】\n`;
+      text += `患者: ${patientName}\n`;
+      text += `評価日: ${new Date().toLocaleDateString('ja-JP')}\n`;
+      text += `スコア: ${score} (${level})\n\n`;
+      
+      if (risks.length > 0) {
+        text += `【リスク因子】\n${risks.map(r => `・${r}`).join('\n')}\n\n`;
+      }
+      
+      text += `【改善提案】\n${suggestions.map(s => `・${s}`).join('\n')}`;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = '✅ コピーしました';
+        setTimeout(() => btn.textContent = '📋 評価結果をコピー', 2000);
+      });
+    }
+  </script>
+  <!-- 収益化CTA -->
+  <section style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af;">🎁 さらに業務を効率化しませんか？</h3>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📖 薬剤師向けAIプロンプト集</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">ChatGPT/Claudeで時短する100+のプロンプトテンプレート</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥300</p>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📋 薬局業務Notionテンプレート</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">訪問記録・在庫管理・患者管理を一元化</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥500</p>
+    </div>
+    <p style="font-size: 0.8rem; color: #666;">※ 準備中（近日公開）</p>
+  </section>
+
+  <div class="section">
+    <div class="section-title">🔗 他の無料ツール</div>
+    <div class="links">
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">腎機能別用量</a>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会メール</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+      <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+      <a href="https://yusuketakuma.github.io/pharma-di-query/">DI照会生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+      <a href="https://yusuketakuma.github.io/pharma-adherence-check/">アドヒアランス</a>
+      <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/">類似薬名</a>
+      <a href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/">服薬指導シナリオ</a>
+      <a href="https://yusuketakuma.github.io/pharma-fee-calculator/">調剤報酬計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-homecare-report/">在宅医療報告書</a>
+    </div>
+  </div>
+</body>
+</html>

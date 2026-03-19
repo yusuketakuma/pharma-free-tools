@@ -1,0 +1,44 @@
+{
+  "jobId": "homecare-30m-sync-to-trainer",
+  "timestamp": "2026-03-18T23:35:00+09:00",
+  "status": "done",
+  "recipient": "部長（-5088508248）",
+  "report": {
+    "status": "done",
+    "keyPoints": [
+      "10サイクル連続全タスク完了：本日成果物22件以上（歴代最高生産性）・静音モード前の23:01 dispatch 3タスク完了",
+      "23:16 dispatch受領：本日成果物一覧作成・テリパラチドクイックリファレンス作成（静音モードタスク）",
+      "期限管理：テリパラチド3/28（残10日）・経過措置抽出3/31（残13日）— 明日3/19ゆうすけ実行開始"
+    ],
+    "nextActions": [
+      {"priority": "高", "task": "本日成果物一覧・品質サマリー作成", "duration": "15分", "assignee": "homecare"},
+      {"priority": "高", "task": "テリパラチド クイックリファレンス（A4 1枚）", "duration": "10分", "assignee": "homecare"}
+    ],
+    "wantToDo": "翌朝ゆうすけが全体像を素早く把握できる成果物インデックスの整備",
+    "requiredEnvironment": {
+      "tools": ["read/write権限"],
+      "permissions": ["homecare/outputs/ 編集権限"],
+      "info": ["既存成果物22件のパス一覧"]
+    }
+  },
+  "selfImprovementCycle": {
+    "learningPoints": [
+      "修正パッチ案の事前準備: HTML適用は朝以降dispatch判断とし、修正案は夜間に完成させる運用確立",
+      "localStorage互換性確認: チェックリストの項目追加時にtotalItems変更の影響を確認する手順を標準化",
+      "成果物数の可視化: 22件という生産性指標を次回以降のベンチマークとして活用"
+    ],
+    "qualityIncidents": [],
+    "improvementProposals": [
+      {"priority": "高", "feasibility": "実装可", "proposal": "成果物インデックス自動生成", "duration": "10分"},
+      {"priority": "中", "feasibility": "検討中", "proposal": "テンプレートライブラリ化", "duration": "30分"}
+    ]
+  },
+  "crossObservation": {
+    "blockers": [
+      {"item": "テリパラチド返品", "deadline": "2026-03-28", "daysRemaining": 10, "action": "ゆうすけ3/19〜実行開始必要"},
+      {"item": "経過措置抽出", "deadline": "2026-03-31", "daysRemaining": 13, "action": "MCS操作推奨期間3/19〜22"}
+    ],
+    "sidebizImpact": "なし（homecare阻害はゆうすけ現場アクション依存のため、副業自動化には直接影響なし）"
+  },
+  "note": "本ジョブは通知抑止中。対外報告は trainer-2h-regular-report に集約。"
+}

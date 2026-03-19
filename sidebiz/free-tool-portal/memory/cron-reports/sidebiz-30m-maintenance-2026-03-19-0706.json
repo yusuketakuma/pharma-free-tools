@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-03-19T07:06:00+09:00",
+  "job": "sidebiz-30m-maintenance",
+  "status": "alert",
+  "alerts": [
+    {
+      "type": "vercel_404",
+      "severity": "medium",
+      "message": "Vercelポータル404エラー継続（10サイクル連続）",
+      "details": "vercel.json存在・設定正しく、GitHub Pages代替稼働中",
+      "rootCause": "Vercelダッシュボード設定の可能性（Framework Preset等）",
+      "workaround": "GitHub Pages (https://yusuketakuma.github.io/pharma-free-tools/) 利用継続"
+    }
+  ],
+  "monitoringResults": {
+    "vercelPortal": {
+      "url": "https://pharma-free-tools.vercel.app/",
+      "status": 404,
+      "healthy": false
+    },
+    "githubPages": {
+      "url": "https://yusuketakuma.github.io/pharma-free-tools/",
+      "status": 200,
+      "healthy": true
+    },
+    "toolCount": {
+      "actual": 86,
+      "displayed": "86選/86個",
+      "unified": true
+    },
+    "sitemap": {
+      "urlCount": 87,
+      "healthy": true
+    },
+    "vercelJson": {
+      "exists": true,
+      "size": 699,
+      "version": 2,
+      "outputDirectory": ".",
+      "cleanUrls": true
+    },
+    "gitStatus": {
+      "clean": true,
+      "uncommittedChanges": 0
+    }
+  },
+  "consecutiveErrors": {
+    "homecare-30m-sync-to-trainer": 0,
+    "trainer-30m-internet-research": 0,
+    "sidebiz-30m-assign": 0,
+    "sidebiz-30m-maintenance": 0,
+    "brave-api-usage-monitor": 0
+  },
+  "nextActions": [
+    {
+      "priority": "high",
+      "task": "Vercelダッシュボード設定確認・変更",
+      "assignee": "ゆうすけ",
+      "duration": "10分",
+      "dependency": "ダッシュボードアクセス"
+    },
+    {
+      "priority": "high",
+      "task": "GitHub Pages統一判断",
+      "assignee": "ゆうすけ",
+      "duration": "5分",
+      "dependency": "判断のみ"
+    },
+    {
+      "priority": "medium",
+      "task": "Vercelプロジェクト再作成",
+      "assignee": "sidebiz",
+      "duration": "15分",
+      "dependency": "ゆうすけ判断後"
+    }
+  ],
+  "learningPoints": [
+    "vercel.json≠即解決: ダッシュボード設定が優先される場合がある",
+    "GitHub Pages一本化の検討: 二重ホスティング保守負荷削減",
+    "障害継続サイクルの可視化: 10サイクル連続で根本解決必要性明確化"
+  ],
+  "impactAssessment": {
+    "userAccess": "low",
+    "seo": "low",
+    "snsShare": "low",
+    "developmentEfficiency": "medium"
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"matching-service.d.ts","sourceRoot":"","sources":["../../src/services/matching-service.ts"],"names":[],"mappings":"AAeA,OAAO,EAAE,cAAc,EAAa,MAAM,UAAU,CAAC;AAoPrD,wBAAsB,gBAAgB,CAAC,WAAW,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,GAAG,CAAC,MAAM,EAAE,cAAc,EAAE,CAAC,CAAC,CA+RpG;AAED,wBAAsB,WAAW,CAAC,UAAU,EAAE,MAAM,GAAG,OAAO,CAAC,cAAc,EAAE,CAAC,CA0O/E"}

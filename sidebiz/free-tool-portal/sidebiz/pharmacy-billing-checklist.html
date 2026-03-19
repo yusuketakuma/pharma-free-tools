@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>請求・入金管理チェックリスト | 薬剤師向け無料ツール</title>
+    <meta name="description" content="薬局の請求漏れ・入金確認を効率化。月次請求チェックリストで収益管理を改善し、未収金を削減。">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "請求・入金管理チェックリスト",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"},
+        "description": "薬局の請求漏れ・入金確認を効率化する月次チェックリストの無料ツール"
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        h1 { text-align: center; color: #333; margin-bottom: 10px; font-size: 24px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tab { padding: 12px 20px; background: #e8f5e9; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
+        .tab:hover { border-color: #11998e; }
+        .tab.active { background: #11998e; color: white; border-color: #11998e; }
+        
+        .section { display: none; }
+        .section.active { display: block; }
+        
+        .intro { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 25px; font-size: 13px; line-height: 1.6; }
+        .intro strong { color: #11998e; }
+        
+        .checklist-card { background: #f0fff0; border-radius: 12px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #11998e; }
+        .checklist-title { font-weight: bold; color: #333; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        .checklist-title .badge { background: #11998e; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+        
+        .checklist-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 13px; }
+        .checklist-item input[type="checkbox"] { margin-top: 3px; width: 18px; height: 18px; cursor: pointer; }
+        .checklist-item label { cursor: pointer; line-height: 1.4; }
+        .checklist-item.checked { opacity: 0.6; }
+        .checklist-item.checked label { text-decoration: line-through; }
+        
+        .progress-bar { background: #e0e0e0; border-radius: 10px; height: 24px; margin: 20px 0; overflow: hidden; }
+        .progress-fill { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); height: 100%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
+        .stat-card { background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center; }
+        .stat-number { font-size: 24px; font-weight: bold; color: #11998e; }
+        .stat-label { font-size: 11px; color: #666; margin-top: 5px; }
+        
+        .warning-box { background: #fff3e0; border: 1px solid #ff9800; border-radius: 8px; padding: 15px; margin: 15px 0; }
+        .warning-title { font-weight: bold; color: #e65100; margin-bottom: 8px; font-size: 14px; }
+        .warning-text { font-size: 12px; color: #333; line-height: 1.6; }
+        
+        .success-box { background: #e8f5e9; border: 1px solid #4caf50; border-radius: 8px; padding: 15px; margin: 15px 0; }
+        .success-title { font-weight: bold; color: #2e7d32; margin-bottom: 8px; font-size: 14px; }
+        .success-text { font-size: 12px; color: #333; line-height: 1.6; }
+        
+        .month-input { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .month-input label { font-size: 14px; color: #333; }
+        .month-input input { padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; }
+        .month-input input:focus { border-color: #11998e; outline: none; }
+        
+        .related-tools { background: #f5f5f5; border-radius: 10px; padding: 20px; margin-top: 30px; }
+        .related-title { font-weight: bold; color: #333; margin-bottom: 15px; font-size: 15px; }
+        .related-links { display: grid; gap: 10px; }
+        .related-link { display: flex; align-items: center; gap: 10px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #333; transition: all 0.3s; border: 1px solid #e0e0e0; }
+        .related-link:hover { border-color: #11998e; transform: translateX(5px); }
+        .related-link .icon { font-size: 20px; }
+        .related-link .text { font-size: 13px; }
+        
+        .cta { margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 10px; text-align: center; color: white; }
+        .cta h3 { margin-bottom: 10px; font-size: 16px; }
+        .cta p { font-size: 14px; margin-bottom: 15px; opacity: 0.9; }
+        .cta-btn { display: inline-block; padding: 12px 25px; background: white; color: #11998e; text-decoration: none; border-radius: 8px; font-weight: bold; }
+        
+        @media (max-width: 600px) {
+            .tabs { flex-direction: column; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 請求・入金管理チェックリスト</h1>
+        <p class="subtitle">請求漏れ・未収金を防止し、薬局の収益管理を改善</p>
+        
+        <div class="intro">
+            <strong>💡 このツールでできること：</strong><br>
+            ・月次請求業務のチェックリストで漏れを防止<br>
+            ・入金確認・未収金管理の可視化<br>
+            ・請求書発行から入金消込までのフロー標準化<br>
+            請求漏れを<strong>90%削減</strong>し、未収金リスクを最小化します。
+        </div>
+        
+        <div class="month-input">
+            <label>対象月：</label>
+            <input type="month" id="targetMonth" value="">
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showSection('billing')">📊 請求確認</div>
+            <div class="tab" onclick="showSection('payment')">💳 入金確認</div>
+            <div class="tab" onclick="showSection('uncollected')">⚠️ 未収金管理</div>
+            <div class="tab" onclick="showSection('monthly')">📅 月次業務</div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="billingCount">0</div>
+                <div class="stat-label">請求確認済</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="paymentCount">0</div>
+                <div class="stat-label">入金確認済</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="uncollectedCount">0</div>
+                <div class="stat-label">未収金件数</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
+        </div>
+
+        <!-- 請求確認セクション -->
+        <div class="section active" id="billing">
+            <div class="checklist-card">
+                <div class="checklist-title">📋 保険請求確認 <span class="badge">必須</span></div>
+                <div class="checklist-item"><input type="checkbox" id="b1"><label for="b1">調剤報酬請求明細書の内容確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="b2"><label for="b2">レセプト点数・金額の照合</label></div>
+                <div class="checklist-item"><input type="checkbox" id="b3"><label for="b3">重症患者等の特別加算確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="b4"><label for="b4">在宅医療関連加算の確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="b5"><label for="b5">後発品使用状況の確認</label></div>
+            </div>
+            
+            <div class="checklist-card">
+                <div class="checklist-title">📄 請求書発行 <span class="badge">月次</span></div>
+                <div class="checklist-item"><input type="checkbox" id="b6"><label for="b6">支払基金への請求データ送信完了確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="b7"><label for="b7">自費患者請求書の発行・送付</label></div>
+                <div class="checklist-item"><input type="checkbox" id="b8"><label for="b8">事業所請求（健康診断等）の確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="b9"><label for="b9">請求書控えのファイリング</label></div>
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-title">⚠️ 注意事項</div>
+                <div class="warning-text">
+                    ・請求期限（通常翌月10日）の厳守<br>
+                    ・修正が必要な場合は速やかに再請求手続き<br>
+                    ・疑義照会への回答期限確認
+                </div>
+            </div>
+        </div>
+        
+        <!-- 入金確認セクション -->
+        <div class="section" id="payment">
+            <div class="checklist-card">
+                <div class="checklist-title">💳 保険者からの入金確認 <span class="badge">重要</span></div>
+                <div class="checklist-item"><input type="checkbox" id="p1"><label for="p1">国民健康保険団体連合会からの入金確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="p2"><label for="p2">社会保険診療報酬支払基金からの入金確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="p3"><label for="p3">後期高齢者医療制度からの入金確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="p4"><label for="p4">入金額と請求額の照合</label></div>
+                <div class="checklist-item"><input type="checkbox" id="p5"><label for="p5">差額の原因調査（返戣・更正等）</label></div>
+            </div>
+            
+            <div class="checklist-card">
+                <div class="checklist-title">💵 患者からの入金確認 <span class="badge">月次</span></div>
+                <div class="checklist-item"><input type="checkbox" id="p6"><label for="p6">口座振替の入金確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="p7"><label for="p7">クレジットカード決済の確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="p8"><label for="p8">現金回収分の集計・確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="p9"><label for="p9">未収金の一覧作成</label></div>
+            </div>
+            
+            <div class="success-box">
+                <div class="success-title">✅ 入金消込完了時の確認事項</div>
+                <div class="success-text">
+                    ・会計ソフトへの入力完了<br>
+                    ・領収書の発行・送付（必要時）<br>
+                    ・未収金台帳の更新
+                </div>
+            </div>
+        </div>
+        
+        <!-- 未収金管理セクション -->
+        <div class="section" id="uncollected">
+            <div class="checklist-card">
+                <div class="checklist-title">⚠️ 未収金の早期発見 <span class="badge">重要</span></div>
+                <div class="checklist-item"><input type="checkbox" id="u1"><label for="u1">前月未収金の状況確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u2"><label for="u2">3ヶ月以上経過の未収金リストアップ</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u3"><label for="u3">督促状の送付状況確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u4"><label for="u4">電話・ハガキでの督促実施</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u5"><label for="u5">貸倒引当金の検討</label></div>
+            </div>
+            
+            <div class="checklist-card">
+                <div class="checklist-title">📞 督促プロセス <span class="badge">標準化</span></div>
+                <div class="checklist-item"><input type="checkbox" id="u6"><label for="u6">1ヶ月経過：優しいリマインド（電話/ハガキ）</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u7"><label for="u7">2ヶ月経過：督促状の送付</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u8"><label for="u8">3ヶ月経過：内容証明郵便の検討</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u9"><label for="u9">6ヶ月経過：法的手段の検討</label></div>
+                <div class="checklist-item"><input type="checkbox" id="u10"><label for="u10">管理職への報告・相談</label></div>
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-title">⚠️ 未収金管理のポイント</div>
+                <div class="warning-text">
+                    ・早期発見・早期対応が重要<br>
+                    ・感情的にならず、ルール通りに対応<br>
+                    ・困難な案件は早めに管理職へ相談
+                </div>
+            </div>
+        </div>
+        
+        <!-- 月次業務セクション -->
+        <div class="section" id="monthly">
+            <div class="checklist-card">
+                <div class="checklist-title">📅 月次締め業務 <span class="badge">月末</span></div>
+                <div class="checklist-item"><input type="checkbox" id="m1"><label for="m1">売上・入金の照合確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m2"><label for="m2">未収金残高の確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m3"><label for="m3">返戣・更正の確認と対応</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m4"><label for="m4">会計ソフトへの入力完了</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m5"><label for="m5">月次レポートの作成</label></div>
+            </div>
+            
+            <div class="checklist-card">
+                <div class="checklist-title">📊 分析・改善 <span class="badge">継続</span></div>
+                <div class="checklist-item"><input type="checkbox" id="m6"><label for="m6">返戣率の推移確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m7"><label for="m7">未収金率の推移確認</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m8"><label for="m8">請求漏れの原因分析</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m9"><label for="m9">改善施策の実施・効果測定</label></div>
+                <div class="checklist-item"><input type="checkbox" id="m10"><label for="m10">スタッフへのフィードバック</label></div>
+            </div>
+            
+            <div class="success-box">
+                <div class="success-title">✅ 月次業務完了後の確認</div>
+                <div class="success-text">
+                    ・管理職への報告完了<br>
+                    ・次月の目標設定<br>
+                    ・改善アクションプランの策定
+                </div>
+            </div>
+        </div>
+        
+        <!-- 関連ツール -->
+        <div class="related-tools">
+            <div class="related-title">🔗 関連ツール</div>
+            <div class="related-links">
+                <a href="pharmacy-rejection-template.html" class="related-link">
+                    <span class="icon">📋</span>
+                    <span class="text">返戣理由テンプレート・再請求チェックリスト</span>
+                </a>
+                <a href="pharmacy-revenue-improvement-checklist.html" class="related-link">
+                    <span class="icon">📈</span>
+                    <span class="text">収益改善診断チェックリスト</span>
+                </a>
+                <a href="pharmacy-kpi-tracker.html" class="related-link">
+                    <span class="icon">📊</span>
+                    <span class="text">薬局KPIトラッカー</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="cta">
+            <h3>🚀 請求・入金管理を効率化</h3>
+            <p>このツールをブックマークして、毎月の請求業務に活用してください</p>
+            <a href="index.html" class="cta-btn">他の無料ツールを見る</a>
+        </div>
+    </div>
+    
+    <script>
+        // 現在の月を設定
+        const now = new Date();
+        document.getElementById('targetMonth').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        
+        // タブ切り替え
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // チェックリストの進捗更新
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+            const percentage = Math.round((checked.length / checkboxes.length) * 100);
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressBar').textContent = percentage + '%';
+            
+            // カテゴリ別カウント
+            const billingChecked = document.querySelectorAll('#billing input[type="checkbox"]:checked').length;
+            const paymentChecked = document.querySelectorAll('#payment input[type="checkbox"]:checked').length;
+            const uncollectedChecked = document.querySelectorAll('#uncollected input[type="checkbox"]:checked').length;
+            
+            document.getElementById('billingCount').textContent = billingChecked;
+            document.getElementById('paymentCount').textContent = paymentChecked;
+            document.getElementById('uncollectedCount').textContent = uncollectedChecked;
+            
+            // ローカルストレージに保存
+            const key = 'pharmacy-billing-checklist-' + document.getElementById('targetMonth').value;
+            const state = {};
+            checkboxes.forEach(cb => {
+                state[cb.id] = cb.checked;
+            });
+            localStorage.setItem(key, JSON.stringify(state));
+        }
+        
+        // チェックボックスのイベントリスナー
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
+        
+        // 月変更時の復元
+        document.getElementById('targetMonth').addEventListener('change', function() {
+            const key = 'pharmacy-billing-checklist-' + this.value;
+            const saved = localStorage.getItem(key);
+            
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            
+            if (saved) {
+                const state = JSON.parse(saved);
+                Object.keys(state).forEach(id => {
+                    const cb = document.getElementById(id);
+                    if (cb) cb.checked = state[id];
+                });
+            }
+            
+            updateProgress();
+        });
+        
+        // 初期復元
+        const initialKey = 'pharmacy-billing-checklist-' + document.getElementById('targetMonth').value;
+        const initialSaved = localStorage.getItem(initialKey);
+        if (initialSaved) {
+            const state = JSON.parse(initialSaved);
+            Object.keys(state).forEach(id => {
+                const cb = document.getElementById(id);
+                if (cb) cb.checked = state[id];
+            });
+        }
+        
+        updateProgress();
+    </script>
+</body>
+</html>

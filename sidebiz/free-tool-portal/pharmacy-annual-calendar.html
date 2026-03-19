@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-annual-calendar-' + action
+      });
+    }
+  </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局年間業務カレンダー | 薬剤師無料ツール集</title>
+    <meta name="description" content="薬局の年間業務を一覧管理するカレンダー。定期業務・監査・研修・在庫棚卸のスケジュールを可視化。無料で使える薬剤師向けツール。">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        h1 { color: #2d3748; font-size: 1.8rem; margin-bottom: 10px; text-align: center; }
+        .subtitle { color: #718096; text-align: center; margin-bottom: 30px; font-size: 0.95rem; }
+        
+        .year-selector { text-align: center; margin-bottom: 25px; }
+        .year-selector select { padding: 10px 20px; font-size: 1.1rem; border: 2px solid #667eea; border-radius: 8px; background: white; cursor: pointer; }
+        
+        .calendar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+        @media (max-width: 900px) { .calendar-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .calendar-grid { grid-template-columns: 1fr; } }
+        
+        .month-card { background: #f7fafc; border-radius: 12px; padding: 15px; border: 2px solid #e2e8f0; }
+        .month-card.highlight { border-color: #667eea; background: #f0f4ff; }
+        .month-header { font-size: 1.1rem; font-weight: bold; color: #2d3748; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #667eea; display: flex; justify-content: space-between; align-items: center; }
+        .month-header .month-num { background: #667eea; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; }
+        
+        .event-list { list-style: none; }
+        .event-item { display: flex; align-items: flex-start; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.85rem; }
+        .event-item:last-child { border-bottom: none; }
+        .event-icon { margin-right: 8px; flex-shrink: 0; }
+        .event-text { color: #4a5568; line-height: 1.4; }
+        
+        .event-category { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 5px; }
+        .cat-health { background: #c6f6d5; color: #276749; }
+        .cat-inventory { background: #fed7aa; color: #c05621; }
+        .cat-audit { background: #bee3f8; color: #2b6cb0; }
+        .cat-training { background: #e9d8fd; color: #6b46c1; }
+        .cat-seasonal { background: #feebc8; color: #c05621; }
+        .cat-vaccine { background: #c3dafe; color: #3182ce; }
+        .cat-disaster { background: #fed7d7; color: #c53030; }
+        .cat-custom { background: #e2e8f0; color: #4a5568; }
+        
+        .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; padding: 15px; background: #f7fafc; border-radius: 8px; }
+        .legend-item { display: flex; align-items: center; font-size: 0.8rem; }
+        .legend-color { width: 16px; height: 16px; border-radius: 4px; margin-right: 5px; }
+        
+        .btn { display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; margin: 5px; transition: transform 0.2s, box-shadow 0.2s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
+        .btn-print { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
+        .btn-add { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
+        .buttons { text-align: center; margin-top: 25px; }
+        
+        .info-box { background: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin-bottom: 25px; border-radius: 0 8px 8px 0; }
+        .info-box h3 { color: #c05621; margin-bottom: 8px; font-size: 1rem; }
+        .info-box p { color: #744210; font-size: 0.9rem; line-height: 1.6; }
+        
+        .custom-event-form { background: #f0f4ff; padding: 20px; border-radius: 12px; margin-bottom: 25px; display: none; }
+        .custom-event-form.show { display: block; }
+        .form-row { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 150px; }
+        .form-group label { display: block; font-size: 0.85rem; color: #4a5568; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.9rem; }
+        
+        .summary-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; }
+        .summary-title { font-size: 1rem; margin-bottom: 15px; opacity: 0.9; }
+        .summary-stats { display: flex; flex-wrap: wrap; gap: 20px; }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 1.8rem; font-weight: bold; }
+        .stat-label { font-size: 0.75rem; opacity: 0.8; }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; max-width: 100%; }
+            .buttons, .year-selector, .custom-event-form { display: none !important; }
+            .calendar-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .month-card { break-inside: avoid; page-break-inside: avoid; }
+        }
+    </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-annual-calendar-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-annual-calendar-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-annual-calendar-prompt-cta'
+      });
+    }
+  </script>
+
+      <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+    <div class="container">
+        <h1>📅 薬局年間業務カレンダー</h1>
+        <p class="subtitle">年度（4月〜3月）の定期業務を一覧管理・可視化</p>
+
+        <div class="info-box">
+            <h3>📌 活用のポイント</h3>
+            <p>薬局の年間業務スケジュールを可視化し、繁忙期の重複を回避。健康診断・棚卸・監査・研修等の定期業務を計画的に管理。カスタムイベント追加で自店固有の業務も登録可能。</p>
+        </div>
+
+        <div class="year-selector">
+            <label for="fiscalYear">年度選択: </label>
+            <select id="fiscalYear" onchange="changeYear()">
+                <option value="2025">2025年度（2025/4 - 2026/3）</option>
+                <option value="2026" selected>2026年度（2026/4 - 2027/3）</option>
+                <option value="2027">2027年度（2027/4 - 2028/3）</option>
+            </select>
+        </div>
+
+        <div class="summary-box">
+            <div class="summary-title">📊 年間業務サマリー</div>
+            <div class="summary-stats">
+                <div class="stat-item"><div class="stat-num" id="totalEvents">24</div><div class="stat-label">年間イベント数</div></div>
+                <div class="stat-item"><div class="stat-num" id="healthEvents">2</div><div class="stat-label">健康診断</div></div>
+                <div class="stat-item"><div class="stat-num" id="inventoryEvents">2</div><div class="stat-label">棚卸</div></div>
+                <div class="stat-item"><div class="stat-num" id="auditEvents">1</div><div class="stat-label">監査</div></div>
+                <div class="stat-item"><div class="stat-num" id="trainingEvents">2</div><div class="stat-label">研修</div></div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><span class="legend-color cat-health"></span>健康診断</div>
+            <div class="legend-item"><span class="legend-color cat-inventory"></span>棚卸・在庫</div>
+            <div class="legend-item"><span class="legend-color cat-audit"></span>監査・点検</div>
+            <div class="legend-item"><span class="legend-color cat-training"></span>研修</div>
+            <div class="legend-item"><span class="legend-color cat-vaccine"></span>ワクチン</div>
+            <div class="legend-item"><span class="legend-color cat-seasonal"></span>季節対応</div>
+            <div class="legend-item"><span class="legend-color cat-disaster"></span>災害対策</div>
+            <div class="legend-item"><span class="legend-color cat-custom"></span>カスタム</div>
+        </div>
+
+        <div class="custom-event-form" id="customEventForm">
+            <h3 style="margin-bottom: 15px; color: #2d3748;">➕ カスタムイベント追加</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>イベント名</label>
+                    <input type="text" id="customEventName" placeholder="例: 地域医療連携会議">
+                </div>
+                <div class="form-group">
+                    <label>月</label>
+                    <select id="customEventMonth">
+                        <option value="4">4月</option><option value="5">5月</option><option value="6">6月</option>
+                        <option value="7">7月</option><option value="8">8月</option><option value="9">9月</option>
+                        <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
+                        <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>カテゴリ</label>
+                    <select id="customEventCategory">
+                        <option value="custom">カスタム</option>
+                        <option value="health">健康診断</option>
+                        <option value="inventory">棚卸・在庫</option>
+                        <option value="audit">監査・点検</option>
+                        <option value="training">研修</option>
+                        <option value="vaccine">ワクチン</option>
+                        <option value="seasonal">季節対応</option>
+                        <option value="disaster">災害対策</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-add" onclick="addCustomEvent()">イベント追加</button>
+            <button class="btn" style="background: #a0aec0;" onclick="toggleCustomForm()">キャンセル</button>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid">
+            <!-- JavaScriptで生成 -->
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-print" onclick="window.print()">🖨️ 印刷</button>
+            <button class="btn btn-add" onclick="toggleCustomForm()">➕ イベント追加</button>
+            <button class="btn" onclick="resetCalendar()">🔄 リセット</button>
+        </div>
+    </div>
+
+    <script>
+        // 薬局標準年間業務データ
+        const defaultEvents = {
+            4: [
+                { text: '新年度準備・書類整備', cat: 'audit' },
+                { text: '定期健康診断予約', cat: 'health' },
+                { text: '麻薬管理者変更届（必要時）', cat: 'audit' }
+            ],
+            5: [
+                { text: 'GW対応・休日当番表確認', cat: 'seasonal' },
+                { text: '在庫棚卸（上半期）', cat: 'inventory' }
+            ],
+            6: [
+                { text: '定期健康診断実施', cat: 'health' },
+                { text: '衛生委員会（50人以上）', cat: 'audit' }
+            ],
+            7: [
+                { text: '夏季休暇スケジュール調整', cat: 'seasonal' },
+                { text: '空調設備点検', cat: 'audit' }
+            ],
+            8: [
+                { text: 'お盆対応・人員配置', cat: 'seasonal' }
+            ],
+            9: [
+                { text: '台風・災害対策点検', cat: 'disaster' },
+                { text: '防災訓練実施', cat: 'disaster' }
+            ],
+            10: [
+                { text: 'インフルエンザワクチン発注', cat: 'vaccine' },
+                { text: '防火管理者点検', cat: 'audit' }
+            ],
+            11: [
+                { text: 'インフルエンザワクチン接種開始', cat: 'vaccine' },
+                { text: '年末年始スケジュール調整', cat: 'seasonal' }
+            ],
+            12: [
+                { text: '年末対応・人員配置', cat: 'seasonal' },
+                { text: '在庫棚卸（下半期）', cat: 'inventory' },
+                { text: '年末年始営業日設定', cat: 'seasonal' }
+            ],
+            1: [
+                { text: '年始対応・書類整備', cat: 'seasonal' },
+                { text: '新年業務開始準備', cat: 'audit' }
+            ],
+            2: [
+                { text: '年度末準備開始', cat: 'audit' },
+                { text: '薬剤師認定研修（希望者）', cat: 'training' }
+            ],
+            3: [
+                { text: '年度末棚卸・在庫確認', cat: 'inventory' },
+                { text: '監査準備・書類整備', cat: 'audit' },
+                { text: '新年度準備・研修計画', cat: 'training' }
+            ]
+        };
+
+        const monthNames = ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+        const categoryIcons = {
+            health: '🏥',
+            inventory: '📦',
+            audit: '📋',
+            training: '📚',
+            vaccine: '💉',
+            seasonal: '🌸',
+            disaster: '🚨',
+            custom: '📌'
+        };
+
+        let customEvents = JSON.parse(localStorage.getItem('pharmacyCalendarCustomEvents') || '{}');
+
+        function getAllEvents() {
+            const events = JSON.parse(JSON.stringify(defaultEvents));
+            for (const month in customEvents) {
+                if (!events[month]) events[month] = [];
+                events[month] = events[month].concat(customEvents[month]);
+            }
+            return events;
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const allEvents = getAllEvents();
+            const currentMonth = new Date().getMonth() + 1;
+            
+            let html = '';
+            const monthOrder = [4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
+            
+            for (const month of monthOrder) {
+                const isCurrentMonth = month === currentMonth;
+                html += `
+                    <div class="month-card ${isCurrentMonth ? 'highlight' : ''}">
+                        <div class="month-header">
+                            <span>${monthNames[month]}</span>
+                            <span class="month-num">${month}月</span>
+                        </div>
+                        <ul class="event-list">
+                            ${(allEvents[month] || []).map(e => `
+                                <li class="event-item">
+                                    <span class="event-icon">${categoryIcons[e.cat] || '📌'}</span>
+                                    <span class="event-text">${e.text}</span>
+                                    <span class="event-category cat-${e.cat}">${getCategoryName(e.cat)}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+            updateSummary(allEvents);
+        }
+
+        function getCategoryName(cat) {
+            const names = {
+                health: '健康', inventory: '棚卸', audit: '監査', training: '研修',
+                vaccine: 'ワクチン', seasonal: '季節', disaster: '災害', custom: '他'
+            };
+            return names[cat] || '他';
+        }
+
+        function updateSummary(allEvents) {
+            let total = 0, health = 0, inventory = 0, audit = 0, training = 0;
+            for (const month in allEvents) {
+                for (const e of allEvents[month]) {
+                    total++;
+                    if (e.cat === 'health') health++;
+                    if (e.cat === 'inventory') inventory++;
+                    if (e.cat === 'audit') audit++;
+                    if (e.cat === 'training') training++;
+                }
+            }
+            document.getElementById('totalEvents').textContent = total;
+            document.getElementById('healthEvents').textContent = health;
+            document.getElementById('inventoryEvents').textContent = inventory;
+            document.getElementById('auditEvents').textContent = audit;
+            document.getElementById('trainingEvents').textContent = training;
+        }
+
+        function toggleCustomForm() {
+            const form = document.getElementById('customEventForm');
+            form.classList.toggle('show');
+        }
+
+        function addCustomEvent() {
+            const name = document.getElementById('customEventName').value.trim();
+            const month = document.getElementById('customEventMonth').value;
+            const cat = document.getElementById('customEventCategory').value;
+            
+            if (!name) {
+                alert('イベント名を入力してください');
+                return;
+            }
+            
+            if (!customEvents[month]) customEvents[month] = [];
+            customEvents[month].push({ text: name, cat: cat });
+            localStorage.setItem('pharmacyCalendarCustomEvents', JSON.stringify(customEvents));
+            
+            document.getElementById('customEventName').value = '';
+            toggleCustomForm();
+            renderCalendar();
+        }
+
+        function resetCalendar() {
+            if (confirm('カスタムイベントを全て削除しますか？')) {
+                customEvents = {};
+                localStorage.removeItem('pharmacyCalendarCustomEvents');
+                renderCalendar();
+            }
+        }
+
+        function changeYear() {
+            // 年度変更時の処理（必要に応じて拡張）
+            renderCalendar();
+        }
+
+        // 初期表示
+        renderCalendar();
+    </script>
+
+  <!-- 関連ツール -->
+  <section class="related-tools" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📦 関連ツール</h3>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <li><a href="pharmacy-quality-management-checklist.html" style="color: #3498db; text-decoration: none;">品質管理チェックリスト</a></li>
+      <li><a href="pharmacy-safety-diagnosis.html" style="color: #3498db; text-decoration: none;">安全管理診断</a></li>
+      <li><a href="pharmacy-5s-diagnosis.html" style="color: #3498db; text-decoration: none;">5S診断</a></li>
+      <li><a href="index.html" style="color: #3498db; text-decoration: none;">🏠ツール一覧</a></li>
+    </ul>
+  </section>
+
+</body>
+</html>

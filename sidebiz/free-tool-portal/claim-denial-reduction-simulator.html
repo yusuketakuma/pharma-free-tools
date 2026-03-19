@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+    <meta property="og:title" content="請求返戣削減シミュレーター - 薬局収益改善予測">
+    <meta property="og:description" content="薬剤師・薬局向け無料ツール - 請求返戣削減シミュレーター - 薬局収益改善予測">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/claim-denial-reduction-simulator.html">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="請求返戣削減シミュレーター - 薬局収益改善予測">
+    <meta name="twitter:description" content="薬剤師・薬局向け無料ツール - 請求返戣削減シミュレーター - 薬局収益改善予測">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>請求返戣削減シミュレーター - 薬局収益改善予測</title>
+  <meta name="description" content="薬局の請求返戣率・再請求成功率を入力し、収益改善額を予測する無料シミュレーションツール。年間どれくらいの売上を取りこぼしているか可視化します。">
+  <meta name="keywords" content="薬局,請求返戣,再請求,収益改善,シミュレーター,返戣率">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="請求返戣削減シミュレーター - 薬局収益改善予測">
+  <meta property="og:description" content="薬局の請求返戣率・再請求成功率を入力し、収益改善額を予測する無料シミュレーションツール。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/claim-denial-reduction-simulator.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="請求返戣削減シミュレーター - 薬局収益改善予測">
+  <meta name="twitter:description" content="薬局の請求返戣率・再請求成功率を入力し、収益改善額を予測する無料シミュレーションツール。">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "請求返戣削減シミュレーター",
+    "description": "薬局の請求返戣率・再請求成功率を入力し、収益改善額を予測する無料シミュレーションツール。",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    h1 {
+      color: #667eea;
+      font-size: 2rem;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .unit {
+      color: #666;
+      font-size: 0.9rem;
+      margin-left: 8px;
+    }
+    
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .result {
+      margin-top: 32px;
+      padding: 24px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      display: none;
+    }
+    
+    .result h2 {
+      color: #667eea;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .result-item:last-child {
+      border-bottom: none;
+    }
+    
+    .result-label {
+      color: #666;
+    }
+    
+    .result-value {
+      font-weight: 700;
+      color: #667eea;
+    }
+    
+    .highlight {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    
+    .highlight .amount {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 8px 0;
+    }
+    
+    .cta-section {
+      margin-top: 32px;
+      padding: 24px;
+      background: #fff3cd;
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .cta-section h3 {
+      color: #856404;
+      margin-bottom: 12px;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #856404;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 12px;
+      transition: background 0.3s;
+    }
+    
+    .cta-button:hover {
+      background: #6d5203;
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 24px;
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 請求返戣削減シミュレーター</h1>
+    <p class="subtitle">薬局の返戣対応を最適化し、収益改善額を予測</p>
+    
+    <div class="form-group">
+      <label for="monthly-denial-amount">月間返戣額</label>
+      <input type="number" id="monthly-denial-amount" placeholder="例: 50000" min="0">
+      <span class="unit">円</span>
+    </div>
+    
+    <div class="form-group">
+      <label for="current-success-rate">現在の再請求成功率</label>
+      <input type="number" id="current-success-rate" placeholder="例: 30" min="0" max="100" step="0.1">
+      <span class="unit">%</span>
+    </div>
+    
+    <div class="form-group">
+      <label for="target-success-rate">目標の再請求成功率</label>
+      <input type="number" id="target-success-rate" placeholder="例: 50" min="0" max="100" step="0.1">
+      <span class="unit">%</span>
+    </div>
+    
+    <button onclick="calculate()">シミュレーション実行</button>
+    
+    <div class="result" id="result">
+      <h2>📈 シミュレーション結果</h2>
+      
+      <div class="result-item">
+        <span class="result-label">年間返戣額</span>
+        <span class="result-value" id="annual-denial">-</span>
+      </div>
+      
+      <div class="result-item">
+        <span class="result-label">現在の年間再請求成功額</span>
+        <span class="result-value" id="current-recovery">-</span>
+      </div>
+      
+      <div class="result-item">
+        <span class="result-label">目標達成時の年間再請求成功額</span>
+        <span class="result-value" id="target-recovery">-</span>
+      </div>
+      
+      <div class="highlight">
+        <div>年間収益改善予測</div>
+        <div class="amount" id="improvement">-</div>
+        <div>ROI: 無料ツール導入なので無限大</div>
+      </div>
+    </div>
+    
+    <div class="cta-section">
+      <h3>💡 返戣削減の完全ガイド</h3>
+      <p>返戣理由別の対策テンプレート・再請求文例集・チェックリストを収録したPDFガイドを販売中。</p>
+      <a href="#" class="cta-button" id="cta-guide" onclick="trackCTA('guide')">詳細を見る</a>
+    </div>
+    
+    <a href="index.html" class="back-link">← 無料ツール一覧に戻る</a>
+  </div>
+  
+  <script>
+    function calculate() {
+      const monthlyDenial = parseFloat(document.getElementById('monthly-denial-amount').value) || 0;
+      const currentRate = parseFloat(document.getElementById('current-success-rate').value) || 0;
+      const targetRate = parseFloat(document.getElementById('target-success-rate').value) || 0;
+      
+      const annualDenial = monthlyDenial * 12;
+      const currentRecovery = annualDenial * (currentRate / 100);
+      const targetRecovery = annualDenial * (targetRate / 100);
+      const improvement = targetRecovery - currentRecovery;
+      
+      document.getElementById('annual-denial').textContent = '¥' + annualDenial.toLocaleString();
+      document.getElementById('current-recovery').textContent = '¥' + currentRecovery.toLocaleString();
+      document.getElementById('target-recovery').textContent = '¥' + targetRecovery.toLocaleString();
+      document.getElementById('improvement').textContent = '¥' + improvement.toLocaleString();
+      
+      document.getElementById('result').style.display = 'block';
+      
+      // GA4イベント計測（仮）
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'simulation_complete', {
+          'event_category': 'claim_denial_simulator',
+          'event_label': 'annual_improvement',
+          'value': improvement
+        });
+      }
+    }
+    
+    function trackCTA(ctaType) {
+      // GA4イベント計測（仮）
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'cta_click', {
+          'event_category': 'claim_denial_simulator',
+          'event_label': ctaType
+        });
+      }
+    }
+  </script>
+</body>
+</html>

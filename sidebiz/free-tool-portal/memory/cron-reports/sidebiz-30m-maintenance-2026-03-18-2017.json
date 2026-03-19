@@ -1,0 +1,114 @@
+{
+  "job": "sidebiz-30m-maintenance",
+  "timestamp": "2026-03-18T20:17:00+09:00",
+  "status": "alert",
+  "summary": "副業ツール稼働確認完了。数値不整合（89/85/86の三方乖離）検出。OGP/Twitter修正未実施。",
+  "monitoring_results": {
+    "portal_access": "ok",
+    "tool_count_actual": 86,
+    "tool_count_displayed": {
+      "title": 89,
+      "meta_description": 89,
+      "og_title": 89,
+      "og_description": 89,
+      "twitter_title": 89,
+      "twitter_description": 89,
+      "json_ld_description": 85,
+      "json_ld_numberOfItems": 85,
+      "stat_number": 85
+    },
+    "index_html": "exists",
+    "sitemap_xml": "exists",
+    "sitemap_url_count": 73,
+    "ga4_configured": false,
+    "json_ld": "ok"
+  },
+  "issues_detected": [
+    {
+      "severity": "high",
+      "issue": "数値三方乖離",
+      "detail": "実態86件 / 表示89 / JSON-LD 85 / sitemap 73の4系統不整合",
+      "impact": "ユーザー信頼性低下、SEO評価への影響、SNSシェア時の表示不整合",
+      "reproduction": "grep -E '(89|85)' index.html && grep -c 'tool-card' index.html && grep -c '<url>' sitemap.xml",
+      "workaround": "全箇所を86に統一する修正が必要（開発担当）"
+    },
+    {
+      "severity": "high",
+      "issue": "OGP/Twitter修正未実施",
+      "detail": "19:53報告で指摘されたOGP/Twitterタグの89表記が未修正（3サイクル連続）",
+      "impact": "SNSシェア時の数値不整合継続",
+      "reproduction": "grep -E 'og:title|twitter:title' index.html",
+      "workaround": "sedまたはeditで89→86に置換"
+    },
+    {
+      "severity": "medium",
+      "issue": "sitemap URL数不整合",
+      "detail": "sitemap 73 URL vs 実ツール86件の乖離",
+      "impact": "検索エンジンインデックス効率低下",
+      "workaround": "sitemap.xml再生成（全86ツール分）"
+    },
+    {
+      "severity": "low",
+      "issue": "GA4未設定",
+      "detail": "google-analytics関連スクリプトが存在しない",
+      "impact": "アクセス解析不可",
+      "workaround": "Measurement ID取得後にgtag.js追加（ゆうすけ確認後）"
+    }
+  ],
+  "cron_job_status": {
+    "sidebiz-30m-assign": {
+      "consecutiveErrors": 1,
+      "lastError": "timeout (All models failed)",
+      "status": "warning"
+    },
+    "brave-api-usage-monitor": {
+      "consecutiveErrors": 1,
+      "lastError": "memory編集競合",
+      "status": "warning"
+    },
+    "other_jobs": "all_ok"
+  },
+  "learning_points": [
+    {
+      "point": "完了宣言と実態乖離の3サイクル連続検知",
+      "improvement": "開発担当は編集後にgrep検証を必須化。保守担当は毎回tool-card数を実測して乖離検知",
+      "priority": "high"
+    },
+    {
+      "point": "数値統一の自動化検討",
+      "improvement": "tool-card数を自動カウントして全箇所に反映するスクリプト導入を検討",
+      "priority": "medium"
+    }
+  ],
+  "next_actions": [
+    {
+      "action": "index.html全数値を86に統一（title/meta/OGP/Twitter/JSON-LD/stat-number）",
+      "owner": "sidebiz担当",
+      "priority": "high",
+      "due": "次30分サイクル"
+    },
+    {
+      "action": "sitemap.xml再生成（86ツール分）",
+      "owner": "sidebiz担当",
+      "priority": "high",
+      "due": "次30分サイクル"
+    },
+    {
+      "action": "編集後grep検証ステップの標準化",
+      "owner": "sidebiz担当",
+      "priority": "high",
+      "due": "即時"
+    },
+    {
+      "action": "GA4 Measurement ID取得・設定",
+      "owner": "sidebiz担当",
+      "priority": "medium",
+      "due": "ゆうすけ確認後"
+    }
+  ],
+  "required_permissions": [
+    "read/write: sidebiz/free-tool-portal/",
+    "git commit/push権限"
+  ],
+  "delivery_note": "本報告はtrainer-2h-regular-reportに集約。ユーザー向け通知は抑止中"
+}

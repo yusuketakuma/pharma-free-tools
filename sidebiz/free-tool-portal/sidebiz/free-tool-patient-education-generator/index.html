@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>患者教育資料ジェネレーター | 薬剤師のための無料ツール</title>
+  <meta name="description" content="患者向けの服薬説明資料を簡単作成。薬剤名を入力するだけで、わかりやすい説明文を生成・印刷できます。">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    header {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      margin-bottom: 30px;
+    }
+    header h1 { font-size: 1.8rem; margin-bottom: 10px; }
+    header p { opacity: 0.9; font-size: 0.95rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 480px) { .checkbox-group { grid-template-columns: 1fr; } }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background: var(--bg);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .checkbox-item:hover { background: #e2e8f0; }
+    .checkbox-item input { width: 18px; height: 18px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #059669; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    
+    /* Preview Styles */
+    .preview-container { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 30px; min-height: 400px; }
+    .preview-header { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--primary); }
+    .preview-header h3 { font-size: 1.4rem; color: var(--primary); margin-bottom: 5px; }
+    .preview-header .subtitle { color: var(--muted); font-size: 0.85rem; }
+    .preview-section { margin-bottom: 20px; }
+    .preview-section h4 {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+      padding-left: 10px;
+      border-left: 3px solid var(--primary);
+    }
+    .preview-section p { padding-left: 13px; color: var(--text); }
+    .preview-footer {
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px dashed var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    .highlight-box {
+      background: #fef3c7;
+      border-left: 4px solid var(--warning);
+      padding: 12px 15px;
+      margin: 10px 0 10px 13px;
+      border-radius: 0 6px 6px 0;
+    }
+    .info-box {
+      background: #dbeafe;
+      border-left: 4px solid var(--primary);
+      padding: 12px 15px;
+      margin: 10px 0 10px 13px;
+      border-radius: 0 6px 6px 0;
+    }
+    
+    /* Print Styles */
+    @media print {
+      body { background: white; }
+      .container { max-width: 100%; padding: 0; }
+      header, .btn-group, .card:first-child { display: none !important; }
+      .grid { display: block; }
+      .preview-container { border: none; box-shadow: none; padding: 20px; }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .empty-state svg { width: 60px; height: 60px; margin-bottom: 15px; opacity: 0.5; }
+    
+    .nav-links {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .nav-links a {
+      color: var(--primary);
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 0.9rem;
+    }
+    .nav-links a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📋 患者教育資料ジェネレーター</h1>
+    <p>患者向けの服薬説明資料を簡単作成・印刷</p>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <!-- Input Form -->
+      <div class="card">
+        <h2>📝 資料内容の入力</h2>
+        
+        <div class="form-group">
+          <label for="drugName">薬剤名 <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="drugName" placeholder="例: アムロジピン、メトホルミン など">
+        </div>
+        
+        <div class="form-group">
+          <label for="drugCategory">薬効分類</label>
+          <select id="drugCategory">
+            <option value="">選択してください</option>
+            <option value="降圧薬">降圧薬（血圧を下げる薬）</option>
+            <option value="糖尿病用薬">糖尿病用薬（血糖を下げる薬）</option>
+            <option value="脂質異常症用薬">脂質異常症用薬（コレステロールを下げる薬）</option>
+            <option value="抗凝固薬">抗凝固薬（血液を固まりにくくする薬）</option>
+            <option value="抗血小板薬">抗血小板薬（血栓を防ぐ薬）</option>
+            <option value="抗生物質">抗生物質（細菌を殺す薬）</option>
+            <option value="鎮痛薬">鎮痛薬（痛みを和らげる薬）</option>
+            <option value="胃薬">胃薬（胃を守る薬）</option>
+            <option value="睡眠薬">睡眠薬（眠りを促す薬）</option>
+            <option value="抗うつ薬">抗うつ薬・抗不安薬</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>含める項目</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-effect" checked>
+              <span>この薬の効果</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-dosage" checked>
+              <span>飲み方・服用時間</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-caution" checked>
+              <span>注意すること</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-sideeffect" checked>
+              <span>主な副作用</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-storage">
+              <span>保管方法</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-missed">
+              <span>飲み忘れた場合</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-interaction">
+              <span>併用注意</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="item-lifestyle">
+              <span>生活上のアドバイス</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="customNote">追加説明（任意）</label>
+          <textarea id="customNote" placeholder="患者さんに伝えたい特別な注意点があれば入力してください"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="pharmacyName">薬局名（印刷用）</label>
+          <input type="text" id="pharmacyName" placeholder="例: 〇〇調剤薬局">
+        </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="generateDocument()">
+            📄 資料を生成
+          </button>
+          <button class="btn btn-secondary" onclick="clearForm()">
+            🗑️ クリア
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="card">
+        <h2>👁️ プレビュー</h2>
+        <div class="preview-container" id="preview">
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <p>薬剤名を入力して「資料を生成」をクリックしてください</p>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-success" onclick="printDocument()">
+            🖨️ 印刷 / PDF保存
+          </button>
+          <button class="btn btn-secondary" onclick="copyText()">
+            📋 テキストコピー
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="nav-links">
+      <a href="index.html">🏠 ツール一覧に戻る</a>
+      <a href="ai-prompts-lp.html">📚 薬剤師向けAIプロンプト集</a>
+    </div>
+  </div>
+
+  <script>
+    // 薬効分類ごとのテンプレート
+    const templates = {
+      '降圧薬': {
+        effect: '血圧を下げ、心臓や血管の負担を軽減します。高血圧の治療に使用します。',
+        dosage: '毎日決まった時間に1回服用してください。食事の影響を受けにくいので、朝・夜どちらでも構いません。',
+        caution: '急に立ち上がるとめまいが起きることがあります。ゆっくり立ち上がってください。グレープフルーツジュースとの併用は避けてください。',
+        sideeffect: '顔のほてり、頭痛、足のむくみなどが現れることがあります。通常、続けるうちに慣れることが多いです。',
+        storage: '直射日光・高温多湿を避け、室温で保管してください。お子様の手の届かない場所に保管してください。',
+        missed: '気づいた時にすぐ服用してください。ただし、次の服用時間が近い場合は1回分を飛ばしてください。2回分を一度に飲まないでください。',
+        interaction: '他の降圧薬、利尿薬との併用で血圧が下がりすぎることがあります。',
+        lifestyle: '塩分控えめの食事、適度な運動、禁煙を心がけてください。血圧の安定に役立ちます。'
+      },
+      '糖尿病用薬': {
+        effect: '血糖値を下げ、糖尿病のコントロールを助けます。',
+        dosage: '指示された時間に服用してください。食前に飲む薬と食後に飲む薬があります。',
+        caution: '低血糖（手の震え、冷や汗、動悸）に注意してください。糖分を常に携帯してください。',
+        sideeffect: 'お腹がゆるくなることがあります。通常、続けるうちに改善します。',
+        storage: '室温で保管してください。湿気の少ない場所に保管してください。',
+        missed: '食後すぐに気づいたら服用してください。次の食事まで時間がある場合は1回分を飛ばしてください。',
+        interaction: '他の糖尿病薬との併用で低血糖が起きやすくなります。',
+        lifestyle: '規則正しい食事、適度な運動、定期的な血糖測定を心がけてください。'
+      },
+      '脂質異常症用薬': {
+        effect: '悪玉コレステロール（LDL）を下げ、動脈硬化を防ぎます。',
+        dosage: '通常、1日1回決まった時間に服用してください。',
+        caution: 'グレープフルーツジュースは控えてください。定期的な肝機能検査が必要です。',
+        sideeffect: '筋肉痛、脱力感が現れた場合はすぐにご相談ください。',
+        storage: '室温で保管してください。',
+        missed: '気づいた時に服用してください。ただし、次の服用時間が近い場合は飛ばしてください。',
+        interaction: '一部の抗生物質、真菌治療薬との併用に注意が必要です。',
+        lifestyle: '脂質の少ない食事、適度な運動を心がけてください。'
+      },
+      '抗凝固薬': {
+        effect: '血液が固まるのを防ぎ、血栓（血の塊）ができるのを予防します。',
+        dosage: '毎日決まった時間に服用してください。時間のずれは効果に影響します。',
+        caution: '出血しやすくなります。転倒に注意し、怪我を避けてください。他院受診時は必ず申告してください。',
+        sideeffect: '鼻血、歯茎の出血、あざができやすくなることがあります。',
+        storage: '室温・乾燥した場所で保管してください。',
+        missed: '気づいたらすぐ服用してください。当日中に思い出した場合は、その分を服用してください。',
+        interaction: '納豆、青汁、一部のハーブサプリメントは控えてください。多くの薬と相互作用があります。',
+        lifestyle: '定期的な血液検査が必要です。アルコールは控えめにしてください。'
+      },
+      '抗血小板薬': {
+        effect: '血小板の凝集を抑え、血栓ができるのを防ぎます。',
+        dosage: '毎日決まった時間に服用してください。',
+        caution: '出血が止まりにくくなります。手術や歯科治療の前に必ず申告してください。',
+        sideeffect: '胃もたれ、胃痛が現れることがあります。',
+        storage: '室温で保管してください。',
+        missed: '気づいた時に服用してください。',
+        interaction: '他の血液に影響する薬との併用に注意が必要です。',
+        lifestyle: 'アルコールは控えめにしてください。バランスの良い食事を心がけてください。'
+      },
+      '抗生物質': {
+        effect: '細菌を殺し、感染症を治します。',
+        dosage: '指示された期間、必ず最後まで飲み切ってください。症状が消えても中止しないでください。',
+        caution: '症状が改善しても自己判断で中止しないでください。耐性菌の原因になります。',
+        sideeffect: '下痢、胃部不快感が現れることがあります。',
+        storage: '種類によって異なります。冷蔵保存が必要なものもあります。',
+        missed: '気づいた時にすぐ服用してください。次の服用時間が近い場合は1回分を飛ばしてください。',
+        interaction: '乳製品、制酸剤と一緒に飲むと効果が弱まるものがあります。',
+        lifestyle: '水分を十分に摂ってください。完治まで性行為は控えてください（性感染症の場合）。'
+      },
+      '鎮痛薬': {
+        effect: '痛みや炎症を和らげます。',
+        dosage: '食後または空腹時を避けて服用してください。長期連用は避けてください。',
+        caution: '胃を傷めることがあります。空腹時の服用は避けてください。',
+        sideeffect: '胃痛、吐き気、眠気などが現れることがあります。',
+        storage: '室温で保管してください。',
+        missed: '痛みがある時に服用してください。定期的な服用が必要な場合以外は、飲み忘れを気にしなくて大丈夫です。',
+        interaction: '他の鎮痛薬、感冒薬との併用は避けてください。',
+        lifestyle: '原因の治療が優先です。痛みが続く場合は受診してください。'
+      },
+      '胃薬': {
+        effect: '胃酸を中和したり、胃の粘膜を保護したりして、胃の不快感を和らげます。',
+        dosage: '食後または食間に服用してください。',
+        caution: '長期間続けて使用する場合は、医師に相談してください。',
+        sideeffect: '便秘や下痢が現れることがあります。',
+        storage: '室温で保管してください。',
+        missed: '胃の不快感がある時に服用してください。',
+        interaction: '一部の薬の吸収に影響することがあります。',
+        lifestyle: '刺激物、アルコール、カフェインは控えてください。規則正しい食事を心がけてください。'
+      },
+      '睡眠薬': {
+        effect: '脳の興奮を抑え、自然な睡眠を促します。',
+        dosage: '就寝直前に服用してください。服用後は必ず7時間以上睡眠をとってください。',
+        caution: '服用後は車の運転や機械の操作をしないでください。アルコールと一緒に飲まないでください。',
+        sideeffect: '翌日の眠気、ふらつき、記憶障害などが現れることがあります。',
+        storage: '直射日光を避け、室温で保管してください。',
+        missed: '翌日の就寝時に服用してください。2回分を一度に飲まないでください。',
+        interaction: 'アルコール、他の精神科系薬剤との併用で作用が強まります。',
+        lifestyle: '就寝時間を一定にし、カフェインは夕方以降控えてください。'
+      },
+      '抗うつ薬・抗不安薬': {
+        effect: '脳内の神経伝達物質のバランスを整え、気分や不安を改善します。',
+        dosage: '毎日決まった時間に服用してください。効果が出るまで数週間かかることがあります。',
+        caution: '自己判断で急に中止しないでください。離脱症状が出ることがあります。',
+        sideeffect: '口の渇き、眠気、便秘などが現れることがあります。通常、続けるうちに改善します。',
+        storage: '室温で保管してください。',
+        missed: '気づいた時に服用してください。ただし、次の服用時間が近い場合は飛ばしてください。',
+        interaction: 'MAO阻害薬との併用は避けてください。多くの薬と相互作用があります。',
+        lifestyle: '規則正しい生活、適度な運動を心がけてください。アルコールは控えてください。'
+      },
+      'その他': {
+        effect: '医師・薬剤師から説明を受けた効果が期待できます。',
+        dosage: '指示された通りに服用してください。',
+        caution: '不明点は薬剤師にご相談ください。',
+        sideeffect: '気になる症状があれば薬剤師にご相談ください。',
+        storage: '直射日光・高温多湿を避け、室温で保管してください。',
+        missed: '薬剤師にご相談ください。',
+        interaction: '他院でもらった薬がある場合はお伝えください。',
+        lifestyle: '医師・薬剤師の指示に従ってください。'
+      }
+    };
+
+    function generateDocument() {
+      const drugName = document.getElementById('drugName').value.trim();
+      const category = document.getElementById('drugCategory').value || 'その他';
+      const pharmacyName = document.getElementById('pharmacyName').value.trim();
+      const customNote = document.getElementById('customNote').value.trim();
+      
+      if (!drugName) {
+        alert('薬剤名を入力してください');
+        return;
+      }
+      
+      const template = templates[category] || templates['その他'];
+      
+      let html = `
+        <div class="preview-header">
+          <h3>お薬の説明書</h3>
+          <div class="subtitle">${drugName} ${category ? `（${category}）` : ''}</div>
+        </div>
+      `;
+      
+      if (document.getElementById('item-effect').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>💊 この薬の効果</h4>
+            <p>${drugName}は${template.effect}</p>
+          </div>
+        `;
+      }
+      
+      if (document.getElementById('item-dosage').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>🕐 飲み方・服用時間</h4>
+            <p>${template.dosage}</p>
+          </div>
+        `;
+      }
+      
+      if (document.getElementById('item-caution').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>⚠️ 注意すること</h4>
+            <div class="highlight-box">${template.caution}</div>
+          </div>
+        `;
+      }
+      
+      if (document.getElementById('item-sideeffect').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>📋 主な副作用</h4>
+            <p>${template.sideeffect}</p>
+            <div class="info-box">重い副作用は稀ですが、異常を感じた場合はすぐにご相談ください。</div>
+          </div>
+        `;
+      }
+      
+      if (document.getElementById('item-missed').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>❓ 飲み忘れた場合</h4>
+            <p>${template.missed}</p>
+          </div>
+        `;
+      }
+      
+      if (document.getElementById('item-interaction').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>🔗 併用注意</h4>
+            <p>${template.interaction}</p>
+          </div>
+        `;
+      }
+      
+      if (document.getElementById('item-storage').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>📦 保管方法</h4>
+            <p>${template.storage}</p>
+          </div>
+        `;
+      }
+      
+      if (document.getElementById('item-lifestyle').checked) {
+        html += `
+          <div class="preview-section">
+            <h4>🏃 生活上のアドバイス</h4>
+            <p>${template.lifestyle}</p>
+          </div>
+        `;
+      }
+      
+      if (customNote) {
+        html += `
+          <div class="preview-section">
+            <h4>📝 追加の説明</h4>
+            <p>${customNote.replace(/\n/g, '<br>')}</p>
+          </div>
+        `;
+      }
+      
+      html += `
+        <div class="preview-footer">
+          ${pharmacyName ? `<p>${pharmacyName}</p>` : ''}
+          <p>ご不明な点がございましたら、お気軽に薬剤師にお尋ねください</p>
+          <p style="margin-top: 10px; font-size: 0.75rem;">作成日: ${new Date().toLocaleDateString('ja-JP')}</p>
+        </div>
+      `;
+      
+      document.getElementById('preview').innerHTML = html;
+    }
+    
+    function printDocument() {
+      const previewContent = document.getElementById('preview').innerHTML;
+      if (previewContent.includes('empty-state')) {
+        alert('まず資料を生成してください');
+        return;
+      }
+      window.print();
+    }
+    
+    function copyText() {
+      const preview = document.getElementById('preview');
+      const text = preview.innerText;
+      if (text.includes('薬剤名を入力して')) {
+        alert('まず資料を生成してください');
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        alert('テキストをコピーしました');
+      }).catch(() => {
+        alert('コピーに失敗しました');
+      });
+    }
+    
+    function clearForm() {
+      document.getElementById('drugName').value = '';
+      document.getElementById('drugCategory').value = '';
+      document.getElementById('customNote').value = '';
+      document.getElementById('pharmacyName').value = '';
+      document.querySelectorAll('.checkbox-group input').forEach(cb => {
+        cb.checked = cb.id === 'item-effect' || cb.id === 'item-dosage' || 
+                     cb.id === 'item-caution' || cb.id === 'item-sideeffect';
+      });
+      document.getElementById('preview').innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <p>薬剤名を入力して「資料を生成」をクリックしてください</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

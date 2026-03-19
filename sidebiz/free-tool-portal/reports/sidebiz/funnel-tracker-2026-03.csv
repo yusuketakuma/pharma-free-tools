@@ -1,0 +1,4 @@
+id,created_at,company_name,priority_score,four_week_value,poc_sent_at,poc_status,poc_amount,monthly_amount,next_action,notes
+1772535987010,2026-03-03T11:06:33.059Z,Test Pharmacy,79,100542,,,,,,""
+1772539618046,2026-03-03T12:07:12.745Z,Diagnostic Pharmacy A 20260303 2106,97,91389,2026-03-03T14:39:48.738Z,sent,15000,,,""
+1772539618122,2026-03-03T12:07:12.787Z,Diagnostic Pharmacy B 20260303 2106,86,38543,,,,,,""

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局患者対応診断 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="薬局での患者対応・コミュニケーション能力を5領域20問で診断。傾聴・説明・共感・信頼構築・問題解決のスコアを可視化し、改善提案を自動生成。">
+    
+    <!-- OGP -->
+    <meta property="og:title" content="薬局患者対応診断 | 薬剤師向け無料ツール">
+    <meta property="og:description" content="薬局での患者対応・コミュニケーション能力を5領域20問で診断。傾聴・説明・共感・信頼構築・問題解決のスコアを可視化。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-patient-communication.html">
+    
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "薬局患者対応診断",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "description": "薬局での患者対応・コミュニケーション能力を5領域20問で診断"
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+        
+        .category-title {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #e8edff;
+        }
+        
+        .option input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            line-height: 1.5;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .result {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .total-score {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .total-score .score {
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .total-score .max {
+            font-size: 24px;
+            opacity: 0.8;
+        }
+        
+        .total-score .level {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+        
+        .score-breakdown {
+            margin-bottom: 30px;
+        }
+        
+        .score-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .score-item .label {
+            flex: 1;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .score-item .bar-container {
+            width: 200px;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        
+        .score-item .bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s;
+        }
+        
+        .score-item .value {
+            font-weight: 700;
+            color: #667eea;
+            min-width: 50px;
+            text-align: right;
+        }
+        
+        .recommendations {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+        
+        .recommendations h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .recommendations ul {
+            list-style: none;
+        }
+        
+        .recommendations li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .recommendations li:last-child {
+            border-bottom: none;
+        }
+        
+        .recommendations li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+        
+        .cta-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-section h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .cta-section p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .score-item .bar-container {
+                width: 120px;
+            }
+            
+            .total-score .score {
+                font-size: 56px;
+            }
+        }
+    </style>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 薬局患者対応診断</h1>
+        <p class="subtitle">5領域20問で患者コミュニケーション能力を診断</p>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <form id="diagnosis-form">
+            <!-- カテゴリ1: 傾聴能力 -->
+            <div class="category-title">👂 傾聴能力（4問）</div>
+            
+            <div class="question">
+                <div class="question-text">1. 患者の話を最後まで聞かずに結論を出してしまうことがある</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q1" value="1"><span>いつもそうだ</span></label>
+                    <label class="option"><input type="radio" name="q1" value="2"><span>よくある</span></label>
+                    <label class="option"><input type="radio" name="q1" value="3"><span>たまにある</span></label>
+                    <label class="option"><input type="radio" name="q1" value="4"><span>めったにない</span></label>
+                    <label class="option"><input type="radio" name="q1" value="5"><span>決してない</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">2. 患者の非言語的なサイン（表情・態度）に気づくことができる</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q2" value="1"><span>ほとんど気づかない</span></label>
+                    <label class="option"><input type="radio" name="q2" value="2"><span>たまに気づく</span></label>
+                    <label class="option"><input type="radio" name="q2" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q2" value="4"><span>よく気づく</span></label>
+                    <label class="option"><input type="radio" name="q2" value="5"><span>常に気づく</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">3. 患者の不安や心配事を引き出す質問ができる</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q3" value="1"><span>苦手だ</span></label>
+                    <label class="option"><input type="radio" name="q3" value="2"><span>あまりできない</span></label>
+                    <label class="option"><input type="radio" name="q3" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q3" value="4"><span>できる</span></label>
+                    <label class="option"><input type="radio" name="q3" value="5"><span>得意だ</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">4. 多忙な時でも患者の話に集中できる</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q4" value="1"><span>集中できない</span></label>
+                    <label class="option"><input type="radio" name="q4" value="2"><span>集中しにくい</span></label>
+                    <label class="option"><input type="radio" name="q4" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q4" value="4"><span>集中できる</span></label>
+                    <label class="option"><input type="radio" name="q4" value="5"><span>常に集中できる</span></label>
+                </div>
+            </div>
+            
+            <!-- カテゴリ2: 説明能力 -->
+            <div class="category-title">📢 説明能力（4問）</div>
+            
+            <div class="question">
+                <div class="question-text">5. 専門用語を患者にわかりやすい言葉に置き換えて説明できる</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q5" value="1"><span>苦手だ</span></label>
+                    <label class="option"><input type="radio" name="q5" value="2"><span>あまりできない</span></label>
+                    <label class="option"><input type="radio" name="q5" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q5" value="4"><span>できる</span></label>
+                    <label class="option"><input type="radio" name="q5" value="5"><span>得意だ</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">6. 患者の理解度を確認しながら説明を進めている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q6" value="1"><span>確認していない</span></label>
+                    <label class="option"><input type="radio" name="q6" value="2"><span>あまり確認しない</span></label>
+                    <label class="option"><input type="radio" name="q6" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q6" value="4"><span>確認している</span></label>
+                    <label class="option"><input type="radio" name="q6" value="5"><span>常に確認している</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">7. 薬の効果・副作用をバランスよく説明している</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q7" value="1"><span>効果中心</span></label>
+                    <label class="option"><input type="radio" name="q7" value="2"><span>少し偏りがある</span></label>
+                    <label class="option"><input type="radio" name="q7" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q7" value="4"><span>バランスよい</span></label>
+                    <label class="option"><input type="radio" name="q7" value="5"><span>常にバランスよい</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">8. 患者の生活状況に合わせた服薬指導ができている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q8" value="1"><span>できていない</span></label>
+                    <label class="option"><input type="radio" name="q8" value="2"><span>あまりできていない</span></label>
+                    <label class="option"><input type="radio" name="q8" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q8" value="4"><span>できている</span></label>
+                    <label class="option"><input type="radio" name="q8" value="5"><span>常にできている</span></label>
+                </div>
+            </div>
+            
+            <!-- カテゴリ3: 共感能力 -->
+            <div class="category-title">💜 共感能力（4問）</div>
+            
+            <div class="question">
+                <div class="question-text">9. 患者の感情に寄り添った対応ができている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q9" value="1"><span>できていない</span></label>
+                    <label class="option"><input type="radio" name="q9" value="2"><span>あまりできていない</span></label>
+                    <label class="option"><input type="radio" name="q9" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q9" value="4"><span>できている</span></label>
+                    <label class="option"><input type="radio" name="q9" value="5"><span>常にできている</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">10. 不安がる患者に対して安心感を与える言葉がけができている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q10" value="1"><span>苦手だ</span></label>
+                    <label class="option"><input type="radio" name="q10" value="2"><span>あまりできない</span></label>
+                    <label class="option"><input type="radio" name="q10" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q10" value="4"><span>できる</span></label>
+                    <label class="option"><input type="radio" name="q10" value="5"><span>得意だ</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">11. 患者の立場に立って考えることができている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q11" value="1"><span>できていない</span></label>
+                    <label class="option"><input type="radio" name="q11" value="2"><span>あまりできていない</span></label>
+                    <label class="option"><input type="radio" name="q11" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q11" value="4"><span>できている</span></label>
+                    <label class="option"><input type="radio" name="q11" value="5"><span>常にできている</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">12. 苦情を言う患者に対しても冷静に対応できている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q12" value="1"><span>感情的になる</span></label>
+                    <label class="option"><input type="radio" name="q12" value="2"><span>少し動揺する</span></label>
+                    <label class="option"><input type="radio" name="q12" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q12" value="4"><span>冷静に対応</span></label>
+                    <label class="option"><input type="radio" name="q12" value="5"><span>常に冷静</span></label>
+                </div>
+            </div>
+            
+            <!-- カテゴリ4: 信頼構築 -->
+            <div class="category-title">🤝 信頼構築（4問）</div>
+            
+            <div class="question">
+                <div class="question-text">13. 患者から「また相談したい」と言われることが多い</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q13" value="1"><span>ほとんどない</span></label>
+                    <label class="option"><input type="radio" name="q13" value="2"><span>たまにある</span></label>
+                    <label class="option"><input type="radio" name="q13" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q13" value="4"><span>よくある</span></label>
+                    <label class="option"><input type="radio" name="q13" value="5"><span>とても多い</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">14. 患者の名前や顔を覚えて、次回の対応に活かしている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q14" value="1"><span>覚えられない</span></label>
+                    <label class="option"><input type="radio" name="q14" value="2"><span>たまに覚える</span></label>
+                    <label class="option"><input type="radio" name="q14" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q14" value="4"><span>よく覚える</span></label>
+                    <label class="option"><input type="radio" name="q14" value="5"><span>常に覚える</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">15. 患者との約束（連絡・確認等）を確実に守っている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q15" value="1"><span>守れないことが多い</span></label>
+                    <label class="option"><input type="radio" name="q15" value="2"><span>たまに忘れる</span></label>
+                    <label class="option"><input type="radio" name="q15" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q15" value="4"><span>守っている</span></label>
+                    <label class="option"><input type="radio" name="q15" value="5"><span>常に守っている</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">16. 患者のプライバシーに配慮した対応ができている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q16" value="1"><span>配慮不足</span></label>
+                    <label class="option"><input type="radio" name="q16" value="2"><span>少し不足</span></label>
+                    <label class="option"><input type="radio" name="q16" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q16" value="4"><span>配慮できている</span></label>
+                    <label class="option"><input type="radio" name="q16" value="5"><span>常に配慮</span></label>
+                </div>
+            </div>
+            
+            <!-- カテゴリ5: 問題解決 -->
+            <div class="category-title">🔧 問題解決（4問）</div>
+            
+            <div class="question">
+                <div class="question-text">17. 患者からの問い合わせに迅速に対応できている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q17" value="1"><span>遅れることが多い</span></label>
+                    <label class="option"><input type="radio" name="q17" value="2"><span>たまに遅れる</span></label>
+                    <label class="option"><input type="radio" name="q17" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q17" value="4"><span>迅速に対応</span></label>
+                    <label class="option"><input type="radio" name="q17" value="5"><span>常に迅速</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">18. 服薬アドヒアランスが低い患者への対策を講じている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q18" value="1"><span>対策していない</span></label>
+                    <label class="option"><input type="radio" name="q18" value="2"><span>あまり対策していない</span></label>
+                    <label class="option"><input type="radio" name="q18" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q18" value="4"><span>対策している</span></label>
+                    <label class="option"><input type="radio" name="q18" value="5"><span>個別に最適化</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">19. 他職種（医師・看護師）との連携で患者の問題解決に努めている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q19" value="1"><span>連携していない</span></label>
+                    <label class="option"><input type="radio" name="q19" value="2"><span>少し連携</span></label>
+                    <label class="option"><input type="radio" name="q19" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q19" value="4"><span>連携している</span></label>
+                    <label class="option"><input type="radio" name="q19" value="5"><span>積極的に連携</span></label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">20. 患者対応の振り返りを行い、改善に活かしている</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q20" value="1"><span>振り返らない</span></label>
+                    <label class="option"><input type="radio" name="q20" value="2"><span>たまに振り返る</span></label>
+                    <label class="option"><input type="radio" name="q20" value="3"><span>普通</span></label>
+                    <label class="option"><input type="radio" name="q20" value="4"><span>振り返っている</span></label>
+                    <label class="option"><input type="radio" name="q20" value="5"><span>常に振り返り改善</span></label>
+                </div>
+            </div>
+            
+            <button type="submit" id="submit-btn">診断結果を見る</button>
+        </form>
+        
+        <div class="result" id="result">
+            <div class="total-score">
+                <div class="score" id="total-score">0</div>
+                <div class="max">/ 100点</div>
+                <div class="level" id="level"></div>
+            </div>
+            
+            <div class="score-breakdown">
+                <h3 style="margin-bottom: 20px; color: #333;">📊 領域別スコア</h3>
+                
+                <div class="score-item">
+                    <div class="label">👂 傾聴能力</div>
+                    <div class="bar-container"><div class="bar" id="bar1"></div></div>
+                    <div class="value" id="score1">0/20</div>
+                </div>
+                
+                <div class="score-item">
+                    <div class="label">📢 説明能力</div>
+                    <div class="bar-container"><div class="bar" id="bar2"></div></div>
+                    <div class="value" id="score2">0/20</div>
+                </div>
+                
+                <div class="score-item">
+                    <div class="label">💜 共感能力</div>
+                    <div class="bar-container"><div class="bar" id="bar3"></div></div>
+                    <div class="value" id="score3">0/20</div>
+                </div>
+                
+                <div class="score-item">
+                    <div class="label">🤝 信頼構築</div>
+                    <div class="bar-container"><div class="bar" id="bar4"></div></div>
+                    <div class="value" id="score4">0/20</div>
+                </div>
+                
+                <div class="score-item">
+                    <div class="label">🔧 問題解決</div>
+                    <div class="bar-container"><div class="bar" id="bar5"></div></div>
+                    <div class="value" id="score5">0/20</div>
+                </div>
+            </div>
+            
+            <div class="recommendations" id="recommendations">
+                <h3>💡 改善提案</h3>
+                <ul id="recommendation-list"></ul>
+            </div>
+            
+            <div class="cta-section">
+                <h3>🚀 患者対応スキルを強化しませんか？</h3>
+                <p>AIを活用した服薬指導シナリオ作成・薬歴自動生成で<br>対人業務時間を最大化</p>
+                <a href="ai-prompts-lp.html" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': 'patient_communication', 'event_label': 'ai_prompts_cta', 'value': 500});">AIプロンプト集を見る →</a>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-link">← ツール一覧に戻る</a>
+    </div>
+    
+    <script>
+        const form = document.getElementById('diagnosis-form');
+        const progress = document.getElementById('progress');
+        const submitBtn = document.getElementById('submit-btn');
+        const result = document.getElementById('result');
+        
+        // Progress bar update
+        form.addEventListener('change', () => {
+            const totalQuestions = 20;
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            progress.style.width = (answered / totalQuestions * 100) + '%';
+            
+            submitBtn.disabled = answered < totalQuestions;
+        });
+        
+        // Option selection styling
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const name = this.querySelector('input').name;
+                document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+                    input.closest('.option').classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Calculate scores by category
+            const categories = [
+                [1, 2, 3, 4],      // 傾聴能力
+                [5, 6, 7, 8],      // 説明能力
+                [9, 10, 11, 12],   // 共感能力
+                [13, 14, 15, 16],  // 信頼構築
+                [17, 18, 19, 20]   // 問題解決
+            ];
+            
+            const scores = categories.map(cat => {
+                return cat.reduce((sum, q) => {
+                    return sum + parseInt(document.querySelector(`input[name="q${q}"]:checked`).value);
+                }, 0);
+            });
+            
+            const totalScore = scores.reduce((a, b) => a + b, 0);
+            
+            // Display results
+            document.getElementById('total-score').textContent = totalScore;
+            
+            // Level determination
+            let level, levelClass;
+            if (totalScore >= 90) {
+                level = '🏆 エキスパート';
+            } else if (totalScore >= 75) {
+                level = '⭐ 上級';
+            } else if (totalScore >= 60) {
+                level = '📚 中級';
+            } else if (totalScore >= 45) {
+                level = '🌱 初級';
+            } else {
+                level = '💪 要改善';
+            }
+            document.getElementById('level').textContent = level;
+            
+            // Category scores
+            scores.forEach((score, i) => {
+                document.getElementById(`score${i + 1}`).textContent = `${score}/20`;
+                document.getElementById(`bar${i + 1}`).style.width = (score / 20 * 100) + '%';
+            });
+            
+            // Generate recommendations
+            const recommendations = [];
+            const categoryNames = ['傾聴能力', '説明能力', '共感能力', '信頼構築', '問題解決'];
+            const categoryTips = [
+                [
+                    '患者の話を最後まで聞く練習を。途中で口を挟まない意識を持つ',
+                    '非言語コミュニケーションの勉強会や研修に参加する',
+                    'オープンクエスチョンを活用し、患者の本音を引き出す'
+                ],
+                [
+                    '専門用語を日常語に変換する「用語集」を作成する',
+                    '説明後は必ず「ご不明な点はありますか？」と確認する',
+                    'テイクバック法で患者の理解度を確認する習慣をつける'
+                ],
+                [
+                    'アンガーマネジメントの研修を受ける',
+                    '患者の感情を言語化する練習（「〜と感じていらっしゃいますね」）',
+                    'ロールプレイングで共感的対応を練習する'
+                ],
+                [
+                    '患者氏名・顔写真の復習システムを導入する',
+                    '約束事項は即座に記録し、アラートを設定する',
+                    '個室やパーティションでプライバシー配慮を強化する'
+                ],
+                [
+                    '問い合わせ対応の優先順位を明確化する',
+                    'アドヒアランス低患者のリストを作成し重点管理する',
+                    '他職種との定例カンファレンスを導入する'
+                ]
+            ];
+            
+            // Find weakest categories
+            const sortedCategories = scores.map((score, i) => ({score, index: i}))
+                .sort((a, b) => a.score - b.score);
+            
+            // Add recommendations for weakest categories
+            sortedCategories.slice(0, 3).forEach(cat => {
+                if (cat.score < 16) {  // 16/20 = 80%
+                    const tips = categoryTips[cat.index];
+                    recommendations.push(tips[Math.floor(Math.random() * tips.length)]);
+                }
+            });
+            
+            // Add general recommendations
+            if (totalScore < 70) {
+                recommendations.push('患者対応研修やコミュニケーションスキル研修への参加を検討');
+            }
+            if (totalScore >= 70) {
+                recommendations.push('後輩薬剤師への指導・育成で自身のスキルも向上させる');
+            }
+            
+            // Remove duplicates
+            const uniqueRecommendations = [...new Set(recommendations)];
+            
+            const recommendationList = document.getElementById('recommendation-list');
+            recommendationList.innerHTML = uniqueRecommendations.map(r => `<li>${r}</li>`).join('');
+            
+            // Show results
+            form.style.display = 'none';
+            result.style.display = 'block';
+            
+            // Scroll to results
+            result.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Initially disable submit button
+        submitBtn.disabled = true;
+    </script>
+</body>
+</html>

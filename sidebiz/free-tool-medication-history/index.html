@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬歴テンプレート生成 | 薬剤師向け無料ツール</title>
+  <meta name="description" content="薬剤師が薬歴作成を効率化するための無料テンプレート生成ツール。患者情報と処方内容を入力するだけで、標準的な薬歴フォーマットを自動生成します。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "薬歴テンプレート生成",
+    "description": "薬剤師が薬歴作成を効率化するための無料テンプレート生成ツール。患者情報と処方内容を入力するだけで、標準的な薬歴フォーマットを自動生成します。",
+    "url": "https://yusuketakuma.github.io/pharma-medication-history-tool/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  <meta property="og:title" content="薬歴テンプレート生成 | 薬剤師向け無料ツール">
+  <meta property="og:description" content="薬歴作成を効率化。入力するだけで標準フォーマットを自動生成。">
+  <meta property="og:type" content="website">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 30px 0;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      margin-bottom: 30px;
+      border-radius: 16px;
+    }
+    h1 { font-size: 28px; margin-bottom: 8px; }
+    .subtitle { opacity: 0.9; font-size: 14px; }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: #11998e;
+      border-bottom: 2px solid #11998e;
+      padding-bottom: 8px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #11998e;
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .row { grid-template-columns: 1fr; }
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(17, 153, 142, 0.3);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .output {
+      background: #f8f9fa;
+      border: 2px dashed #11998e;
+      border-radius: 8px;
+      padding: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+      min-height: 200px;
+    }
+    .copy-btn {
+      margin-top: 12px;
+      background: #6c757d;
+    }
+    .copy-btn:hover {
+      box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+    }
+    .template-select {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .template-btn {
+      padding: 8px 16px;
+      background: #e9ecef;
+      border: none;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: auto;
+    }
+    .template-btn:hover {
+      background: #11998e;
+      color: white;
+    }
+    .template-btn.active {
+      background: #11998e;
+      color: white;
+    }
+    .cta {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    .cta h3 { margin-bottom: 8px; }
+    .cta p { opacity: 0.9; margin-bottom: 16px; font-size: 14px; }
+    .cta a {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 4px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 12px;
+    }
+    .success-msg {
+      background: #d4edda;
+      color: #155724;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 12px;
+      display: none;
+    }
+  </style>
+  <!-- Google tag (gtag.js) - 測定IDを差し替えてください -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    // GA4イベント計測関数
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'ai_prompts',
+        'product_name': 'AIプロンプト集',
+        'price': 300
+      });
+    }
+
+    function trackNotionCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'notion_template',
+        'product_name': 'Notionテンプレート',
+        'price': 500
+      });
+    }
+
+    function trackToolUsage(actionType) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': '薬歴テンプレート生成',
+        'action_type': actionType
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'medication_history'
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💊 薬歴テンプレート生成</h1>
+      <p class="subtitle">入力するだけで標準フォーマットを自動生成</p>
+    </header>
+
+    <div class="card">
+      <h2>📋 テンプレート選択</h2>
+      <div class="template-select">
+        <button class="template-btn active" data-template="standard">標準</button>
+        <button class="template-btn" data-template="homecare">在宅</button>
+        <button class="template-btn" data-template="chronic">慢性疾患</button>
+        <button class="template-btn" data-template="antibiotic">抗生物質</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>👤 患者情報</h2>
+      <div class="row">
+        <div class="form-group">
+          <label>患者イニシャル</label>
+          <input type="text" id="patientInitial" placeholder="A.T." maxlength="10">
+        </div>
+        <div class="form-group">
+          <label>年齢</label>
+          <input type="number" id="age" placeholder="75" min="0" max="120">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label>性別</label>
+          <select id="gender">
+            <option value="">選択</option>
+            <option value="男性">男性</option>
+            <option value="女性">女性</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>基礎疾患</label>
+          <input type="text" id="disease" placeholder="高血圧、糖尿病">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💊 処方内容</h2>
+      <div class="form-group">
+        <label>処方薬</label>
+        <textarea id="medication" placeholder="アムロジピン 5mg 1T 1×朝食後&#10;メトホルミン 500mg 1T 2×朝夕食後"></textarea>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label>処方期間</label>
+          <select id="duration">
+            <option value="14日">14日</option>
+            <option value="28日">28日</option>
+            <option value="30日">30日</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>処方区分</label>
+          <select id="rxType">
+            <option value="新規">新規</option>
+            <option value="継続">継続</option>
+            <option value="変更">変更</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📝 薬剤師業務</h2>
+      <div class="form-group">
+        <label>服薬指導内容</label>
+        <textarea id="counseling" placeholder="血圧測定の重要性について説明&#10;副作用（浮腫、頭痛）の説明"></textarea>
+      </div>
+      <div class="form-group">
+        <label>患者理解度・反応</label>
+        <textarea id="patientResponse" placeholder="理解良好、質問なし"></textarea>
+      </div>
+      <div class="form-group">
+        <label>課題・フォロー点</label>
+        <textarea id="followUp" placeholder="次回血圧持参確認"></textarea>
+      </div>
+    </div>
+
+    <button onclick="generateTemplate(); trackToolUsage('generate');">📄 薬歴を生成</button>
+
+    <div class="card" id="outputCard" style="display: none;">
+      <h2>📋 生成された薬歴</h2>
+      <div class="output" id="output"></div>
+      <button class="copy-btn" onclick="copyToClipboard(); trackCopyAction();">📋 コピー</button>
+      <div class="success-msg" id="successMsg">コピーしました！</div>
+    </div>
+
+    <div class="cta">
+      <h3>🚀 もっと効率化しませんか？</h3>
+      <p>薬歴作成をAIで自動化するプロンプト集も好評販売中</p>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">📊 業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算ツール</a>
+      <a href="#" onclick="trackPromptCTA()">AIプロンプト集を見る</a>
+      <a href="#" onclick="trackNotionCTA()">Notionテンプレート</a>
+    </div>
+
+    <footer>
+      <p>薬剤師 × エンジニア個人開発 | <a href="#">利用規約</a> | データは端末内のみ保存</p>
+    </footer>
+  </div>
+
+  <script>
+    // テンプレート定義
+    const templates = {
+      standard: {
+        name: '標準',
+        format: (data) => `【薬歴】${data.date}
+━━━━━━━━━━━━━━━━━━━━━━
+◆患者情報
+  ${data.initial}（${data.age}歳 ${data.gender}）
+  基礎疾患: ${data.disease}
+
+◆処方内容（${data.rxType}・${data.duration}）
+${data.medication}
+
+◆服薬指導
+${data.counseling}
+
+◆患者反応
+${data.response}
+
+◆課題・フォロー
+${data.followUp}
+━━━━━━━━━━━━━━━━━━━━━━`
+      },
+      homecare: {
+        name: '在宅',
+        format: (data) => `【在宅薬剤管理指導】${data.date}
+━━━━━━━━━━━━━━━━━━━━━━
+◆患者
+  ${data.initial}（${data.age}歳 ${data.gender}）
+  基礎疾患: ${data.disease}
+
+◆処方（${data.rxType}・${data.duration}）
+${data.medication}
+
+◆訪問時状況
+  バイタル: 
+  ADL: 
+  服薬状況: 
+
+◆指導内容
+${data.counseling}
+
+◆家族・介護者への説明
+  
+
+◆評価・今後の課題
+${data.followUp}
+━━━━━━━━━━━━━━━━━━━━━━`
+      },
+      chronic: {
+        name: '慢性疾患',
+        format: (data) => `【慢性疾患管理】${data.date}
+━━━━━━━━━━━━━━━━━━━━━━
+◆患者: ${data.initial}（${data.age}歳 ${data.gender}）
+◆疾患: ${data.disease}
+
+◆現在の治療（${data.rxType}）
+${data.medication}
+
+◆指標確認
+  血圧: / mmHg
+  HbA1c: %
+  その他: 
+
+◆服薬アドヒアランス
+  ${data.response}
+
+◆指導内容
+${data.counseling}
+
+◆次回目標
+${data.followUp}
+━━━━━━━━━━━━━━━━━━━━━━`
+      },
+      antibiotic: {
+        name: '抗生物質',
+        format: (data) => `【抗生物質処方】${data.date}
+━━━━━━━━━━━━━━━━━━━━━━
+◆患者: ${data.initial}（${data.age}歳 ${data.gender}）
+
+◆処方（${data.duration}）
+${data.medication}
+
+◆感染症の疑い
+  
+
+◆服薬指導
+  ✓ 決められた期間内服完了の重要性
+  ✓ 自己判断での中止禁止
+  ${data.counseling}
+
+◆副作用説明
+  ✓ 下痢、胃部不快感の可能性
+  ✓ 発疹・瘙痒時は速やかに受診
+
+◆患者理解: ${data.response}
+━━━━━━━━━━━━━━━━━━━━━━`
+      }
+    };
+
+    let currentTemplate = 'standard';
+
+    // テンプレート切り替え
+    document.querySelectorAll('.template-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentTemplate = this.dataset.template;
+      });
+    });
+
+    function generateTemplate() {
+      const data = {
+        date: new Date().toLocaleDateString('ja-JP'),
+        initial: document.getElementById('patientInitial').value || '___',
+        age: document.getElementById('age').value || '___',
+        gender: document.getElementById('gender').value || '___',
+        disease: document.getElementById('disease').value || 'なし',
+        medication: document.getElementById('medication').value || '（未入力）',
+        duration: document.getElementById('duration').value,
+        rxType: document.getElementById('rxType').value,
+        counseling: document.getElementById('counseling').value || '（特になし）',
+        response: document.getElementById('patientResponse').value || '良好',
+        followUp: document.getElementById('followUp').value || '（特になし）'
+      };
+
+      const output = templates[currentTemplate].format(data);
+      document.getElementById('output').textContent = output;
+      document.getElementById('outputCard').style.display = 'block';
+      document.getElementById('successMsg').style.display = 'none';
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const msg = document.getElementById('successMsg');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 2000);
+      });
+    }
+  </script>
+
+  <!-- 収益化CTA -->
+  <section style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af;">🎁 さらに業務を効率化しませんか？</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 12px;">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" style="display: block; padding: 16px; background: white; border-radius: 12px; text-decoration: none; box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);">
+        <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 4px;">🤖 AIプロンプト集</div>
+        <div style="font-size: 0.85rem; color: #4b5563;">薬歴・疑義照会を3倍速く。実務直結の100+プロンプト</div>
+        <div style="margin-top: 8px; font-size: 0.8rem; color: #059669; font-weight: 600;">¥300 で入手 →</div>
+      </a>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" style="display: block; padding: 16px; background: white; border-radius: 12px; text-decoration: none; box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);">
+        <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 4px;">📊 Notionテンプレート</div>
+        <div style="font-size: 0.85rem; color: #4b5563;">患者・処方・在庫を一元管理。CSVインポート対応</div>
+        <div style="margin-top: 8px; font-size: 0.8rem; color: #059669; font-weight: 600;">¥500 で入手 →</div>
+      </a>
+    </div>
+    <p style="font-size: 0.8rem; color: #6b7280; margin: 0;">※ 販売ページ準備中。公開までお待ちください。</p>
+  </section>
+
+  <footer class="other-tools" style="margin-top: 24px; padding: 20px; background: #f3f4f6; border-radius: 12px;">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; margin-bottom: 16px; padding: 8px 16px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">🏠 全ツール一覧（ポータル）</a><br><br>
+    <h3 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; color: #4b5563;">🔧 その他の無料ツール（全22種）</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px;">
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 薬価シミュレーター</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🗣️ 服薬指導チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🫘 腎機能別用量</a>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📊 業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">✅ 処方チェックリスト</a>
+      <a href="https://yusuketakuma.github.io/pharma-inquiry-email/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📧 疑義照会メール</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-summary/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📋 薬歴サマリー</a>
+      <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">⚠️ 副作用リスク評価</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-calendar/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🗓️ 服薬カレンダー</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-screening/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔍 処方鑑別チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-di-query/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📞 DI照会生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔔 服薬リマインダー生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 持参薬チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inventory-alert/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">📦 在庫アラート通知</a>
+      <a href="https://yusuketakuma.github.io/pharma-adherence-check/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 服薬アドヒアランス評価</a>
+      <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔤 類似薬名チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-polypharmacy/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💊 ポリファーマシー検出</a>
+      <a href="https://yusuketakuma.github.io/pharma-homecare-report/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🏥 在宅医療報告書生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-fee-calculator/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">💰 調剤報酬シミュレーター</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🗣️ 服薬指導シナリオ生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-patient-explanation/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">👨‍⚕️ 患者向けお薬説明文</a>
+    </div>
+  </footer>
+</body>
+</html>

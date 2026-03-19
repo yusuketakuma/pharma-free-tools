@@ -1,0 +1,28 @@
+{
+  "lastRun": "2026-03-19T05:45:00+09:00",
+  "status": "BLOCKED",
+  "blockers": [
+    {
+      "type": "API_LIMIT",
+      "service": "Brave Search API",
+      "error": "USAGE_LIMIT_EXCEEDED",
+      "impact": "全インターネットリサーチ停止"
+    }
+  ],
+  "pendingTasks": {
+    "pharmacy": [],
+    "sidebiz": [],
+    "management": [],
+    "openclaw": [],
+    "monitoring": []
+  },
+  "alternativeActions": [
+    "web_fetchで特定URL収集",
+    "ローカルナレッジ再整理",
+    "内部タスク優先"
+  ],
+  "nextCycleAdjustments": [
+    "API使用量監視の実装",
+    "代替情報源の事前確保"
+  ]
+}

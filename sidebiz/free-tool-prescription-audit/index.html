@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>処方監査チェックリスト | 薬剤師無料ツール</title>
+    <meta name="description" content="処方内容の包括的チェックを支援する無料ツール。用量・相互作用・禁忌・重複などを体系的に確認できます。">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "処方監査チェックリスト",
+        "applicationCategory": "MedicalApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"},
+        "description": "処方内容の包括的チェックを支援する薬剤師向け無料ツール"
+    }
+    </script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        .section-title {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title .icon {
+            width: 24px;
+            height: 24px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 3px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        .check-item:hover {
+            border-left-color: #667eea;
+        }
+        .check-item.checked {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+        }
+        .check-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-top: 2px;
+        }
+        .check-item label {
+            flex: 1;
+            cursor: pointer;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+        .check-item .note {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 4px;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #48bb78);
+            transition: width 0.3s;
+            width: 0%;
+        }
+        .stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: #edf2f7;
+            border-radius: 8px;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: #718096;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .result {
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        .result.complete {
+            display: block;
+            background: #c6f6d5;
+            border: 1px solid #48bb78;
+            color: #276749;
+        }
+        .result.incomplete {
+            display: block;
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            color: #c53030;
+        }
+        .cta-box {
+            margin-top: 24px;
+            padding: 16px;
+            background: linear-gradient(135deg, #faf5ff 0%, #f0fff4 100%);
+            border-radius: 8px;
+            border: 1px solid #e9d8fd;
+        }
+        .cta-box h3 {
+            color: #553c9a;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .cta-box p {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 12px;
+        }
+        .cta-box a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            h1 { font-size: 1.25rem; }
+            .stats { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 処方監査チェックリスト</h1>
+        <p class="subtitle">処方内容の包括的チェックを体系的に実施</p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="checkedCount">0</div>
+                <div class="stat-label">確認済み</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">全項目</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="percentage">0%</div>
+                <div class="stat-label">進捗</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <form id="auditForm">
+            <!-- 基本確認 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">1</span>
+                    基本確認
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check1">
+                    <label for="check1">
+                        患者氏名の確認
+                        <div class="note">処方せんと患者情報の照合</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check2">
+                    <label for="check2">
+                        年齢・体重の確認
+                        <div class="note">小児・高齢者での用量調整判断</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check3">
+                    <label for="check3">
+                        既往歴・アレルギー歴の確認
+                        <div class="note">禁忌・慎重投与の判断材料</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check4">
+                    <label for="check4">
+                        処方日・有効期限の確認
+                        <div class="note">処方せん有効期限（原則4日以内）</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 用法・用量 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">2</span>
+                    用法・用量確認
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check5">
+                    <label for="check5">
+                        1回用量の適正確認
+                        <div class="note">年齢・腎機能・肝機能に基づく判断</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check6">
+                    <label for="check6">
+                        1日用量の適正確認
+                        <div class="note">最大用量・最小有効用量の範囲内か</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check7">
+                    <label for="check7">
+                        投与期間の適正確認
+                        <div class="note">疾患・薬剤特性に適した期間か</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check8">
+                    <label for="check8">
+                        用法の実現可能性確認
+                        <div class="note">食前・食後・就寝前などの指示</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 相互作用・禁忌 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">3</span>
+                    相互作用・禁忌確認
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check9">
+                    <label for="check9">
+                        併用薬との相互作用確認
+                        <div class="note">CYP阻害・誘導、キニジンなど</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check10">
+                    <label for="check10">
+                        禁忌の確認
+                        <div class="note">絶対禁忌・相対禁忌の判断</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check11">
+                    <label for="check11">
+                        慎重投与の確認
+                        <div class="note">リスク・ベネフィット評価</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check12">
+                    <label for="check12">
+                        年齢別注意事項の確認
+                        <div class="note">小児・高齢者特有の注意点</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 重複・重篤副作用 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">4</span>
+                    重複・副作用リスク確認
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check13">
+                    <label for="check13">
+                        同一成分・同一効能薬の重複確認
+                        <div class="note">一般名・商品名の照合</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check14">
+                    <label for="check14">
+                        重篤な副作用リスクの確認
+                        <div class="note">添付文書の警告・禁忌参照</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check15">
+                    <label for="check15">
+                        ポリファーマシーの評価
+                        <div class="note">6種以上の併用で特に注意</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check16">
+                    <label for="check16">
+                        漢方薬・サプリメントとの相互作用
+                        <div class="note">納豆・グレープフルーツなど</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 最終確認 -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">5</span>
+                    最終確認
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check17">
+                    <label for="check17">
+                        疑義照会の必要性判断
+                        <div class="note">不明点は処方医へ確認</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check18">
+                    <label for="check18">
+                        患者への説明事項整理
+                        <div class="note">重要な副作用・相互作用の説明</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check19">
+                    <label for="check19">
+                        お薬手帳への記録確認
+                        <div class="note">新規・変更薬の記録</div>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="check20">
+                    <label for="check20">
+                        監査完了の確認
+                        <div class="note">全項目チェック完了</div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" onclick="checkAll()">全てチェック</button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">リセット</button>
+            </div>
+        </form>
+
+        <div class="result" id="result"></div>
+
+        <div class="cta-box">
+            <h3>💡 より効率的な監査作業に</h3>
+            <p>AI活用で疑義照会メールや服薬指導シナリオを自動生成。業務時間を30%短縮。</p>
+            <a href="#">薬剤師向けAIプロンプト集（¥300）を確認 →</a>
+        </div>
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const totalCount = checkboxes.length;
+        const checkedCountEl = document.getElementById('checkedCount');
+        const totalCountEl = document.getElementById('totalCount');
+        const percentageEl = document.getElementById('percentage');
+        const progressFill = document.getElementById('progressFill');
+        const resultEl = document.getElementById('result');
+
+        totalCountEl.textContent = totalCount;
+
+        function updateProgress() {
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const percentage = Math.round((checked / totalCount) * 100);
+            
+            checkedCountEl.textContent = checked;
+            percentageEl.textContent = percentage + '%';
+            progressFill.style.width = percentage + '%';
+
+            checkboxes.forEach(cb => {
+                const item = cb.closest('.check-item');
+                if (cb.checked) {
+                    item.classList.add('checked');
+                } else {
+                    item.classList.remove('checked');
+                }
+            });
+
+            if (checked === totalCount) {
+                resultEl.className = 'result complete';
+                resultEl.textContent = '✅ 全項目確認完了。監査終了です。';
+            } else if (checked > 0) {
+                resultEl.className = 'result incomplete';
+                resultEl.textContent = `⚠️ 残り${totalCount - checked}項目の確認が必要です。`;
+            } else {
+                resultEl.className = 'result';
+                resultEl.style.display = 'none';
+            }
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
+
+        function checkAll() {
+            checkboxes.forEach(cb => cb.checked = true);
+            updateProgress();
+        }
+
+        function resetForm() {
+            checkboxes.forEach(cb => cb.checked = false);
+            updateProgress();
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

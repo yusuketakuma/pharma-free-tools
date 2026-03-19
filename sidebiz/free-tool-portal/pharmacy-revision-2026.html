@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-revision-2026-' + action
+      });
+    }
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026改定対応・実績計算診断 | 薬剤師無料ツール</title>
+  <meta name="description" content="2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援・医薬品供給体制加算の取得状況を可視化し、改善提案を自動生成。">
+  <meta name="keywords" content="2026改定,診療報酬,調剤報酬,地域支援加算,医薬品供給体制加算,薬局DX,実績計算">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+      min-height: 100vh;
+      color: #333;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      color: #1a365d;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #718096;
+      font-size: 0.95rem;
+    }
+    
+    .progress-bar {
+      background: #e2e8f0;
+      height: 8px;
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #1a365d, #2c5282);
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    
+    .progress-text {
+      text-align: center;
+      color: #718096;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    
+    .category-label {
+      background: #1a365d;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+    
+    .question {
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+    
+    .question.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .question h2 {
+      color: #1a365d;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .option {
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1rem;
+    }
+    
+    .option:hover {
+      border-color: #2c5282;
+      background: #ebf8ff;
+    }
+    
+    .option.selected {
+      border-color: #1a365d;
+      background: #bee3f8;
+    }
+    
+    .result {
+      display: none;
+    }
+    
+    .result.active {
+      display: block;
+    }
+    
+    .score-card {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #1a365d, #2c5282);
+      border-radius: 16px;
+      color: white;
+      margin-bottom: 30px;
+    }
+    
+    .score-number {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .score-label {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+    
+    .score-level {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 20px;
+      border-radius: 20px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    
+    .breakdown {
+      margin: 30px 0;
+    }
+    
+    .breakdown h3 {
+      color: #1a365d;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+    
+    .breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .breakdown-name {
+      font-weight: 500;
+    }
+    
+    .breakdown-score {
+      font-weight: bold;
+      color: #1a365d;
+    }
+    
+    .suggestions {
+      background: #f7fafc;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+    }
+    
+    .suggestions h3 {
+      color: #1a365d;
+      margin-bottom: 15px;
+    }
+    
+    .suggestion-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #e2e8f0;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .suggestion-item:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #2c5282;
+      font-weight: bold;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      color: white;
+      margin-top: 30px;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .cta-section p {
+      margin-bottom: 15px;
+      opacity: 0.9;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: white;
+      color: #38a169;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    
+    .cta-button:hover {
+      transform: scale(1.05);
+    }
+    
+    .restart {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .restart-btn {
+      background: #e2e8f0;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #4a5568;
+    }
+    
+    .restart-btn:hover {
+      background: #cbd5e0;
+    }
+  </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-revision-2026-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-revision-2026-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-revision-2026-prompt-cta'
+      });
+    }
+  </script>
+
+      <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 2026改定対応・実績計算診断</h1>
+      <p class="subtitle">2026年度診療報酬改定に向けた薬局の対応レベルを診断（5分）</p>
+    </header>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="progress-text" id="progressText">質問 1 / 20</div>
+    
+    <div id="questions"></div>
+    
+    <div class="result" id="result">
+      <div class="score-card">
+        <div class="score-number" id="totalScore">0</div>
+        <div class="score-label">点 / 100点</div>
+        <div class="score-level" id="scoreLevel">判定中...</div>
+      </div>
+      
+      <div class="breakdown">
+        <h3>📈 領域別スコア</h3>
+        <div id="breakdownList"></div>
+      </div>
+      
+      <div class="suggestions">
+        <h3>💡 改善提案</h3>
+        <div id="suggestionList"></div>
+      </div>
+      
+      <div class="cta-section">
+        <h3>🎯 2026改定対応を加速させる</h3>
+        <p>実績計算自動化・DX推進のノウハウをまとめたAIプロンプト集</p>
+        <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-button">詳細を見る →</a>
+      </div>
+      
+      <div class="restart">
+        <button class="restart-btn" onclick="restart()">もう一度診断する</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const questions = [
+      // 地域連携（5問）
+      {
+        category: "地域連携",
+        question: "地域の医療機関・訪問看護ステーションとの情報共有システム（地域医療連携ネットワーク等）を活用しているか？",
+        options: ["活用していない", "一部活用している", "積極的に活用している", "主導的に活用・運用している"]
+      },
+      {
+        category: "地域連携",
+        question: "地域包括ケアシステムの取り組み（地域ケア会議参加等）にどの程度関与しているか？",
+        options: ["関与していない", "情報収集のみ", "必要時に参加している", "積極的に参画・貢献している"]
+      },
+      {
+        category: "地域連携",
+        question: "後発医薬品への切り替え提案・患者説明の実施率は？",
+        options: ["ほぼ実施していない", "時々実施する程度", "多くのケースで実施", "ほぼ全例で実施・記録も完備"]
+      },
+      {
+        category: "地域連携",
+        question: "地域薬剤師会・学会活動への参加状況は？",
+        options: ["参加していない", "年会費のみ", "勉強会等に参加", "運営・発表等で積極参加"]
+      },
+      {
+        category: "地域連携",
+        question: "近隣薬局との情報共有・相互支援体制は？",
+        options: ["特にない", "緊急時のみ連絡", "定期的に情報交換", "システム化・正式な連携あり"]
+      },
+      // 在宅医療（5問）
+      {
+        category: "在宅医療",
+        question: "在宅患者への訪問薬剤管理指導の実施状況は？",
+        options: ["実施していない", "月1〜2回程度", "週1回以上", "複数患者を定期的に実施"]
+      },
+      {
+        category: "在宅医療",
+        question: "在宅医療チーム（医師・看護師・ケアマネ等）との連携頻度は？",
+        options: ["ほぼない", "月1回程度", "週1回以上", "毎日情報共有"]
+      },
+      {
+        category: "在宅医療",
+        question: "在宅患者の薬剤管理状況（一包化・PTP等）の整備率は？",
+        options: ["整備していない", "一部患者のみ", "多くの患者で整備", "全患者で適切に整備"]
+      },
+      {
+        category: "在宅医療",
+        question: "在宅医療費請求・書類作成の効率化（電子化・テンプレート化）状況は？",
+        options: ["手書き・非効率", "一部テンプレート化", "電子化・テンプレート活用", "完全自動化に近い"]
+      },
+      {
+        category: "在宅医療",
+        question: "在宅患者の緊急時対応マニュアル・体制の整備状況は？",
+        options: ["未整備", "基本的な対応のみ", "マニュアル整備済み", "24時間対応体制あり"]
+      },
+      // 供給体制（5問）
+      {
+        category: "供給体制",
+        question: "医薬品供給体制加算の取得状況・維持管理は？",
+        options: ["取得していない", "取得検討中", "取得済み・維持管理中", "取得済み・拡大検討中"]
+      },
+      {
+        category: "供給体制",
+        question: "在庫管理システム（発注・期限管理・欠品防止）の導入状況は？",
+        options: ["手作業・未導入", "簡易システム使用", "本格的なシステム導入", "AI・自動化を活用"]
+      },
+      {
+        category: "供給体制",
+        question: "後発品への切り替え促進・供給安定化への取り組みは？",
+        options: ["特に取り組んでいない", "時々切り替え提案", "積極的に切り替え推進", "データ分析で最適化"]
+      },
+      {
+        category: "供給体制",
+        question: "医薬品供給情報（供給停止・限定出荷等）の把握・対応状況は？",
+        options: ["把握できていない", "事後対応のみ", "定期的に情報収集", "リアルタイム把握・予測"]
+      },
+      {
+        category: "供給体制",
+        question: "特殊医薬品（生物学的製剤・抗がん剤等）の管理体制は？",
+        options: ["取り扱いなし", "基本的な管理のみ", "専門的な管理体制あり", "地域拠点として機能"]
+      },
+      // 患者対応（3問）
+      {
+        category: "患者対応",
+        question: "患者向け服薬指導・相談対応の質・時間の確保状況は？",
+        options: ["時間が足りない", "最低限の対応", "十分な時間確保", "個別最適化・ICT活用"]
+      },
+      {
+        category: "患者対応",
+        question: "患者フィードバック（アンケート・苦情等）の収集・活用状況は？",
+        options: ["収集していない", "時々収集のみ", "定期的収集・分析", "PDCAサイクル確立"]
+      },
+      {
+        category: "患者対応",
+        question: "多言語対応・障害者への配慮（手話・点字等）の状況は？",
+        options: ["特に対応していない", "必要時に個別対応", "基本的な仕組みあり", "包括的な対応体制あり"]
+      },
+      // DX推進（2問）
+      {
+        category: "DX推進",
+        question: "電子薬歴・調剤システムの活用・データ利活用状況は？",
+        options: ["紙中心・未活用", "電子化のみ", "データ分析も実施", "AI・予測活用"]
+      },
+      {
+        category: "DX推進",
+        question: "オンライン服薬指導・テレファーマシーの導入状況は？",
+        options: ["導入していない", "検討中", "試行導入済み", "本格運用中"]
+      }
+    ];
+    
+    let currentQuestion = 0;
+    let scores = {
+      "地域連携": 0,
+      "在宅医療": 0,
+      "供給体制": 0,
+      "患者対応": 0,
+      "DX推進": 0
+    };
+    
+    function init() {
+      renderQuestions();
+      showQuestion(0);
+    }
+    
+    function renderQuestions() {
+      const container = document.getElementById('questions');
+      container.innerHTML = questions.map((q, i) => `
+        <div class="question" id="q${i}">
+          <div class="category-label">${q.category}</div>
+          <h2>Q${i + 1}. ${q.question}</h2>
+          <div class="options">
+            ${q.options.map((opt, j) => `
+              <div class="option" onclick="selectOption(${i}, ${j})">
+                ${opt}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function showQuestion(index) {
+      document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+      if (index < questions.length) {
+        document.getElementById(`q${index}`).classList.add('active');
+        document.getElementById('progressFill').style.width = `${(index / questions.length) * 100}%`;
+        document.getElementById('progressText').textContent = `質問 ${index + 1} / ${questions.length}`;
+      }
+    }
+    
+    function selectOption(qIndex, oIndex) {
+      const options = document.querySelectorAll(`#q${qIndex} .option`);
+      options.forEach(opt => opt.classList.remove('selected'));
+      options[oIndex].classList.add('selected');
+      
+      const category = questions[qIndex].category;
+      scores[category] += oIndex * 5; // 0-15点
+      
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion(currentQuestion);
+        } else {
+          showResult();
+        }
+      }, 300);
+    }
+    
+    function showResult() {
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressText').textContent = '診断完了';
+      
+      document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+      document.getElementById('result').classList.add('active');
+      
+      const total = Object.values(scores).reduce((a, b) => a + b, 0);
+      const normalizedTotal = Math.min(100, Math.round(total * 0.67));
+      
+      document.getElementById('totalScore').textContent = normalizedTotal;
+      
+      let level = '';
+      if (normalizedTotal >= 80) level = '🏆 改定対応リーダー';
+      else if (normalizedTotal >= 60) level = '✅ 改定対応準備完了';
+      else if (normalizedTotal >= 40) level = '⚠️ 改定対応要改善';
+      else level = '🚨 改定対応急務';
+      
+      document.getElementById('scoreLevel').textContent = level;
+      
+      const breakdownList = document.getElementById('breakdownList');
+      const maxScores = { "地域連携": 25, "在宅医療": 25, "供給体制": 25, "患者対応": 15, "DX推進": 10 };
+      breakdownList.innerHTML = Object.entries(scores).map(([cat, score]) => {
+        const max = maxScores[cat];
+        const percent = Math.round((score / max) * 100);
+        return `
+          <div class="breakdown-item">
+            <span class="breakdown-name">${cat}</span>
+            <span class="breakdown-score">${percent}%</span>
+          </div>
+        `;
+      }).join('');
+      
+      generateSuggestions();
+    }
+    
+    function generateSuggestions() {
+      const suggestions = [];
+      const maxScores = { "地域連携": 25, "在宅医療": 25, "供給体制": 25, "患者対応": 15, "DX推進": 10 };
+      
+      Object.entries(scores).forEach(([cat, score]) => {
+        const max = maxScores[cat];
+        const percent = (score / max) * 100;
+        
+        if (percent < 50) {
+          if (cat === "地域連携") suggestions.push("地域医療連携ネットワークへの参加・地域ケア会議への参画を検討");
+          if (cat === "在宅医療") suggestions.push("在宅訪問薬剤管理指導の実施拡大・チーム連携強化");
+          if (cat === "供給体制") suggestions.push("医薬品供給体制加算の取得・在庫管理システム導入");
+          if (cat === "患者対応") suggestions.push("服薬指導時間の確保・患者フィードバック収集仕組み作り");
+          if (cat === "DX推進") suggestions.push("電子薬歴データ活用・オンライン服薬指導導入検討");
+        }
+      });
+      
+      if (suggestions.length === 0) {
+        suggestions.push("現在の対応レベルは良好です。継続的な改善と最新情報のキャッチアップを継続してください。");
+      }
+      
+      document.getElementById('suggestionList').innerHTML = suggestions.map(s => 
+        `<div class="suggestion-item">${s}</div>`
+      ).join('');
+    }
+    
+    function restart() {
+      currentQuestion = 0;
+      scores = {
+        "地域連携": 0,
+        "在宅医療": 0,
+        "供給体制": 0,
+        "患者対応": 0,
+        "DX推進": 0
+      };
+      document.getElementById('result').classList.remove('active');
+      init();
+    }
+    
+    init();
+  </script>
+
+  <!-- 関連ツール -->
+  <section class="related-tools" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📦 関連ツール</h3>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <li><a href="pharmacy-drug-price-revision-2026.html" style="color: #3498db; text-decoration: none;">薬価改定シミュレーター</a></li>
+      <li><a href="pharmacy-dispensing-fee-revision-diagnosis.html" style="color: #3498db; text-decoration: none;">調剤報酬改定診断</a></li>
+      <li><a href="pharmacy-revenue-improvement.html" style="color: #3498db; text-decoration: none;">収益改善診断</a></li>
+      <li><a href="index.html" style="color: #3498db; text-decoration: none;">🏠ツール一覧</a></li>
+    </ul>
+  </section>
+
+</body>
+</html>

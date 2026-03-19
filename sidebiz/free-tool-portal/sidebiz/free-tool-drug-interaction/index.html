@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>併用禁忌・相互作用チェッカー | 薬剤師のための無料ツール</title>
+  <meta name="description" content="複数薬剤の併用禁忌・重大な相互作用をチェック。処方鑑別時にすぐ使える薬剤師専用ツール。約100の代表的な相互作用ペアを収録。">
+  <link rel="canonical" href="https://yusuke-ikitama.github.io/free-tool-drug-interaction/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "併用禁忌・相互作用チェッカー",
+    "description": "複数薬剤の併用禁忌・重大な相互作用をチェックする薬剤師専用ツール",
+    "url": "https://yusuke-ikitama.github.io/free-tool-drug-interaction/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "author": { "@type": "Person", "name": "薬剤師" },
+    "inLanguage": "ja"
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --danger: #dc2626;
+      --warning: #ea580c;
+      --caution: #ca8a04;
+      --success: #16a34a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-800: #1f2937;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', sans-serif; background: var(--gray-50); color: var(--gray-800); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    header { text-align: center; margin-bottom: 32px; }
+    header h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 8px; }
+    header p { color: var(--gray-600); font-size: 0.9rem; }
+    .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .input-section { margin-bottom: 24px; }
+    .input-section label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+    .drug-input { display: flex; gap: 8px; flex-wrap: wrap; }
+    .drug-input input { flex: 1; min-width: 200px; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: 8px; font-size: 1rem; transition: border-color 0.2s; }
+    .drug-input input:focus { outline: none; border-color: var(--primary); }
+    .drug-input button { padding: 12px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .drug-input button:hover { background: var(--primary-dark); }
+    .drug-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .drug-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-100); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; }
+    .drug-tag button { background: none; border: none; color: var(--gray-600); cursor: pointer; font-size: 1.1rem; line-height: 1; }
+    .drug-tag button:hover { color: var(--danger); }
+    .check-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .check-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .check-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .result-section { margin-top: 24px; }
+    .result-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .result-item { padding: 16px; border-radius: 10px; margin-bottom: 12px; border-left: 4px solid; }
+    .result-item.level-1 { background: #fef2f2; border-color: var(--danger); }
+    .result-item.level-2 { background: #fff7ed; border-color: var(--warning); }
+    .result-item.level-3 { background: #fefce8; border-color: var(--caution); }
+    .result-item .level { font-weight: 700; font-size: 0.85rem; margin-bottom: 6px; }
+    .result-item.level-1 .level { color: var(--danger); }
+    .result-item.level-2 .level { color: var(--warning); }
+    .result-item.level-3 .level { color: var(--caution); }
+    .result-item .drugs { font-weight: 600; margin-bottom: 4px; }
+    .result-item .reason { font-size: 0.9rem; color: var(--gray-600); }
+    .no-result { text-align: center; padding: 32px; color: var(--gray-600); }
+    .no-result .icon { font-size: 3rem; margin-bottom: 12px; }
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 20px; padding: 16px; background: var(--gray-100); border-radius: 8px; font-size: 0.85rem; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .legend-dot.l1 { background: var(--danger); }
+    .legend-dot.l2 { background: var(--warning); }
+    .legend-dot.l3 { background: var(--caution); }
+    .cta-section { margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe; }
+    .cta-section h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af; }
+    .cta-section p { font-size: 0.9rem; color: #1e3a8a; margin-bottom: 16px; }
+    .cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+    .cta-btn { padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: transform 0.2s; }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-btn.primary { background: #1d4ed8; color: white; }
+    .cta-btn.secondary { background: white; color: #1d4ed8; border: 2px solid #1d4ed8; }
+    .tool-links { margin-top: 32px; }
+    .tool-links h4 { font-size: 0.9rem; color: var(--gray-600); margin-bottom: 12px; }
+    .tool-links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+    .tool-links-grid a { padding: 8px 12px; background: white; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 0.8rem; color: var(--gray-600); text-decoration: none; transition: all 0.2s; }
+    .tool-links-grid a:hover { border-color: var(--primary); color: var(--primary); }
+    footer { text-align: center; margin-top: 40px; padding: 20px; color: var(--gray-600); font-size: 0.8rem; }
+    .note { margin-top: 16px; padding: 12px; background: var(--gray-100); border-radius: 8px; font-size: 0.8rem; color: var(--gray-600); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💊 併用禁忌・相互作用チェッカー</h1>
+      <p>複数薬剤の併用リスクを瞬時にチェック</p>
+    </header>
+
+    <div class="card">
+      <div class="input-section">
+        <label>薬剤名を入力（複数可）</label>
+        <div class="drug-input">
+          <input type="text" id="drugInput" placeholder="例: イトラコナゾール、ピモジド" autocomplete="off">
+          <button onclick="addDrug()">追加</button>
+        </div>
+        <div class="drug-tags" id="drugTags"></div>
+      </div>
+
+      <button class="check-btn" onclick="checkInteractions()" id="checkBtn" disabled>
+        相互作用をチェック
+      </button>
+
+      <div class="result-section" id="resultSection" style="display: none;">
+        <div class="result-title" id="resultTitle"></div>
+        <div id="resultList"></div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot l1"></span> 併用禁忌</div>
+        <div class="legend-item"><span class="legend-dot l2"></span> 重大な副作用</div>
+        <div class="legend-item"><span class="legend-dot l3"></span> 併用注意</div>
+      </div>
+
+      <div class="note">
+        ⚠️ 本ツールは代表的な相互作用（約100組）を収録しています。全ての相互作用を網羅するものではありません。必ず添付文書・インタビューフォームで確認してください。
+      </div>
+    </div>
+
+    <!-- 収益化CTA -->
+    <section class="cta-section">
+      <h3>🎁 さらに業務を効率化しませんか？</h3>
+      <p>25種類のChatGPT/ClaudeプロンプトとNotionテンプレートで、調剤業務を劇的に効率化</p>
+      <div class="cta-buttons">
+        <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn primary" onclick="trackCTA('prompt')">AIプロンプト集 ¥300</a>
+        <a href="#" class="cta-btn secondary" onclick="trackCTA('notion')">Notionテンプレート ¥500</a>
+      </div>
+    </section>
+
+    <!-- ポータルサイト -->
+    <div style="text-align: center; margin: 24px 0;">
+        <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">🏠 全ツール一覧（ポータルサイト）</a>
+    </div>
+
+    <!-- 他ツールリンク -->
+    <div class="tool-links">
+      <h4>📋 全23種の無料ツール</h4>
+      <div class="tool-links-grid">
+        <a href="https://yusuke-ikitama.github.io/free-tool-drug-price/">G1: 薬価シミュレーター</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-medication-history/">G2: 薬歴テンプレート</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-fee-calculator/">G3: 調剤報酬シミュ</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-renal-dose/">G4: 腎機能別用量</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-pharmacist-efficiency-diagnosis/">G5: 業務効率診断</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-homecare-report/">G6: 在宅報告書</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-adherence-check/">G7: アドヒアランス</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-bringing-medicine/">G8: 持参薬チェック</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-medication-calendar/">G9: 服薬カレンダー</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-medication-guidance/">G10: 服薬指導</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-medication-guidance-scenario/">G11: 指導シナリオ</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-medication-summary/">G12: 薬歴サマリー</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-patient-explanation/">G13: 患者説明文</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-prescription-checklist/">G14: 処方チェック</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-prescription-screening/">G15: 処方鑑別</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-side-effect-checker/">G16: 副作用リスク</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-polypharmacy/">G17: ポリファーマシー</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-similar-drug-check/">G18: 類似薬名</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-inventory-alert/">G19: 在庫アラート</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-inquiry-email/">G20: 疑義照会メール</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-di-query/">G21: DI照会</a>
+        <a href="https://yusuke-ikitama.github.io/free-tool-medication-reminder/">G22: 服薬リマインダー</a>
+        <a href="./">G23: 相互作用チェック（現在地）</a>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2026 薬剤師のための無料ツール</p>
+    </footer>
+  </div>
+
+  <script src="interaction-data.js"></script>
+  <script>
+    let drugs = [];
+
+    function addDrug() {
+      const input = document.getElementById('drugInput');
+      const value = input.value.trim();
+      if (value && !drugs.includes(value)) {
+        drugs.push(value);
+        renderTags();
+        input.value = '';
+        updateCheckBtn();
+      }
+      input.focus();
+    }
+
+    function removeDrug(drug) {
+      drugs = drugs.filter(d => d !== drug);
+      renderTags();
+      updateCheckBtn();
+    }
+
+    function renderTags() {
+      const container = document.getElementById('drugTags');
+      container.innerHTML = drugs.map(d => `
+        <span class="drug-tag">
+          ${d}
+          <button onclick="removeDrug('${d}')">&times;</button>
+        </span>
+      `).join('');
+    }
+
+    function updateCheckBtn() {
+      document.getElementById('checkBtn').disabled = drugs.length < 2;
+    }
+
+    function normalize(str) {
+      return str.replace(/[・，、]/g, '').replace(/\s+/g, '').toLowerCase();
+    }
+
+    function checkInteractions() {
+      const results = [];
+      
+      for (let i = 0; i < drugs.length; i++) {
+        for (let j = i + 1; j < drugs.length; j++) {
+          const d1 = normalize(drugs[i]);
+          const d2 = normalize(drugs[j]);
+          
+          for (const interaction of INTERACTION_DATA) {
+            const a = normalize(interaction.drugA);
+            const b = normalize(interaction.drugB);
+            
+            if ((d1.includes(a) || a.includes(d1) || d2.includes(a) || a.includes(d2)) &&
+                (d1.includes(b) || b.includes(d1) || d2.includes(b) || b.includes(d2))) {
+              if (!results.find(r => r.drugA === interaction.drugA && r.drugB === interaction.drugB)) {
+                results.push(interaction);
+              }
+            }
+          }
+        }
+      }
+
+      results.sort((a, b) => a.level - b.level);
+
+      displayResults(results);
+      trackToolUsage();
+    }
+
+    function displayResults(results) {
+      const section = document.getElementById('resultSection');
+      const title = document.getElementById('resultTitle');
+      const list = document.getElementById('resultList');
+
+      section.style.display = 'block';
+
+      if (results.length === 0) {
+        title.innerHTML = '<span style="color: var(--success);">✓</span> 重大な相互作用は見つかりませんでした';
+        list.innerHTML = `
+          <div class="no-result">
+            <div class="icon">✅</div>
+            <p>入力された薬剤の組み合わせで<br>重大な相互作用は検出されませんでした</p>
+            <p style="margin-top: 8px; font-size: 0.8rem;">※本ツールは代表的な相互作用のみを収録しています</p>
+          </div>
+        `;
+      } else {
+        const level1 = results.filter(r => r.level === 1);
+        const level2 = results.filter(r => r.level === 2);
+        const level3 = results.filter(r => r.level === 3);
+
+        let titleText = '';
+        if (level1.length > 0) titleText = `🚨 併用禁忌が${level1.length}件検出されました`;
+        else if (level2.length > 0) titleText = `⚠️ 重大な副作用リスクが${level2.length}件検出されました`;
+        else titleText = `📋 併用注意が${level3.length}件あります`;
+
+        title.textContent = titleText;
+
+        list.innerHTML = results.map(r => {
+          const levelText = r.level === 1 ? '併用禁忌' : r.level === 2 ? '重大な副作用' : '併用注意';
+          return `
+            <div class="result-item level-${r.level}">
+              <div class="level">${levelText}</div>
+              <div class="drugs">${r.drugA} × ${r.drugB}</div>
+              <div class="reason">${r.reason}</div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // Enter key support
+    document.getElementById('drugInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') addDrug();
+    });
+
+    // GA4 tracking (placeholder)
+    function trackToolUsage() {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'tool_usage', {
+          event_category: 'engagement',
+          event_label: 'drug-interaction-check'
+        });
+      }
+    }
+
+    function trackCTA(type) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'cta_click', {
+          event_category: 'monetization',
+          event_label: type === 'prompt' ? 'ai-prompts' : 'notion-template'
+        });
+      }
+    }
+  </script>
+</body>
+</html>

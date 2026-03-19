@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在宅医療同時指導チェックリスト | 薬剤師向け無料ツール</title>
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="description" content="2026年度診療報酬改定対応。訪問診療薬剤師同時指導料（300点）のチェックリスト。医師と薬剤師の同時訪問を効率化。">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "在宅医療同時指導チェックリスト",
+        "description": "2026年度診療報酬改定対応の訪問診療薬剤師同時指導料チェックリスト",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        .info-box h3 {
+            color: #2b6cb0;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .info-box p {
+            color: #4a5568;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .category {
+            margin-bottom: 30px;
+        }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+            padding: 12px 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8fafc;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .checklist-item:hover {
+            background: #edf2f7;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+        
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .checklist-item.checked {
+            background: #c6f6d5;
+        }
+        
+        .checklist-item.checked label {
+            text-decoration: line-through;
+            color: #718096;
+        }
+        
+        .progress-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .progress-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .progress-bar {
+            height: 30px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #48bb78;
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .score-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+        
+        .score-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .score-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .recommendation {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .print-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+        
+        .print-btn:hover {
+            background: #3182ce;
+        }
+        
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        
+        .reset-btn:hover {
+            background: #c53030;
+        }
+        
+        .cta-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .cta-text {
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #dd6b20;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        
+        .cta-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            .cta-section, .print-btn, .reset-btn {
+                display: none;
+            }
+        }
+    </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 在宅医療同時指導チェックリスト <span class="badge">2026改定対応</span></h1>
+        <p class="subtitle">訪問診療薬剤師同時指導料（300点）の適用を効率化</p>
+        
+        <div class="info-box">
+            <h3>💡 2026年度診療報酬改定のポイント</h3>
+            <p>訪問診療薬剤師同時指導料（300点）が新設され、医師と薬剤師が同時に患者宅を訪問することで評価されます。このチェックリストで必要項目を確認し、適正な請求と業務効率化を実現してください。</p>
+        </div>
+        
+        <div class="progress-section">
+            <div class="progress-title">📊 進捗状況</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <div class="progress-text" id="progressText">0 / 15 項目完了</div>
+        </div>
+        
+        <form id="checklistForm">
+            <div class="category">
+                <div class="category-title">
+                    <span class="category-icon">🏥</span>
+                    1. 訪問前準備（4項目）
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item1" name="item1">
+                    <label for="item1">医師と訪問日程・時間を調整済み（同時訪問の要件確認）</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item2" name="item2">
+                    <label for="item2">患者の薬剤情報・服用状況を事前確認</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item3" name="item3">
+                    <label for="item3">前回の訪問記録・指導内容をレビュー</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item4" name="item4">
+                    <label for="item4">必要な資材・書類を持参確認</label>
+                </div>
+            </div>
+            
+            <div class="category">
+                <div class="category-title">
+                    <span class="category-icon">👨‍⚕️</span>
+                    2. 同時訪問実施（5項目）
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item5" name="item5">
+                    <label for="item5">医師と同時に患者宅へ入室（同時訪問の証左）</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item6" name="item6">
+                    <label for="item6">服薬状況・アドヒアランスを医師と共有</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item7" name="item7">
+                    <label for="item7">副作用・有害事象の有無を医師と確認</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item8" name="item8">
+                    <label for="item8">処方変更・調整の必要性を医師と協議</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item9" name="item9">
+                    <label for="item9">患者・家族への服薬指導を実施</label>
+                </div>
+            </div>
+            
+            <div class="category">
+                <div class="category-title">
+                    <span class="category-icon">📝</span>
+                    3. 記録・報告（3項目）
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item10" name="item10">
+                    <label for="item10">同時訪問日時・医師名を薬歴に記録</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item11" name="item11">
+                    <label for="item11">指導内容・医師との協議結果を詳細記録</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item12" name="item12">
+                    <label for="item12">次回訪問時の課題・フォローポイントを記載</label>
+                </div>
+            </div>
+            
+            <div class="category">
+                <div class="category-title">
+                    <span class="category-icon">💰</span>
+                    4. 請求要件確認（3項目）
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item13" name="item13">
+                    <label for="item13">同時指導料の算定要件を満たしているか確認</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item14" name="item14">
+                    <label for="item14">必要な添付書類・証跡を整備</label>
+                </div>
+                
+                <div class="checklist-item">
+                    <input type="checkbox" id="item15" name="item15">
+                    <label for="item15">請求システムへの入力完了</label>
+                </div>
+            </div>
+        </form>
+        
+        <div class="score-section">
+            <div class="score-title">🎯 完了スコア</div>
+            <div class="score-display" id="scoreDisplay">0<span style="font-size:24px">/15</span></div>
+            <div class="score-label" id="scoreLabel">項目完了</div>
+            <div class="recommendation" id="recommendation">
+                すべての項目を完了して、同時指導料の適正な請求と業務効率化を実現しましょう。
+            </div>
+        </div>
+        
+        <button class="print-btn" onclick="window.print()">🖨️ チェックリストを印刷</button>
+        <button class="reset-btn" onclick="resetForm()">🔄 リセット</button>
+        
+        <div class="cta-section">
+            <div class="cta-title">🚀 在宅医療業務をもっと効率化しませんか？</div>
+            <p class="cta-text">薬剤師向けAIプロンプト集で、薬歴作成・患者説明・報告書作成を時短。50種類以上の無料ツールで業務改善をサポート。</p>
+            <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn" target="_blank" onclick="trackCTAClick('homecare_joint_visit_checklist_cta')">無料ツール一覧を見る →</a>
+        </div>
+    </div>
+    
+    <script>
+        // GA4 Event Tracking
+        function trackToolUsage(action, label) {
+            if (typeof gtag === 'function') {
+                gtag('event', action, {
+                    'event_category': 'tool_usage',
+                    'event_label': label || 'homecare_joint_visit_checklist'
+                });
+            }
+        }
+
+        function trackCTAClick(buttonName) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'cta_click', {
+                    'event_category': 'engagement',
+                    'event_label': buttonName
+                });
+            }
+        }
+
+        const totalItems = 15;
+        
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percentage = Math.round((checkedCount / totalItems) * 100);
+            
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = percentage + '%';
+            
+            // Update progress text
+            document.getElementById('progressText').textContent = `${checkedCount} / ${totalItems} 項目完了`;
+            
+            // Update score
+            document.getElementById('scoreDisplay').innerHTML = `${checkedCount}<span style="font-size:24px">/${totalItems}</span>`;
+            
+            // Update recommendation
+            const recommendation = document.getElementById('recommendation');
+            const scoreLabel = document.getElementById('scoreLabel');
+            
+            if (checkedCount === 0) {
+                scoreLabel.textContent = '項目完了';
+                recommendation.textContent = 'すべての項目を完了して、同時指導料の適正な請求と業務効率化を実現しましょう。';
+            } else if (checkedCount < 5) {
+                scoreLabel.textContent = '準備中';
+                recommendation.textContent = '訪問前準備から順に進めましょう。医師との日程調整が最初のステップです。';
+            } else if (checkedCount < 10) {
+                scoreLabel.textContent = '進行中';
+                recommendation.textContent = '同時訪問実施の項目を確認してください。医師との協議内容をしっかり記録しましょう。';
+            } else if (checkedCount < 15) {
+                scoreLabel.textContent = 'もう少し';
+                recommendation.textContent = '残り少数の項目です。記録・請求要件を確認して完了させましょう。';
+            } else {
+                scoreLabel.textContent = '完了！';
+                recommendation.textContent = '🎉 すべての項目完了！同時指導料の適正な請求準備が整いました。お疲れ様でした。';
+            }
+            
+            // Update checkbox styling
+            checkboxes.forEach(cb => {
+                const item = cb.closest('.checklist-item');
+                if (cb.checked) {
+                    item.classList.add('checked');
+                } else {
+                    item.classList.remove('checked');
+                }
+            });
+            
+            // Save to localStorage
+            saveState();
+
+            // Track tool usage when items are checked
+            if (checkedCount > 0 && checkedCount % 5 === 0) {
+                trackToolUsage('checklist_progress', 'homecare_joint_visit_checklist_' + checkedCount + '_items');
+            }
+            if (checkedCount === 15) {
+                trackToolUsage('checklist_complete', 'homecare_joint_visit_checklist');
+            }
+        }
+        
+        function saveState() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const state = {};
+            checkboxes.forEach(cb => {
+                state[cb.id] = cb.checked;
+            });
+            localStorage.setItem('homecare-joint-visit-checklist', JSON.stringify(state));
+        }
+        
+        function loadState() {
+            const saved = localStorage.getItem('homecare-joint-visit-checklist');
+            if (saved) {
+                const state = JSON.parse(saved);
+                Object.keys(state).forEach(id => {
+                    const cb = document.getElementById(id);
+                    if (cb) {
+                        cb.checked = state[id];
+                    }
+                });
+                updateProgress();
+            }
+        }
+        
+        function resetForm() {
+            if (confirm('すべてのチェックをリセットしますか？')) {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
+                localStorage.removeItem('homecare-joint-visit-checklist');
+                updateProgress();
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', updateProgress);
+            });
+        });
+    </script>
+
+<!-- 関連ツール セクション (自動追加: Batch2 crosslink) -->
+<section style="max-width:800px;margin:2rem auto;padding:1.5rem;background:linear-gradient(135deg,#f0f9ff,#e8f4fd);border-radius:12px;border:1px solid #bde0fe;">
+  <h3 style="margin:0 0 1rem;color:#1e3a5f;font-size:1.1rem;">🔗 関連ツール</h3>
+  <ul style="list-style:none;padding:0;margin:0;display:grid;gap:0.5rem;">
+    <li><a href="homecare-efficiency-diagnosis.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">在宅業務効率診断</a></li>
+    <li><a href="homecare-revenue-simulator.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">在宅医療収益シミュレーター</a></li>
+    <li><a href="dementia-elderly-medication-support-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">認知症・高齢者服薬支援チェックリスト</a></li>
+    <li><a href="pharmacy-billing-checklist.html" style="display:block;padding:0.6rem 1rem;background:white;border-radius:8px;color:#1e3a5f;text-decoration:none;border:1px solid #e2e8f0;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">調剤報酬算定チェックリスト</a></li>
+  </ul>
+  <div style="margin-top:1rem;text-align:center;">
+    <a href="index.html" style="color:#2563eb;text-decoration:none;font-size:0.9rem;">📋 全ツール一覧を見る →</a>
+  </div>
+</section>
+
+</body>
+</html>

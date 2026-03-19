@@ -1,0 +1,332 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateBusinessHours = validateBusinessHours;
+exports.validateSpecialBusinessHours = validateSpecialBusinessHours;
+exports.fetchBusinessHourSettings = fetchBusinessHourSettings;
+const express_1 = require("express");
+const drizzle_orm_1 = require("drizzle-orm");
+const database_1 = require("../config/database");
+const schema_1 = require("../db/schema");
+const auth_1 = require("../middleware/auth");
+const logger_1 = require("../services/logger");
+const router = (0, express_1.Router)();
+router.use(auth_1.requireLogin);
+const DAY_NAMES = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
+const TIME_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/;
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+const SPECIAL_TYPES = ['holiday_closed', 'long_holiday_closed', 'temporary_closed', 'special_open'];
+function validateBusinessHours(hours) {
+    if (!Array.isArray(hours)) {
+        return { error: '営業時間は配列で指定してください' };
+    }
+    if (hours.length !== 7) {
+        return { error: '7日分の営業時間を指定してください' };
+    }
+    const validated = [];
+    for (const h of hours) {
+        if (typeof h !== 'object' || h === null) {
+            return { error: '営業時間のフォーマットが不正です' };
+        }
+        const { dayOfWeek, openTime, closeTime, isClosed, is24Hours } = h;
+        if (typeof dayOfWeek !== 'number' || dayOfWeek < 0 || dayOfWeek > 6 || !Number.isInteger(dayOfWeek)) {
+            return { error: '曜日の値が不正です' };
+        }
+        if (typeof isClosed !== 'boolean' || typeof is24Hours !== 'boolean') {
+            return { error: `${DAY_NAMES[dayOfWeek]}の営業フラグが不正です` };
+        }
+        // Mutual exclusion: isClosed and is24Hours cannot both be true
+        if (isClosed && is24Hours) {
+            return { error: `${DAY_NAMES[dayOfWeek]}の定休日と24時間営業は同時に設定できません` };
+        }
+        if (isClosed) {
+            validated.push({ dayOfWeek, openTime: null, closeTime: null, isClosed: true, is24Hours: false });
+            continue;
+        }
+        if (is24Hours) {
+            validated.push({ dayOfWeek, openTime: null, closeTime: null, isClosed: false, is24Hours: true });
+            continue;
+        }
+        if (typeof openTime !== 'string' || !TIME_REGEX.test(openTime)) {
+            return { error: `${DAY_NAMES[dayOfWeek]}の開店時間が不正です（HH:MM形式で入力してください）` };
+        }
+        if (typeof closeTime !== 'string' || !TIME_REGEX.test(closeTime)) {
+            return { error: `${DAY_NAMES[dayOfWeek]}の閉店時間が不正です（HH:MM形式で入力してください）` };
+        }
+        // openTime と closeTime が同じ場合はエラー
+        if (openTime === closeTime) {
+            return { error: `${DAY_NAMES[dayOfWeek]}の開店時間と閉店時間が同じです` };
+        }
+        validated.push({ dayOfWeek, openTime, closeTime, isClosed: false, is24Hours: false });
+    }
+    // Check for duplicate days
+    const days = new Set(validated.map((v) => v.dayOfWeek));
+    if (days.size !== 7) {
+        return { error: '曜日が重複しています' };
+    }
+    return { valid: validated };
+}
+function isValidDateString(value) {
+    if (!DATE_REGEX.test(value))
+        return false;
+    const date = new Date(`${value}T00:00:00.000Z`);
+    if (Number.isNaN(date.getTime()))
+        return false;
+    return date.toISOString().startsWith(value);
+}
+function validateSpecialBusinessHours(specialHours) {
+    if (specialHours === undefined) {
+        return { valid: [], provided: false };
+    }
+    if (!Array.isArray(specialHours)) {
+        return { error: '特例営業時間は配列で指定してください' };
+    }
+    if (specialHours.length > 120) {
+        return { error: '特例営業時間は120件以内で指定してください' };
+    }
+    const validated = [];
+    for (const raw of specialHours) {
+        if (typeof raw !== 'object' || raw === null) {
+            return { error: '特例営業時間のフォーマットが不正です' };
+        }
+        const { specialType, startDate, endDate, openTime, closeTime, isClosed, is24Hours, note, } = raw;
+        if (typeof specialType !== 'string' || !SPECIAL_TYPES.includes(specialType)) {
+            return { error: '特例営業時間の種別が不正です' };
+        }
+        if (typeof startDate !== 'string' || !isValidDateString(startDate)) {
+            return { error: '特例営業時間の開始日が不正です（YYYY-MM-DD形式）' };
+        }
+        if (typeof endDate !== 'string' || !isValidDateString(endDate)) {
+            return { error: '特例営業時間の終了日が不正です（YYYY-MM-DD形式）' };
+        }
+        if (startDate > endDate) {
+            return { error: '特例営業時間の開始日と終了日の順序が不正です' };
+        }
+        if (typeof isClosed !== 'boolean' || typeof is24Hours !== 'boolean') {
+            return { error: '特例営業時間のフラグが不正です' };
+        }
+        if (isClosed && is24Hours) {
+            return { error: '特例営業時間で休業日と24時間営業は同時に指定できません' };
+        }
+        if (specialType !== 'special_open') {
+            if (!isClosed || is24Hours) {
+                return { error: '休業系の特例営業時間は休業設定のみ指定できます' };
+            }
+        }
+        let normalizedOpenTime = null;
+        let normalizedCloseTime = null;
+        if (specialType === 'special_open' && !isClosed && !is24Hours) {
+            if (typeof openTime !== 'string' || !TIME_REGEX.test(openTime)) {
+                return { error: '特例営業時間の開店時間が不正です（HH:MM形式）' };
+            }
+            if (typeof closeTime !== 'string' || !TIME_REGEX.test(closeTime)) {
+                return { error: '特例営業時間の閉店時間が不正です（HH:MM形式）' };
+            }
+            if (openTime === closeTime) {
+                return { error: '特例営業時間の開店時間と閉店時間が同じです' };
+            }
+            normalizedOpenTime = openTime;
+            normalizedCloseTime = closeTime;
+        }
+        if (note !== undefined && note !== null && typeof note !== 'string') {
+            return { error: '特例営業時間のメモが不正です' };
+        }
+        const normalizedNote = typeof note === 'string' ? note.trim() : null;
+        if (normalizedNote && normalizedNote.length > 200) {
+            return { error: '特例営業時間のメモは200文字以内で入力してください' };
+        }
+        validated.push({
+            specialType: specialType,
+            startDate,
+            endDate,
+            openTime: normalizedOpenTime,
+            closeTime: normalizedCloseTime,
+            isClosed: specialType === 'special_open' ? isClosed : true,
+            is24Hours: specialType === 'special_open' ? is24Hours : false,
+            note: normalizedNote || null,
+        });
+    }
+    return { valid: validated, provided: true };
+}
+/**
+ * 指定薬局の営業時間設定（週次 + 特例 + version）を取得する共通関数。
+ * GET /settings と PUT / の 409 conflict レスポンスの両方で使用する。
+ * NOTE: version は pharmacies テーブルの version を共用しており、
+ * アカウント情報更新でも version がインクリメントされるため、
+ * 営業時間以外の変更でも 409 が発生しうる（意図的な設計）。
+ */
+async function fetchBusinessHourSettings(pharmacyId) {
+    const [hours, specialHoursRows, pharmacyRows] = await Promise.all([
+        database_1.db.select({
+            dayOfWeek: schema_1.pharmacyBusinessHours.dayOfWeek,
+            openTime: schema_1.pharmacyBusinessHours.openTime,
+            closeTime: schema_1.pharmacyBusinessHours.closeTime,
+            isClosed: schema_1.pharmacyBusinessHours.isClosed,
+            is24Hours: schema_1.pharmacyBusinessHours.is24Hours,
+        })
+            .from(schema_1.pharmacyBusinessHours)
+            .where((0, drizzle_orm_1.eq)(schema_1.pharmacyBusinessHours.pharmacyId, pharmacyId))
+            .orderBy(schema_1.pharmacyBusinessHours.dayOfWeek),
+        database_1.db.select({
+            id: schema_1.pharmacySpecialHours.id,
+            specialType: schema_1.pharmacySpecialHours.specialType,
+            startDate: schema_1.pharmacySpecialHours.startDate,
+            endDate: schema_1.pharmacySpecialHours.endDate,
+            openTime: schema_1.pharmacySpecialHours.openTime,
+            closeTime: schema_1.pharmacySpecialHours.closeTime,
+            isClosed: schema_1.pharmacySpecialHours.isClosed,
+            is24Hours: schema_1.pharmacySpecialHours.is24Hours,
+            note: schema_1.pharmacySpecialHours.note,
+        })
+            .from(schema_1.pharmacySpecialHours)
+            .where((0, drizzle_orm_1.eq)(schema_1.pharmacySpecialHours.pharmacyId, pharmacyId))
+            .orderBy(schema_1.pharmacySpecialHours.startDate, schema_1.pharmacySpecialHours.endDate, schema_1.pharmacySpecialHours.id),
+        database_1.db.select({ version: schema_1.pharmacies.version })
+            .from(schema_1.pharmacies)
+            .where((0, drizzle_orm_1.eq)(schema_1.pharmacies.id, pharmacyId))
+            .limit(1),
+    ]);
+    if (pharmacyRows.length === 0) {
+        throw new Error('薬局が見つかりません');
+    }
+    return {
+        hours,
+        specialHours: specialHoursRows,
+        version: pharmacyRows[0].version,
+    };
+}
+// Get current pharmacy's business hours
+router.get('/', async (req, res) => {
+    try {
+        const hours = await database_1.db.select({
+            dayOfWeek: schema_1.pharmacyBusinessHours.dayOfWeek,
+            openTime: schema_1.pharmacyBusinessHours.openTime,
+            closeTime: schema_1.pharmacyBusinessHours.closeTime,
+            isClosed: schema_1.pharmacyBusinessHours.isClosed,
+            is24Hours: schema_1.pharmacyBusinessHours.is24Hours,
+        })
+            .from(schema_1.pharmacyBusinessHours)
+            .where((0, drizzle_orm_1.eq)(schema_1.pharmacyBusinessHours.pharmacyId, req.user.id))
+            .orderBy(schema_1.pharmacyBusinessHours.dayOfWeek);
+        res.json(hours);
+    }
+    catch (err) {
+        logger_1.logger.error('Get business hours error:', { error: err.message });
+        res.status(500).json({ error: '営業時間の取得に失敗しました' });
+    }
+});
+// Get current pharmacy's weekly + special business hours
+router.get('/settings', async (req, res) => {
+    try {
+        const data = await fetchBusinessHourSettings(req.user.id);
+        res.json(data);
+    }
+    catch (err) {
+        logger_1.logger.error('Get business hour settings error:', { error: err.message });
+        res.status(500).json({ error: '営業時間設定の取得に失敗しました' });
+    }
+});
+// Set/update current pharmacy's business hours
+router.put('/', async (req, res) => {
+    try {
+        const weeklyResult = validateBusinessHours(req.body.hours);
+        if ('error' in weeklyResult) {
+            res.status(400).json({ error: weeklyResult.error });
+            return;
+        }
+        const specialResult = validateSpecialBusinessHours(req.body.specialHours);
+        if ('error' in specialResult) {
+            res.status(400).json({ error: specialResult.error });
+            return;
+        }
+        // version バリデーション
+        const version = req.body.version;
+        if (version === undefined || version === null || typeof version !== 'number' || !Number.isInteger(version) || version < 1 || version > 2_147_483_647) {
+            res.status(400).json({ error: 'バージョン情報が不正です' });
+            return;
+        }
+        // 楽観的ロック付きトランザクション
+        const result = await database_1.db.transaction(async (tx) => {
+            // pharmacies テーブルの version をチェック＆インクリメント
+            const versionUpdate = await tx.update(schema_1.pharmacies)
+                .set({
+                version: (0, drizzle_orm_1.sql) `${schema_1.pharmacies.version} + 1`,
+                updatedAt: new Date().toISOString(),
+            })
+                .where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema_1.pharmacies.id, req.user.id), (0, drizzle_orm_1.eq)(schema_1.pharmacies.version, version)))
+                .returning({ version: schema_1.pharmacies.version });
+            if (versionUpdate.length === 0) {
+                return { conflict: true };
+            }
+            await tx.delete(schema_1.pharmacyBusinessHours)
+                .where((0, drizzle_orm_1.eq)(schema_1.pharmacyBusinessHours.pharmacyId, req.user.id));
+            await tx.insert(schema_1.pharmacyBusinessHours).values(weeklyResult.valid.map((h) => ({
+                pharmacyId: req.user.id,
+                dayOfWeek: h.dayOfWeek,
+                openTime: h.openTime,
+                closeTime: h.closeTime,
+                isClosed: h.isClosed,
+                is24Hours: h.is24Hours,
+            })));
+            if (specialResult.provided) {
+                await tx.delete(schema_1.pharmacySpecialHours)
+                    .where((0, drizzle_orm_1.eq)(schema_1.pharmacySpecialHours.pharmacyId, req.user.id));
+                if (specialResult.valid.length > 0) {
+                    await tx.insert(schema_1.pharmacySpecialHours).values(specialResult.valid.map((h) => ({
+                        pharmacyId: req.user.id,
+                        specialType: h.specialType,
+                        startDate: h.startDate,
+                        endDate: h.endDate,
+                        openTime: h.openTime,
+                        closeTime: h.closeTime,
+                        isClosed: h.isClosed,
+                        is24Hours: h.is24Hours,
+                        note: h.note,
+                        updatedAt: new Date().toISOString(),
+                    })));
+                }
+            }
+            return { conflict: false, newVersion: versionUpdate[0].version };
+        });
+        if (result.conflict) {
+            // 最新の営業時間データを取得して 409 レスポンスに含める
+            const latestData = await fetchBusinessHourSettings(req.user.id);
+            res.status(409).json({
+                error: '他のデバイスまたはタブで更新されています。最新データを確認してください',
+                latestData,
+            });
+            return;
+        }
+        res.json({ message: '営業時間を更新しました', version: result.newVersion });
+    }
+    catch (err) {
+        logger_1.logger.error('Update business hours error:', { error: err.message });
+        res.status(500).json({ error: '営業時間の更新に失敗しました' });
+    }
+});
+// Get another pharmacy's business hours
+router.get('/:pharmacyId', async (req, res) => {
+    try {
+        const pharmacyId = Number(req.params.pharmacyId);
+        if (!Number.isInteger(pharmacyId) || pharmacyId <= 0) {
+            res.status(400).json({ error: '不正なIDです' });
+            return;
+        }
+        const hours = await database_1.db.select({
+            dayOfWeek: schema_1.pharmacyBusinessHours.dayOfWeek,
+            openTime: schema_1.pharmacyBusinessHours.openTime,
+            closeTime: schema_1.pharmacyBusinessHours.closeTime,
+            isClosed: schema_1.pharmacyBusinessHours.isClosed,
+            is24Hours: schema_1.pharmacyBusinessHours.is24Hours,
+        })
+            .from(schema_1.pharmacyBusinessHours)
+            .where((0, drizzle_orm_1.eq)(schema_1.pharmacyBusinessHours.pharmacyId, pharmacyId))
+            .orderBy(schema_1.pharmacyBusinessHours.dayOfWeek);
+        res.json(hours);
+    }
+    catch (err) {
+        logger_1.logger.error('Get pharmacy business hours error:', { error: err.message });
+        res.status(500).json({ error: '営業時間の取得に失敗しました' });
+    }
+});
+exports.default = router;
+//# sourceMappingURL=business-hours.js.map

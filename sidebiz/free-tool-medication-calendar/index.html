@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>服薬カレンダー生成ツール | 薬剤師向け無料ツール</title>
+  <meta name="description" content="患者の服薬スケジュールを1週間分のカレンダー形式で自動生成する無料ツール。訪問薬剤管理・服薬指導に活用できます。" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "服薬カレンダー生成ツール",
+    "description": "患者の服薬スケジュールを1週間分のカレンダー形式で自動生成する無料ツール。訪問薬剤管理・服薬指導に活用できます。",
+    "url": "https://yusuketakuma.github.io/pharma-medication-calendar/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  <meta property="og:title" content="服薬カレンダー生成ツール" />
+  <meta property="og:description" content="1週間の服薬カレンダーを自動生成。患者説明・家族共有に使えるテキストをワンクリックコピー。" />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #f4f8ff;
+      --card: #fff;
+      --line: #d6e1f3;
+      --text: #1a2b47;
+      --sub: #5f708e;
+      --primary: #2563eb;
+      --primary2: #1e40af;
+      --success: #15803d;
+      --warn: #b45309;
+      --danger: #b91c1c;
+      --radius: 14px;
+      --shadow: 0 12px 30px rgba(37, 99, 235, 0.15);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 24px;
+      background: linear-gradient(120deg, #2563eb, #1e40af);
+      color: #fff;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.55rem;
+      line-height: 1.3;
+    }
+
+    .lead { margin: 0; font-size: 0.94rem; opacity: 0.95; }
+
+    .wrap { padding: 20px; display: grid; gap: 16px; }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: #fff;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #123;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--sub);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+    }
+
+    textarea { min-height: 68px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+    }
+
+    .med-item {
+      border: 1px solid #dce5f5;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f9fbff;
+    }
+
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary2); }
+
+    .btn-sub { background: #e8eefc; color: #1e3a8a; }
+    .btn-sub:hover { background: #dbe6fc; }
+
+    .btn-danger { background: #fee2e2; color: var(--danger); }
+    .btn-danger:hover { background: #fecaca; }
+
+    .result { display: none; }
+    .result.show { display: block; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .kpi {
+      border: 1px solid #d8e5fb;
+      border-radius: 10px;
+      text-align: center;
+      padding: 10px;
+      background: #f8fbff;
+    }
+
+    .kpi .num { font-size: 1.2rem; font-weight: 800; color: #1d4ed8; }
+    .kpi .lab { font-size: 0.78rem; color: var(--sub); }
+
+    .output {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfdff;
+      padding: 14px;
+      white-space: pre-wrap;
+      font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      max-height: 380px;
+      overflow: auto;
+    }
+
+    .warn {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: var(--warn);
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .links {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .link {
+      display: block;
+      text-decoration: none;
+      text-align: center;
+      border: 1px solid #d8e5fb;
+      border-radius: 9px;
+      padding: 8px;
+      color: #1e3a8a;
+      font-size: 0.82rem;
+      background: #f6f9ff;
+    }
+
+    .cta {
+      margin-top: 12px;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+      background: #eff6ff;
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+  <!-- Google tag (gtag.js) - 測定IDを差し替えてください -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'ai_prompts',
+        'product_name': 'AIプロンプト集',
+        'price': 300
+      });
+    }
+
+    function trackNotionCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'notion_template',
+        'product_name': 'Notionテンプレート',
+        'price': 500
+      });
+    }
+
+    function trackToolUsage(actionType) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': '服薬カレンダー生成',
+        'action_type': actionType
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'medication_calendar'
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🗓️ 服薬カレンダー生成ツール</h1>
+      <p class="lead">患者ごとの1週間服薬スケジュールを自動作成（在宅・訪問薬剤管理向け）</p>
+    </header>
+
+    <div class="wrap">
+      <section class="card">
+        <h2 class="section-title">👤 患者情報</h2>
+        <div class="grid">
+          <div>
+            <label>患者名（任意）</label>
+            <input id="patientName" type="text" placeholder="例: 山田 太郎" />
+          </div>
+          <div>
+            <label>開始曜日</label>
+            <select id="startDay">
+              <option value="月">月曜開始</option>
+              <option value="火">火曜開始</option>
+              <option value="水">水曜開始</option>
+              <option value="木">木曜開始</option>
+              <option value="金">金曜開始</option>
+              <option value="土">土曜開始</option>
+              <option value="日">日曜開始</option>
+            </select>
+          </div>
+          <div class="full">
+            <label>注意事項（任意）</label>
+            <textarea id="memo" placeholder="食前/食後、飲み忘れ時対応、家族への連絡事項など"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">💊 服薬情報</h2>
+        <div id="medList"></div>
+        <div class="btn-row">
+          <button class="btn btn-sub" type="button" onclick="addMed()">+ 薬剤を追加</button>
+          <button class="btn btn-primary" type="button" onclick="generateCalendar()">📋 カレンダー生成</button>
+        </div>
+      </section>
+
+      <section id="result" class="card result">
+        <h2 class="section-title">✅ 生成結果</h2>
+        <div class="summary">
+          <div class="kpi"><div class="num" id="kpiMeds">0</div><div class="lab">薬剤数</div></div>
+          <div class="kpi"><div class="num" id="kpiDose">0</div><div class="lab">1日服薬回数</div></div>
+          <div class="kpi"><div class="num" id="kpiRisk">-</div><div class="lab">飲み忘れリスク</div></div>
+          <div class="kpi"><div class="num">7</div><div class="lab">日数</div></div>
+        </div>
+
+        <div id="output" class="output"></div>
+        <div class="warn">※ 本ツールは服薬支援の補助です。最終判断は処方医・薬剤師の臨床判断に従ってください。</div>
+
+        <div class="btn-row" style="margin-top: 10px;">
+          <button class="btn btn-primary" type="button" onclick="copyOutput()">📋 テキストをコピー</button>
+          <button class="btn btn-sub" type="button" onclick="window.print()">🖨️ 印刷</button>
+        </div>
+
+        <div class="links">
+          <a class="link" href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価シミュレーター</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/">服薬指導チェック</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">腎機能別用量</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク評価</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別チェック</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-di-query/">DI照会生成</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+          <a class="link" href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート通知</a>
+        <a href="https://yusuketakuma.github.io/pharma-adherence-check/" style="display:block;text-decoration:none;border-radius:10px;border:1px solid rgba(234,88,12,0.25);padding:12px 14px;background:#fff;color:#ea580c;font-weight:700;">💊 服薬アドヒアランス評価</a>
+        <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/" style="display:block;text-decoration:none;border-radius:10px;border:1px solid rgba(234,88,12,0.25);padding:12px 14px;background:#fff;color:#ea580c;font-weight:700;">🔤 類似薬名チェック</a>
+        </div>
+
+        <div class="cta">
+          🚀 無料ツールで効率化した実務を、AIプロンプト集/Notionテンプレートでさらに標準化できます（有料商材導線用）
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <template id="medTemplate">
+    <div class="med-item">
+      <div class="grid">
+        <div>
+          <label>薬剤名</label>
+          <input type="text" class="med-name" placeholder="例: アムロジピン錠5mg" />
+        </div>
+        <div>
+          <label>用法</label>
+          <select class="med-timing">
+            <option value="朝">朝</option>
+            <option value="昼">昼</option>
+            <option value="夕">夕</option>
+            <option value="寝前">寝る前</option>
+            <option value="朝夕">朝・夕</option>
+            <option value="朝昼夕">朝・昼・夕</option>
+            <option value="毎食後">毎食後</option>
+            <option value="頓用">頓用</option>
+          </select>
+        </div>
+        <div>
+          <label>1回量</label>
+          <input type="text" class="med-dose" placeholder="例: 1錠" />
+        </div>
+        <div>
+          <label>補足</label>
+          <input type="text" class="med-note" placeholder="例: 食後30分以内" />
+        </div>
+      </div>
+      <div style="margin-top: 8px;">
+        <button class="btn btn-danger" type="button" onclick="removeMed(this)">削除</button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    const days = ["月", "火", "水", "木", "金", "土", "日"];
+
+    function addMed(defaults = {}) {
+      const tpl = document.getElementById("medTemplate");
+      const node = tpl.content.cloneNode(true);
+      const item = node.querySelector(".med-item");
+      item.querySelector(".med-name").value = defaults.name || "";
+      item.querySelector(".med-timing").value = defaults.timing || "朝";
+      item.querySelector(".med-dose").value = defaults.dose || "";
+      item.querySelector(".med-note").value = defaults.note || "";
+      document.getElementById("medList").appendChild(item);
+    }
+
+    function removeMed(btn) {
+      const items = document.querySelectorAll(".med-item");
+      if (items.length <= 1) return;
+      btn.closest(".med-item").remove();
+    }
+
+    function timingToSlots(timing) {
+      if (timing === "朝") return ["朝"];
+      if (timing === "昼") return ["昼"];
+      if (timing === "夕") return ["夕"];
+      if (timing === "寝前") return ["寝前"];
+      if (timing === "朝夕") return ["朝", "夕"];
+      if (timing === "朝昼夕") return ["朝", "昼", "夕"];
+      if (timing === "毎食後") return ["朝", "昼", "夕"];
+      return ["頓用"];
+    }
+
+    function reorderDays(startDay) {
+      const idx = days.indexOf(startDay);
+      return [...days.slice(idx), ...days.slice(0, idx)];
+    }
+
+    function calcRisk(meds) {
+      const highFreq = meds.filter(m => ["朝昼夕", "毎食後"].includes(m.timing)).length;
+      const prn = meds.filter(m => m.timing === "頓用").length;
+      if (meds.length >= 6 || highFreq >= 3) return "高";
+      if (meds.length >= 4 || highFreq >= 2 || prn >= 2) return "中";
+      return "低";
+    }
+
+    function generateCalendar() {
+      const patientName = document.getElementById("patientName").value.trim();
+      const startDay = document.getElementById("startDay").value;
+      const memo = document.getElementById("memo").value.trim();
+
+      const meds = Array.from(document.querySelectorAll(".med-item")).map(item => ({
+        name: item.querySelector(".med-name").value.trim(),
+        timing: item.querySelector(".med-timing").value,
+        dose: item.querySelector(".med-dose").value.trim(),
+        note: item.querySelector(".med-note").value.trim()
+      })).filter(m => m.name && m.dose);
+
+      if (meds.length === 0) {
+        alert("薬剤名と1回量を最低1件入力してください。");
+        return;
+      }
+
+      const orderedDays = reorderDays(startDay);
+      const slots = ["朝", "昼", "夕", "寝前", "頓用"];
+
+      const week = orderedDays.map(d => ({ day: d, slots: { 朝: [], 昼: [], 夕: [], 寝前: [], 頓用: [] } }));
+
+      meds.forEach(m => {
+        const targets = timingToSlots(m.timing);
+        week.forEach(w => {
+          targets.forEach(t => {
+            w.slots[t].push(`${m.name} ${m.dose}${m.note ? `（${m.note}）` : ""}`);
+          });
+        });
+      });
+
+      let text = "【1週間 服薬カレンダー】\n";
+      text += `患者: ${patientName || "（未入力）"}\n`;
+      text += `開始曜日: ${startDay}曜\n`;
+      text += `作成日時: ${new Date().toLocaleString("ja-JP")}\n`;
+      text += "\n";
+
+      week.forEach(w => {
+        text += `■ ${w.day}曜日\n`;
+        slots.forEach(s => {
+          text += `  [${s}]\n`;
+          if (w.slots[s].length === 0) {
+            text += "    - なし\n";
+          } else {
+            w.slots[s].forEach(v => { text += `    □ ${v}\n`; });
+          }
+        });
+        text += "\n";
+      });
+
+      if (memo) {
+        text += "【注意事項】\n";
+        text += memo + "\n\n";
+      }
+
+      text += "【服薬支援メモ】\n";
+      text += "- 飲み忘れ時は自己判断で倍量服用しない\n";
+      text += "- 体調変化（ふらつき、食欲低下、眠気増強など）は薬剤師に相談\n";
+      text += "- お薬手帳・残薬を次回訪問時に確認\n";
+
+      const doseCount = meds.reduce((sum, m) => sum + timingToSlots(m.timing).length, 0);
+      const risk = calcRisk(meds);
+
+      document.getElementById("kpiMeds").textContent = meds.length;
+      document.getElementById("kpiDose").textContent = doseCount;
+      document.getElementById("kpiRisk").textContent = risk;
+      document.getElementById("output").textContent = text;
+      document.getElementById("result").classList.add("show");
+    }
+
+    async function copyOutput() {
+      const text = document.getElementById("output").textContent;
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("コピーしました");
+      } catch {
+        alert("コピーに失敗しました。手動で選択してコピーしてください。");
+      }
+    }
+
+    // 初期行
+    addMed({ name: "アムロジピン錠5mg", timing: "朝", dose: "1錠", note: "朝食後" });
+  </script>
+  <!-- 収益化CTA -->
+  <section style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af;">🎁 さらに業務を効率化しませんか？</h3>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📖 薬剤師向けAIプロンプト集</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">ChatGPT/Claudeで時短する100+のプロンプトテンプレート</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥300</p>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📋 薬局業務Notionテンプレート</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">訪問記録・在庫管理・患者管理を一元化</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥500</p>
+    </div>
+    <p style="font-size: 0.8rem; color: #666;">※ 準備中（近日公開）</p>
+  </section>
+
+  <div class="section">
+                <!-- ポータルサイト -->
+            <div style="text-align: center; margin: 24px 0;">
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">🏠 全ツール一覧（ポータルサイト）</a>
+            </div>
+
+<div class="section-title">🔗 他の無料ツール</div>
+    <div class="links">
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">腎機能別用量</a>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会メール</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+      <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+      <a href="https://yusuketakuma.github.io/pharma-di-query/">DI照会生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+      <a href="https://yusuketakuma.github.io/pharma-adherence-check/">アドヒアランス</a>
+      <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/">類似薬名</a>
+      <a href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+                    <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" target="_blank">服薬リマインダー生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/">服薬指導シナリオ</a>
+      <a href="https://yusuketakuma.github.io/pharma-fee-calculator/">調剤報酬計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-homecare-report/">在宅医療報告書</a>
+    </div>
+  </div>
+</body>
+</html>

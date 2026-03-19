@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局ICT活用診断ツール | 薬剤師無料ツール集</title>
+    <meta name="description" content="薬局のICT活用レベルを5分で診断。2026年医療DX加算対応の現状把握と改善提案を自動生成。">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .section-title {
+            font-size: 20px;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        .question-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .option {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .result-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .score-display {
+            font-size: 72px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .level-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .category-result {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .category-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+        .category-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .category-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .category-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+        }
+        .recommendations {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        .recommendations h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+        .recommendation-priority {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .priority-high {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .priority-medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+        .priority-low {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .print-btn {
+            background: #1a1a2e;
+            color: white;
+            margin-top: 20px;
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .nav-buttons, .progress-bar {
+                display: none;
+            }
+        }
+        @media (max-width: 600px) {
+            .options {
+                flex-direction: column;
+            }
+            .option {
+                min-width: 100%;
+            }
+        }
+    </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-ict-diagnosis-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-ict-diagnosis-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-ict-diagnosis-prompt-cta'
+      });
+    }
+  </script>
+    <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🖥️ 薬局ICT活用診断ツール</h1>
+            <p>2026年医療DX加算対応 | 5分で現状把握・改善提案自動生成</p>
+        </div>
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <!-- セクション0: イントロ -->
+            <div class="section active" id="section0">
+                <h2 class="section-title">📋 診断について</h2>
+                <p style="line-height: 1.8; margin-bottom: 20px;">
+                    このツールは薬局のICT活用レベルを5領域20問で診断します。<br>
+                    2026年の医療DX加算に向けた現状把握と、優先すべき改善提案を自動生成します。
+                </p>
+                <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <strong>診断領域:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>電子化・ペーパーレス化</li>
+                        <li>オンラインサービス活用</li>
+                        <li>データ活用・分析</li>
+                        <li>セキュリティ・ガバナンス</li>
+                        <li>AI・新技術導入</li>
+                    </ul>
+                </div>
+                <div class="nav-buttons">
+                    <div></div>
+                    <button class="btn btn-primary" onclick="trackToolUsage('start'); nextSection()">診断を開始 →</button>
+                </div>
+            </div>
+
+            <!-- セクション1: 電子化 -->
+            <div class="section" id="section1">
+                <h2 class="section-title">📄 電子化・ペーパーレス化</h2>
+                
+                <div class="question" data-category="digitization">
+                    <div class="question-text">1. 薬歴の電子化率は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">紙のみ</div>
+                        <div class="option" data-score="2">〜50%</div>
+                        <div class="option" data-score="3">50-80%</div>
+                        <div class="option" data-score="4">80%以上</div>
+                        <div class="option" data-score="5">ほぼ100%</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="digitization">
+                    <div class="question-text">2. 処方せん受領の電子化（オンライン確認）活用状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未導入</div>
+                        <div class="option" data-score="2">検討中</div>
+                        <div class="option" data-score="3">一部導入</div>
+                        <div class="option" data-score="4">概ね導入</div>
+                        <div class="option" data-score="5">完全移行</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="digitization">
+                    <div class="question-text">3. 文書管理・伝達のデジタル化レベルは?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">紙ベース</div>
+                        <div class="option" data-score="2">一部電子化</div>
+                        <div class="option" data-score="3">グループウェア導入</div>
+                        <div class="option" data-score="4">統合管理</div>
+                        <div class="option" data-score="5">完全ペーパーレス</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="digitization">
+                    <div class="question-text">4. 在庫管理のデジタル化状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">手書き管理</div>
+                        <div class="option" data-score="2">Excel等</div>
+                        <div class="option" data-score="3">専用システム</div>
+                        <div class="option" data-score="4">自動発注連携</div>
+                        <div class="option" data-score="5">AI予測導入</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection()">← 戻る</button>
+                    <button class="btn btn-primary" onclick="nextSection()">次へ →</button>
+                </div>
+            </div>
+
+            <!-- セクション2: オンラインサービス -->
+            <div class="section" id="section2">
+                <h2 class="section-title">🌐 オンラインサービス活用</h2>
+                
+                <div class="question" data-category="online">
+                    <div class="question-text">5. オンライン服薬指導の実施状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未実施</div>
+                        <div class="option" data-score="2">検討中</div>
+                        <div class="option" data-score="3">月数件</div>
+                        <div class="option" data-score="4">定常実施</div>
+                        <div class="option" data-score="5">積極展開中</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="online">
+                    <div class="question-text">6. Web予約・受付システムの導入状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">電話のみ</div>
+                        <div class="option" data-score="2">検討中</div>
+                        <div class="option" data-score="3">導入済み</div>
+                        <div class="option" data-score="4">LINE連携</div>
+                        <div class="option" data-score="5">アプリ連携</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="online">
+                    <div class="question-text">7. 電子お薬手帳の推奨・活用状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未推奨</div>
+                        <div class="option" data-score="2">時々案内</div>
+                        <div class="option" data-score="3">積極推奨</div>
+                        <div class="option" data-score="4">連携活用</div>
+                        <div class="option" data-score="5">全患者推奨</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="online">
+                    <div class="question-text">8. SNS・Web発信の活用状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未実施</div>
+                        <div class="option" data-score="2">時々投稿</div>
+                        <div class="option" data-score="3">定期発信</div>
+                        <div class="option" data-score="4">フォロワー増加中</div>
+                        <div class="option" data-score="5">集客貢献あり</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection()">← 戻る</button>
+                    <button class="btn btn-primary" onclick="nextSection()">次へ →</button>
+                </div>
+            </div>
+
+            <!-- セクション3: データ活用 -->
+            <div class="section" id="section3">
+                <h2 class="section-title">📊 データ活用・分析</h2>
+                
+                <div class="question" data-category="data">
+                    <div class="question-text">9. 売上・経営データの分析頻度は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">年1回以下</div>
+                        <div class="option" data-score="2">四半期ごと</div>
+                        <div class="option" data-score="3">月次</div>
+                        <div class="option" data-score="4">週次</div>
+                        <div class="option" data-score="5">リアルタイム</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="data">
+                    <div class="question-text">10. 患者データの活用状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">蓄積のみ</div>
+                        <div class="option" data-score="2">簡単な集計</div>
+                        <div class="option" data-score="3">傾向分析</div>
+                        <div class="option" data-score="4">予測活用</div>
+                        <div class="option" data-score="5">AI分析導入</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="data">
+                    <div class="question-text">11. 調剤報酬の最適化分析は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未実施</div>
+                        <div class="option" data-score="2">年度末確認</div>
+                        <div class="option" data-score="3">四半期確認</div>
+                        <div class="option" data-score="4">月次確認</div>
+                        <div class="option" data-score="5">常時最適化</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="data">
+                    <div class="question-text">12. KPI設定・進捗管理の状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未設定</div>
+                        <div class="option" data-score="2">一部設定</div>
+                        <div class="option" data-score="3">定期確認</div>
+                        <div class="option" data-score="4">ダッシュボード化</div>
+                        <div class="option" data-score="5">自動アラート</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection()">← 戻る</button>
+                    <button class="btn btn-primary" onclick="nextSection()">次へ →</button>
+                </div>
+            </div>
+
+            <!-- セクション4: セキュリティ -->
+            <div class="section" id="section4">
+                <h2 class="section-title">🔒 セキュリティ・ガバナンス</h2>
+                
+                <div class="question" data-category="security">
+                    <div class="question-text">13. 情報セキュリティ対策の状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">基本的のみ</div>
+                        <div class="option" data-score="2">ウイルス対策</div>
+                        <div class="option" data-score="3">多層防御</div>
+                        <div class="option" data-score="4">定期診断</div>
+                        <div class="option" data-score="5">ISMS取得</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="security">
+                    <div class="question-text">14. アクセス権限管理の状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">共有アカウント</div>
+                        <div class="option" data-score="2">個人アカウント</div>
+                        <div class="option" data-score="3">役割別権限</div>
+                        <div class="option" data-score="4">定期見直し</div>
+                        <div class="option" data-score="5">自動管理</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="security">
+                    <div class="question-text">15. バックアップ・災害対策は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未実施</div>
+                        <div class="option" data-score="2">手動バックアップ</div>
+                        <div class="option" data-score="3">自動バックアップ</div>
+                        <div class="option" data-score="4">クラウド複製</div>
+                        <div class="option" data-score="5">BCP策定済み</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="security">
+                    <div class="question-text">16. スタッフへのセキュリティ教育は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未実施</div>
+                        <div class="option" data-score="2">入職時のみ</div>
+                        <div class="option" data-score="3">年1回</div>
+                        <div class="option" data-score="4">四半期ごと</div>
+                        <div class="option" data-score="5">継続的教育</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection()">← 戻る</button>
+                    <button class="btn btn-primary" onclick="nextSection()">次へ →</button>
+                </div>
+            </div>
+
+            <!-- セクション5: AI・新技術 -->
+            <div class="section" id="section5">
+                <h2 class="section-title">🤖 AI・新技術導入</h2>
+                
+                <div class="question" data-category="innovation">
+                    <div class="question-text">17. AIツールの活用状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">未検討</div>
+                        <div class="option" data-score="2">興味あり</div>
+                        <div class="option" data-score="3">試用中</div>
+                        <div class="option" data-score="4">一部実務活用</div>
+                        <div class="option" data-score="5">積極活用中</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="innovation">
+                    <div class="question-text">18. 自動化ツールの導入状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">手作業中心</div>
+                        <div class="option" data-score="2">一部自動化</div>
+                        <div class="option" data-score="3">RPA検討</div>
+                        <div class="option" data-score="4">RPA導入</div>
+                        <div class="option" data-score="5">広範囲自動化</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="innovation">
+                    <div class="question-text">19. 新技術情報の収集状況は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">受動的</div>
+                        <div class="option" data-score="2">時々確認</div>
+                        <div class="option" data-score="3">定期確認</div>
+                        <div class="option" data-score="4">勉強会参加</div>
+                        <div class="option" data-score="5">情報発信も</div>
+                    </div>
+                </div>
+
+                <div class="question" data-category="innovation">
+                    <div class="question-text">20. DX推進の組織体制は?</div>
+                    <div class="options">
+                        <div class="option" data-score="1">個人任せ</div>
+                        <div class="option" data-score="2">管理者主導</div>
+                        <div class="option" data-score="3">チーム設置</div>
+                        <div class="option" data-score="4">専任配置</div>
+                        <div class="option" data-score="5">全社推進</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevSection()">← 戻る</button>
+                    <button class="btn btn-primary" onclick="trackToolUsage('show-results'); showResults()">診断結果を見る →</button>
+                </div>
+            </div>
+
+            <!-- 結果セクション -->
+            <div class="section" id="results">
+                <div class="result-card">
+                    <div style="font-size: 18px;">ICT活用スコア</div>
+                    <div class="score-display" id="totalScore">0</div>
+                    <div style="font-size: 14px; opacity: 0.9;">/ 100点</div>
+                    <div class="level-badge" id="levelBadge">レベル判定中...</div>
+                </div>
+
+                <h3 style="margin-bottom: 20px;">📈 領域別スコア</h3>
+                
+                <div class="category-result" id="digitizationResult">
+                    <div class="category-header">
+                        <span class="category-name">📄 電子化・ペーパーレス化</span>
+                        <span class="category-score"><span id="digitizationScore">0</span>/20</span>
+                    </div>
+                    <div class="category-bar">
+                        <div class="category-fill" id="digitizationBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="category-result" id="onlineResult">
+                    <div class="category-header">
+                        <span class="category-name">🌐 オンラインサービス活用</span>
+                        <span class="category-score"><span id="onlineScore">0</span>/20</span>
+                    </div>
+                    <div class="category-bar">
+                        <div class="category-fill" id="onlineBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="category-result" id="dataResult">
+                    <div class="category-header">
+                        <span class="category-name">📊 データ活用・分析</span>
+                        <span class="category-score"><span id="dataScore">0</span>/20</span>
+                    </div>
+                    <div class="category-bar">
+                        <div class="category-fill" id="dataBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="category-result" id="securityResult">
+                    <div class="category-header">
+                        <span class="category-name">🔒 セキュリティ・ガバナンス</span>
+                        <span class="category-score"><span id="securityScore">0</span>/20</span>
+                    </div>
+                    <div class="category-bar">
+                        <div class="category-fill" id="securityBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="category-result" id="innovationResult">
+                    <div class="category-header">
+                        <span class="category-name">🤖 AI・新技術導入</span>
+                        <span class="category-score"><span id="innovationScore">0</span>/20</span>
+                    </div>
+                    <div class="category-bar">
+                        <div class="category-fill" id="innovationBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h3>💡 優先改善提案</h3>
+                    <div id="recommendationsList"></div>
+                </div>
+
+                <div style="background: #f5f5f5; padding: 20px; border-radius: 12px; margin-top: 30px;">
+                    <h4 style="margin-bottom: 10px;">📌 DX加算対応のポイント</h4>
+                    <p style="font-size: 14px; line-height: 1.8;">
+                        2026年度の医療DX加算では、電子処方せん活用、オンライン服薬指導、
+                        患者向けデジタルサービスの提供等が評価対象となります。
+                        現在のスコアに基づき、優先順位の高い改善から着手することを推奨します。
+                    </p>
+                </div>
+
+                <div class="nav-buttons" style="margin-top: 30px;">
+                    <button class="btn btn-secondary" onclick="trackToolUsage('restart'); location.reload()">← 再診断</button>
+                    <button class="btn print-btn" onclick="window.print()">🖨️ 印刷</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        const totalSections = 6;
+        const scores = {
+            digitization: [],
+            online: [],
+            data: [],
+            security: [],
+            innovation: []
+        };
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.closest('.question');
+                question.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        function updateProgress() {
+            const progress = (currentSection / totalSections) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) {
+                saveSectionScores();
+                document.getElementById('section' + currentSection).classList.remove('active');
+                currentSection++;
+                document.getElementById('section' + currentSection).classList.add('active');
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 0) {
+                document.getElementById('section' + currentSection).classList.remove('active');
+                currentSection--;
+                document.getElementById('section' + currentSection).classList.add('active');
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function saveSectionScores() {
+            const section = document.getElementById('section' + currentSection);
+            const questions = section.querySelectorAll('.question');
+            questions.forEach(question => {
+                const category = question.dataset.category;
+                const selected = question.querySelector('.option.selected');
+                if (selected) {
+                    scores[category].push(parseInt(selected.dataset.score));
+                }
+            });
+        }
+
+        function showResults() {
+            saveSectionScores();
+            document.getElementById('section' + currentSection).classList.remove('active');
+            document.getElementById('results').classList.add('active');
+            currentSection = totalSections;
+            updateProgress();
+            
+            calculateAndDisplayResults();
+            window.scrollTo(0, 0);
+        }
+
+        function calculateAndDisplayResults() {
+            const categories = ['digitization', 'online', 'data', 'security', 'innovation'];
+            let total = 0;
+
+            categories.forEach(cat => {
+                const catScores = scores[cat];
+                const catTotal = catScores.reduce((a, b) => a + b, 0);
+                total += catTotal;
+                
+                document.getElementById(cat + 'Score').textContent = catTotal;
+                document.getElementById(cat + 'Bar').style.width = (catTotal / 20 * 100) + '%';
+            });
+
+            document.getElementById('totalScore').textContent = total;
+
+            let level = '';
+            if (total >= 80) {
+                level = '🏆 DX先進薬局';
+            } else if (total >= 60) {
+                level = '⭐ DX推進薬局';
+            } else if (total >= 40) {
+                level = '📈 DX取組中';
+            } else if (total >= 20) {
+                level = '🌱 DX準備段階';
+            } else {
+                level = '📋 DX未着手';
+            }
+            document.getElementById('levelBadge').textContent = level;
+
+            generateRecommendations();
+        }
+
+        function generateRecommendations() {
+            const recommendations = [];
+            const categories = {
+                digitization: { name: '電子化', items: [
+                    { score: 3, text: '薬歴電子化率の向上を優先（80%目標）', priority: 'high' },
+                    { score: 2, text: '電子処方せん受領システムの導入検討', priority: 'high' },
+                    { score: 4, text: '在庫管理システムと発注の自動連携', priority: 'medium' }
+                ]},
+                online: { name: 'オンラインサービス', items: [
+                    { score: 2, text: 'オンライン服薬指導の本格導入', priority: 'high' },
+                    { score: 3, text: 'Web予約システムのLINE連携', priority: 'medium' },
+                    { score: 4, text: '電子お薬手帳の全患者推奨', priority: 'low' }
+                ]},
+                data: { name: 'データ活用', items: [
+                    { score: 3, text: '月次経営分析の定例化', priority: 'medium' },
+                    { score: 2, text: '調剤報酬最適化の定期確認', priority: 'high' },
+                    { score: 4, text: 'KPIダッシュボードの構築', priority: 'medium' }
+                ]},
+                security: { name: 'セキュリティ', items: [
+                    { score: 2, text: '多層防御のセキュリティ対策導入', priority: 'high' },
+                    { score: 3, text: 'アクセス権限の役割別設定', priority: 'medium' },
+                    { score: 4, text: 'スタッフセキュリティ教育の定期実施', priority: 'medium' }
+                ]},
+                innovation: { name: 'AI・新技術', items: [
+                    { score: 2, text: 'AIツールの試用開始（薬歴支援等）', priority: 'medium' },
+                    { score: 3, text: '定型業務のRPA導入検討', priority: 'low' },
+                    { score: 4, text: 'DX推進チームの組織化', priority: 'medium' }
+                ]}
+            };
+
+            for (const [cat, info] of Object.entries(categories)) {
+                const catScores = scores[cat];
+                const avg = catScores.reduce((a, b) => a + b, 0) / catScores.length;
+                
+                info.items.forEach(item => {
+                    if (avg <= item.score) {
+                        recommendations.push({
+                            ...item,
+                            category: info.name
+                        });
+                    }
+                });
+            }
+
+            const sortedRecs = recommendations.sort((a, b) => {
+                const priorityOrder = { high: 0, medium: 1, low: 2 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            }).slice(0, 8);
+
+            const listHtml = sortedRecs.map(rec => `
+                <div class="recommendation-item">
+                    <span class="recommendation-priority priority-${rec.priority}">
+                        ${rec.priority === 'high' ? '優先度高' : rec.priority === 'medium' ? '優先度中' : '優先度低'}
+                    </span>
+                    <span>${rec.text}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('recommendationsList').innerHTML = listHtml;
+        }
+    </script>
+    
+    <div style="margin-top: 30px; padding: 20px; background: #f5f3ff; border-radius: 12px; margin: 30px auto; max-width: 860px;">
+      <h3 style="color: #6d28d9; margin-bottom: 12px; font-size: 16px;">📦 関連ツール</h3>
+      <ul style="list-style: none; display: grid; gap: 8px;">
+        <li><a href="pharmacy-dx-assessment.html" style="color: #7c3aed; text-decoration: none;">→ 薬局DX推進診断</a></li>
+        <li><a href="pharmacy-ai-readiness.html" style="color: #7c3aed; text-decoration: none;">→ 薬局AI活用診断</a></li>
+        <li><a href="index.html" style="color: #7c3aed; text-decoration: none;">→ 全ツール一覧（86選）</a></li>
+      </ul>
+    </div>
+</body>
+</html>

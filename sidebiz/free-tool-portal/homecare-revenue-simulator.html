@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在宅医療収益シミュレーター - 2026改定対応・薬局収益試算</title>
+  <meta name="description" content="在宅医療の収益をシミュレーション。訪問薬剤管理指導・在宅薬学総合体制加算・医師同時指導料の収益試算。2026年度診療報酬改定対応。">
+  <meta name="keywords" content="在宅医療,収益シミュレーション,薬局,診療報酬改定,2026,在宅薬学総合体制加算,訪問薬剤管理指導">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="在宅医療収益シミュレーター - 2026改定対応">
+  <meta property="og:description" content="在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/homecare-revenue-simulator.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="在宅医療収益シミュレーター">
+  <meta name="twitter:description" content="在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/homecare-revenue-simulator.html">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "在宅医療収益シミュレーター",
+    "description": "在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'homecare-revenue-simulator-' + action
+      });
+    }
+    
+    function trackCTAClick() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'homecare-revenue-simulator-prompt-cta'
+      });
+    }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      color: #17a2b8;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: #ffc107;
+      color: #333;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    
+    .section {
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      color: #17a2b8;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #17a2b8;
+    }
+    
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    
+    .input-item {
+      background: #f8f9fa;
+      padding: 16px;
+      border-radius: 8px;
+    }
+    
+    .input-item label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .input-item input, .input-item select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .input-item input:focus, .input-item select:focus {
+      outline: none;
+      border-color: #17a2b8;
+    }
+    
+    .input-item small {
+      display: block;
+      color: #666;
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+    
+    .input-item .unit {
+      color: #17a2b8;
+      font-weight: 600;
+    }
+    
+    .calc-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .calc-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(23, 162, 184, 0.4);
+    }
+    
+    .result {
+      display: none;
+      margin-top: 24px;
+    }
+    
+    .result.show {
+      display: block;
+    }
+    
+    .revenue-summary {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .revenue-summary h3 {
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+    }
+    
+    .revenue-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+    
+    .revenue-item {
+      text-align: center;
+    }
+    
+    .revenue-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    
+    .revenue-label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    
+    .detail-table th, .detail-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .detail-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+    }
+    
+    .detail-table td:last-child {
+      text-align: right;
+      font-weight: 600;
+      color: #28a745;
+    }
+    
+    .cost-section {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .cost-section h4 {
+      color: #856404;
+      margin-bottom: 12px;
+    }
+    
+    .profit-section {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+      padding: 16px;
+      border-radius: 8px;
+    }
+    
+    .profit-section h4 {
+      color: #155724;
+      margin-bottom: 12px;
+    }
+    
+    .profit-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #28a745;
+    }
+    
+    .recommendations {
+      background: #e7f3ff;
+      border: 1px solid #b3d7ff;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    
+    .recommendations h4 {
+      color: #004085;
+      margin-bottom: 12px;
+    }
+    
+    .recommendations ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .recommendations li {
+      padding: 8px 0;
+      border-bottom: 1px solid #b3d7ff;
+    }
+    
+    .recommendations li:last-child {
+      border-bottom: none;
+    }
+    
+    .recommendations li:before {
+      content: "💡 ";
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 32px;
+    }
+    
+    .cta-section h3 {
+      margin-bottom: 12px;
+    }
+    
+    .cta-section p {
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #17a2b8;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+    
+    .cta-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .save-notice {
+      background: #e7f3ff;
+      border: 1px solid #b3d7ff;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: #004085;
+    }
+    
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 12px;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 16px;
+      }
+      
+      h1 {
+        font-size: 1.4rem;
+      }
+      
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .revenue-value {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+
+    <!-- OGP -->
+    <meta property="og:title" content="在宅医療収益シミュレーター - 2026改定対応・薬局収益試算</title>
+  <meta name="description" content="在宅医療の収益をシミュレーション。訪問薬剤管理指導・在宅薬学総合体制加算・医師同時指導料の収益試算。2026年度診療報酬改定対応。">
+  <meta name="keywords" content="在宅医療,収益シミュレーション,薬局,診療報酬改定,2026,在宅薬学総合体制加算,訪問薬剤管理指導">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="在宅医療収益シミュレーター - 2026改定対応">
+  <meta property="og:description" content="在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/homecare-revenue-simulator.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="在宅医療収益シミュレーター">
+  <meta name="twitter:description" content="在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/homecare-revenue-simulator.html">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "在宅医療収益シミュレーター",
+    "description": "在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer | 薬剤師無料ツール">
+    <meta property="og:description" content="在宅医療の収益をシミュレーション。訪問薬剤管理指導・在宅薬学総合体制加算・医師同時指導料の収益試算。2026年度診療報酬改定対応。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/homecare-revenue-simulator.html">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="在宅医療収益シミュレーター - 2026改定対応・薬局収益試算</title>
+  <meta name="description" content="在宅医療の収益をシミュレーション。訪問薬剤管理指導・在宅薬学総合体制加算・医師同時指導料の収益試算。2026年度診療報酬改定対応。">
+  <meta name="keywords" content="在宅医療,収益シミュレーション,薬局,診療報酬改定,2026,在宅薬学総合体制加算,訪問薬剤管理指導">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="在宅医療収益シミュレーター - 2026改定対応">
+  <meta property="og:description" content="在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/homecare-revenue-simulator.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="在宅医療収益シミュレーター">
+  <meta name="twitter:description" content="在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/homecare-revenue-simulator.html">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "在宅医療収益シミュレーター",
+    "description": "在宅医療の収益をシミュレーション。2026年度診療報酬改定対応。",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer | 薬剤師無料ツール">
+    <meta name="twitter:description" content="在宅医療の収益をシミュレーション。訪問薬剤管理指導・在宅薬学総合体制加算・医師同時指導料の収益試算。2026年度診療報酬改定対応。">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💰 在宅医療収益シミュレーター<span class="badge">2026改定対応</span></h1>
+      <p class="subtitle">訪問薬剤管理指導・在宅薬学総合体制加算の収益を試算</p>
+    </header>
+    
+    <div class="save-notice">
+      💾 入力データは自動的にブラウザに保存されます（ページを閉じても保持）
+    </div>
+    
+    <div class="section">
+      <h2 class="section-title">📊 基本情報入力</h2>
+      <div class="input-grid">
+        <div class="input-item">
+          <label>月間訪問患者数</label>
+          <input type="number" id="patients" min="0" placeholder="例: 30">
+          <small>1ヶ月あたりの訪問患者数</small>
+        </div>
+        <div class="input-item">
+          <label>1患者あたり月間訪問回数</label>
+          <input type="number" id="visits" min="0" step="0.5" placeholder="例: 2">
+          <small>平均訪問頻度</small>
+        </div>
+        <div class="input-item">
+          <label>在宅薬学総合体制加算</label>
+          <select id="kasan">
+            <option value="0">なし</option>
+            <option value="1" selected>加算1（30点）</option>
+            <option value="2A">加算2（A・100点）</option>
+            <option value="2B">加算2（B・50点）</option>
+          </select>
+          <small>2026改定: 加算1=30点/加算2A=100点（個人宅・緊急対応）/加算2B=50点（施設在宅）</small>
+        </div>
+        <div class="input-item">
+          <label>医師同時訪問割合（%）</label>
+          <input type="number" id="jointVisit" min="0" max="100" placeholder="例: 20">
+          <small>2026改定: 同時指導料300点新設</small>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2 class="section-title">💸 コスト入力（月額）</h2>
+      <div class="input-grid">
+        <div class="input-item">
+          <label>薬剤師人件費</label>
+          <input type="number" id="laborCost" min="0" placeholder="例: 400000">
+          <small>在宅担当薬剤師の人件費 <span class="unit">円</span></small>
+        </div>
+        <div class="input-item">
+          <label>移動費</label>
+          <input type="number" id="transportCost" min="0" placeholder="例: 30000">
+          <small>車両費・ガソリン代 <span class="unit">円</span></small>
+        </div>
+        <div class="input-item">
+          <label>その他経費</label>
+          <input type="number" id="otherCost" min="0" placeholder="例: 20000">
+          <small>保険料・通信費等 <span class="unit">円</span></small>
+        </div>
+      </div>
+    </div>
+    
+    <button class="calc-btn" onclick="calculateRevenue()">📈 収益を計算する</button>
+    
+    <div class="result" id="result">
+      <div class="revenue-summary">
+        <h3>📊 月次収益サマリー</h3>
+        <div class="revenue-grid">
+          <div class="revenue-item">
+            <div class="revenue-value" id="totalRevenue">-</div>
+            <div class="revenue-label">総収益</div>
+          </div>
+          <div class="revenue-item">
+            <div class="revenue-value" id="totalCost">-</div>
+            <div class="revenue-label">総コスト</div>
+          </div>
+          <div class="revenue-item">
+            <div class="revenue-value" id="profit">-</div>
+            <div class="revenue-label">月次利益</div>
+          </div>
+          <div class="revenue-item">
+            <div class="revenue-value" id="profitRate">-</div>
+            <div class="revenue-label">利益率</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h3 style="margin-bottom: 12px; color: #17a2b8;">📋 収益内訳</h3>
+        <table class="detail-table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>点数</th>
+              <th>回数</th>
+              <th>月額収益</th>
+            </tr>
+          </thead>
+          <tbody id="detailBody">
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="cost-section">
+        <h4>⚠️ コスト内訳</h4>
+        <div id="costBreakdown"></div>
+      </div>
+      
+      <div class="profit-section">
+        <h4>✅ 月次利益</h4>
+        <div class="profit-value" id="profitDetail">-</div>
+        <p class="note">※利益 = 総収益 - 総コスト</p>
+      </div>
+      
+      <div class="recommendations" id="recommendations"></div>
+    </div>
+    
+    <div class="cta-section">
+      <h3>🚀 在宅医療をさらに強化</h3>
+      <p>AIプロンプト集で在宅報告書作成時間を短縮・同時訪問チェックリストで収益最大化</p>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn" target="_blank">AIプロンプト集を見る →</a>
+    </div>
+  </div>
+  
+  <script>
+    // データ保存・復元
+    function saveData() {
+      const data = {
+        patients: document.getElementById('patients').value,
+        visits: document.getElementById('visits').value,
+        kasan: document.getElementById('kasan').value,
+        jointVisit: document.getElementById('jointVisit').value,
+        laborCost: document.getElementById('laborCost').value,
+        transportCost: document.getElementById('transportCost').value,
+        otherCost: document.getElementById('otherCost').value
+      };
+      localStorage.setItem('homecareRevenueSim', JSON.stringify(data));
+    }
+    
+    function loadData() {
+      const saved = localStorage.getItem('homecareRevenueSim');
+      if (saved) {
+        const data = JSON.parse(saved);
+        Object.keys(data).forEach(key => {
+          const input = document.getElementById(key);
+          if (input && data[key]) {
+            input.value = data[key];
+          }
+        });
+      }
+    }
+    
+    document.querySelectorAll('input, select').forEach(input => {
+      input.addEventListener('input', saveData);
+      input.addEventListener('change', saveData);
+    });
+    
+    loadData();
+    
+    function calculateRevenue() {
+      trackToolUsage('calculate');
+      const patients = parseInt(document.getElementById('patients').value) || 0;
+      const visits = parseFloat(document.getElementById('visits').value) || 0;
+      const kasan = document.getElementById('kasan').value; // '0','1','2A','2B'
+      const jointVisitRate = parseInt(document.getElementById('jointVisit').value) || 0;
+      const laborCost = parseInt(document.getElementById('laborCost').value) || 0;
+      const transportCost = parseInt(document.getElementById('transportCost').value) || 0;
+      const otherCost = parseInt(document.getElementById('otherCost').value) || 0;
+      
+      if (patients === 0) {
+        alert('月間訪問患者数を入力してください');
+        return;
+      }
+      
+      // 2026改定対応点数
+      const POINT_YEN = 10; // 1点=10円
+      const visitPoint = 425; // 訪問薬剤管理指導料（外来）425点
+      const kasan1Point = 30;  // 在宅薬学総合体制加算1: 30点
+      const kasan2APoint = 100; // 在宅薬学総合体制加算2（A・個人宅・緊急対応）: 100点（2026改定）
+      const kasan2BPoint = 50;  // 在宅薬学総合体制加算2（B・施設在宅）: 50点（2026改定）
+      const jointVisitPoint = 300; // 医師同時訪問指導料: 300点（2026新設）
+
+      const totalVisits = patients * visits;
+      const jointVisits = Math.floor(totalVisits * jointVisitRate / 100);
+      const normalVisits = totalVisits - jointVisits;
+
+      // 収益計算
+      const normalRevenue = normalVisits * visitPoint * POINT_YEN;
+      const jointRevenue = jointVisits * (visitPoint + jointVisitPoint) * POINT_YEN;
+      const kasanPoint = kasan === '2A' ? kasan2APoint : (kasan === '2B' ? kasan2BPoint : (kasan === '1' ? kasan1Point : 0));
+      const kasanRevenue = patients * kasanPoint * POINT_YEN;
+      const totalRevenue = normalRevenue + jointRevenue + kasanRevenue;
+      
+      // コスト計算
+      const totalCost = laborCost + transportCost + otherCost;
+      const profit = totalRevenue - totalCost;
+      const profitRate = totalRevenue > 0 ? ((profit / totalRevenue) * 100).toFixed(1) : 0;
+      
+      // 表示更新
+      document.getElementById('totalRevenue').textContent = `¥${totalRevenue.toLocaleString()}`;
+      document.getElementById('totalCost').textContent = `¥${totalCost.toLocaleString()}`;
+      document.getElementById('profit').textContent = `¥${profit.toLocaleString()}`;
+      document.getElementById('profitRate').textContent = `${profitRate}%`;
+      document.getElementById('profitDetail').textContent = `¥${profit.toLocaleString()}/月`;
+      
+      // 詳細テーブル
+      const detailBody = document.getElementById('detailBody');
+      detailBody.innerHTML = `
+        <tr>
+          <td>訪問薬剤管理指導料（通常）</td>
+          <td>${visitPoint}点</td>
+          <td>${normalVisits}回</td>
+          <td>¥${normalRevenue.toLocaleString()}</td>
+        </tr>
+        <tr>
+          <td>医師同時訪問指導料</td>
+          <td>${visitPoint + jointVisitPoint}点</td>
+          <td>${jointVisits}回</td>
+          <td>¥${jointRevenue.toLocaleString()}</td>
+        </tr>
+        ${kasan !== '0' ? `
+        <tr>
+          <td>在宅薬学総合体制加算${kasan === '2A' ? '2（A）' : kasan === '2B' ? '2（B）' : '1'}</td>
+          <td>${kasanPoint}点</td>
+          <td>${patients}人</td>
+          <td>¥${kasanRevenue.toLocaleString()}</td>
+        </tr>
+        ` : ''}
+        <tr style="font-weight: 700; background: #f8f9fa;">
+          <td colspan="3">合計</td>
+          <td>¥${totalRevenue.toLocaleString()}</td>
+        </tr>
+      `;
+      
+      // コスト内訳
+      document.getElementById('costBreakdown').innerHTML = `
+        <p>👤 人件費: ¥${laborCost.toLocaleString()}</p>
+        <p>🚗 移動費: ¥${transportCost.toLocaleString()}</p>
+        <p>📦 その他: ¥${otherCost.toLocaleString()}</p>
+        <p style="font-weight: 700; margin-top: 8px;">合計: ¥${totalCost.toLocaleString()}</p>
+      `;
+      
+      // 改善提案
+      let recs = [];
+      
+      if (jointVisitRate < 20 && patients > 10) {
+        recs.push('医師同時訪問の割合を増やすと、同時指導料300点で収益向上');
+      }
+      if (kasan === '0' && patients >= 20) {
+        recs.push('在宅薬学総合体制加算の届出を検討（要件: 在宅患者20人以上・常時勤務薬剤師等）');
+      }
+      if (profitRate < 20) {
+        recs.push('利益率が低めです。訪問効率化・ルート最適化でコスト削減を検討');
+      }
+      if (profitRate > 40) {
+        recs.push('利益率が良好です。患者数拡大で更なる収益増を目指せます');
+      }
+      if (laborCost > totalRevenue * 0.5) {
+        recs.push('人件費比率が高いです。訪問効率向上または複数担当でのシフト検討');
+      }
+      
+      if (recs.length === 0) {
+        recs.push('収益バランスが良好です。継続的な運用改善を検討してください');
+      }
+      
+      document.getElementById('recommendations').innerHTML = `
+        <h4>💡 収益改善提案</h4>
+        <ul>
+          ${recs.map(r => `<li>${r}</li>`).join('')}
+        </ul>
+      `;
+      
+      document.getElementById('result').classList.add('show');
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+
+  <!-- 関連ツール -->
+  <section class="related-tools" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📦 関連ツール</h3>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <li><a href="homecare-efficiency-diagnosis.html" style="color: #3498db; text-decoration: none;">在宅効率診断</a></li>
+      <li><a href="homecare-joint-visit-checklist.html" style="color: #3498db; text-decoration: none;">多職種協働チェックリスト</a></li>
+      <li><a href="pharmacy-revenue-improvement.html" style="color: #3498db; text-decoration: none;">収益改善診断</a></li>
+      <li><a href="index.html" style="color: #3498db; text-decoration: none;">🏠ツール一覧</a></li>
+    </ul>
+  </section>
+
+</body>
+</html>

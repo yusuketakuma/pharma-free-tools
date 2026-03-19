@@ -1,0 +1,125 @@
+export interface DrugMasterStats {
+    totalItems: number;
+    listedItems: number;
+    transitionItems: number;
+    delistedItems: number;
+    lastSyncAt: string | null;
+}
+export declare function searchDrugMaster(query: string, limit?: number): Promise<{
+    id: number;
+    yjCode: string;
+    drugName: string;
+    genericName: string | null;
+    specification: string | null;
+    unit: string | null;
+    yakkaPrice: string;
+    manufacturer: string | null;
+    category: string | null;
+    isListed: boolean | null;
+    transitionDeadline: string | null;
+}[]>;
+export declare function lookupByCode(code: string): Promise<{
+    id: number;
+    yjCode: string;
+    drugName: string;
+    genericName: string | null;
+    specification: string | null;
+    unit: string | null;
+    yakkaPrice: string;
+    manufacturer: string | null;
+    category: string | null;
+    therapeuticCategory: string | null;
+    isListed: boolean | null;
+    listedDate: string | null;
+    transitionDeadline: string | null;
+    deletedDate: string | null;
+    createdAt: string | null;
+    updatedAt: string | null;
+} | null>;
+export declare function getDrugMasterStats(): Promise<DrugMasterStats>;
+export declare function getDrugDetail(yjCode: string): Promise<{
+    packages: {
+        normalizedPackageLabel: string | null;
+        packageForm: string | null;
+        isLoosePackage: boolean;
+        id: number;
+        drugMasterId: number;
+        gs1Code: string | null;
+        janCode: string | null;
+        hotCode: string | null;
+        packageDescription: string | null;
+        packageQuantity: number | null;
+        packageUnit: string | null;
+        createdAt: string | null;
+        updatedAt: string | null;
+    }[];
+    priceHistory: {
+        id: number;
+        yjCode: string;
+        previousPrice: string | null;
+        newPrice: string | null;
+        revisionDate: string;
+        revisionType: "price_revision" | "new_listing" | "delisting" | "transition";
+        createdAt: string | null;
+    }[];
+    id: number;
+    yjCode: string;
+    drugName: string;
+    genericName: string | null;
+    specification: string | null;
+    unit: string | null;
+    yakkaPrice: string;
+    manufacturer: string | null;
+    category: string | null;
+    therapeuticCategory: string | null;
+    isListed: boolean | null;
+    listedDate: string | null;
+    transitionDeadline: string | null;
+    deletedDate: string | null;
+    createdAt: string | null;
+    updatedAt: string | null;
+} | null>;
+export declare function getSyncLogs(limit?: number): Promise<{
+    id: number;
+    syncType: string;
+    sourceDescription: string | null;
+    status: "failed" | "running" | "success" | "partial";
+    itemsProcessed: number | null;
+    itemsAdded: number | null;
+    itemsUpdated: number | null;
+    itemsDeleted: number | null;
+    errorMessage: string | null;
+    startedAt: string | null;
+    completedAt: string | null;
+    triggeredBy: number | null;
+}[]>;
+export declare function updateDrugMasterItem(yjCode: string, updates: {
+    drugName?: string;
+    genericName?: string | null;
+    specification?: string | null;
+    unit?: string | null;
+    yakkaPrice?: number;
+    manufacturer?: string | null;
+    category?: string | null;
+    therapeuticCategory?: string | null;
+    isListed?: boolean;
+    transitionDeadline?: string | null;
+}): Promise<{
+    id: number;
+    yjCode: string;
+    drugName: string;
+    genericName: string | null;
+    specification: string | null;
+    unit: string | null;
+    yakkaPrice: string;
+    manufacturer: string | null;
+    category: string | null;
+    therapeuticCategory: string | null;
+    isListed: boolean | null;
+    listedDate: string | null;
+    transitionDeadline: string | null;
+    deletedDate: string | null;
+    createdAt: string | null;
+    updatedAt: string | null;
+}>;
+//# sourceMappingURL=drug-master-lookup-service.d.ts.map

@@ -1,0 +1,271 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateExternalHttpsUrl = validateExternalHttpsUrl;
+exports.assertExternalHttpsUrlSafe = assertExternalHttpsUrlSafe;
+exports.createPinnedDnsAgent = createPinnedDnsAgent;
+const promises_1 = __importDefault(require("node:dns/promises"));
+const node_net_1 = __importDefault(require("node:net"));
+const undici_1 = require("undici");
+function parseAllowedHostPatterns(raw) {
+    return (raw ?? '')
+        .split(',')
+        .map((value) => value.trim().toLowerCase())
+        .filter((value) => value.length > 0);
+}
+function hostMatchesPattern(hostname, pattern) {
+    if (pattern.startsWith('*.')) {
+        const suffix = pattern.slice(2);
+        return hostname.endsWith(`.${suffix}`);
+    }
+    return hostname === pattern;
+}
+function isHostnameAllowedByPolicy(hostname) {
+    const patterns = parseAllowedHostPatterns(process.env.EXTERNAL_FETCH_ALLOWED_HOSTS);
+    if (patterns.length === 0) {
+        return process.env.NODE_ENV !== 'production';
+    }
+    const lowerHostname = hostname.toLowerCase();
+    return patterns.some((pattern) => hostMatchesPattern(lowerHostname, pattern));
+}
+function isPrivateIpv4(ip) {
+    const parts = ip.split('.').map((part) => Number(part));
+    if (parts.length !== 4 || parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) {
+        return true;
+    }
+    const [a, b] = parts;
+    if (a === 0)
+        return true;
+    if (a === 10)
+        return true;
+    if (a === 127)
+        return true;
+    if (a === 169 && b === 254)
+        return true;
+    if (a === 172 && b >= 16 && b <= 31)
+        return true;
+    if (a === 192 && b === 168)
+        return true;
+    if (a === 100 && b >= 64 && b <= 127)
+        return true;
+    if (a >= 224)
+        return true;
+    return false;
+}
+function expandIpv6(ip) {
+    const doubleColonParts = ip.split('::');
+    if (doubleColonParts.length > 2)
+        return null;
+    const left = doubleColonParts[0]
+        .split(':')
+        .filter((part) => part.length > 0);
+    const right = (doubleColonParts[1] ?? '')
+        .split(':')
+        .filter((part) => part.length > 0);
+    const hasIpv4Tail = (right[right.length - 1] ?? left[left.length - 1] ?? '').includes('.');
+    const normalizedRight = [...right];
+    const normalizedLeft = [...left];
+    if (hasIpv4Tail) {
+        const tail = normalizedRight.length > 0
+            ? normalizedRight.pop()
+            : normalizedLeft.pop();
+        if (!tail)
+            return null;
+        if (!node_net_1.default.isIPv4(tail)) {
+            return null;
+        }
+        const octets = tail.split('.').map((part) => Number(part));
+        const hi = ((octets[0] << 8) | octets[1]).toString(16);
+        const lo = ((octets[2] << 8) | octets[3]).toString(16);
+        if (normalizedRight.length > 0) {
+            normalizedRight.push(hi, lo);
+        }
+        else {
+            normalizedLeft.push(hi, lo);
+        }
+    }
+    const total = normalizedLeft.length + normalizedRight.length;
+    if (total > 8)
+        return null;
+    const fillCount = 8 - total;
+    const middle = doubleColonParts.length === 2 ? Array(fillCount).fill('0') : [];
+    const groups = [...normalizedLeft, ...middle, ...normalizedRight];
+    if (groups.length !== 8)
+        return null;
+    return groups.map((group) => group.padStart(4, '0').toLowerCase());
+}
+function isPrivateIpv6(ip) {
+    const expanded = expandIpv6(ip);
+    if (!expanded)
+        return true;
+    const first = parseInt(expanded[0], 16);
+    const second = parseInt(expanded[1], 16);
+    const isLoopback = expanded.every((group, idx) => (idx < 7 ? group === '0000' : group === '0001'));
+    if (isLoopback)
+        return true;
+    const isUnspecified = expanded.every((group) => group === '0000');
+    if (isUnspecified)
+        return true;
+    // fc00::/7 unique local address
+    if ((first & 0xfe00) === 0xfc00)
+        return true;
+    // fe80::/10 link-local
+    if ((first & 0xffc0) === 0xfe80)
+        return true;
+    // ff00::/8 multicast
+    if ((first & 0xff00) === 0xff00)
+        return true;
+    // ::ffff:0:0/96 IPv4-mapped IPv6
+    const isIpv4Mapped = expanded.slice(0, 5).every((group) => group === '0000')
+        && expanded[5] === 'ffff';
+    if (isIpv4Mapped) {
+        const hi = parseInt(expanded[6], 16);
+        const lo = parseInt(expanded[7], 16);
+        const ipv4 = `${(hi >> 8) & 0xff}.${hi & 0xff}.${(lo >> 8) & 0xff}.${lo & 0xff}`;
+        return isPrivateIpv4(ipv4);
+    }
+    void second;
+    return false;
+}
+function isPrivateIpAddress(ip) {
+    if (node_net_1.default.isIPv4(ip)) {
+        return isPrivateIpv4(ip);
+    }
+    if (node_net_1.default.isIPv6(ip)) {
+        return isPrivateIpv6(ip);
+    }
+    return true;
+}
+function isBlockedHostname(hostname) {
+    const lower = hostname.toLowerCase();
+    if (lower === 'localhost')
+        return true;
+    if (lower.endsWith('.localhost'))
+        return true;
+    if (lower.endsWith('.local'))
+        return true;
+    return false;
+}
+async function resolveHostname(hostname) {
+    if (node_net_1.default.isIP(hostname)) {
+        return [hostname];
+    }
+    const records = await promises_1.default.lookup(hostname, { all: true, verbatim: true });
+    const unique = new Set();
+    for (const record of records) {
+        if (record?.address) {
+            unique.add(record.address);
+        }
+    }
+    return [...unique];
+}
+async function validateExternalHttpsUrl(url) {
+    let parsed;
+    try {
+        parsed = new URL(url);
+    }
+    catch {
+        return { ok: false, reason: 'URL形式が不正です', hostname: null, resolvedAddresses: [] };
+    }
+    if (parsed.protocol !== 'https:') {
+        return { ok: false, reason: 'HTTPSのみ許可されています', hostname: parsed.hostname, resolvedAddresses: [] };
+    }
+    if (isBlockedHostname(parsed.hostname)) {
+        return {
+            ok: false,
+            reason: 'ローカルドメインは許可されていません',
+            hostname: parsed.hostname,
+            resolvedAddresses: [],
+        };
+    }
+    if (!isHostnameAllowedByPolicy(parsed.hostname)) {
+        return {
+            ok: false,
+            reason: '許可リストにないホストです',
+            hostname: parsed.hostname,
+            resolvedAddresses: [],
+        };
+    }
+    let addresses;
+    try {
+        addresses = await resolveHostname(parsed.hostname);
+    }
+    catch {
+        return {
+            ok: false,
+            reason: 'ホスト名を解決できませんでした',
+            hostname: parsed.hostname,
+            resolvedAddresses: [],
+        };
+    }
+    if (addresses.length === 0) {
+        return {
+            ok: false,
+            reason: 'ホスト名の解決結果が空です',
+            hostname: parsed.hostname,
+            resolvedAddresses: [],
+        };
+    }
+    for (const address of addresses) {
+        if (isPrivateIpAddress(address)) {
+            return {
+                ok: false,
+                reason: 'プライベート/ローカルIPへの接続は許可されていません',
+                hostname: parsed.hostname,
+                resolvedAddresses: addresses,
+            };
+        }
+    }
+    return { ok: true, reason: null, hostname: parsed.hostname, resolvedAddresses: addresses };
+}
+async function assertExternalHttpsUrlSafe(url) {
+    const result = await validateExternalHttpsUrl(url);
+    if (result.ok)
+        return;
+    const reason = result.reason ?? 'URLの検証に失敗しました';
+    const hostname = result.hostname ? ` (${result.hostname})` : '';
+    throw new Error(`${reason}${hostname}`);
+}
+function createPinnedDnsAgent(hostname, allowedAddresses) {
+    const normalizedHostname = hostname.toLowerCase();
+    const uniqueAddresses = [...new Set(allowedAddresses)];
+    if (uniqueAddresses.length === 0) {
+        throw new Error('DNS pinning requires at least one resolved address');
+    }
+    let nextAddressIndex = 0;
+    const lookup = (lookupHostname, lookupOptions, callback) => {
+        if (lookupHostname.toLowerCase() !== normalizedHostname) {
+            callback(new Error('Hostname changed during DNS-pinned request'), '');
+            return;
+        }
+        const family = lookupOptions?.family;
+        const filtered = uniqueAddresses.filter((address) => {
+            if (family === 4)
+                return node_net_1.default.isIPv4(address);
+            if (family === 6)
+                return node_net_1.default.isIPv6(address);
+            return true;
+        });
+        if (filtered.length === 0) {
+            callback(new Error('No pinned address available for requested IP family'), '');
+            return;
+        }
+        if (lookupOptions?.all) {
+            const addresses = filtered.map((address) => ({
+                address,
+                family: node_net_1.default.isIPv6(address) ? 6 : 4,
+            }));
+            callback(null, addresses);
+            return;
+        }
+        const address = filtered[nextAddressIndex % filtered.length];
+        nextAddressIndex += 1;
+        callback(null, address, node_net_1.default.isIPv6(address) ? 6 : 4);
+    };
+    return new undici_1.Agent({
+        connect: { lookup },
+    });
+}
+//# sourceMappingURL=network-utils.js.map

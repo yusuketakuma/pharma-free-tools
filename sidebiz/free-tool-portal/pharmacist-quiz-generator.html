@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacist-quiz-generator-' + action
+      });
+    }
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬剤師継続勉強クイズジェネレーター | 無料ツール</title>
+  <meta name="description" content="薬剤師の継続勉強・認定薬剤師更新に役立つクイズを自動生成。薬理学・薬剤学・薬事法・臨床薬学など幅広い分野に対応。AI活用で効率的な学習をサポート。">
+  <meta name="keywords" content="薬剤師,継続勉強,認定薬剤師,クイズ,薬理学,臨床薬学,勉強ツール,CPD">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #444;
+    }
+    
+    select, input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    @media (max-width: 600px) {
+      .row { grid-template-columns: 1fr; }
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+    }
+    
+    .quiz-section {
+      margin-top: 30px;
+      display: none;
+    }
+    
+    .quiz-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .quiz-number {
+      font-size: 0.85rem;
+      color: #667eea;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .quiz-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .quiz-options {
+      list-style: none;
+    }
+    
+    .quiz-options li {
+      padding: 10px 15px;
+      margin-bottom: 8px;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .quiz-options li:hover {
+      border-color: #667eea;
+      background: #f0f4ff;
+    }
+    
+    .quiz-options li.selected {
+      border-color: #667eea;
+      background: #e8edff;
+    }
+    
+    .quiz-options li.correct {
+      border-color: #28a745;
+      background: #d4edda;
+    }
+    
+    .quiz-options li.incorrect {
+      border-color: #dc3545;
+      background: #f8d7da;
+    }
+    
+    .answer-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #ddd;
+      display: none;
+    }
+    
+    .answer-label {
+      font-weight: 600;
+      color: #28a745;
+    }
+    
+    .explanation {
+      margin-top: 10px;
+      color: #555;
+      font-size: 0.95rem;
+      background: #fff;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    
+    .score-section {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+      margin-top: 20px;
+      display: none;
+    }
+    
+    .score-number {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    
+    .cta-box {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .cta-box h3 {
+      margin-bottom: 10px;
+    }
+    
+    .cta-box p {
+      margin-bottom: 15px;
+      opacity: 0.95;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #f5576c;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+    
+    .cta-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .action-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    
+    .btn-check {
+      background: #28a745;
+      color: white;
+    }
+    
+    .btn-reset {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .btn-new {
+      background: #667eea;
+      color: white;
+    }
+  </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacist-quiz-generator-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacist-quiz-generator-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacist-quiz-generator-prompt-cta'
+      });
+    }
+  </script>
+
+      <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💊 薬剤師継続勉強クイズジェネレーター</h1>
+      <p class="subtitle">認定薬剤師更新・CPD対応 | AI活用で効率的な学習</p>
+    </header>
+    
+    <div class="content">
+      <div class="form-section">
+        <div class="row">
+          <div class="form-group">
+            <label for="category">📚 分野を選択</label>
+            <select id="category">
+              <option value="pharmacology">薬理学</option>
+              <option value="pharmaceutics">薬剤学</option>
+              <option value="clinical">臨床薬学</option>
+              <option value="pharmaceutical-care">薬物治療学</option>
+              <option value="regulations">薬事法・規制</option>
+              <option value="herbal">漢方薬・生薬学</option>
+              <option value="mixed">ランダム（全分野）</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="difficulty">📊 難易度</label>
+            <select id="difficulty">
+              <option value="basic">基礎レベル</option>
+              <option value="intermediate">中級レベル</option>
+              <option value="advanced">上級レベル</option>
+              <option value="mixed">混合</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group">
+            <label for="count">🔢 問題数</label>
+            <select id="count">
+              <option value="5">5問（クイック）</option>
+              <option value="10" selected>10問（標準）</option>
+              <option value="15">15問（しっかり）</option>
+              <option value="20">20問（本格）</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="focus">🎯 重点トピック（任意）</label>
+            <input type="text" id="focus" placeholder="例：抗凝固薬、糖尿病、抗がん剤...">
+          </div>
+        </div>
+        
+        <button class="btn" onclick="generateQuiz()">📝 クイズを生成</button>
+      </div>
+      
+      <div class="quiz-section" id="quizSection">
+        <div id="quizContainer"></div>
+        
+        <div class="action-buttons">
+          <button class="btn-check" onclick="checkAnswers()">✅ 回答を確認</button>
+          <button class="btn-reset" onclick="resetQuiz()">🔄 リセット</button>
+          <button class="btn-new" onclick="generateQuiz()">🆕 新しいクイズ</button>
+        </div>
+        
+        <div class="score-section" id="scoreSection">
+          <p>あなたのスコア</p>
+          <div class="score-number" id="scoreDisplay">0/10</div>
+          <p id="scoreMessage"></p>
+        </div>
+      </div>
+      
+      <div class="cta-box">
+        <h3>📚 もっと効率的に勉強したい？</h3>
+        <p>薬剤師向けAIプロンプト集で、学習効率を10倍に</p>
+        <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-btn">詳細を見る →</a>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const quizBank = {
+      pharmacology: {
+        basic: [
+          { q: "アセチルコリンエステラーゼ阻害薬の適応は？", options: ["阿尔ツハイマー病", "パーキンソン病", "てんかん", "うつ病"], answer: 0, explanation: "ドネペジル、ガランタミン、リバスチグミンなどがアルツハイマー病の認知症症状改善に使用されます。" },
+          { q: "β遮断薬の禁忌は？", options: ["高血圧", "気管支喘息", "頻脈性不整脈", "狭心症"], answer: 1, explanation: "β遮断薬は気管支平滑筋のβ2受容体を遮断し、気管支収縮を引き起こすため喘息患者には禁忌です。" },
+          { q: "ワルファリンの作用機序は？", options: ["トロンビン阻害", "ビタミンK拮抗", "Xa因子阻害", "血小板凝集抑制"], answer: 1, explanation: "ワルファリンはビタミンKエポキシド還元酵素を阻害し、ビタミンK依存性凝固因子の産生を抑制します。" },
+          { q: "アンジオテンシン変換酵素(ACE)阻害薬の特徴的な副作用は？", options: ["咳嗽", "便秘", "下痢", "頭痛"], answer: 0, explanation: "ACE阻害薬はブラジキニンの分解を抑制し、咳嗽を引き起こすことがあります（発生率5-20%)."}, 
+          { q: "プロトンポンプ阻害薬(PPI)の作用部位は？", options: ["胃壁細胞", "主細胞", "副細胞", "G細胞"], answer: 0, explanation: "PPIは胃壁細胞のH+/K+-ATPaseを不可逆的に阻害し、胃酸分泌を強力に抑制します。" }
+        ],
+        intermediate: [
+          { q: "CYP3A4で代謝されない薬剤は？", options: ["アトルバスタチン", "シンバスタチン", "プラバスタチン", "ロスバスタチン"], answer: 2, explanation: "プラバスタチンは主に腎排泄され、CYP3A4代謝を受けにくいため薬物相互作用が少ない特徴があります。" },
+          { q: "セロトニン症候群の原因とならない薬剤は？", options: ["SSRI", "MAO阻害薬", "トリプタン", "H2ブロッカー"], answer: 3, explanation: "H2ブロッカーはヒスタミン受容体に作用し、セロトニン系には影響しないためセロトニン症候群の原因になりません。" },
+          { q: "キニジンとジゴキシンの相互作用の機序は？", options: ["CYP阻害", "P-gp阻害", "蛋白結合置換", "吸収阻害"], answer: 1, explanation: "キニジンはP-糖蛋白を阻害し、ジゴキシンの腎排泄・胆汁排泄を減少させ血中濃度を上昇させます。" },
+          { q: "QT延長を起こしにくい抗生物質は？", options: ["エリスロマイシン", "レボフロキサシン", "アモキシシリン", "クラリスロマイシン"], answer: 2, explanation: "アモキシシリンはQT延長リスクが低いペニシリン系抗生物質です。マクロライド系・フルオロキノロン系はQT延長リスクがあります。" },
+          { q: "バンコマイシン troughの目標濃度は？", options: ["5-10 μg/mL", "10-15 μg/mL", "15-20 μg/mL", "20-30 μg/mL"], answer: 2, explanation: "MRSA感染症ではtrough 15-20 μg/mLが推奨されます。腎障害リスクとのバランスを考慮します。" }
+        ],
+        advanced: [
+          { q: "チロシンキナーゼ阻害薬で間質性肺炎のリスクが特に高いのは？", options: ["イマチニブ", "ゲフィチニブ", "エルロチニブ", "クリゾチニブ"], answer: 1, explanation: "ゲフィチニブは日本人での間質性肺炎発現率が1-2%と報告されており、特に既存の間質性肺炎例では禁忌となります。" },
+          { q: "DOACで逆転剤が承認されているのは？", options: ["リバーロキサバンのみ", "アピキサバンのみ", "ダビガトラン・リバーロキサバン・アピキサバン", "なし"], answer: 2, explanation: "イダルシズマブ（ダビガトラン用）、アンデキサネット（Xa阻害薬用）が承認されています。" },
+          { q: "シクロスポリンの副作用で長期投与で特に注意すべきは？", options: ["肝毒性", "腎毒性", "肺毒性", "心毒性"], answer: 1, explanation: "シクロスポリンは血管収縮・酸化ストレスにより腎毒性を引き起こします。長期投与では腎機能の定期的モニタリングが必須です。" },
+          { q: "テーラーメイド医療でCYP2C19のPM（ポアメタボライザー）で血中濃度が高くなる薬剤は？", options: ["オメプラゾール", "ワルファリン", "フェニトイン", "カルバマゼピン"], answer: 0, explanation: "CYP2C19で代謝されるPPI（オメプラゾール等）はPMで血中濃度が高くなり、Helicobacter除菌率が向上します。" },
+          { q: "P-gpを介した薬物相互作用で血中濃度が上昇するのは？", options: ["リファンピシン併用時", "カルバマゼピン併用時", "クラリスロマイシン併用時", "フェニトイン併用時"], answer: 2, explanation: "クラリスロマイシンはP-gpを阻害し、P-gp基質薬（ジゴキシン、ダビガトラン等）の血中濃度を上昇させます。" }
+        ]
+      },
+      clinical: {
+        basic: [
+          { q: "糖尿病患者のHbA1c目標値（一般的）は？", options: ["5.0%未満", "6.0%未満", "7.0%未満", "8.0%未満"], answer: 2, explanation: "JDSではHbA1c 7.0%未満を一般的な目標としていますが、患者の状態により個別化が必要です。" },
+          { q: "高血圧の診断基準（家庭血圧）は？", options: ["130/80 mmHg以上", "135/85 mmHg以上", "140/90 mmHg以上", "145/95 mmHg以上"], answer: 1, explanation: "家庭血圧では135/85 mmHg以上が高血圧と診断されます（診察血圧より低い値が基準）。" },
+          { q: "CKDのG3a期（eGFR）は？", options: ["90以上", "60-89", "45-59", "30-44"], answer: 2, explanation: "CKD G3a期はeGFR 45-59 mL/min/1.73m²です。G3bは30-44、G4は15-29です。" },
+          { q: "心不全患者の食塩制限目標は？", options: ["3g/日以下", "6g/日以下", "10g/日以下", "制限不要"], answer: 1, explanation: "心不全ガイドラインでは6g/日以下の食塩制限が推奨されます（重症例ではより厳格に）。" },
+          { q: "急性心筋梗塞の再灌張療法の目標時間（D2B）は？", options: ["60分以内", "90分以内", "120分以内", "180分以内"], answer: 1, explanation: "Door-to-Balloon時間は90分以内が目標です。時間経過とともに心筋壊死が進行するため早期再灌張が重要です。" }
+        ],
+        intermediate: [
+          { q: "CHADS2スコアで2点に相当するのは？", options: ["心不全", "高血圧", "糖尿病", "脳梗塞・一過性脳虚血発作の既往"], answer: 3, explanation: "CHADS2では脳梗塞・TIA既往が2点、その他（心不全、高血圧、糖尿病、75歳以上）は各1点です。" },
+          { q: "慢性心不全で第一選択とされる薬剤は？", options: ["ジゴキシン", "ACE阻害薬/ARB/ARNI", "利尿薬単独", "β遮断薬単独"], answer: 1, explanation: "ガイドラインではACE阻害薬/ARB/ARNI + β遮断薬 + MRAの基本治療が推奨されます。" },
+          { q: "COPD増悪期に禁忌の薬剤は？", options: ["吸入抗コリン薬", "吸入β2刺激薬", "非選択的β遮断薬", "テオフィリン"], answer: 2, explanation: "非選択的β遮断薬は気管支収縮を引き起こすためCOPD患者では禁忌です（心選択的β遮断薬は慎重投与で可）。" },
+          { q: "CKD患者で避けるべき鎮痛薬は？", options: ["アセトアミノフェン", "NSAIDs", "トラマドール", "ブプレノルフィン"], answer: 1, explanation: "NSAIDsは腎血流量を減少させ、CKDの進行を加速させるリスクがあります。" },
+          { q: "抗凝固療法中の患者のINR目標（機械弁置換例）は？", options: ["1.5-2.0", "2.0-3.0", "2.5-3.5", "3.0-4.0"], answer: 2, explanation: "機械弁置換例ではINR 2.5-3.5が目標です（弁の種類・位置・リスク因子により個別化）。" }
+        ],
+        advanced: [
+          { q: "敗血症の3時間バンドルに含まれないのは？", options: ["乳酸値測定", "血液培養採取", "広域スペクトラム抗生物質投与", "ステロイド投与"], answer: 3, explanation: "Surviving Sepsis Campaignの3時間バンドルは：乳酸値測定、血液培養、抗生物質、低血圧時の30mL/kg晶質液投与です。" },
+          { q: "肝硬変患者の腎機能評価に適しているのは？", options: ["血清クレアチニン", "Cockcroft-Gault式", "eGFR", "シスタチンC"], answer: 3, explanation: "肝硬変ではクレアチニン産生が低下しているため、シスタチンCベースの評価がより正確です。" },
+          { q: "TDMが必要な抗菌薬でないのは？", options: ["バンコマイシン", "アミカシン", "メロペネム", "テイコプラニン"], answer: 2, explanation: "メロペネムはβラクタム系で、通常TDMは不要です。バンコマイシン、アミノグリコシド系、テイコプラニンはTDMが推奨されます。" },
+          { q: "DOAC使用中の消化器出血リスクが最も高いのは？", options: ["ダビガトラン150mg", "リバーロキサバン20mg", "アピキサバン5mg", "エドキサバン60mg"], answer: 0, explanation: "ダビガトラン150mgはRE-LY試験で他のDOACやワルファリンより消化器出血リスクが高いと報告されています。" },
+          { q: "高齢者の不適切処方（Beers基準）で避けるべきでないのは？", options: ["ベンゾジアゼピン", "第一世代抗ヒスタミン薬", "メトホルミン", "三環系抗うつ薬"], answer: 2, explanation: "メトホルミンは高齢者でも第一選択薬として使用可能です（eGFR30以上）。他の3つはBeers基準で避けるべき薬剤です。" }
+        ]
+      },
+      regulations: {
+        basic: [
+          { q: "毒薬・劇薬の表示は？", options: ["「毒」又は「劇」の文字", "赤色のラベル", "青色のラベル", "特に表示なし"], answer: 0, explanation: "毒薬は「毒」、劇薬は「劇」の文字を白地に赤字で表示することが義務付けられています。" },
+          { q: "処方箋の有効期間は？", options: ["当日限り", "交付日を含め4日以内", "交付日を含め7日以内", "1ヶ月以内"], answer: 1, explanation: "処方箋は交付日を含め4日以内に調剤を受けなければなりません（麻薬処方箋は当日限り）。" },
+          { q: "調剤録の保存期間は？", options: ["2年", "3年", "5年", "7年"], answer: 1, explanation: "調剤録は3年間の保存が義務付けられています（薬機法第45条）。" },
+          { q: "要指導医薬品の販売方法は？", options: ["店頭販売可能", "薬剤師対面販売のみ", "通信販売可能", "登録販売者が販売可能"], answer: 1, explanation: "要指導医薬品は薬剤師が対面で情報提供を行い、購入者の理解を確認した上で販売する必要があります。" },
+          { q: "医薬品医療機器等法（旧薬事法）の施行年は？", options: ["1960年", "1979年", "2002年", "2014年"], answer: 3, explanation: "薬事法は2014年11月25日に「医薬品医療機器等法」に改正・施行されました。" }
+        ],
+        intermediate: [
+          { q: "生物学的同等性試験が必要なのは？", options: ["新有効成分含有医薬品", "後発医薬品", "希少疾病用医薬品", "漢方製剤"], answer: 1, explanation: "後発医薬品の承認には先発品との生物学的同等性試験による同等性の証明が必要です。" },
+          { q: "再審査期間が最も長い薬剤区分は？", options: ["新有効成分含有医薬品", "希少疾病用医薬品", "新効能追加医薬品", "新処方追加医薬品"], answer: 1, explanation: "希少疾病用医薬品は最長10年間の再審査期間があります（新有効成分は8年）。" },
+          { q: "副作用被害救済制度の給付でないのは？", options: ["医療費", "医療手当", "遺族年金", "傷害年金"], answer: 2, explanation: "副作用被害救済制度には医療費・医療手当・障害年金・一時金・葬祭料がありますが、遺族年金はありません。" },
+          { q: "薬局開設の許可権者は？", options: ["市町村長", "都道府県知事", "厚生労働大臣", "PMDA"], answer: 1, explanation: "薬局の開設許可は都道府県知事が行います（薬機法第6条）。" },
+          { q: "医薬品の直接の容器等への記載事項でないのは？", options: ["製造販売業者名", "製造番号", "効能効果", "貯法"], answer: 2, explanation: "直接の容器への記載は、製造販売業者名、製造番号、重量・容量等、貯法などで、効能効果は添付文書に記載されます。" }
+        ],
+        advanced: [
+          { q: "条件付き早期承認制度の対象とならないのは？", options: ["がん", "希少疾病", "再生医療等製品", "生活習慣病"], answer: 3, explanation: "条件付き早期承認制度は、がん、希少疾病、再生医療等製品などで、通常の承認が困難な場合に対象となります。" },
+          { q: "医薬品製造販売業者のGVP義務違反に対する行政処分でないのは？", options: ["業務改善命令", "業務停止命令", "許可取消し", "罰金"], answer: 3, explanation: "罰金は刑事罰であり、行政処分ではありません。GVP違反に対しては業務改善命令、業務停止命令、許可取消しなどがあります。" },
+          { q: "サリドマイドの適正使用に関する件で必要な手続きは？", options: ["インフォームド・コンセントのみ", "CEPT登録のみ", "両方必要", "どちらも不要"], answer: 2, explanation: "サリドマイド処方には患者のCEPT登録とインフォームド・コンセントの両方が必要です（薬機法第14条関連）。" },
+          { q: "ジェネリック医薬品の品質再評価の対象となるのは？", options: ["すべての後発品", "溶出試験適合品のみ", "先発品と同一処方品", "内用固形製剤"], answer: 3, explanation: "品質再評価は内用固形製剤（錠剤、カプセル剤等）が対象で、溶出試験の規格設定が行われます。" },
+          { q: "特定生物由来製品の保存期間は？", options: ["10年", "20年", "30年", "永久"], answer: 2, explanation: "特定生物由来製品（血液製剤等）の製造・販売記録は30年間保存が義務付けられています。" }
+        ]
+      },
+      herbal: {
+        basic: [
+          { q: "小柴胡湯の禁忌は？", options: ["高血圧", "間質性肺炎", "糖尿病", "高脂血症"], answer: 1, explanation: "小柴胡湯は間質性肺炎を誘発するリスクがあるため、間質性肺炎の既往がある患者には禁忌です。" },
+          { q: "漢方薬の服用時間で「食前」の意味は？", options: ["食事中", "食事の30分前", "食事の直前", "食後30分以内"], answer: 2, explanation: "「食前」は食事の直前（約30分前以内）の服用を意味します。食欲不振、胃腸虚弱に用いる処方で多い指示です。" },
+          { q: "黄連解毒湯に含まれない生薬は？", options: ["黄連", "黄芩", "山梔子", "桂枝"], answer: 3, explanation: "黄連解毒湯は黄連、黄芩、山梔子、黄柏の4味で構成されます。桂枝は含まれません。" },
+          { q: "葛根湯の構成生薬数は？", options: ["4味", "5味", "7味", "10味"], answer: 2, explanation: "葛根湯は葛根、麻黄、桂枝、芍薬、甘草、大棗、生姜の7味で構成されます。" },
+          { q: "甘草の副作用で大量長期投与で起こりうるのは？", options: ["低カリウム血症", "高カリウム血症", "低ナトリウム血症", "高カルシウム血症"], answer: 0, explanation: "甘草含有のグリチルリチンは偽アルドステロン症を引き起こし、低カリウム血症、浮腫、高血圧などを起こすことがあります。" }
+        ],
+        intermediate: [
+          { q: "柴胡桂枝湯の適応証（証）は？", options: ["実証", "虚証", "中間証", "寒証"], answer: 2, explanation: "柴胡桂枝湯は中間証（虚実中間）の処方で、小柴胡湯と桂枝湯の合方です。" },
+          { q: "六君子湯に含まれる生薬でないのは？", options: ["人参", "白朮", "茯苓", "地黄"], answer: 3, explanation: "六君子湯は四君子湯（人参・白朮・茯苓・甘草）に半夏・陳皮を加えたもので、地黄は含まれません。" },
+          { q: "当帰芍薬散の対象となる患者像は？", options: ["実証の男性", "虚証の女性", "実証の女性", "虚証の男性"], answer: 1, explanation: "当帰芍薬散は「虚証の女性」に多用される処方で、血虚・水毒に対し補血・利水作用を発揮します。" },
+          { q: "麻黄含有製剤で禁忌に近い慎重投与は？", options: ["高齢者", "小児", "心疾患患者", "肝障害患者"], answer: 2, explanation: "麻黄のエフェドリンは心血管刺激作用があるため、心疾患患者では慎重投与が必要です。" },
+          { q: "大黄甘草湯で便秘改善に有効な成分は？", options: ["グリチルリチン", "センナサイド", "大黄サンニン", "タンニン"], answer: 2, explanation: "大黄の瀉下成分は大黄サンニン（センノサイド類）で、腸内細菌により活性代謝物に変換され作用します。" }
+        ],
+        advanced: [
+          { q: "防風通聖散の構成生薬数は？", options: ["10味", "14味", "16味", "18味"], answer: 3, explanation: "防風通聖散は18味（防風、川芎、当帰、芍薬、大黄、芒硝など）で構成される大型処方です。" },
+          { q: "補中益気湯の「益気」が指すのは？", options: ["腎気の補充", "脾胃の気の補充", "肺気の補充", "心気の補充"], answer: 1, explanation: "補中益気湯は「脾胃の気虚」に対し、中焦（消化器）の気を補う処方です。" },
+          { q: "猪苓湯合四物湯の適応でないのは？", options: ["尿路結石", "排尿障害", "貧血", "便秘"], answer: 3, explanation: "猪苓湯合四物湯は尿路結石・排尿障害・貧血に用いますが、便秘には適応しません（便秘には大黄剤など）。" },
+          { q: "桂枝茯苓丸の構成生薬に含まれるのは？", options: ["当帰", "芍薬", "地黄", "人参"], answer: 1, explanation: "桂枝茯苓丸は桂枝、茯苓、牡丹皮、桃仁、芍薬の5味で構成され、当帰・地黄・人参は含まれません。" },
+          { q: "柴胡加竜骨牡蠣湯に含まれる鉱物性生薬は？", options: ["石膏のみ", "牡蠣のみ", "竜骨と牡蠣", "石膏と竜骨"], answer: 2, explanation: "柴胡加竜骨牡蠣湯には竜骨（化石骨）と牡蠣（貝殻）の2つの鉱物性生薬が含まれます。" }
+        ]
+      }
+    };
+    
+    let currentQuiz = [];
+    let userAnswers = {};
+    
+    function generateQuiz() {
+      const category = document.getElementById('category').value;
+      const difficulty = document.getElementById('difficulty').value;
+      const count = parseInt(document.getElementById('count').value);
+      const focus = document.getElementById('focus').value.trim();
+      
+      let questions = [];
+      
+      if (category === 'mixed') {
+        const categories = Object.keys(quizBank);
+        categories.forEach(cat => {
+          if (difficulty === 'mixed') {
+            ['basic', 'intermediate', 'advanced'].forEach(diff => {
+              questions = questions.concat(quizBank[cat][diff] || []);
+            });
+          } else {
+            questions = questions.concat(quizBank[cat][difficulty] || []);
+          }
+        });
+      } else {
+        if (difficulty === 'mixed') {
+          ['basic', 'intermediate', 'advanced'].forEach(diff => {
+            questions = questions.concat(quizBank[category][diff] || []);
+          });
+        } else {
+          questions = quizBank[category][difficulty] || [];
+        }
+      }
+      
+      // Shuffle and select
+      questions = shuffleArray(questions).slice(0, count);
+      currentQuiz = questions;
+      userAnswers = {};
+      
+      renderQuiz();
+      document.getElementById('quizSection').style.display = 'block';
+      document.getElementById('scoreSection').style.display = 'none';
+    }
+    
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = currentQuiz.map((q, i) => `
+        <div class="quiz-card" id="question-${i}">
+          <div class="quiz-number">問題 ${i + 1}</div>
+          <div class="quiz-question">${q.q}</div>
+          <ul class="quiz-options">
+            ${q.options.map((opt, j) => `
+              <li onclick="selectAnswer(${i}, ${j})" id="opt-${i}-${j}">
+                ${String.fromCharCode(65 + j)}. ${opt}
+              </li>
+            `).join('')}
+          </ul>
+          <div class="answer-section" id="answer-${i}">
+            <span class="answer-label">正解: ${String.fromCharCode(65 + q.answer)}</span>
+            <div class="explanation">${q.explanation}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function selectAnswer(qIndex, aIndex) {
+      userAnswers[qIndex] = aIndex;
+      
+      // Update UI
+      const options = document.querySelectorAll(`#question-${qIndex} .quiz-options li`);
+      options.forEach((opt, i) => {
+        opt.classList.remove('selected');
+        if (i === aIndex) {
+          opt.classList.add('selected');
+        }
+      });
+    }
+    
+    function checkAnswers() {
+      let correct = 0;
+      
+      currentQuiz.forEach((q, i) => {
+        const userAnswer = userAnswers[i];
+        const correctAnswer = q.answer;
+        
+        const options = document.querySelectorAll(`#question-${qIndex} .quiz-options li`);
+        
+        document.querySelectorAll(`#question-${i} .quiz-options li`).forEach((opt, j) => {
+          opt.classList.remove('selected');
+          if (j === correctAnswer) {
+            opt.classList.add('correct');
+          } else if (j === userAnswer && j !== correctAnswer) {
+            opt.classList.add('incorrect');
+          }
+        });
+        
+        if (userAnswer === correctAnswer) {
+          correct++;
+        }
+        
+        document.getElementById(`answer-${i}`).style.display = 'block';
+      });
+      
+      // Show score
+      const scoreSection = document.getElementById('scoreSection');
+      document.getElementById('scoreDisplay').textContent = `${correct}/${currentQuiz.length}`;
+      
+      const percentage = (correct / currentQuiz.length) * 100;
+      let message = '';
+      if (percentage >= 80) {
+        message = '素晴らしい！合格圏内です！🎉';
+      } else if (percentage >= 60) {
+        message = '合格ラインです。もう少し頑張りましょう！';
+      } else {
+        message = '復習が必要です。解説を確認しましょう。';
+      }
+      document.getElementById('scoreMessage').textContent = message;
+      scoreSection.style.display = 'block';
+    }
+    
+    function resetQuiz() {
+      userAnswers = {};
+      renderQuiz();
+      document.getElementById('scoreSection').style.display = 'none';
+    }
+  </script>
+
+  <!-- 関連ツール -->
+  <section class="related-tools" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📦 関連ツール</h3>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <li><a href="pharmacy-staff-development.html" style="color: #3498db; text-decoration: none;">人材育成診断</a></li>
+      <li><a href="pharmacist-career-diagnosis.html" style="color: #3498db; text-decoration: none;">キャリア診断</a></li>
+      <li><a href="pharmacy-talent-development.html" style="color: #3498db; text-decoration: none;">タレント開発</a></li>
+      <li><a href="index.html" style="color: #3498db; text-decoration: none;">🏠ツール一覧</a></li>
+    </ul>
+  </section>
+
+</body>
+</html>

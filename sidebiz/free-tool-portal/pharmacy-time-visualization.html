@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局業務時間可視化診断 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="薬局の業務時間を可視化し、効率化の改善点を特定する無料診断ツール。5領域20問で時間配分・属人化度・ミス発生率を分析。">
+    <meta name="keywords" content="薬局,業務時間,可視化,タイムスタディ,効率化,薬剤師,無料ツール">
+    <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-time-visualization.html">
+    
+    <!-- OGP -->
+    <meta property="og:title" content="薬局業務時間可視化診断 | 薬剤師向け無料ツール">
+    <meta property="og:description" content="薬局の業務時間を可視化し、効率化の改善点を特定する無料診断ツール。5領域20問で時間配分・属人化度・ミス発生率を分析。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-time-visualization.html">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬局業務時間可視化診断">
+    <meta name="twitter:description" content="薬局の業務時間を可視化し、効率化の改善点を特定する無料診断ツール。">
+    
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "薬局業務時間可視化診断",
+        "description": "薬局の業務時間を可視化し、効率化の改善点を特定する無料診断ツール",
+        "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-time-visualization.html",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "薬剤師向け無料ツール集"
+        }
+    }
+    </script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+        
+        function trackToolUsage(action) {
+            gtag('event', 'tool_usage', {
+                'event_category': 'engagement',
+                'event_label': 'pharmacy-time-visualization-' + action
+            });
+        }
+        
+        function trackCTAClick() {
+            gtag('event', 'cta_click', {
+                'event_category': 'monetization',
+                'event_label': 'pharmacy-time-visualization-prompt-cta'
+            });
+        }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .category-title {
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+        }
+        
+        .question-text {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+        
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .option input {
+            display: none;
+        }
+        
+        .option-label {
+            font-size: 14px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-section {
+            display: none;
+        }
+        
+        .score-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .score-value {
+            font-size: 60px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .area-scores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .area-score {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .area-name {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .area-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .time-visualization {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .time-bar-container {
+            margin-bottom: 15px;
+        }
+        
+        .time-bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .time-bar {
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .time-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .improvements {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .improvements h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .improvements ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .improvements li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ffcda6;
+            color: #856404;
+        }
+        
+        .improvements li:last-child {
+            border-bottom: none;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .cta-section h3 {
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .restart-btn {
+            background: #6c757d;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .area-scores {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>⏱️ 薬局業務時間可視化診断</h1>
+        <p class="subtitle">5領域20問で業務時間配分・属人化度・ミス発生率を分析</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        
+        <div id="questionSection">
+            <!-- Questions will be inserted here -->
+        </div>
+        
+        <div id="resultSection" class="result-section">
+            <div class="score-card">
+                <div class="score-value" id="totalScore">0</div>
+                <div class="score-label">時間効率化スコア（100点満点）</div>
+            </div>
+            
+            <div class="area-scores" id="areaScores">
+                <!-- Area scores will be inserted here -->
+            </div>
+            
+            <div class="time-visualization" id="timeVisualization">
+                <h3 style="margin-bottom: 20px; color: #333;">📊 業務時間配分（推定）</h3>
+                <!-- Time bars will be inserted here -->
+            </div>
+            
+            <div class="improvements" id="improvements">
+                <h3>💡 改善提案</h3>
+                <ul id="improvementList">
+                    <!-- Improvements will be inserted here -->
+                </ul>
+            </div>
+            
+            <div class="cta-section">
+                <h3>🚀 業務効率化をさらに進める</h3>
+                <p>AI活用で薬局業務を自動化・効率化する方法を学びませんか？</p>
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="cta-btn" onclick="gtag('event', 'cta_click', {'event_category': 'time_visualization', 'event_label': 'free_tools'});">
+                    無料ツール一覧を見る →
+                </a>
+            </div>
+            
+            <button class="btn restart-btn" onclick="restart()">もう一度診断する</button>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+            // 領域1: 調剤業務（4問）
+            {
+                category: "調剤業務",
+                question: "1日あたりの調剤に要する時間は？",
+                options: [
+                    { text: "4時間以上（50%以上の時間を調剤に費やす）", score: 1, time: 4 },
+                    { text: "3〜4時間（37.5〜50%）", score: 2, time: 3.5 },
+                    { text: "2〜3時間（25〜37.5%）", score: 3, time: 2.5 },
+                    { text: "2時間未満（25%未満）", score: 4, time: 1.5 }
+                ]
+            },
+            {
+                category: "調剤業務",
+                question: "調剤ミス（疑義照会含む）の発生頻度は？",
+                options: [
+                    { text: "毎日発生する", score: 1 },
+                    { text: "週に2〜3回発生する", score: 2 },
+                    { text: "週に1回程度発生する", score: 3 },
+                    { text: "ほとんど発生しない", score: 4 }
+                ]
+            },
+            {
+                category: "調剤業務",
+                question: "調剤業務の属人化度は？",
+                options: [
+                    { text: "特定のスタッフしかできない業務が多い", score: 1 },
+                    { text: "一部の業務が属人化している", score: 2 },
+                    { text: "マニュアル化で誰でも対応可能", score: 3 },
+                    { text: "完全に標準化・自動化されている", score: 4 }
+                ]
+            },
+            {
+                category: "調剤業務",
+                question: "在庫確認・発注にかかる時間は？",
+                options: [
+                    { text: "1日30分以上かかる", score: 1, time: 0.5 },
+                    { text: "1日15〜30分かかる", score: 2, time: 0.25 },
+                    { text: "1日15分未満で完了", score: 3, time: 0.1 },
+                    { text: "自動発注システムでほぼ自動化", score: 4, time: 0.05 }
+                ]
+            },
+            
+            // 領域2: 服薬指導（4問）
+            {
+                category: "服薬指導",
+                question: "1回の服薬指導にかける平均時間は？",
+                options: [
+                    { text: "10分以上", score: 1, time: 10 },
+                    { text: "5〜10分", score: 2, time: 7.5 },
+                    { text: "3〜5分", score: 3, time: 4 },
+                    { text: "3分未満（効率的に実施）", score: 4, time: 2 }
+                ]
+            },
+            {
+                category: "服薬指導",
+                question: "服薬指導の記録（薬歴）にかかる時間は？",
+                options: [
+                    { text: "1件5分以上かかる", score: 1, time: 5 },
+                    { text: "1件3〜5分かかる", score: 2, time: 4 },
+                    { text: "1件1〜3分で完了", score: 3, time: 2 },
+                    { text: "AI活用等で1分未満", score: 4, time: 0.5 }
+                ]
+            },
+            {
+                category: "服薬指導",
+                question: "服薬指導の質の一貫性は？",
+                options: [
+                    { text: "担当者によって大きく異なる", score: 1 },
+                    { text: "ある程度のばらつきがある", score: 2 },
+                    { text: "チェックリスト等で統一されている", score: 3 },
+                    { text: "AI支援等で高度に標準化", score: 4 }
+                ]
+            },
+            {
+                category: "服薬指導",
+                question: "患者待ち時間の平均は？",
+                options: [
+                    { text: "15分以上", score: 1 },
+                    { text: "10〜15分", score: 2 },
+                    { text: "5〜10分", score: 3 },
+                    { text: "5分未満", score: 4 }
+                ]
+            },
+            
+            // 領域3: 在庫管理（4問）
+            {
+                category: "在庫管理",
+                question: "欠品発生の頻度は？",
+                options: [
+                    { text: "週に3回以上発生する", score: 1 },
+                    { text: "週に1〜2回発生する", score: 2 },
+                    { text: "月に1〜2回程度", score: 3 },
+                    { text: "ほとんど発生しない", score: 4 }
+                ]
+            },
+            {
+                category: "在庫管理",
+                question: "過剰在庫（デッドストック）の状況は？",
+                options: [
+                    { text: "在庫の10%以上が3ヶ月以上滞留", score: 1 },
+                    { text: "在庫の5〜10%が滞留", score: 2 },
+                    { text: "在庫の5%未満が滞留", score: 3 },
+                    { text: "定期的な棚卸しで最小限", score: 4 }
+                ]
+            },
+            {
+                category: "在庫管理",
+                question: "有効期限管理の方法は？",
+                options: [
+                    { text: "手動確認・期限切れリスクあり", score: 1 },
+                    { text: "Excel等で管理している", score: 2 },
+                    { text: "システムでアラート機能あり", score: 3 },
+                    { text: "完全自動化・期限近い順に使用", score: 4 }
+                ]
+            },
+            {
+                category: "在庫管理",
+                question: "供給停止・限定出荷情報の把握状況は？",
+                options: [
+                    { text: "事後対応が多い", score: 1 },
+                    { text: "情報は入手するが活用が遅い", score: 2 },
+                    { text: "定期的にチェックしている", score: 3 },
+                    { text: "自動通知で即時対応可能", score: 4 }
+                ]
+            },
+            
+            // 領域4: 事務作業（4問）
+            {
+                category: "事務作業",
+                question: "請求・レセプト作業にかかる時間は？",
+                options: [
+                    { text: "1日1時間以上", score: 1, time: 1 },
+                    { text: "1日30分〜1時間", score: 2, time: 0.5 },
+                    { text: "1日15〜30分", score: 3, time: 0.25 },
+                    { text: "自動化で最小限", score: 4, time: 0.1 }
+                ]
+            },
+            {
+                category: "事務作業",
+                question: "報告書・書類作成の効率は？",
+                options: [
+                    { text: "手書き・手入力が多い", score: 1 },
+                    { text: "テンプレートはあるが手間がかかる", score: 2 },
+                    { text: "コピー&ペーストで効率化", score: 3 },
+                    { text: "AI活用等で大幅に短縮", score: 4 }
+                ]
+            },
+            {
+                category: "事務作業",
+                question: "電話・FAX対応の時間は？",
+                options: [
+                    { text: "1日1時間以上", score: 1, time: 1 },
+                    { text: "1日30分〜1時間", score: 2, time: 0.5 },
+                    { text: "1日15〜30分", score: 3, time: 0.25 },
+                    { text: "効率化・委譲で最小限", score: 4, time: 0.1 }
+                ]
+            },
+            {
+                category: "事務作業",
+                question: "会議・打ち合わせの効率は？",
+                options: [
+                    { text: "長時間・頻繁で業務に影響", score: 1 },
+                    { text: "やや頻繁だが管理可能", score: 2 },
+                    { text: "必要最小限に抑えている", score: 3 },
+                    { text: "オンライン・短時間で効率化", score: 4 }
+                ]
+            },
+            
+            // 領域5: 在宅医療（4問）
+            {
+                category: "在宅医療",
+                question: "訪問準備にかかる時間は？",
+                options: [
+                    { text: "1件30分以上", score: 1, time: 0.5 },
+                    { text: "1件15〜30分", score: 2, time: 0.25 },
+                    { text: "1件10〜15分", score: 3, time: 0.17 },
+                    { text: "チェックリスト等で10分未満", score: 4, time: 0.08 }
+                ]
+            },
+            {
+                category: "在宅医療",
+                question: "訪問記録・報告書作成の時間は？",
+                options: [
+                    { text: "1件20分以上", score: 1, time: 0.33 },
+                    { text: "1件10〜20分", score: 2, time: 0.25 },
+                    { text: "1件5〜10分", score: 3, time: 0.12 },
+                    { text: "AI活用等で5分未満", score: 4, time: 0.05 }
+                ]
+            },
+            {
+                category: "在宅医療",
+                question: "在宅療養計画書の作成効率は？",
+                options: [
+                    { text: "1件1時間以上かかる", score: 1 },
+                    { text: "1件30分〜1時間", score: 2 },
+                    { text: "テンプレート活用で30分未満", score: 3 },
+                    { text: "AI支援等で15分未満", score: 4 }
+                ]
+            },
+            {
+                category: "在宅医療",
+                question: "多職種連携（医師・看護師等）の効率は？",
+                options: [
+                    { text: "電話・FAXが中心で手間がかかる", score: 1 },
+                    { text: "メール等を使っているが非効率", score: 2 },
+                    { text: "共有システム等で効率化", score: 3 },
+                    { text: "電子カルテ情報共有でシームレス", score: 4 }
+                ]
+            }
+        ];
+        
+        const categoryColors = {
+            "調剤業務": "#667eea",
+            "服薬指導": "#764ba2",
+            "在庫管理": "#f093fb",
+            "事務作業": "#f5576c",
+            "在宅医療": "#4facfe"
+        };
+        
+        let currentQuestion = 0;
+        let answers = [];
+        
+        function init() {
+            loadAnswers();
+            renderQuestion();
+            updateProgress();
+        }
+        
+        function loadAnswers() {
+            const saved = localStorage.getItem('timeVisualizationAnswers');
+            if (saved) {
+                answers = JSON.parse(saved);
+            }
+        }
+        
+        function saveAnswers() {
+            localStorage.setItem('timeVisualizationAnswers', JSON.stringify(answers));
+        }
+        
+        function renderQuestion() {
+            const container = document.getElementById('questionSection');
+            
+            if (currentQuestion >= questions.length) {
+                showResults();
+                return;
+            }
+            
+            const q = questions[currentQuestion];
+            const savedAnswer = answers[currentQuestion];
+            
+            let html = `
+                <div class="category-title">${q.category}</div>
+                <div class="question">
+                    <div class="question-text">Q${currentQuestion + 1}. ${q.question}</div>
+                    <div class="options">
+            `;
+            
+            q.options.forEach((opt, idx) => {
+                const selected = savedAnswer === idx ? 'selected' : '';
+                html += `
+                    <label class="option ${selected}" onclick="selectOption(${idx})">
+                        <input type="radio" name="q${currentQuestion}" value="${idx}">
+                        <span class="option-label">${opt.text}</span>
+                    </label>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" ${savedAnswer === undefined ? 'disabled' : ''}>
+                    ${currentQuestion === questions.length - 1 ? '結果を見る' : '次へ'}
+                </button>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function selectOption(idx) {
+            answers[currentQuestion] = idx;
+            saveAnswers();
+            
+            document.querySelectorAll('.option').forEach((opt, i) => {
+                opt.classList.toggle('selected', i === idx);
+            });
+            
+            document.getElementById('nextBtn').disabled = false;
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            saveAnswers();
+            
+            if (currentQuestion >= questions.length) {
+                showResults();
+            } else {
+                renderQuestion();
+                updateProgress();
+            }
+        }
+        
+        function updateProgress() {
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function showResults() {
+            trackToolUsage('diagnose');
+            document.getElementById('questionSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('progressFill').style.width = '100%';
+            
+            // Calculate scores
+            const categoryScores = {};
+            const categoryTimes = {};
+            const categoryQuestionCount = {};
+            
+            questions.forEach((q, idx) => {
+                if (!categoryScores[q.category]) {
+                    categoryScores[q.category] = 0;
+                    categoryTimes[q.category] = 0;
+                    categoryQuestionCount[q.category] = 0;
+                }
+                
+                const answer = answers[idx];
+                if (answer !== undefined) {
+                    categoryScores[q.category] += q.options[answer].score;
+                    if (q.options[answer].time) {
+                        categoryTimes[q.category] += q.options[answer].time;
+                    }
+                    categoryQuestionCount[q.category]++;
+                }
+            });
+            
+            // Calculate total score
+            let totalScore = 0;
+            let totalQuestions = 0;
+            
+            Object.keys(categoryScores).forEach(cat => {
+                totalScore += categoryScores[cat];
+                totalQuestions += categoryQuestionCount[cat];
+            });
+            
+            const avgScore = Math.round((totalScore / (totalQuestions * 4)) * 100);
+            document.getElementById('totalScore').textContent = avgScore;
+            
+            // Render area scores
+            const areaScoresContainer = document.getElementById('areaScores');
+            areaScoresContainer.innerHTML = '';
+            
+            Object.keys(categoryScores).forEach(cat => {
+                const avg = Math.round((categoryScores[cat] / (categoryQuestionCount[cat] * 4)) * 100);
+                areaScoresContainer.innerHTML += `
+                    <div class="area-score">
+                        <div class="area-name">${cat}</div>
+                        <div class="area-value">${avg}</div>
+                    </div>
+                `;
+            });
+            
+            // Render time visualization
+            const timeContainer = document.getElementById('timeVisualization');
+            let timeHtml = '<h3 style="margin-bottom: 20px; color: #333;">📊 業務時間配分（推定1日あたり）</h3>';
+            
+            const totalTime = Object.values(categoryTimes).reduce((a, b) => a + b, 0);
+            
+            Object.keys(categoryTimes).forEach(cat => {
+                const hours = categoryTimes[cat];
+                const percentage = totalTime > 0 ? (hours / totalTime) * 100 : 0;
+                
+                timeHtml += `
+                    <div class="time-bar-container">
+                        <div class="time-bar-label">
+                            <span>${cat}</span>
+                            <span>${hours.toFixed(1)}時間 (${percentage.toFixed(0)}%)</span>
+                        </div>
+                        <div class="time-bar">
+                            <div class="time-bar-fill" style="width: ${percentage}%; background: ${categoryColors[cat]};"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            timeContainer.innerHTML = timeHtml;
+            
+            // Generate improvements
+            const improvements = [];
+            
+            Object.keys(categoryScores).forEach(cat => {
+                const avg = (categoryScores[cat] / (categoryQuestionCount[cat] * 4)) * 100;
+                
+                if (avg < 50) {
+                    if (cat === "調剤業務") {
+                        improvements.push("🔄 調剤業務: 自動分包機・一包化導入で調剤時間を短縮");
+                        improvements.push("📝 調剤ミス対策: ダブルチェック・バーコード検証を強化");
+                    } else if (cat === "服薬指導") {
+                        improvements.push("💡 服薬指導: AI薬歴支援ツールで記録時間を短縮");
+                        improvements.push("📋 指導統一: チェックリストで質の一貫性を確保");
+                    } else if (cat === "在庫管理") {
+                        improvements.push("📦 在庫管理: 自動発注システムで発注時間を削減");
+                        improvements.push("🔔 供給情報: CloseDi等の自動通知で事前対応");
+                    } else if (cat === "事務作業") {
+                        improvements.push("📄 事務作業: RPA・AI活用でレセプト・報告書作成を自動化");
+                        improvements.push("📞 電話対応: 調剤事務員への委譲を検討");
+                    } else if (cat === "在宅医療") {
+                        improvements.push("🏠 在宅医療: 訪問準備チェックリストで準備時間を短縮");
+                        improvements.push("📝 訪問記録: AI音声入力・自動要約で記録時間を削減");
+                    }
+                } else if (avg < 75) {
+                    if (cat === "調剤業務") {
+                        improvements.push("⚡ 調剤効率: 業務フロー見直しでさらなる短縮を検討");
+                    } else if (cat === "服薬指導") {
+                        improvements.push("🎯 指導品質: AI活用で患者ごとのカスタマイズ指導を強化");
+                    } else if (cat === "在庫管理") {
+                        improvements.push("📊 在庫分析: デッドストック削減で在庫回転率を向上");
+                    } else if (cat === "事務作業") {
+                        improvements.push("🤖 事務自動化: 繰り返し作業のRPA化を検討");
+                    } else if (cat === "在宅医療") {
+                        improvements.push("📱 多職種連携: 電子カルテ情報共有の活用を拡大");
+                    }
+                }
+            });
+            
+            if (improvements.length === 0) {
+                improvements.push("✅ 業務効率化が非常に進んでいます。さらなる改善点を継続的に探索しましょう");
+            }
+            
+            const improvementList = document.getElementById('improvementList');
+            improvementList.innerHTML = improvements.map(imp => `<li>${imp}</li>`).join('');
+            
+            // GA4 event
+            gtag('event', 'diagnosis_complete', {
+                'event_category': 'time_visualization',
+                'event_label': 'score',
+                'value': avgScore
+            });
+        }
+        
+        function restart() {
+            currentQuestion = 0;
+            answers = [];
+            localStorage.removeItem('timeVisualizationAnswers');
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('questionSection').style.display = 'block';
+            renderQuestion();
+            updateProgress();
+        }
+        
+        // Initialize
+        init();
+    </script>
+
+  <!-- 関連ツール -->
+  <section class="related-tools" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📦 関連ツール</h3>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <li><a href="pharmacy-time-study-diagnosis.html" style="color: #3498db; text-decoration: none;">時間研究診断</a></li>
+      <li><a href="pharmacy-dispensing-time-diagnosis.html" style="color: #3498db; text-decoration: none;">調剤時間診断</a></li>
+      <li><a href="pharmacy-followup-efficiency.html" style="color: #3498db; text-decoration: none;">フォローアップ効率診断</a></li>
+      <li><a href="index.html" style="color: #3498db; text-decoration: none;">🏠ツール一覧</a></li>
+    </ul>
+  </section>
+
+</body>
+</html>

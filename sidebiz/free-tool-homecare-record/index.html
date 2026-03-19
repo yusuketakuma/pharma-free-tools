@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訪問薬剤管理レコード生成 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="訪問薬剤管理指導の記録を効率化する無料ツール。患者情報・処方薬・服薬状況・副作用モニタリングを一元管理し、医師報告書を自動生成。">
+    <meta property="og:title" content="訪問薬剤管理レコード生成 | 薬剤師向け無料ツール">
+    <meta property="og:description" content="訪問薬剤管理指導の記録を効率化。医師報告書も自動生成。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-homecare-record/">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "訪問薬剤管理レコード生成ツール",
+        "description": "訪問薬剤管理指導の記録を効率化する無料ツール",
+        "applicationCategory": "MedicalApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+        "author": { "@type": "Person", "name": "薬剤師" }
+    }
+    </script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #fff; text-align: center; margin-bottom: 10px; font-size: 1.5rem; }
+        .subtitle { color: rgba(255,255,255,0.9); text-align: center; margin-bottom: 20px; font-size: 0.9rem; }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h2 { color: #333; font-size: 1.1rem; margin-bottom: 16px; border-left: 4px solid #667eea; padding-left: 12px; }
+        label { display: block; color: #555; font-size: 0.85rem; margin-bottom: 6px; font-weight: 500; }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #667eea; outline: none; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        @media (max-width: 600px) {
+            .row, .row-3 { grid-template-columns: 1fr; }
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+        button:active { transform: translateY(0); }
+        .btn-secondary { background: #6c757d; margin-top: 10px; }
+        .btn-success { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); margin-top: 10px; }
+        .prescription-item, .visit-item, .side-effect-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+        }
+        .prescription-item .row, .visit-item .row, .side-effect-item .row { margin-bottom: 8px; }
+        .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .item-header span { font-weight: 600; color: #667eea; }
+        .remove-btn { background: #dc3545; color: #fff; border: none; padding: 4px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        #output {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.8;
+            border: 2px solid #667eea;
+            display: none;
+        }
+        .cta-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .cta-box h3 { color: #333; font-size: 1rem; margin-bottom: 10px; }
+        .cta-box p { color: #666; font-size: 0.85rem; margin-bottom: 12px; }
+        .cta-links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .cta-links a {
+            background: #667eea;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .cta-links a:hover { background: #764ba2; }
+        .other-tools { margin-top: 20px; }
+        .other-tools h3 { font-size: 0.95rem; color: #333; margin-bottom: 10px; }
+        .tool-links { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tool-links a {
+            background: #f0f0f0;
+            color: #555;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .tool-links a:hover { background: #667eea; color: #fff; }
+        .severity-low { color: #28a745; font-weight: 600; }
+        .severity-medium { color: #ffc107; font-weight: 600; }
+        .severity-high { color: #dc3545; font-weight: 600; }
+        .tag { display: inline-block; background: #667eea; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 訪問薬剤管理レコード生成</h1>
+        <p class="subtitle">訪問薬剤管理指導の記録を効率化。医師報告書も自動生成。</p>
+
+        <!-- 患者基本情報 -->
+        <div class="card">
+            <h2>👤 患者基本情報</h2>
+            <div class="row">
+                <div>
+                    <label>氏名</label>
+                    <input type="text" id="patientName" placeholder="山田 太郎">
+                </div>
+                <div>
+                    <label>カナ</label>
+                    <input type="text" id="patientKana" placeholder="ヤマダ タロウ">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label>年齢</label>
+                    <input type="number" id="patientAge" placeholder="78">
+                </div>
+                <div>
+                    <label>性別</label>
+                    <select id="patientGender">
+                        <option value="">選択</option>
+                        <option value="男性">男性</option>
+                        <option value="女性">女性</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label>要介護度</label>
+                    <select id="careLevel">
+                        <option value="">選択</option>
+                        <option value="要支援1">要支援1</option>
+                        <option value="要支援2">要支援2</option>
+                        <option value="要介護1">要介護1</option>
+                        <option value="要介護2">要介護2</option>
+                        <option value="要介護3">要介護3</option>
+                        <option value="要介護4">要介護4</option>
+                        <option value="要介護5">要介護5</option>
+                        <option value="なし">なし</option>
+                    </select>
+                </div>
+                <div>
+                    <label>保険種別</label>
+                    <select id="insuranceType">
+                        <option value="">選択</option>
+                        <option value="後期高齢者">後期高齢者医療</option>
+                        <option value="国保">国民健康保険</option>
+                        <option value="社保">社会保険</option>
+                        <option value="公費">公費負担</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label>住所</label>
+                <input type="text" id="patientAddress" placeholder="〇〇県〇〇市〇〇町1-2-3">
+            </div>
+            <div class="row">
+                <div>
+                    <label>電話番号</label>
+                    <input type="tel" id="patientPhone" placeholder="090-1234-5678">
+                </div>
+                <div>
+                    <label>緊急連絡先</label>
+                    <input type="tel" id="emergencyContact" placeholder="03-1234-5678">
+                </div>
+            </div>
+            <div>
+                <label>主治医</label>
+                <input type="text" id="primaryDoctor" placeholder="〇〇病院 〇〇先生">
+            </div>
+            <div>
+                <label>主な疾患・病名（複数可）</label>
+                <input type="text" id="diagnoses" placeholder="高血圧、糖尿病、心不全">
+            </div>
+            <div>
+                <label>アレルギー・禁忌</label>
+                <input type="text" id="allergies" placeholder="ペニシリン系アレルギー">
+            </div>
+            <div>
+                <label>服薬管理状況</label>
+                <select id="medicationManagement">
+                    <option value="">選択</option>
+                    <option value="自己管理">自己管理可能</option>
+                    <option value="一部介助">一部介助必要</option>
+                    <option value="全介助">全介助必要</option>
+                    <option value="セット配合">セット配合剤使用</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 処方薬リスト -->
+        <div class="card">
+            <h2>💊 処方薬リスト</h2>
+            <div id="prescriptionList"></div>
+            <button type="button" class="btn-secondary" onclick="addPrescription()">+ 処方薬を追加</button>
+        </div>
+
+        <!-- 訪問記録 -->
+        <div class="card">
+            <h2>📅 訪問記録</h2>
+            <div id="visitList"></div>
+            <button type="button" class="btn-secondary" onclick="addVisit()">+ 訪問記録を追加</button>
+        </div>
+
+        <!-- 副作用モニタリング -->
+        <div class="card">
+            <h2>⚠️ 副作用モニタリング</h2>
+            <div id="sideEffectList"></div>
+            <button type="button" class="btn-secondary" onclick="addSideEffect()">+ 副作用記録を追加</button>
+        </div>
+
+        <!-- 次回訪問予定 -->
+        <div class="card">
+            <h2>📆 次回訪問予定</h2>
+            <div class="row">
+                <div>
+                    <label>予定日</label>
+                    <input type="date" id="nextVisitDate">
+                </div>
+                <div>
+                    <label>訪問区分</label>
+                    <select id="visitType">
+                        <option value="">選択</option>
+                        <option value="定期">定期訪問</option>
+                        <option value="臨時">臨時訪問</option>
+                        <option value="退院後">退院後訪問</option>
+                        <option value="紹介">紹介による訪問</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label>備考・特記事項</label>
+                <textarea id="nextVisitNote" rows="2" placeholder="次回確認すべき事項など"></textarea>
+            </div>
+        </div>
+
+        <!-- 出力オプション -->
+        <div class="card">
+            <h2>📄 出力形式</h2>
+            <div class="row-3">
+                <div>
+                    <label>形式</label>
+                    <select id="outputFormat">
+                        <option value="full">詳細レポート</option>
+                        <option value="summary">サマリー版</option>
+                        <option value="doctor">医師報告書</option>
+                        <option value="handover">引継ぎ用</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" onclick="generateRecord()">📋 レコード生成</button>
+            <button type="button" class="btn-success" onclick="copyToClipboard()">📋 コピー</button>
+            <button type="button" class="btn-secondary" onclick="printRecord()">🖨️ 印刷</button>
+        </div>
+
+        <!-- 出力エリア -->
+        <div id="output"></div>
+
+        <!-- CTA -->
+        <div class="cta-box">
+            <h3>🎁 薬剤師向け効率化リソース</h3>
+            <p>さらに業務を効率化するテンプレート・プロンプト集をチェック</p>
+            <div class="cta-links">
+                <a href="#" target="_blank">📦 Notionテンプレート</a>
+                <a href="#" target="_blank">🤖 AIプロンプト集</a>
+            </div>
+        </div>
+
+        <!-- 他ツールへのリンク -->
+        <div class="card other-tools">
+<!-- ポータルサイト -->
+            <div style="text-align: center; margin: 24px 0;">
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">🏠 全ツール一覧（ポータルサイト）</a>
+            </div>
+            <h3>🔗 他の無料ツール</h3>
+            <div class="tool-links">
+                <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導チェック</a>
+                <a href="https://yusuketakuma.github.io/pharma-renal-dose/">腎機能別用量</a>
+                <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+                <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+                <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会メール</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+                <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+                <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+                <a href="https://yusuketakuma.github.io/pharma-di-query/">DI照会</a>
+                <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+                <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+                <a href="https://yusuketakuma.github.io/pharma-adherence-check/">服薬アドヒアランス</a>
+                <a href="https://yusuketakuma.github.io/pharma-similar-drug-name/">類似薬名</a>
+                <a href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+                <a href="https://yusuketakuma.github.io/pharma-homecare-report/">在宅医療報告書</a>
+                <a href="https://yusuketakuma.github.io/pharma-claim-simulator/">調剤報酬シミュレーター</a>
+                <a href="https://yusuketakuma.github.io/pharma-guidance-scenario/">服薬指導シナリオ</a>
+                <a href="https://yusuketakuma.github.io/pharma-patient-explanation/">患者向け説明文</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let prescriptionCount = 0;
+        let visitCount = 0;
+        let sideEffectCount = 0;
+
+        // 初期データ追加
+        window.onload = function() {
+            addPrescription();
+            addVisit();
+        };
+
+        function addPrescription() {
+            prescriptionCount++;
+            const div = document.createElement('div');
+            div.className = 'prescription-item';
+            div.id = `prescription-${prescriptionCount}`;
+            div.innerHTML = `
+                <div class="item-header">
+                    <span>処方薬 ${prescriptionCount}</span>
+                    <button class="remove-btn" onclick="removeItem('prescription-${prescriptionCount}')">削除</button>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>薬品名</label>
+                        <input type="text" class="drug-name" placeholder="アムロジピンOD錠5mg">
+                    </div>
+                    <div>
+                        <label>用量</label>
+                        <input type="text" class="drug-dosage" placeholder="1回1錠 1日1回 朝食後">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>開始日</label>
+                        <input type="date" class="drug-start">
+                    </div>
+                    <div>
+                        <label>分類</label>
+                        <select class="drug-category">
+                            <option value="">選択</option>
+                            <option value="降圧薬">降圧薬</option>
+                            <option value="糖尿病薬">糖尿病薬</option>
+                            <option value="脂質異常症薬">脂質異常症薬</option>
+                            <option value="抗凝固薬">抗凝固・抗血小板薬</option>
+                            <option value="精神神経用薬">精神神経用薬</option>
+                            <option value="鎮痛薬">鎮痛薬</option>
+                            <option value="消化器用薬">消化器用薬</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>メモ</label>
+                    <input type="text" class="drug-note" placeholder="特記事項があれば入力">
+                </div>
+            `;
+            document.getElementById('prescriptionList').appendChild(div);
+        }
+
+        function addVisit() {
+            visitCount++;
+            const today = new Date().toISOString().split('T')[0];
+            const div = document.createElement('div');
+            div.className = 'visit-item';
+            div.id = `visit-${visitCount}`;
+            div.innerHTML = `
+                <div class="item-header">
+                    <span>訪問記録 ${visitCount}</span>
+                    <button class="remove-btn" onclick="removeItem('visit-${visitCount}')">削除</button>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>訪問日</label>
+                        <input type="date" class="visit-date" value="${today}">
+                    </div>
+                    <div>
+                        <label>所要時間</label>
+                        <input type="text" class="visit-duration" placeholder="30分">
+                    </div>
+                </div>
+                <div>
+                    <label>服薬状況</label>
+                    <select class="visit-adherence">
+                        <option value="">選択</option>
+                        <option value="良好">良好</option>
+                        <option value="概ね良好">概ね良好</option>
+                        <option value="一部問題あり">一部問題あり</option>
+                        <option value="問題あり">問題あり</option>
+                    </select>
+                </div>
+                <div>
+                    <label>指導内容・特記事項</label>
+                    <textarea class="visit-note" rows="3" placeholder="服薬指導内容、患者の状態変化、確認事項など"></textarea>
+                </div>
+            `;
+            document.getElementById('visitList').appendChild(div);
+        }
+
+        function addSideEffect() {
+            sideEffectCount++;
+            const div = document.createElement('div');
+            div.className = 'side-effect-item';
+            div.id = `sideEffect-${sideEffectCount}`;
+            div.innerHTML = `
+                <div class="item-header">
+                    <span>副作用記録 ${sideEffectCount}</span>
+                    <button class="remove-btn" onclick="removeItem('sideEffect-${sideEffectCount}')">削除</button>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>発生日</label>
+                        <input type="date" class="se-date">
+                    </div>
+                    <div>
+                        <label>疑われる薬剤</label>
+                        <input type="text" class="se-drug" placeholder="薬剤名">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>症状</label>
+                        <input type="text" class="se-symptom" placeholder="ふらつき、めまい">
+                    </div>
+                    <div>
+                        <label>重症度</label>
+                        <select class="se-severity">
+                            <option value="">選択</option>
+                            <option value="軽微">軽微</option>
+                            <option value="中等度">中等度</option>
+                            <option value="重度">重度</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>対応・経過</label>
+                    <textarea class="se-action" rows="2" placeholder="医師報告、減量、中止など"></textarea>
+                </div>
+            `;
+            document.getElementById('sideEffectList').appendChild(div);
+        }
+
+        function removeItem(id) {
+            document.getElementById(id).remove();
+        }
+
+        function generateRecord() {
+            const format = document.getElementById('outputFormat').value;
+            let output = '';
+
+            // 基本情報収集
+            const patient = {
+                name: document.getElementById('patientName').value || '（未入力）',
+                kana: document.getElementById('patientKana').value,
+                age: document.getElementById('patientAge').value,
+                gender: document.getElementById('patientGender').value,
+                careLevel: document.getElementById('careLevel').value,
+                insurance: document.getElementById('insuranceType').value,
+                address: document.getElementById('patientAddress').value,
+                phone: document.getElementById('patientPhone').value,
+                emergency: document.getElementById('emergencyContact').value,
+                doctor: document.getElementById('primaryDoctor').value,
+                diagnoses: document.getElementById('diagnoses').value,
+                allergies: document.getElementById('allergies').value,
+                management: document.getElementById('medicationManagement').value
+            };
+
+            // 処方薬収集
+            const prescriptions = [];
+            document.querySelectorAll('.prescription-item').forEach(item => {
+                const drug = {
+                    name: item.querySelector('.drug-name').value,
+                    dosage: item.querySelector('.drug-dosage').value,
+                    start: item.querySelector('.drug-start').value,
+                    category: item.querySelector('.drug-category').value,
+                    note: item.querySelector('.drug-note').value
+                };
+                if (drug.name) prescriptions.push(drug);
+            });
+
+            // 訪問記録収集
+            const visits = [];
+            document.querySelectorAll('.visit-item').forEach(item => {
+                const visit = {
+                    date: item.querySelector('.visit-date').value,
+                    duration: item.querySelector('.visit-duration').value,
+                    adherence: item.querySelector('.visit-adherence').value,
+                    note: item.querySelector('.visit-note').value
+                };
+                if (visit.date) visits.push(visit);
+            });
+
+            // 副作用記録収集
+            const sideEffects = [];
+            document.querySelectorAll('.side-effect-item').forEach(item => {
+                const se = {
+                    date: item.querySelector('.se-date').value,
+                    drug: item.querySelector('.se-drug').value,
+                    symptom: item.querySelector('.se-symptom').value,
+                    severity: item.querySelector('.se-severity').value,
+                    action: item.querySelector('.se-action').value
+                };
+                if (se.symptom) sideEffects.push(se);
+            });
+
+            const nextVisit = {
+                date: document.getElementById('nextVisitDate').value,
+                type: document.getElementById('visitType').value,
+                note: document.getElementById('nextVisitNote').value
+            };
+
+            // 形式別出力
+            if (format === 'full') {
+                output = generateFullReport(patient, prescriptions, visits, sideEffects, nextVisit);
+            } else if (format === 'summary') {
+                output = generateSummary(patient, prescriptions, visits, nextVisit);
+            } else if (format === 'doctor') {
+                output = generateDoctorReport(patient, prescriptions, visits, sideEffects);
+            } else if (format === 'handover') {
+                output = generateHandover(patient, prescriptions, visits, sideEffects, nextVisit);
+            }
+
+            const outputEl = document.getElementById('output');
+            outputEl.textContent = output;
+            outputEl.style.display = 'block';
+        }
+
+        function generateFullReport(patient, prescriptions, visits, sideEffects, nextVisit) {
+            let text = `═══════════════════════════════════════\n`;
+            text += `       訪問薬剤管理指導記録\n`;
+            text += `═══════════════════════════════════════\n\n`;
+
+            text += `【患者基本情報】\n`;
+            text += `氏名: ${patient.name}${patient.kana ? `（${patient.kana}）` : ''}\n`;
+            text += `年齢・性別: ${patient.age || '―'}歳 ${patient.gender || '―'}\n`;
+            text += `要介護度: ${patient.careLevel || '―'}\n`;
+            text += `保険: ${patient.insurance || '―'}\n`;
+            text += `住所: ${patient.address || '―'}\n`;
+            text += `電話: ${patient.phone || '―'} / 緊急連絡先: ${patient.emergency || '―'}\n`;
+            text += `主治医: ${patient.doctor || '―'}\n`;
+            text += `病名: ${patient.diagnoses || '―'}\n`;
+            text += `アレルギー・禁忌: ${patient.allergies || '―'}\n`;
+            text += `服薬管理: ${patient.management || '―'}\n\n`;
+
+            text += `【処方薬一覧】\n`;
+            text += `─────────────────────────────────────\n`;
+            prescriptions.forEach((drug, i) => {
+                text += `${i + 1}. ${drug.name}\n`;
+                text += `   用法: ${drug.dosage || '―'}\n`;
+                text += `   開始: ${drug.start || '―'} / 分類: ${drug.category || '―'}\n`;
+                if (drug.note) text += `   メモ: ${drug.note}\n`;
+                text += `\n`;
+            });
+
+            text += `【訪問記録】\n`;
+            text += `─────────────────────────────────────\n`;
+            visits.forEach((visit, i) => {
+                text += `■ ${visit.date}（${visit.duration || '―'}）\n`;
+                text += `服薬状況: ${visit.adherence || '―'}\n`;
+                if (visit.note) text += `指導内容: ${visit.note}\n`;
+                text += `\n`;
+            });
+
+            if (sideEffects.length > 0) {
+                text += `【副作用モニタリング】\n`;
+                text += `─────────────────────────────────────\n`;
+                sideEffects.forEach((se, i) => {
+                    const severityClass = se.severity === '重度' ? '[重度]' : se.severity === '中等度' ? '[中等度]' : '[軽微]';
+                    text += `${i + 1}. ${se.date} ${severityClass}\n`;
+                    text += `   疑い薬: ${se.drug || '―'}\n`;
+                    text += `   症状: ${se.symptom}\n`;
+                    if (se.action) text += `   対応: ${se.action}\n`;
+                    text += `\n`;
+                });
+            }
+
+            text += `【次回訪問予定】\n`;
+            text += `─────────────────────────────────────\n`;
+            text += `予定日: ${nextVisit.date || '未定'}\n`;
+            text += `区分: ${nextVisit.type || '―'}\n`;
+            if (nextVisit.note) text += `備考: ${nextVisit.note}\n`;
+
+            return text;
+        }
+
+        function generateSummary(patient, prescriptions, visits, nextVisit) {
+            const lastVisit = visits[0];
+            let text = `【訪問薬剤管理サマリー】\n\n`;
+            text += `患者: ${patient.name}（${patient.age || '―'}歳 ${patient.gender || '―'}）\n`;
+            text += `要介護: ${patient.careLevel || '―'} / 主治医: ${patient.doctor || '―'}\n\n`;
+
+            text += `■ 処方薬（${prescriptions.length}剤）\n`;
+            prescriptions.forEach(drug => {
+                text += `・${drug.name} ${drug.dosage || ''}\n`;
+            });
+
+            text += `\n■ 直近訪問（${lastVisit?.date || '―'}）\n`;
+            text += `服薬状況: ${lastVisit?.adherence || '―'}\n`;
+            if (lastVisit?.note) text += `${lastVisit.note}\n`;
+
+            text += `\n■ 次回訪問: ${nextVisit.date || '未定'} ${nextVisit.type || ''}\n`;
+
+            return text;
+        }
+
+        function generateDoctorReport(patient, prescriptions, visits, sideEffects) {
+            const today = new Date().toLocaleDateString('ja-JP');
+            const lastVisit = visits[0];
+
+            let text = `【医師報告書】\n\n`;
+            text += `報告日: ${today}\n`;
+            text += `患者名: ${patient.name}\n`;
+            text += `報告者: 　　　　薬局 薬剤師\n\n`;
+
+            text += `─────────────────────────────────────\n`;
+            text += `【訪問薬剤管理指導の状況】\n`;
+            text += `─────────────────────────────────────\n`;
+            text += `訪問日: ${lastVisit?.date || '―'}\n`;
+            text += `服薬状況: ${lastVisit?.adherence || '―'}\n\n`;
+
+            text += `【現在の処方内容】\n`;
+            prescriptions.forEach(drug => {
+                text += `・${drug.name} ${drug.dosage || ''}\n`;
+            });
+
+            if (sideEffects.length > 0) {
+                text += `\n【副作用・問題点】\n`;
+                sideEffects.forEach(se => {
+                    text += `・${se.symptom}（${se.drug || '原因不明'}、${se.severity || '―'}）\n`;
+                    if (se.action) text += `  → ${se.action}\n`;
+                });
+            }
+
+            text += `\n【指導内容・特記事項】\n`;
+            if (lastVisit?.note) {
+                text += `${lastVisit.note}\n`;
+            } else {
+                text += `（特記事項なし）\n`;
+            }
+
+            text += `\n【今後の提案・要望】\n`;
+            text += `（必要に応じて記載）\n\n`;
+
+            text += `以上、ご報告申し上げます。\n`;
+
+            return text;
+        }
+
+        function generateHandover(patient, prescriptions, visits, sideEffects, nextVisit) {
+            let text = `【引継ぎ用シート】\n\n`;
+            text += `患者: ${patient.name}（${patient.age || '―'}歳 ${patient.gender || '―'}）\n`;
+            text += `住所: ${patient.address || '―'}\n`;
+            text += `電話: ${patient.phone || '―'} / 緊急連絡先: ${patient.emergency || '―'}\n`;
+            text += `主治医: ${patient.doctor || '―'}\n`;
+            text += `要介護: ${patient.careLevel || '―'} / 服薬管理: ${patient.management || '―'}\n\n`;
+
+            text += `【注意点】\n`;
+            text += `・アレルギー: ${patient.allergies || 'なし'}\n`;
+            text += `・病名: ${patient.diagnoses || '―'}\n\n`;
+
+            text += `【処方薬】\n`;
+            prescriptions.forEach(drug => {
+                text += `・${drug.name} ${drug.dosage || ''}\n`;
+            });
+
+            if (sideEffects.length > 0) {
+                text += `\n【副作用歴】\n`;
+                sideEffects.forEach(se => {
+                    text += `・${se.symptom}（${se.drug || '―'}）\n`;
+                });
+            }
+
+            text += `\n【次回予定】${nextVisit.date || '未定'} ${nextVisit.type || ''}\n`;
+            if (nextVisit.note) text += `備考: ${nextVisit.note}\n`;
+
+            return text;
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            if (output.style.display === 'none') {
+                generateRecord();
+            }
+            navigator.clipboard.writeText(output.textContent).then(() => {
+                alert('コピーしました');
+            });
+        }
+
+        function printRecord() {
+            const output = document.getElementById('output');
+            if (output.style.display === 'none') {
+                generateRecord();
+            }
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write('<pre style="font-family: monospace; white-space: pre-wrap;">' + output.textContent + '</pre>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>

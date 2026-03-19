@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>業務自動化ROI診断 | 薬剤師無料ツール集</title>
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+  <meta name="description" content="薬局業務の自動化投資対効果を5領域20問で診断。現状工数・自動化可能率・ツールコスト・実装難易度・期待効果を可視化し、ROI改善ポイントを特定。">
+  <meta name="keywords" content="薬局,自動化,ROI,投資対効果,業務効率化,Make,n8n,Zapier,コスト削減">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="業務自動化ROI診断 | 薬剤師無料ツール集">
+  <meta property="og:description" content="薬局業務の自動化投資対効果を5領域20問で診断。現状工数・自動化可能率・ツールコスト・実装難易度・期待効果を可視化し、ROI改善ポイントを特定。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-automation-roi.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "業務自動化ROI診断",
+    "description": "薬局業務の自動化投資対効果を5領域20問で診断。現状工数・自動化可能率・ツールコスト・実装難易度・期待効果を可視化し、ROI改善ポイントを特定。",
+    "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-automation-roi.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "yusuketakuma"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      color: #11998e;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+    
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 10px;
+      height: 8px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #11998e, #38ef7d);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    .question-container {
+      margin: 20px 0;
+    }
+    
+    .category-label {
+      font-size: 0.9rem;
+      color: #11998e;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      background: #f8f9fa;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .option:hover {
+      background: #e8f5e9;
+      border-color: #11998e;
+    }
+    
+    .option.selected {
+      background: #e8f5e9;
+      border-color: #11998e;
+    }
+    
+    .option input {
+      margin-right: 10px;
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+    }
+    
+    .btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    
+    .btn-secondary:hover {
+      background: #d0d0d0;
+    }
+    
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .result-container {
+      display: none;
+    }
+    
+    .score-card {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .score-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .score-value {
+      font-size: 3rem;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    
+    .score-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .category-scores {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 30px 0;
+    }
+    
+    .category-score {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .category-score h4 {
+      color: #11998e;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+    
+    .category-score .value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .category-score .bar {
+      background: #e0e0e0;
+      height: 6px;
+      border-radius: 3px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    
+    .category-score .bar-fill {
+      background: linear-gradient(90deg, #11998e, #38ef7d);
+      height: 100%;
+      transition: width 0.5s ease;
+    }
+    
+    .recommendations {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 15px;
+      margin-top: 30px;
+    }
+    
+    .recommendations h3 {
+      color: #11998e;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .recommendations ul {
+      list-style: none;
+    }
+    
+    .recommendations li {
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .recommendations li:last-child {
+      border-bottom: none;
+    }
+    
+    .recommendations .icon {
+      color: #11998e;
+      font-size: 1.2rem;
+    }
+    
+    .cta-banner {
+      background: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%);
+      border: 2px solid #ffc107;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .cta-banner h3 {
+      color: #f57c00;
+      margin-bottom: 10px;
+    }
+    
+    .cta-banner p {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #11998e;
+      text-decoration: none;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .category-scores {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚡ 業務自動化ROI診断</h1>
+      <p class="subtitle">5領域20問で自動化の投資対効果を可視化</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <p id="progressText" style="color: #666; font-size: 0.9rem;">進捗: 0 / 20問</p>
+    </header>
+    
+    <div id="questionContainer" class="question-container">
+      <!-- Questions will be inserted here -->
+    </div>
+    
+    <div class="navigation">
+      <button id="prevBtn" class="btn btn-secondary" disabled>← 前へ</button>
+      <button id="nextBtn" class="btn btn-primary" disabled>次へ →</button>
+    </div>
+    
+    <div id="resultContainer" class="result-container">
+      <div class="score-card">
+        <h2>🎯 自動化ROIスコア</h2>
+        <div class="score-value" id="totalScore">0</div>
+        <div class="score-label">/ 100点</div>
+      </div>
+      
+      <div class="category-scores" id="categoryScores">
+        <!-- Category scores will be inserted here -->
+      </div>
+      
+      <div class="recommendations">
+        <h3>💡 ROI改善ポイント</h3>
+        <ul id="recommendationsList">
+          <!-- Recommendations will be inserted here -->
+        </ul>
+      </div>
+      
+      <div class="cta-banner">
+        <h3>🎁 AIプロンプト集で自動化を加速</h3>
+        <p>ChatGPT/Claudeで業務を効率化するプロンプトテンプレート集<br><strong>38セクション・100プロンプト収録</strong></p>
+        <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-button" onclick="gtag('event', 'cta_click', {'event_category': 'automation_roi', 'event_label': 'ai_prompts_cta', 'value': 500});">今すぐチェック →</a>
+      </div>
+      
+      <a href="index.html" class="back-link">← ツール一覧に戻る</a>
+    </div>
+  </div>
+  
+  <script>
+    const questions = [
+      // 領域1: 現状工数（5問）
+      {
+        category: "現状工数",
+        icon: "⏱️",
+        question: "1日あたりの反復作業（データ入力・転記・コピペ等）の合計時間は？",
+        options: [
+          { text: "30分未満", score: 5 },
+          { text: "30分〜1時間", score: 4 },
+          { text: "1時間〜2時間", score: 3 },
+          { text: "2時間〜3時間", score: 2 },
+          { text: "3時間以上", score: 1 }
+        ]
+      },
+      {
+        category: "現状工数",
+        icon: "⏱️",
+        question: "手作業で行っている報告書・メール作成の頻度は？",
+        options: [
+          { text: "週1回以下", score: 5 },
+          { text: "週2〜3回", score: 4 },
+          { text: "週4〜5回", score: 3 },
+          { text: "毎日1〜2件", score: 2 },
+          { text: "毎日3件以上", score: 1 }
+        ]
+      },
+      {
+        category: "現状工数",
+        icon: "⏱️",
+        question: "患者データ・在庫データの手動更新頻度は？",
+        options: [
+          { text: "自動化済み", score: 5 },
+          { text: "週1回程度", score: 4 },
+          { text: "週2〜3回", score: 3 },
+          { text: "毎日", score: 2 },
+          { text: "1日複数回", score: 1 }
+        ]
+      },
+      {
+        category: "現状工数",
+        icon: "⏱️",
+        question: "シフト管理・スケジュール調整の手作業時間は？",
+        options: [
+          { text: "10分未満/週", score: 5 },
+          { text: "10〜30分/週", score: 4 },
+          { text: "30分〜1時間/週", score: 3 },
+          { text: "1〜2時間/週", score: 2 },
+          { text: "2時間以上/週", score: 1 }
+        ]
+      },
+      {
+        category: "現状工数",
+        icon: "⏱️",
+        question: "請求処理・経理作業の手作業時間は？",
+        options: [
+          { text: "30分未満/月", score: 5 },
+          { text: "30分〜1時間/月", score: 4 },
+          { text: "1〜2時間/月", score: 3 },
+          { text: "2〜4時間/月", score: 2 },
+          { text: "4時間以上/月", score: 1 }
+        ]
+      },
+      
+      // 領域2: 自動化可能率（5問）
+      {
+        category: "自動化可能率",
+        icon: "🔄",
+        question: "現在の反復作業のうち、ルールベースで処理できる割合は？",
+        options: [
+          { text: "80%以上", score: 5 },
+          { text: "60〜80%", score: 4 },
+          { text: "40〜60%", score: 3 },
+          { text: "20〜40%", score: 2 },
+          { text: "20%未満", score: 1 }
+        ]
+      },
+      {
+        category: "自動化可能率",
+        icon: "🔄",
+        question: "データ形式が統一されている作業の割合は？",
+        options: [
+          { text: "90%以上統一", score: 5 },
+          { text: "70〜90%", score: 4 },
+          { text: "50〜70%", score: 3 },
+          { text: "30〜50%", score: 2 },
+          { text: "30%未満", score: 1 }
+        ]
+      },
+      {
+        category: "自動化可能率",
+        icon: "🔄",
+        question: "定型フォーマットで出力可能な書類の割合は？",
+        options: [
+          { text: "80%以上", score: 5 },
+          { text: "60〜80%", score: 4 },
+          { text: "40〜60%", score: 3 },
+          { text: "20〜40%", score: 2 },
+          { text: "20%未満", score: 1 }
+        ]
+      },
+      {
+        category: "自動化可能率",
+        icon: "🔄",
+        question: "API連携可能なシステムの利用状況は？",
+        options: [
+          { text: "全システムAPI対応済み", score: 5 },
+          { text: "主要システムはAPI対応", score: 4 },
+          { text: "一部API対応", score: 3 },
+          { text: "API未対応が多い", score: 2 },
+          { text: "API非対応のみ", score: 1 }
+        ]
+      },
+      {
+        category: "自動化可能率",
+        icon: "🔄",
+        question: "判断が不要な単純作業の割合は？",
+        options: [
+          { text: "70%以上", score: 5 },
+          { text: "50〜70%", score: 4 },
+          { text: "30〜50%", score: 3 },
+          { text: "10〜30%", score: 2 },
+          { text: "10%未満", score: 1 }
+        ]
+      },
+      
+      // 領域3: ツールコスト（5問）
+      {
+        category: "ツールコスト",
+        icon: "💰",
+        question: "自動化ツール（Make/n8n/Zapier等）への月額予算は？",
+        options: [
+          { text: "¥10,000以上可能", score: 5 },
+          { text: "¥5,000〜10,000", score: 4 },
+          { text: "¥3,000〜5,000", score: 3 },
+          { text: "¥1,000〜3,000", score: 2 },
+          { text: "¥1,000未満のみ", score: 1 }
+        ]
+      },
+      {
+        category: "ツールコスト",
+        icon: "💰",
+        question: "無料プランで十分な機能があるツールの数は？",
+        options: [
+          { text: "5つ以上活用中", score: 5 },
+          { text: "3〜4つ", score: 4 },
+          { text: "1〜2つ", score: 3 },
+          { text: "検討中", score: 2 },
+          { text: "未検討", score: 1 }
+        ]
+      },
+      {
+        category: "ツールコスト",
+        icon: "💰",
+        question: "自前ホスト（n8n等）の技術的実現可能性は？",
+        options: [
+          { text: "技術者あり・即実装可", score: 5 },
+          { text: "技術者あり・学習必要", score: 4 },
+          { text: "外部委託可能", score: 3 },
+          { text: "学習意欲あり", score: 2 },
+          { text: "技術的ハードル高", score: 1 }
+        ]
+      },
+      {
+        category: "ツールコスト",
+        icon: "💰",
+        question: "サブスクリプション管理の現状は？",
+        options: [
+          { text: "集中管理・最適化済み", score: 5 },
+          { text: "一覧化済み", score: 4 },
+          { text: "把握している", score: 3 },
+          { text: "把握不足", score: 2 },
+          { text: "未整理", score: 1 }
+        ]
+      },
+      {
+        category: "ツールコスト",
+        icon: "💰",
+        question: "ROI測定の仕組みはあるか？",
+        options: [
+          { text: "定量的測定済み", score: 5 },
+          { text: "測定指標あり", score: 4 },
+          { text: "概算把握", score: 3 },
+          { text: "測定未実施", score: 2 },
+          { text: "測定方法不明", score: 1 }
+        ]
+      },
+      
+      // 領域4: 実装難易度（5問）
+      {
+        category: "実装難易度",
+        icon: "🔧",
+        question: "ノーコードツールの経験は？",
+        options: [
+          { text: "実務活用済み", score: 5 },
+          { text: "学習済み", score: 4 },
+          { text: "基礎理解あり", score: 3 },
+          { text: "興味あり", score: 2 },
+          { text: "未経験", score: 1 }
+        ]
+      },
+      {
+        category: "実装難易度",
+        icon: "🔧",
+        question: "自動化対象業務の文書化状況は？",
+        options: [
+          { text: "完全文書化済み", score: 5 },
+          { text: "主要業務は文書化", score: 4 },
+          { text: "一部文書化", score: 3 },
+          { text: "未文書化・把握済み", score: 2 },
+          { text: "不明確", score: 1 }
+        ]
+      },
+      {
+        category: "実装難易度",
+        icon: "🔧",
+        question: "テスト環境の整備状況は？",
+        options: [
+          { text: "本番分離済み", score: 5 },
+          { text: "テスト環境あり", score: 4 },
+          { text: "本番でテスト可能", score: 3 },
+          { text: "テスト未実施", score: 2 },
+          { text: "環境なし", score: 1 }
+        ]
+      },
+      {
+        category: "実装難易度",
+        icon: "🔧",
+        question: "エラー対応のリソースは？",
+        options: [
+          { text: "専任担当あり", score: 5 },
+          { text: "担当者決定済み", score: 4 },
+          { text: "兼務で対応可", score: 3 },
+          { text: "対応者未定", score: 2 },
+          { text: "リソースなし", score: 1 }
+        ]
+      },
+      {
+        category: "実装難易度",
+        icon: "🔧",
+        question: "段階的導入の計画は？",
+        options: [
+          { text: "詳細計画済み", score: 5 },
+          { text: "概要計画あり", score: 4 },
+          { text: "方向性決定", score: 3 },
+          { text: "検討中", score: 2 },
+          { text: "未検討", score: 1 }
+        ]
+      }
+    ];
+    
+    let currentQuestion = 0;
+    let answers = new Array(questions.length).fill(null);
+    
+    const questionContainer = document.getElementById('questionContainer');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultContainer = document.getElementById('resultContainer');
+    
+    function renderQuestion() {
+      const q = questions[currentQuestion];
+      const category = q.category;
+      const icon = q.icon;
+      
+      questionContainer.innerHTML = `
+        <div class="category-label">${icon} ${category}</div>
+        <div class="question-text">${q.question}</div>
+        <div class="options">
+          ${q.options.map((opt, idx) => `
+            <label class="option ${answers[currentQuestion] === idx ? 'selected' : ''}">
+              <input type="radio" name="q${currentQuestion}" value="${idx}" 
+                     ${answers[currentQuestion] === idx ? 'checked' : ''}>
+              ${opt.text}
+            </label>
+          `).join('')}
+        </div>
+      `;
+      
+      // Add event listeners
+      document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', () => {
+          document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+          option.querySelector('input').checked = true;
+          answers[currentQuestion] = parseInt(option.querySelector('input').value);
+          updateNavigation();
+        });
+      });
+      
+      updateProgress();
+      updateNavigation();
+    }
+    
+    function updateProgress() {
+      const answered = answers.filter(a => a !== null).length;
+      const progress = (answered / questions.length) * 100;
+      progressFill.style.width = `${progress}%`;
+      progressText.textContent = `進捗: ${answered} / ${questions.length}問`;
+    }
+    
+    function updateNavigation() {
+      prevBtn.disabled = currentQuestion === 0;
+      
+      if (currentQuestion === questions.length - 1) {
+        nextBtn.textContent = '結果を見る';
+        nextBtn.disabled = answers[currentQuestion] === null;
+      } else {
+        nextBtn.textContent = '次へ →';
+        nextBtn.disabled = answers[currentQuestion] === null;
+      }
+    }
+    
+    function showResults() {
+      document.querySelector('.question-container').style.display = 'none';
+      document.querySelector('.navigation').style.display = 'none';
+      resultContainer.style.display = 'block';
+      
+      // Calculate scores
+      const categoryScores = {};
+      const categories = [...new Set(questions.map(q => q.category))];
+      
+      categories.forEach(cat => {
+        const catQuestions = questions.filter(q => q.category === cat);
+        let total = 0;
+        catQuestions.forEach((q, idx) => {
+          const globalIdx = questions.indexOf(q);
+          if (answers[globalIdx] !== null) {
+            total += q.options[answers[globalIdx]].score;
+          }
+        });
+        categoryScores[cat] = Math.round((total / (catQuestions.length * 5)) * 100);
+      });
+      
+      const totalScore = Math.round(
+        Object.values(categoryScores).reduce((a, b) => a + b, 0) / categories.length
+      );
+      
+      document.getElementById('totalScore').textContent = totalScore;
+      
+      // Render category scores
+      const categoryScoresContainer = document.getElementById('categoryScores');
+      categoryScoresContainer.innerHTML = categories.map(cat => `
+        <div class="category-score">
+          <h4>${cat}</h4>
+          <div class="value">${categoryScores[cat]}点</div>
+          <div class="bar">
+            <div class="bar-fill" style="width: ${categoryScores[cat]}%"></div>
+          </div>
+        </div>
+      `).join('');
+      
+      // Generate recommendations
+      const recommendations = [];
+      
+      if (categoryScores['現状工数'] < 60) {
+        recommendations.push({
+          icon: '⏱️',
+          text: '反復作業の時間記録から開始。1週間の作業ログで自動化候補を特定。'
+        });
+      }
+      
+      if (categoryScores['自動化可能率'] < 60) {
+        recommendations.push({
+          icon: '🔄',
+          text: 'データ形式の統一を優先。定型フォーマット化で自動化成功率が向上。'
+        });
+      }
+      
+      if (categoryScores['ツールコスト'] < 60) {
+        recommendations.push({
+          icon: '💰',
+          text: '無料プランから開始（Make無料版/n8n自前ホスト）。月5万円以下で実現可能。'
+        });
+      }
+      
+      if (categoryScores['実装難易度'] < 60) {
+        recommendations.push({
+          icon: '🔧',
+          text: '業務フローの文書化から着手。SOP（標準作業手順書）作成で実装難易度が低下。'
+        });
+      }
+      
+      if (totalScore >= 80) {
+        recommendations.push({
+          icon: '✅',
+          text: '自動化ROI高！まずは小規模パイロットで成果を検証し、段階的に拡大。'
+        });
+      }
+      
+      recommendations.push({
+        icon: '📚',
+        text: 'Make/n8n/Zapier比較で最適ツール選択。Zapierは使いやすさ・n8nはコスト・Makeは柔軟性。'
+      });
+      
+      const recommendationsList = document.getElementById('recommendationsList');
+      recommendationsList.innerHTML = recommendations.map(rec => `
+        <li>
+          <span class="icon">${rec.icon}</span>
+          <span>${rec.text}</span>
+        </li>
+      `).join('');
+    }
+    
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    });
+    
+    // Initialize
+    renderQuestion();
+  </script>
+</body>
+</html>

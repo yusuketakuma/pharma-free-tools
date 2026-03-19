@@ -1,0 +1,1 @@
+import{j as a}from"./index-FgN5r-qv.js";function t({children:e,className:r}){return a.jsx("div",{className:r?`page-viewport ${r}`:"page-viewport",children:e})}function p({children:e,className:r}){return a.jsx("div",{className:r?`page-scroll-area ${r}`:"page-scroll-area",children:e})}export{t as P,p as S};

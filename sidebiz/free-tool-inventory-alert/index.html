@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在庫アラート通知 | 薬剤師向け無料ツール</title>
+  <meta name="description" content="薬局の在庫管理を効率化する無料ツール。使用期限・発注ポイント・欠品リスクを可視化し、アラート通知を自動生成します。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "在庫アラート通知",
+    "description": "薬局の在庫管理を効率化する無料ツール。使用期限・発注ポイント・欠品リスクを可視化し、アラート通知を自動生成します。",
+    "url": "https://yusuketakuma.github.io/pharma-inventory-alert/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  <meta property="og:title" content="在庫アラート通知 | 薬剤師向け無料ツール">
+  <meta property="og:description" content="使用期限・発注ポイント・欠品リスクを可視化。アラート通知を自動生成します。">
+  <meta property="og:type" content="website">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --primary: #0ea5e9;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary);
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0284c7;
+    }
+    .btn-secondary {
+      background: var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+    .inventory-list {
+      margin-top: 16px;
+    }
+    .inventory-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .inventory-item.danger {
+      border-left: 4px solid var(--danger);
+      background: #fef2f2;
+    }
+    .inventory-item.warning {
+      border-left: 4px solid var(--warning);
+      background: #fffbeb;
+    }
+    .inventory-item.success {
+      border-left: 4px solid var(--success);
+      background: #f0fdf4;
+    }
+    .item-name {
+      flex: 1;
+      font-weight: 600;
+    }
+    .item-info {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .item-status {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-danger { background: #fecaca; color: #991b1b; }
+    .status-warning { background: #fde68a; color: #92400e; }
+    .status-success { background: #bbf7d0; color: #166534; }
+    .alert-summary {
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+    .alert-summary.danger { background: #fef2f2; border: 1px solid #fecaca; }
+    .alert-summary.warning { background: #fffbeb; border: 1px solid #fde68a; }
+    .alert-summary h3 { margin-bottom: 10px; }
+    .alert-summary ul { margin-left: 20px; }
+    .copy-btn {
+      margin-top: 16px;
+    }
+    .other-tools {
+      margin-top: 32px;
+      padding: 20px;
+      background: #f3f4f6;
+      border-radius: 12px;
+    }
+    .other-tools h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #4b5563;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    .tools-grid a {
+      display: block;
+      padding: 10px 12px;
+      background: white;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 0.85rem;
+    }
+    .tools-grid a:hover {
+      background: #e5e7eb;
+    }
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 4px 8px;
+    }
+  </style>
+  <!-- Google tag (gtag.js) - 測定IDを差し替えてください -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'ai_prompts',
+        'product_name': 'AIプロンプト集',
+        'price': 300
+      });
+    }
+
+    function trackNotionCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'notion_template',
+        'product_name': 'Notionテンプレート',
+        'price': 500
+      });
+    }
+
+    function trackToolUsage(actionType) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': '在庫アラート通知',
+        'action_type': actionType
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'inventory_alert'
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📦 在庫アラート通知</h1>
+      <p class="subtitle">使用期限・発注ポイント・欠品リスクを可視化</p>
+    </header>
+
+    <div class="card">
+      <h2>➕ 在庫アイテム追加</h2>
+      <div class="form-group">
+        <label for="itemName">薬品名</label>
+        <input type="text" id="itemName" placeholder="例: アムロジピンOD錠5mg">
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label for="currentStock">現在庫数</label>
+          <input type="number" id="currentStock" placeholder="例: 50">
+        </div>
+        <div class="form-group">
+          <label for="minStock">発注ポイント</label>
+          <input type="number" id="minStock" placeholder="例: 20">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label for="expiryDate">使用期限</label>
+          <input type="date" id="expiryDate">
+        </div>
+        <div class="form-group">
+          <label for="monthlyUsage">月間使用量（目安）</label>
+          <input type="number" id="monthlyUsage" placeholder="例: 30">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="addInventoryItem()">追加</button>
+    </div>
+
+    <div class="card">
+      <h2>📋 在庫リスト</h2>
+      <div id="inventoryList" class="inventory-list">
+        <p style="color: var(--muted); text-align: center; padding: 20px;">
+          在庫アイテムを追加してください
+        </p>
+      </div>
+    </div>
+
+    <div class="card" id="alertCard" style="display: none;">
+      <h2>⚠️ アラート通知</h2>
+      <div id="alertSummary"></div>
+      <button class="btn btn-secondary copy-btn" onclick="copyAlert()">📋 アラートをコピー</button>
+    </div>
+
+    <div class="card">
+      <h2>📊 サマリー</h2>
+      <div id="summaryStats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        <div style="text-align: center; padding: 16px; background: #fef2f2; border-radius: 8px;">
+          <div style="font-size: 1.5rem; font-weight: bold; color: var(--danger);" id="dangerCount">0</div>
+          <div style="font-size: 0.8rem; color: var(--muted);">要対応</div>
+        </div>
+        <div style="text-align: center; padding: 16px; background: #fffbeb; border-radius: 8px;">
+          <div style="font-size: 1.5rem; font-weight: bold; color: var(--warning);" id="warningCount">0</div>
+          <div style="font-size: 0.8rem; color: var(--muted);">要注意</div>
+        </div>
+        <div style="text-align: center; padding: 16px; background: #f0fdf4; border-radius: 8px;">
+          <div style="font-size: 1.5rem; font-weight: bold; color: var(--success);" id="successCount">0</div>
+          <div style="font-size: 0.8rem; color: var(--muted);">問題なし</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="other-tools">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; margin-bottom: 16px; padding: 8px 16px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">🏠 全ツール一覧（ポータル）</a><br><br>
+      <h3>🔧 その他の無料ツール</h3>
+      <div class="tools-grid">
+        <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">💊 薬価シミュレーター</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">📝 薬歴テンプレート</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/">🗣️ 服薬指導チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">🫘 腎機能別用量</a>
+        <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">📊 業務効率化診断</a>
+        <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">✅ 処方チェックリスト</a>
+        <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">📧 疑義照会メール</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-summary/">📋 薬歴サマリー</a>
+        <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">⚠️ 副作用リスク評価</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">🗓️ 服薬カレンダー</a>
+        <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">🔍 処方鑑別チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-di-query/">📞 DI照会生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔔 服薬リマインダー生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">💊 持参薬チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-adherence-check/">💊 服薬アドヒアランス評価</a>
+        <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/">🔤 類似薬名チェック</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    let inventoryItems = [];
+
+    function addInventoryItem() {
+      const name = document.getElementById('itemName').value.trim();
+      const currentStock = parseInt(document.getElementById('currentStock').value) || 0;
+      const minStock = parseInt(document.getElementById('minStock').value) || 0;
+      const expiryDate = document.getElementById('expiryDate').value;
+      const monthlyUsage = parseInt(document.getElementById('monthlyUsage').value) || 0;
+
+      if (!name) {
+        alert('薬品名を入力してください');
+        return;
+      }
+
+      const item = {
+        id: Date.now(),
+        name,
+        currentStock,
+        minStock,
+        expiryDate,
+        monthlyUsage
+      };
+
+      inventoryItems.push(item);
+      updateDisplay();
+
+      // フォームをリセット
+      document.getElementById('itemName').value = '';
+      document.getElementById('currentStock').value = '';
+      document.getElementById('minStock').value = '';
+      document.getElementById('expiryDate').value = '';
+      document.getElementById('monthlyUsage').value = '';
+    }
+
+    function deleteItem(id) {
+      inventoryItems = inventoryItems.filter(item => item.id !== id);
+      updateDisplay();
+    }
+
+    function getItemStatus(item) {
+      const today = new Date();
+      const expiry = item.expiryDate ? new Date(item.expiryDate) : null;
+      const daysUntilExpiry = expiry ? Math.ceil((expiry - today) / (1000 * 60 * 60 * 24)) : null;
+      const monthsOfStock = item.monthlyUsage > 0 ? item.currentStock / item.monthlyUsage : null;
+
+      // 危険: 期限切れ・期限間近（30日以内）・在庫切れ・発注ポイント以下
+      if (daysUntilExpiry !== null && daysUntilExpiry <= 0) {
+        return { status: 'danger', label: '期限切れ', reason: '使用期限が切れています' };
+      }
+      if (item.currentStock <= 0) {
+        return { status: 'danger', label: '欠品', reason: '在庫がありません' };
+      }
+      if (daysUntilExpiry !== null && daysUntilExpiry <= 30) {
+        return { status: 'danger', label: '期限間近', reason: `使用期限まで${daysUntilExpiry}日` };
+      }
+      if (item.currentStock <= item.minStock) {
+        return { status: 'danger', label: '発注必要', reason: '発注ポイント以下です' };
+      }
+
+      // 警告: 期限3ヶ月以内・在庫1ヶ月分以下
+      if (daysUntilExpiry !== null && daysUntilExpiry <= 90) {
+        return { status: 'warning', label: '要注意', reason: `使用期限まで${daysUntilExpiry}日` };
+      }
+      if (monthsOfStock !== null && monthsOfStock <= 1) {
+        return { status: 'warning', label: '要注意', reason: '在庫が1ヶ月分以下です' };
+      }
+
+      return { status: 'success', label: '問題なし', reason: '在庫十分' };
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '-';
+      const date = new Date(dateStr);
+      return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function updateDisplay() {
+      const listEl = document.getElementById('inventoryList');
+      const alertCard = document.getElementById('alertCard');
+      const alertSummary = document.getElementById('alertSummary');
+
+      if (inventoryItems.length === 0) {
+        listEl.innerHTML = '<p style="color: var(--muted); text-align: center; padding: 20px;">在庫アイテムを追加してください</p>';
+        alertCard.style.display = 'none';
+        document.getElementById('dangerCount').textContent = '0';
+        document.getElementById('warningCount').textContent = '0';
+        document.getElementById('successCount').textContent = '0';
+        return;
+      }
+
+      // ステータス別にカウント
+      let dangerCount = 0, warningCount = 0, successCount = 0;
+      const dangerItems = [], warningItems = [];
+
+      inventoryItems.forEach(item => {
+        const status = getItemStatus(item);
+        if (status.status === 'danger') {
+          dangerCount++;
+          dangerItems.push({ ...item, statusInfo: status });
+        } else if (status.status === 'warning') {
+          warningCount++;
+          warningItems.push({ ...item, statusInfo: status });
+        } else {
+          successCount++;
+        }
+      });
+
+      // 統計更新
+      document.getElementById('dangerCount').textContent = dangerCount;
+      document.getElementById('warningCount').textContent = warningCount;
+      document.getElementById('successCount').textContent = successCount;
+
+      // リスト表示
+      listEl.innerHTML = inventoryItems.map(item => {
+        const status = getItemStatus(item);
+        return `
+          <div class="inventory-item ${status.status}">
+            <div style="flex: 1;">
+              <div class="item-name">${item.name}</div>
+              <div class="item-info">
+                在庫: ${item.currentStock} / 発注PT: ${item.minStock} | 期限: ${formatDate(item.expiryDate)}
+              </div>
+            </div>
+            <span class="item-status status-${status.status}">${status.label}</span>
+            <button class="delete-btn" onclick="deleteItem(${item.id})">×</button>
+          </div>
+        `;
+      }).join('');
+
+      // アラート表示
+      if (dangerCount > 0 || warningCount > 0) {
+        alertCard.style.display = 'block';
+        
+        let alertHtml = '';
+        if (dangerCount > 0) {
+          alertHtml += `
+            <div class="alert-summary danger">
+              <h3>🚨 要対応（${dangerCount}件）</h3>
+              <ul>
+                ${dangerItems.map(item => `<li>${item.name}: ${item.statusInfo.reason}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+        if (warningCount > 0) {
+          alertHtml += `
+            <div class="alert-summary warning">
+              <h3>⚠️ 要注意（${warningCount}件）</h3>
+              <ul>
+                ${warningItems.map(item => `<li>${item.name}: ${item.statusInfo.reason}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+        alertSummary.innerHTML = alertHtml;
+      } else {
+        alertCard.style.display = 'none';
+      }
+    }
+
+    function copyAlert() {
+      const today = new Date();
+      const dateStr = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`;
+      
+      let text = `【在庫アラート通知】${dateStr}\n\n`;
+      
+      const dangerItems = inventoryItems.filter(item => getItemStatus(item).status === 'danger');
+      const warningItems = inventoryItems.filter(item => getItemStatus(item).status === 'warning');
+
+      if (dangerItems.length > 0) {
+        text += `■要対応（${dangerItems.length}件）\n`;
+        dangerItems.forEach(item => {
+          const status = getItemStatus(item);
+          text += `・${item.name}: ${status.reason}\n`;
+        });
+        text += '\n';
+      }
+
+      if (warningItems.length > 0) {
+        text += `■要注意（${warningItems.length}件）\n`;
+        warningItems.forEach(item => {
+          const status = getItemStatus(item);
+          text += `・${item.name}: ${status.reason}\n`;
+        });
+      }
+
+      if (dangerItems.length === 0 && warningItems.length === 0) {
+        text += '現在アラート対象の在庫はありません。\n';
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert('アラート通知をコピーしました');
+      });
+    }
+  </script>
+  <!-- 収益化CTA -->
+  <section style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af;">🎁 さらに業務を効率化しませんか？</h3>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📖 薬剤師向けAIプロンプト集</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">ChatGPT/Claudeで時短する100+のプロンプトテンプレート</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥300</p>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📋 薬局業務Notionテンプレート</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">訪問記録・在庫管理・患者管理を一元化</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥500</p>
+    </div>
+    <p style="font-size: 0.8rem; color: #666;">※ 準備中（近日公開）</p>
+  </section>
+
+  <div class="section">
+    <div class="section-title">🔗 他の無料ツール</div>
+    <div class="links">
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">腎機能別用量</a>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会メール</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+      <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+      <a href="https://yusuketakuma.github.io/pharma-di-query/">DI照会生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+      <a href="https://yusuketakuma.github.io/pharma-adherence-check/">アドヒアランス</a>
+      <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/">類似薬名</a>
+      <a href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/">服薬指導シナリオ</a>
+      <a href="https://yusuketakuma.github.io/pharma-fee-calculator/">調剤報酬計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-homecare-report/">在宅医療報告書</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-03-18T23:01:00+09:00",
+  "job": "homecare-30m-sync-to-trainer",
+  "target": "部長（-5088508248）",
+  "report": {
+    "status": "done",
+    "summary": [
+      "homecare: 7サイクル連続全タスク完了（22:49アイドルタスク前倒し実施・3/19実施事項サマリー作成）",
+      "sidebiz: [ALERT] 数値三方乖離再発（実ツール95 vs 表示93）・sitemap不整合（86→95）・Vercel 404継続（5サイクル目）",
+      "trainer: web_search不可（Brave API上限13回連続）→内部分析継続"
+    ],
+    "nextActions": [
+      {"priority": "高", "task": "index.html全数値を95に統一", "owner": "sidebiz", "duration": "10分"},
+      {"priority": "高", "task": "sitemap.xml再生成（95ツール分）", "owner": "sidebiz", "duration": "10分"},
+      {"priority": "高", "task": "テリパラチド在庫確認（3/19〜実行開始）", "owner": "homecare/ゆうすけ", "duration": "15分"},
+      {"priority": "中", "task": "Vercel設定調査・修復", "owner": "sidebiz", "duration": "20分"},
+      {"priority": "中", "task": "経過措置患者抽出（MCS操作推奨期間3/19〜22）", "owner": "homecare/ゆうすけ", "duration": "30分"}
+    ],
+    "desiredEnhancements": [
+      "homecare: 能動的提案増加（dispatch指示外の改善提案1件以上/サイクル）",
+      "sidebiz: ツール追加時の数値更新チェックリスト適用（9箇所更新忘れ防止）",
+      "trainer: web_fetch代替フロー継続（Brave API復旧4月見込）"
+    ],
+    "requiredEnvironment": {
+      "tools": ["read/write権限", "grep/sed", "git push権限", "Python実行環境"],
+      "permissions": ["homecare/outputs/編集", "sidebiz/編集"],
+      "information": ["GA4実ID（未判明）", "Vercelダッシュボードアクセス", "MCS患者抽出データ（ゆうすけ依存）"]
+    }
+  },
+  "selfImprovementCycle": {
+    "learningPoints": [
+      "アイドルタスクの前倒し実施: 23:00静音モード前に次朝の準備を完了（3/19実施事項サマリー作成）",
+      "保守チェックの早期検知有効性: 22:53保守チェックで数値乖離（93→95）を即時検知",
+      "ツール追加時の数値更新フロー未確立: 新ツール追加時に全9箇所の更新を忘れる→チェックリスト適用必須"
+    ],
+    "qualityIncidents": [
+      {
+        "type": "数値三方乖離再発",
+        "cause": "ツール追加時に全9箇所（title/meta/OGP/Twitter/JSON-LD/stat-number/sitemap等）の数値更新を忘れた",
+        "prevention": "9箇所チェックリスト適用 + sitemap自動再生成 + grep検証必須化",
+        "impact": "ユーザー信頼性低下・SEO評価への影響・SNSシェア時の表示不整合"
+      },
+      {
+        "type": "Vercelポータル404エラー継続",
+        "cause": "vercel.json不在またはVercelプロジェクト設定不備",
+        "prevention": "GitHub Pages統一検討 または vercel.json作成",
+        "impact": "Vercel URLでのユーザーアクセス不可（GitHub Pages代替稼働中）"
+      }
+    ],
+    "improvementProposals": [
+      {"priority": "高", "proposal": "GitHub Pages統一", "feasibility": "実装可", "reason": "Vercel不具合継続時は一本化で安定性向上", "duration": "10分"},
+      {"priority": "中", "proposal": "sitemap自動生成スクリプト導入", "feasibility": "検討中", "reason": "ツール追加時のsitemap更新忘れ防止", "duration": "30分"},
+      {"priority": "低", "proposal": "API使用率アラート追加", "feasibility": "未実装", "reason": "Brave API月次上限の80%閾値アラート→4月リセット後に実装検討", "duration": "10分"}
+    ]
+  },
+  "crossObservation": {
+    "homecareBlocking": [
+      "テリパラチド返品: 3/28期限（残10日）— ゆうすけ3/19〜実行開始必要",
+      "経過措置抽出: 3/31期限（残12日）— MCS操作推奨期間3/19〜22"
+    ],
+    "sidebizImpact": "homecare阻害はゆうすけ現場アクション依存のため、副業自動化には直接影響なし"
+  },
+  "notificationSuppression": {
+    "note": "本ジョブは通知抑止中。対外報告は trainer-2h-regular-report に集約。",
+    "channels": ["sidebiz", "homecare", "trainer"],
+    "action": "NO_REPLY相当で沈黙"
+  }
+}

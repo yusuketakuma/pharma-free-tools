@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬局DX投資対効果診断 - ROI計算ツール</title>
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+  <meta name="description" content="薬局のDX投資対効果（ROI）を簡易診断。電子カルテ、RPA、AI導入の費用対効果を数値化し、経営判断を支援。">
+  <meta name="keywords" content="薬局,DX,ROI,投資対効果,電子カルテ,RPA,AI,業務自動化,2026,医療DX">
+  
+  <!-- OGP -->
+  <meta property="og:title" content="薬局DX投資対効果診断 - ROI計算ツール">
+  <meta property="og:description" content="薬局のDX投資対効果（ROI）を簡易診断。電子カルテ、RPA、AI導入の費用対効果を数値化。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-dx-roi-calculator.html">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="薬局DX投資対効果診断 - ROI計算ツール">
+  <meta name="twitter:description" content="薬局のDX投資対効果（ROI）を簡易診断。">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-dx-roi-calculator.html">
+  
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "薬局DX投資対効果診断",
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'pharmacy-dx-roi-calculator-' + action
+      });
+    }
+    
+    function trackCTAClick() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'pharmacy-dx-roi-calculator-prompt-cta'
+      });
+    }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "薬局DX投資対効果診断",
+    "description": "薬局のDX投資対効果（ROI）を簡易診断する無料ツール",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    
+    .form-section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #667eea;
+    }
+    
+    .input-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #444;
+    }
+    
+    .input-hint {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 5px;
+    }
+    
+    input[type="number"], select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .checkbox-item:hover {
+      background: #e8f5e9;
+    }
+    
+    .checkbox-item input {
+      width: 18px;
+      height: 18px;
+    }
+    
+    .calculate-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .result-section {
+      margin-top: 30px;
+      padding: 25px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+      border-radius: 15px;
+      display: none;
+    }
+    
+    .result-section.visible {
+      display: block;
+    }
+    
+    .roi-score {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .roi-value {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .roi-label {
+      font-size: 1rem;
+      color: #666;
+    }
+    
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .result-item {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .result-item-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .result-item-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .recommendation {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .recommendation h3 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .recommendation ul {
+      margin-left: 20px;
+    }
+    
+    .recommendation li {
+      margin-bottom: 8px;
+      color: #444;
+    }
+    
+    .cta-section {
+      margin-top: 30px;
+      text-align: center;
+      padding: 25px;
+      background: #f8f9fa;
+      border-radius: 15px;
+    }
+    
+    .cta-section h3 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .cta-section p {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 600px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏥 薬局DX投資対効果診断</h1>
+      <p class="subtitle">電子カルテ・RPA・AI導入のROIを簡易計算</p>
+    </header>
+    
+    <div class="form-section">
+      <h2 class="section-title">📊 現状入力</h2>
+      
+      <div class="input-group">
+        <label>薬剤師数（常勤換算）</label>
+        <p class="input-hint">パート・アルバイトも含めて常勤換算で入力</p>
+        <input type="number" id="pharmacistCount" min="1" max="100" value="3" placeholder="例: 3">
+      </div>
+      
+      <div class="input-group">
+        <label>1日平均処方箋枚数</label>
+        <p class="input-hint">全店舗合計の場合は合計値を入力</p>
+        <input type="number" id="prescriptionCount" min="1" max="5000" value="150" placeholder="例: 150">
+      </div>
+      
+      <div class="input-group">
+        <label>薬剤師平均時給（円）</label>
+        <p class="input-hint">賞与・社会保険込みで概算可</p>
+        <input type="number" id="hourlyWage" min="1000" max="10000" value="2500" placeholder="例: 2500">
+      </div>
+      
+      <div class="input-group">
+        <label>現在の定型業務時間（時間/日）</label>
+        <p class="input-hint">薬歴入力・請求業務・在庫管理等の定型業務</p>
+        <input type="number" id="routineTaskHours" min="0" max="24" step="0.5" value="4" placeholder="例: 4">
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2 class="section-title">🤖 DX導入予定</h2>
+      
+      <div class="input-group">
+        <label>導入検討中のDX施策</label>
+        <p class="input-hint">該当するものをすべて選択</p>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" id="dx-ec" checked>
+            電子カルテ連携
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="dx-rpa">
+            RPA導入
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="dx-ai">
+            AI薬歴支援
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="dx-auto">
+            自動分包機
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="dx-inventory">
+            在庫管理システム
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="dx-online">
+            オンライン服薬指導
+          </label>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <label>想定導入コスト（万円）</label>
+        <p class="input-hint">初期費用 + 初年度運用費の合計</p>
+        <input type="number" id="initialCost" min="0" max="10000" value="200" placeholder="例: 200">
+      </div>
+      
+      <div class="input-group">
+        <label>月額運用費（万円）</label>
+        <p class="input-hint">2年目以降のランニングコスト</p>
+        <input type="number" id="monthlyCost" min="0" max="500" value="5" placeholder="例: 5">
+      </div>
+    </div>
+    
+    <button class="calculate-btn" onclick="calculateROI()">📈 ROIを計算する</button>
+    
+    <div class="result-section" id="resultSection">
+      <div class="roi-score">
+        <div class="roi-value" id="roiValue">--</div>
+        <div class="roi-label">3年間ROI（投資対効果）</div>
+      </div>
+      
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="result-item-value" id="timeSaved">--</div>
+          <div class="result-item-label">年間削減時間（時間）</div>
+        </div>
+        <div class="result-item">
+          <div class="result-item-value" id="costSaved">--</div>
+          <div class="result-item-label">年間削減額（万円）</div>
+        </div>
+        <div class="result-item">
+          <div class="result-item-value" id="paybackPeriod">--</div>
+          <div class="result-item-label">投資回収期間</div>
+        </div>
+        <div class="result-item">
+          <div class="result-item-value" id="netBenefit">--</div>
+          <div class="result-item-label">3年間純利益（万円）</div>
+        </div>
+      </div>
+      
+      <div class="recommendation" id="recommendation">
+        <h3>💡 推奨アクション</h3>
+        <ul id="recommendationList">
+        </ul>
+      </div>
+    </div>
+    
+    <div class="cta-section">
+      <h3>🚀 DX導入を加速させる</h3>
+      <p>AIプロンプトガイドで業務自動化の具体的な手法を習得</p>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/ai-prompts-lp.html" class="cta-button">AI活用ガイドを見る</a>
+    </div>
+    
+    <a href="https://yusuketakuma.github.io/pharma-free-tools/" class="back-link">← 無料ツール一覧に戻る</a>
+  </div>
+  
+  <script>
+    // GA4 event tracking
+    function trackEvent(action, category, label) {
+      if (typeof gtag === 'function') {
+        gtag('event', action, {
+          event_category: category,
+          event_label: label
+        });
+      }
+    }
+    
+    // Save/load state
+    function saveState() {
+      const state = {
+        pharmacistCount: document.getElementById('pharmacistCount').value,
+        prescriptionCount: document.getElementById('prescriptionCount').value,
+        hourlyWage: document.getElementById('hourlyWage').value,
+        routineTaskHours: document.getElementById('routineTaskHours').value,
+        dxEc: document.getElementById('dx-ec').checked,
+        dxRpa: document.getElementById('dx-rpa').checked,
+        dxAi: document.getElementById('dx-ai').checked,
+        dxAuto: document.getElementById('dx-auto').checked,
+        dxInventory: document.getElementById('dx-inventory').checked,
+        dxOnline: document.getElementById('dx-online').checked,
+        initialCost: document.getElementById('initialCost').value,
+        monthlyCost: document.getElementById('monthlyCost').value
+      };
+      localStorage.setItem('pharmacyDxRoiState', JSON.stringify(state));
+    }
+    
+    function loadState() {
+      const saved = localStorage.getItem('pharmacyDxRoiState');
+      if (saved) {
+        const state = JSON.parse(saved);
+        document.getElementById('pharmacistCount').value = state.pharmacistCount || 3;
+        document.getElementById('prescriptionCount').value = state.prescriptionCount || 150;
+        document.getElementById('hourlyWage').value = state.hourlyWage || 2500;
+        document.getElementById('routineTaskHours').value = state.routineTaskHours || 4;
+        document.getElementById('dx-ec').checked = state.dxEc !== false;
+        document.getElementById('dx-rpa').checked = state.dxRpa || false;
+        document.getElementById('dx-ai').checked = state.dxAi || false;
+        document.getElementById('dx-auto').checked = state.dxAuto || false;
+        document.getElementById('dx-inventory').checked = state.dxInventory || false;
+        document.getElementById('dx-online').checked = state.dxOnline || false;
+        document.getElementById('initialCost').value = state.initialCost || 200;
+        document.getElementById('monthlyCost').value = state.monthlyCost || 5;
+      }
+    }
+    
+    // Auto-save on input change
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('change', saveState);
+    });
+    
+    // Load state on page load
+    loadState();
+    
+    function calculateROI() {
+      trackEvent('calculate', 'DX_ROI', 'roi_calculation');
+      
+      // Get inputs
+      const pharmacistCount = parseFloat(document.getElementById('pharmacistCount').value) || 3;
+      const prescriptionCount = parseFloat(document.getElementById('prescriptionCount').value) || 150;
+      const hourlyWage = parseFloat(document.getElementById('hourlyWage').value) || 2500;
+      const routineTaskHours = parseFloat(document.getElementById('routineTaskHours').value) || 4;
+      const initialCost = parseFloat(document.getElementById('initialCost').value) || 200;
+      const monthlyCost = parseFloat(document.getElementById('monthlyCost').value) || 5;
+      
+      // Get DX selections
+      const dxEc = document.getElementById('dx-ec').checked;
+      const dxRpa = document.getElementById('dx-rpa').checked;
+      const dxAi = document.getElementById('dx-ai').checked;
+      const dxAuto = document.getElementById('dx-auto').checked;
+      const dxInventory = document.getElementById('dx-inventory').checked;
+      const dxOnline = document.getElementById('dx-online').checked;
+      
+      // Calculate efficiency gains (based on industry research)
+      let efficiencyGain = 0;
+      if (dxEc) efficiencyGain += 0.15; // 15% time reduction
+      if (dxRpa) efficiencyGain += 0.20; // 20% time reduction
+      if (dxAi) efficiencyGain += 0.25; // 25% time reduction (薬歴入力)
+      if (dxAuto) efficiencyGain += 0.10; // 10% time reduction
+      if (dxInventory) efficiencyGain += 0.08; // 8% time reduction
+      if (dxOnline) efficiencyGain += 0.05; // 5% time reduction
+      
+      // Cap at 50% max efficiency gain
+      efficiencyGain = Math.min(efficiencyGain, 0.50);
+      
+      // Calculate time savings (hours/year)
+      const dailyTaskHours = routineTaskHours * pharmacistCount;
+      const yearlyTaskHours = dailyTaskHours * 280; // 280 working days
+      const timeSavedHours = Math.round(yearlyTaskHours * efficiencyGain);
+      
+      // Calculate cost savings (万円/year)
+      const costSaved = Math.round((timeSavedHours * hourlyWage) / 10000);
+      
+      // Calculate 3-year costs and benefits
+      const year1Cost = initialCost + (monthlyCost * 12);
+      const year2Cost = monthlyCost * 12;
+      const year3Cost = monthlyCost * 12;
+      const totalCost = year1Cost + year2Cost + year3Cost;
+      
+      const totalBenefit = costSaved * 3;
+      const netBenefit = totalBenefit - totalCost;
+      
+      // Calculate ROI
+      const roi = totalCost > 0 ? Math.round((netBenefit / totalCost) * 100) : 0;
+      
+      // Calculate payback period (months)
+      const monthlySavings = costSaved / 12;
+      const paybackMonths = monthlySavings > 0 ? Math.round(year1Cost / monthlySavings) : 99;
+      
+      // Update UI
+      document.getElementById('roiValue').textContent = roi + '%';
+      document.getElementById('timeSaved').textContent = timeSavedHours.toLocaleString();
+      document.getElementById('costSaved').textContent = costSaved.toLocaleString();
+      document.getElementById('paybackPeriod').textContent = paybackMonths >= 99 ? '36ヶ月+' : paybackMonths + 'ヶ月';
+      document.getElementById('netBenefit').textContent = netBenefit.toLocaleString();
+      
+      // Generate recommendations
+      const recommendations = [];
+      
+      if (roi >= 100) {
+        recommendations.push('✅ 高い投資対効果が見込めます。早期導入を推奨します。');
+      } else if (roi >= 50) {
+        recommendations.push('👍 投資対効果は良好です。段階的な導入を検討してください。');
+      } else if (roi >= 0) {
+        recommendations.push('⚠️ 投資回収には時間がかかる見込みです。導入範囲の見直しを検討してください。');
+      } else {
+        recommendations.push('❌ 現在の条件では投資回収が困難です。コスト削減または効率化目標の見直しが必要です。');
+      }
+      
+      if (dxAi && !dxRpa) {
+        recommendations.push('💡 AI薬歴支援とRPAを組み合わせることで相乗効果が期待できます。');
+      }
+      
+      if (efficiencyGain > 0.35) {
+        recommendations.push('📊 効率化目標が高いです。現実的な数値（30%程度）で再計算することを推奨します。');
+      }
+      
+      if (paybackMonths > 24 && roi > 0) {
+        recommendations.push('⏱️ 投資回収に2年以上かかる見込みです。補助金活用を検討してください。');
+      }
+      
+      // Add DX-specific recommendations
+      if (dxEc) {
+        recommendations.push('🏥 電子カルテ連携は2026年5月末の経過措置終了後、算定に必須となる可能性が高いです。');
+      }
+      
+      if (recommendations.length === 0) {
+        recommendations.push('📝 DX施策を選択して、投資対効果を確認してください。');
+      }
+      
+      const recList = document.getElementById('recommendationList');
+      recList.innerHTML = recommendations.map(r => `<li>${r}</li>`).join('');
+      
+      // Show result section
+      document.getElementById('resultSection').classList.add('visible');
+      
+      // Save state
+      saveState();
+      
+      // Track conversion
+      trackEvent('view_result', 'DX_ROI', 'roi_' + roi);
+    }
+  </script>
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <!-- 関連ツール -->
+  <section class="related-tools" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📦 関連ツール</h3>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <li><a href="pharmacy-dx-assessment.html" style="color: #3498db; text-decoration: none;">DX自己診断</a></li>
+      <li><a href="pharmacy-automation-roi.html" style="color: #3498db; text-decoration: none;">自動化ROI診断</a></li>
+      <li><a href="pharmacy-ict-diagnosis.html" style="color: #3498db; text-decoration: none;">ICT診断</a></li>
+      <li><a href="index.html" style="color: #3498db; text-decoration: none;">🏠ツール一覧</a></li>
+    </ul>
+  </section>
+
+</body>
+</html>

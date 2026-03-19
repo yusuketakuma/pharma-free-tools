@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-03-19T03:52:00+09:00",
+  "jobId": "3e2c87ba-924b-48e6-b8bb-f4eca6605482",
+  "reportType": "homecare-30m-report-to-trainer",
+  "status": "done",
+  "quietMode": true,
+  "notificationSuppressed": true,
+  "summary": {
+    "status": "done",
+    "keyPoints": [
+      "【深夜帯・静音モード】20サイクル連続全完了・成果物26件以上（歴代最高生産性維持）",
+      "テリパラチド返品3/28期限（残9日）・経過措置抽出3/31期限（残12日）— ゆうすけ3/19アクション開始",
+      "翌朝08:00以降: HTMLパッチ適用・revenue-simulator動作確認・テリパラチド進捗フォロー"
+    ],
+    "nextActions": [
+      "静音モード継続（〜08:00）・ファイル更新のみ",
+      "翌朝08:00以降: severe-patient-ratio/joint-visit HTMLパッチ適用判断",
+      "翌朝: homecare-revenue-simulator.html 動作確認・テリパラチド進捗確認"
+    ],
+    "wantToDo": "翌朝のゆうすけ向けアクション開始サポート（テリパラチド在庫確認→電話→Faxの3日間プラン実行確認）",
+    "requiredEnvironment": {
+      "tools": "read/write権限、HTML編集権限",
+      "permissions": "homecare/outputs/ 編集権限",
+      "info": "ゆうすけMCS操作完了データ・テリパラチド在庫状況"
+    }
+  },
+  "selfImprovement": {
+    "learningPoints": [
+      {
+        "point": "20サイクル連続全完了の要因分析",
+        "detail": "テンプレート化（チェックリスト・早見表・アクションプラン）による効率化が寄与。所要時間明記・チェックボックス形式の標準化が現場再現性を向上。",
+        "nextCycleReflection": "他部門（sidebiz）へテンプレート化ノウハウを展開可能"
+      },
+      {
+        "point": "静音モード運用の確立",
+        "detail": "23:00-08:00は内部整理のみ・ユーザー通知なしの運用が定着。夜間は品質是正・翌朝準備に集中。",
+        "nextCycleReflection": "継続実施"
+      }
+    ],
+    "failures": [],
+    "blockers": [
+      {
+        "item": "テリパラチド返品手配",
+        "deadline": "2026-03-28",
+        "daysRemaining": 9,
+        "dependency": "ゆうすけ現場アクション（在庫確認→電話→Fax）",
+        "mitigation": "3日間アクションプラン完成・印刷用チェックリスト完成"
+      },
+      {
+        "item": "経過措置患者抽出",
+        "deadline": "2026-03-31",
+        "daysRemaining": 12,
+        "dependency": "ゆうすけMCS操作",
+        "mitigation": "スクリプト動作確認済・操作手順完成・推奨期間3/19-22"
+      }
+    ],
+    "qualityIssues": []
+  },
+  "improvementProposals": [
+    {
+      "proposal": "成果物インデックス自動生成",
+      "feasibility": "高",
+      "priority": "中",
+      "estimatedTime": "10分",
+      "status": "未実装",
+      "reason": "翌朝以降の実装検討"
+    },
+    {
+      "proposal": "テンプレートライブラリ化",
+      "feasibility": "高",
+      "priority": "中",
+      "estimatedTime": "30分",
+      "status": "未実装",
+      "reason": "頻出パターン（チェックリスト・早見表・アクションプラン）の再利用性向上"
+    }
+  ],
+  "crossObservation": {
+    "homecare": "20サイクル連続全完了・モデル部門継続",
+    "sidebiz": "品質問題終息（数値86統一）・Vercel 404継続（8サイクル）・GitHub Pages代替稼働中",
+    "trainer": "Brave Search API上限継続（15回連続・4月復旧見込）"
+  },
+  "alerts": [],
+  "channelNotification": "none（通知抑止中・対外報告はtrainer-2h-regular-reportに集約）"
+}

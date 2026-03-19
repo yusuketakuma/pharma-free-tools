@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬局収益改善診断 | 薬剤師無料ツール</title>
+    <meta name="description" content="薬局の収益構造を5領域20問で診断。マイナス改定対応・コスト削減・効率化の改善ポイントを特定。">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "薬局収益改善診断",
+        "description": "薬局の収益構造を5領域20問で診断。マイナス改定対応・コスト削減・効率化の改善ポイントを特定。",
+        "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-revenue-improvement.html",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "薬剤師ゆうすけ"
+        }
+    }
+    </script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+        
+        function trackToolUsage(action) {
+            gtag('event', 'tool_usage', {
+                'event_category': 'engagement',
+                'event_label': 'pharmacy-revenue-improvement-' + action
+            });
+        }
+        
+        function trackCTAClick() {
+            gtag('event', 'cta_click', {
+                'event_category': 'monetization',
+                'event_label': 'pharmacy-revenue-improvement-prompt-cta'
+            });
+        }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .intro {
+            background: #f0fdf4;
+            border-left: 4px solid #38ef7d;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        .intro h2 {
+            color: #11998e;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .intro ul {
+            margin-left: 20px;
+            color: #166534;
+        }
+        
+        .intro li {
+            margin: 5px 0;
+        }
+        
+        .progress-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #11998e, #38ef7d);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-container {
+            display: none;
+        }
+        
+        .question-container.active {
+            display: block;
+        }
+        
+        .category-label {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .option {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+        
+        .option:hover {
+            border-color: #11998e;
+            background: #f0fdf4;
+        }
+        
+        .option.selected {
+            border-color: #38ef7d;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result-container {
+            display: none;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-header h2 {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .total-score {
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .score-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .category-scores {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .category-score {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .category-score h3 {
+            font-size: 16px;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .category-bar {
+            background: #e5e7eb;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .category-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .category-fill.excellent { background: linear-gradient(90deg, #11998e, #38ef7d); }
+        .category-fill.good { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .category-fill.fair { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .category-fill.poor { background: linear-gradient(90deg, #ef4444, #f87171); }
+        
+        .category-score span {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .improvements {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .improvements h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .improvements ul {
+            margin-left: 20px;
+            color: #78350f;
+        }
+        
+        .improvements li {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .cta-section h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #764ba2;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .restart-btn {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .question {
+                font-size: 16px;
+            }
+            
+            .option {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            
+            .total-score {
+                font-size: 36px;
+            }
+        }
+    </style>
+    <!-- OGP / Twitter Card -->
+    <meta property="og:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta property="og:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="薬剤師業務効率化ツール | 無料で使える実用ツール集">
+    <meta name="twitter:description" content="薬局・薬剤師の業務効率化を支援する無料ツール。在宅医療、調剤報酬、在庫管理など現場で使える実用ツールを提供。">
+    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 薬局収益改善診断</h1>
+            <p>20問でわかる収益構造の現状と改善ポイント</p>
+        </div>
+        
+        <div class="content">
+            <div class="intro">
+                <h2>📊 この診断でわかること</h2>
+                <ul>
+                    <li>収益構造の現状スコア（5領域）</li>
+                    <li>マイナス改定への対応力</li>
+                    <li>コスト削減の機会</li>
+                    <li>収益源多角化の余地</li>
+                    <li>優先すべき改善アクション</li>
+                </ul>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="quizContainer"></div>
+            
+            <div class="result-container" id="resultContainer">
+                <div class="result-header">
+                    <h2>診断結果</h2>
+                    <div class="total-score" id="totalScore">0</div>
+                    <div class="score-label">/ 100点</div>
+                </div>
+                
+                <div class="category-scores" id="categoryScores"></div>
+                
+                <div class="improvements" id="improvements">
+                    <h3>🎯 優先改善ポイント</h3>
+                    <ul id="improvementList"></ul>
+                </div>
+                
+                <div class="cta-section">
+                    <h3>📚 収益改善を加速させるAI活用</h3>
+                    <p>薬局業務の効率化・コスト削減に役立つ<br>プロンプト集を販売中</p>
+                    <a href="ai-prompts-lp.html" class="cta-button">AIプロンプト集を見る →</a>
+                </div>
+                
+                <button class="btn btn-secondary restart-btn" onclick="restart()">もう一度診断する</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+            // 収益構造（4問）
+            {
+                category: "収益構造",
+                question: "現在の薬局の利益率（営業利益率）はどの程度ですか？",
+                options: [
+                    { text: "5%以上（黒字経営）", score: 4 },
+                    { text: "2〜5%（微益）", score: 3 },
+                    { text: "0〜2%（ぎりぎり黒字）", score: 2 },
+                    { text: "赤字または不明", score: 1 }
+                ]
+            },
+            {
+                category: "収益構造",
+                question: "調剤報酬収入の依存度はどの程度ですか？",
+                options: [
+                    { text: "80%未満（多角化進んでいる）", score: 4 },
+                    { text: "80〜90%（一部多角化）", score: 3 },
+                    { text: "90〜95%（調剤中心）", score: 2 },
+                    { text: "95%以上（調剤のみ）", score: 1 }
+                ]
+            },
+            {
+                category: "収益構造",
+                question: "在庫回転率の状況はどうですか？",
+                options: [
+                    { text: "年12回以上（約1ヶ月以内）", score: 4 },
+                    { text: "年8〜12回（1〜1.5ヶ月）", score: 3 },
+                    { text: "年6〜8回（1.5〜2ヶ月）", score: 2 },
+                    { text: "年6回未満または不明", score: 1 }
+                ]
+            },
+            {
+                category: "収益構造",
+                question: "ジェネリックシェア（後発品置換率）は？",
+                options: [
+                    { text: "85%以上", score: 4 },
+                    { text: "75〜85%", score: 3 },
+                    { text: "65〜75%", score: 2 },
+                    { text: "65%未満", score: 1 }
+                ]
+            },
+            
+            // コスト管理（4問）
+            {
+                category: "コスト管理",
+                question: "人件費比率（売上対比）はどの程度ですか？",
+                options: [
+                    { text: "25%以下（効率的）", score: 4 },
+                    { text: "25〜30%（標準的）", score: 3 },
+                    { text: "30〜35%（やや高い）", score: 2 },
+                    { text: "35%超または不明", score: 1 }
+                ]
+            },
+            {
+                category: "コスト管理",
+                question: "仕入値引・リベートの交渉状況は？",
+                options: [
+                    { text: "定期的に交渉・成果あり", score: 4 },
+                    { text: "年1回程度は交渉", score: 3 },
+                    { text: "たまに交渉する程度", score: 2 },
+                    { text: "交渉していない", score: 1 }
+                ]
+            },
+            {
+                category: "コスト管理",
+                question: "運営費（家賃・光熱費等）の見直し頻度は？",
+                options: [
+                    { text: "四半期ごとに見直し", score: 4 },
+                    { text: "半年〜1年ごと", score: 3 },
+                    { text: "1年以上ごと", score: 2 },
+                    { text: "見直ししていない", score: 1 }
+                ]
+            },
+            {
+                category: "コスト管理",
+                question: "廃棄ロス（期限切れ医薬品等）の状況は？",
+                options: [
+                    { text: "売上の0.5%未満", score: 4 },
+                    { text: "0.5〜1%", score: 3 },
+                    { text: "1〜2%", score: 2 },
+                    { text: "2%超または不明", score: 1 }
+                ]
+            },
+            
+            // 効率化（4問）
+            {
+                category: "効率化",
+                question: "調剤業務の自動化（一包化・ピッキング等）導入状況は？",
+                options: [
+                    { text: "複数の自動化導入済み", score: 4 },
+                    { text: "一部自動化導入", score: 3 },
+                    { text: "検討中", score: 2 },
+                    { text: "導入予定なし", score: 1 }
+                ]
+            },
+            {
+                category: "効率化",
+                question: "電子薬歴・クラウドシステムの活用状況は？",
+                options: [
+                    { text: "フル活用・分析も実施", score: 4 },
+                    { text: "基本的な機能は活用", score: 3 },
+                    { text: "導入済みだが活用不足", score: 2 },
+                    { text: "未導入または紙中心", score: 1 }
+                ]
+            },
+            {
+                category: "効率化",
+                question: "スタッフの業務効率化研修の実施頻度は？",
+                options: [
+                    { text: "定期的（四半期以上）", score: 4 },
+                    { text: "年1〜2回", score: 3 },
+                    { text: "不定期", score: 2 },
+                    { text: "実施していない", score: 1 }
+                ]
+            },
+            {
+                category: "効率化",
+                question: "アウトソーシング（事務・配送等）の活用状況は？",
+                options: [
+                    { text: "積極的に活用・効果あり", score: 4 },
+                    { text: "一部活用", score: 3 },
+                    { text: "検討中", score: 2 },
+                    { text: "活用していない", score: 1 }
+                ]
+            },
+            
+            // 収益源多角化（4問）
+            {
+                category: "収益源多角化",
+                question: "在宅医療の取り組み状況は？",
+                options: [
+                    { text: "積極的に実施・収益貢献", score: 4 },
+                    { text: "一部実施", score: 3 },
+                    { text: "検討段階", score: 2 },
+                    { text: "取り組んでいない", score: 1 }
+                ]
+            },
+            {
+                category: "収益源多角化",
+                question: "地域連携（病院・クリニック・介護事業所等）の状況は？",
+                options: [
+                    { text: "複数機関と連携・成果あり", score: 4 },
+                    { text: "一部連携あり", score: 3 },
+                    { text: "連携検討中", score: 2 },
+                    { text: "連携していない", score: 1 }
+                ]
+            },
+            {
+                category: "収益源多角化",
+                question: "OTC・健康商品の販売状況は？",
+                options: [
+                    { text: "積極的に販売・利益貢献", score: 4 },
+                    { text: "一部販売", score: 3 },
+                    { text: "検討中", score: 2 },
+                    { text: "販売していない", score: 1 }
+                ]
+            },
+            {
+                category: "収益源多角化",
+                question: "コンサル・研修等の提供可能性は？",
+                options: [
+                    { text: "既に提供・実績あり", score: 4 },
+                    { text: "一部提供", score: 3 },
+                    { text: "将来的に検討", score: 2 },
+                    { text: "予定なし", score: 1 }
+                ]
+            },
+            
+            // 改善実行（4問）
+            {
+                category: "改善実行",
+                question: "経営KPIの設定・測定状況は？",
+                options: [
+                    { text: "複数KPIを定期測定・分析", score: 4 },
+                    { text: "一部KPIを測定", score: 3 },
+                    { text: "KPIあるが測定不十分", score: 2 },
+                    { text: "KPI未設定", score: 1 }
+                ]
+            },
+            {
+                category: "改善実行",
+                question: "PDCAサイクルの回し方は？",
+                options: [
+                    { text: "月次で回している", score: 4 },
+                    { text: "四半期で回している", score: 3 },
+                    { text: "不定期", score: 2 },
+                    { text: "回していない", score: 1 }
+                ]
+            },
+            {
+                category: "改善実行",
+                question: "スタッフの経営参画（数値共有・改善提案等）は？",
+                options: [
+                    { text: "全員参加・活発", score: 4 },
+                    { text: "管理職中心", score: 3 },
+                    { text: "経営者のみ", score: 2 },
+                    { text: "参画なし", score: 1 }
+                ]
+            },
+            {
+                category: "改善実行",
+                question: "2026年度改定への準備状況は？",
+                options: [
+                    { text: "影響分析済み・対策実行中", score: 4 },
+                    { text: "分析済み・対策検討中", score: 3 },
+                    { text: "情報収集中", score: 2 },
+                    { text: "未着手", score: 1 }
+                ]
+            }
+        ];
+        
+        const improvements = {
+            "収益構造": [
+                "収益源の多角化を検討（在宅医療・地域連携・OTC販売）",
+                "在庫回転率の向上（発注ロット見直し・滞留在庫削減）",
+                "ジェネリックシェア向上の施策強化"
+            ],
+            "コスト管理": [
+                "人件費最適化（シフト見直し・業務効率化）",
+                "仕入交渉の強化（複数卸比較・リベート交渉）",
+                "運営費の定期見直し（家賃交渉・光熱費削減）"
+            ],
+            "効率化": [
+                "調剤自動化の導入検討（ROI試算）",
+                "電子薬歴の高度活用（データ分析・業務改善）",
+                "アウトソーシングの活用拡大"
+            ],
+            "収益源多角化": [
+                "在宅医療の積極的展開（訪問薬剤管理指導）",
+                "地域連携の強化（病院・クリニック・介護事業所）",
+                "新規収益源の検討（コンサル・研修・健康商品）"
+            ],
+            "改善実行": [
+                "経営KPIの設定と定期測定",
+                "PDCAサイクルの定着（月次振り返り）",
+                "スタッフの経営参画促進（数値共有・改善提案制度）"
+            ]
+        };
+        
+        let currentQuestion = 0;
+        let answers = [];
+        let categoryScores = {
+            "収益構造": 0,
+            "コスト管理": 0,
+            "効率化": 0,
+            "収益源多角化": 0,
+            "改善実行": 0
+        };
+        
+        function init() {
+            renderQuestion();
+        }
+        
+        function renderQuestion() {
+            const container = document.getElementById('quizContainer');
+            const q = questions[currentQuestion];
+            const progress = ((currentQuestion) / questions.length) * 100;
+            
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            
+            let html = `
+                <div class="question-container active">
+                    <div class="category-label">${q.category}</div>
+                    <div class="question">${currentQuestion + 1}. ${q.question}</div>
+                    <div class="options">
+            `;
+            
+            q.options.forEach((opt, idx) => {
+                const selected = answers[currentQuestion] === idx ? 'selected' : '';
+                html += `
+                    <div class="option ${selected}" onclick="selectOption(${idx})">
+                        ${opt.text}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>
+                            ← 前へ
+                        </button>
+                        <button class="btn btn-primary" onclick="nextQuestion()" ${answers[currentQuestion] === undefined ? 'disabled' : ''}>
+                            ${currentQuestion === questions.length - 1 ? '結果を見る' : '次へ →'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function selectOption(idx) {
+            answers[currentQuestion] = idx;
+            renderQuestion();
+        }
+        
+        function nextQuestion() {
+            if (answers[currentQuestion] === undefined) return;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+        
+        function showResult() {
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
+            
+            // Calculate scores
+            categoryScores = {
+                "収益構造": 0,
+                "コスト管理": 0,
+                "効率化": 0,
+                "収益源多角化": 0,
+                "改善実行": 0
+            };
+            
+            let counts = {
+                "収益構造": 0,
+                "コスト管理": 0,
+                "効率化": 0,
+                "収益源多角化": 0,
+                "改善実行": 0
+            };
+            
+            questions.forEach((q, idx) => {
+                const score = q.options[answers[idx]].score;
+                categoryScores[q.category] += score;
+                counts[q.category]++;
+            });
+            
+            // Convert to percentage
+            Object.keys(categoryScores).forEach(cat => {
+                categoryScores[cat] = Math.round((categoryScores[cat] / (counts[cat] * 4)) * 100);
+            });
+            
+            const totalScore = Math.round(
+                Object.values(categoryScores).reduce((a, b) => a + b, 0) / 5
+            );
+            
+            // Animate total score
+            let current = 0;
+            const interval = setInterval(() => {
+                current += 2;
+                if (current >= totalScore) {
+                    current = totalScore;
+                    clearInterval(interval);
+                }
+                document.getElementById('totalScore').textContent = current;
+            }, 30);
+            
+            // Render category scores
+            const categoryContainer = document.getElementById('categoryScores');
+            categoryContainer.innerHTML = '';
+            
+            const categories = Object.keys(categoryScores);
+            categories.forEach(cat => {
+                const score = categoryScores[cat];
+                const fillClass = score >= 80 ? 'excellent' : score >= 60 ? 'good' : score >= 40 ? 'fair' : 'poor';
+                
+                categoryContainer.innerHTML += `
+                    <div class="category-score">
+                        <h3>${cat}</h3>
+                        <div class="category-bar">
+                            <div class="category-fill ${fillClass}" style="width: ${score}%"></div>
+                        </div>
+                        <span>${score}点</span>
+                    </div>
+                `;
+            });
+            
+            // Find lowest categories and show improvements
+            const sortedCats = categories.sort((a, b) => categoryScores[a] - categoryScores[b]);
+            const lowestCats = sortedCats.slice(0, 2);
+            
+            const improvementList = document.getElementById('improvementList');
+            improvementList.innerHTML = '';
+            
+            lowestCats.forEach(cat => {
+                improvements[cat].forEach(imp => {
+                    improvementList.innerHTML += `<li><strong>${cat}:</strong> ${imp}</li>`;
+                });
+            });
+        }
+        
+        function restart() {
+            currentQuestion = 0;
+            answers = [];
+            categoryScores = {
+                "収益構造": 0,
+                "コスト管理": 0,
+                "効率化": 0,
+                "収益源多角化": 0,
+                "改善実行": 0
+            };
+            
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+            renderQuestion();
+        }
+        
+        init();
+    </script>
+    
+    <div style="margin-top: 30px; padding: 20px; background: #f0fdf4; border-radius: 12px; margin: 30px auto; max-width: 860px;">
+      <h3 style="color: #166534; margin-bottom: 12px; font-size: 16px;">📦 関連ツール</h3>
+      <ul style="list-style: none; display: grid; gap: 8px;">
+        <li><a href="pharmacy-cashflow-diagnosis.html" style="color: #059669; text-decoration: none;">→ 薬局キャッシュフロー診断</a></li>
+        <li><a href="pharmacy-bottleneck-diagnosis.html" style="color: #059669; text-decoration: none;">→ 薬局ボトルネック診断</a></li>
+        <li><a href="index.html" style="color: #059669; text-decoration: none;">→ 全ツール一覧（86選）</a></li>
+      </ul>
+    </div>
+</body>
+</html>

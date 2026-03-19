@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>類似薬名チェックツール - 薬剤師向け無料ツール</title>
+  <meta name="description" content="処方箋の類似薬名（LASA）をチェックする無料ツール。紛らわしい薬品名の取り違えを防止し、調剤ミスを防ぎます。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "類似薬名チェックツール",
+    "description": "処方箋の類似薬名（LASA）をチェックする無料ツール。紛らわしい薬品名の取り違えを防止し、調剤ミスを防ぎます。",
+    "url": "https://yusuketakuma.github.io/pharma-similar-drug-check/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  <meta property="og:title" content="類似薬名チェックツール">
+  <meta property="og:description" content="処方箋の類似薬名（LASA）をチェック。紛らわしい薬品名の取り違えを防止します。">
+  <meta property="og:type" content="website">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --primary: #2563eb;
+      --primary-deep: #1d4ed8;
+      --success: #059669;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: #1e293b;
+      line-height: 1.6;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+    header { text-align: center; margin-bottom: 32px; }
+    h1 { font-size: 1.75rem; color: var(--primary-deep); margin-bottom: 8px; }
+    .subtitle { color: var(--muted); font-size: 0.9rem; }
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    h2 { font-size: 1.1rem; margin-bottom: 16px; color: var(--primary-deep); }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-group { margin-bottom: 16px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--primary-deep); }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--muted);
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
+    .result-box {
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+    .result-danger {
+      background: #fef2f2;
+      border: 2px solid #fecaca;
+    }
+    .result-warning {
+      background: #fffbeb;
+      border: 2px solid #fde68a;
+    }
+    .result-success {
+      background: #ecfdf5;
+      border: 2px solid #a7f3d0;
+    }
+    .result-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .result-danger .result-title { color: var(--danger); }
+    .result-warning .result-title { color: var(--warning); }
+    .result-success .result-title { color: var(--success); }
+    .similar-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .similar-names { font-weight: 600; }
+    .similar-type {
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: #f1f5f9;
+    }
+    .similar-reason { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    .check-list {
+      list-style: none;
+      padding: 0;
+    }
+    .check-list li {
+      padding: 10px 12px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .check-list li::before {
+      content: "□";
+      color: var(--primary);
+      font-weight: bold;
+    }
+    .copy-btn {
+      padding: 8px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+    .copy-btn:hover { background: var(--primary-deep); }
+    footer {
+      margin-top: 32px;
+      padding: 20px;
+      background: #f1f5f9;
+      border-radius: var(--radius);
+    }
+    footer h3 {
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      color: var(--muted);
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    .tools-grid a {
+      display: block;
+      padding: 10px 12px;
+      background: white;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 0.85rem;
+    }
+    .tools-grid a:hover { background: #e2e8f0; }
+    @media (max-width: 480px) {
+      h1 { font-size: 1.4rem; }
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+  <!-- Google tag (gtag.js) - 測定IDを差し替えてください -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'ai_prompts',
+        'product_name': 'AIプロンプト集',
+        'price': 300
+      });
+    }
+
+    function trackNotionCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'notion_template',
+        'product_name': 'Notionテンプレート',
+        'price': 500
+      });
+    }
+
+    function trackToolUsage(actionType) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': '類似薬名チェック',
+        'action_type': actionType
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'similar_drug_result'
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔤 類似薬名チェックツール</h1>
+      <p class="subtitle">処方箋の類似薬名（LASA）をチェックして取り違えを防止</p>
+    </header>
+
+    <div class="card">
+      <h2>📝 薬品名入力</h2>
+      <div class="input-group">
+        <label for="drugInput">処方された薬品名を入力</label>
+        <input type="text" id="drugInput" placeholder="例: アマリール、メバリッチ...">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="checkSimilar()">🔍 類似薬名をチェック</button>
+        <button class="btn btn-secondary" onclick="clearInput()">クリア</button>
+      </div>
+    </div>
+
+    <div id="result" class="card" style="display: none;">
+      <h2>📋 チェック結果</h2>
+      <div id="resultContent"></div>
+    </div>
+
+    <div id="checklist" class="card" style="display: none;">
+      <h2>✅ 確認チェックリスト</h2>
+      <ul id="checklistContent" class="check-list"></ul>
+      <button class="copy-btn" onclick="copyChecklist()">📋 チェックリストをコピー</button>
+    </div>
+
+    <footer>
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; margin-bottom: 16px; padding: 8px 16px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">🏠 全ツール一覧（ポータル）</a><br><br>
+      <h3>🔧 その他の無料ツール</h3>
+      <div class="tools-grid">
+        <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">💊 薬価シミュレーター</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">📝 薬歴テンプレート</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/">🗣️ 服薬指導チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">🫘 腎機能別用量</a>
+        <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">📊 業務効率化診断</a>
+        <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">✅ 処方チェックリスト</a>
+        <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">📧 疑義照会メール</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-summary/">📋 薬歴サマリー</a>
+        <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">⚠️ 副作用リスク評価</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">🗓️ 服薬カレンダー</a>
+        <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">🔍 処方鑑別チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-di-query/">📞 DI照会生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" style="display: block; padding: 10px 12px; background: white; border-radius: 8px; text-decoration: none; color: #1f2937; font-size: 0.85rem;">🔔 服薬リマインダー生成</a>
+        <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">💊 持参薬チェック</a>
+        <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">📦 在庫アラート通知</a>
+        <a href="https://yusuketakuma.github.io/pharma-adherence-check/">💊 服薬アドヒアランス評価</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // 類似薬名データベース（LASA: Look-Alike Sound-Alike）
+    const similarDrugs = [
+      // 音が似ている（Sound-Alike）
+      { name: "アマリール", similar: "アマリン", type: "音が似ている", reason: "ともに糖尿病薬。アマリールはグリメピリド、アマリンはナテグリニド" },
+      { name: "メバリッチ", similar: "メバロティン", type: "音が似ている", reason: "ともに脂質異常症薬。メバリッチはロスバスタチン、メバロティンはプラバスタチン" },
+      { name: "タケプロン", similar: "タケキャブ", type: "音が似ている", reason: "ともに胃酸関連薬。タケプロンはPPI、タケキャブはカリウム競合型阻害薬" },
+      { name: "リピトール", similar: "リスペリドン", type: "音が似ている", reason: "リピトールは脂質異常症薬、リスペリドンは抗精神病薬" },
+      { name: "ゾロフト", similar: "ゾルピデム", type: "音が似ている", reason: "ゾロフトは抗うつ薬、ゾルピデムは睡眠導入剤" },
+      { name: "セレネース", similar: "セレキノン", type: "音が似ている", reason: "セレネースは抗精神病薬、セレキノンは抗コリン剤" },
+      { name: "パキシル", similar: "バクタ", type: "音が似ている", reason: "パキシルは抗うつ薬、バクタは抗菌剤" },
+      { name: "ランサップ", similar: "リサパック", type: "音が似ている", reason: "ランサップはPPI+抗菌剤セット、リサパックは抗精神病薬" },
+      { name: "バイアスピリン", similar: "バイアグラ", type: "音が似ている", reason: "バイアスピリンは抗血栓薬、バイアグラはED治療薬" },
+      { name: "プレドニン", similar: "プレドニゾロン", type: "音が似ている", reason: "同一成分の先発/後発で呼称が異なる場合あり" },
+      { name: "デパケン", similar: "デパス", type: "音が似ている", reason: "デパケンは抗てんかん薬、デパスは抗不安薬" },
+      { name: "セレニック", similar: "セレネース", type: "音が似ている", reason: "セレニックは抗不安薬、セレネースは抗精神病薬" },
+      { name: "レキサプロ", similar: "レクサ", type: "音が似ている", reason: "レキサプロは抗うつ薬、レクサは貧血治療薬" },
+      { name: "コバシオン", similar: "コバール", type: "音が似ている", reason: "コバシオンは鼻炎用薬、コバールは消炎鎮痛剤" },
+      
+      // 見た目が似ている（Look-Alike）
+      { name: "アダラート", similar: "アダラートCR", type: "見た目が似ている", reason: "即放錠と徐放錠の取り違えに注意" },
+      { name: "テオドール", similar: "テオロング", type: "見た目が似ている", reason: "配合剤と単剤の取り違えに注意" },
+      { name: "メプチン", similar: "メプチンエアー", type: "見た目が似ている", reason: "吸入液と吸入剤の取り違えに注意" },
+      { name: "オルメテック", similar: "オルメサルタン", type: "見た目が似ている", reason: "先発品名と一般名の混同に注意" },
+      { name: "ディオバン", similar: "ディオバン配合", type: "見た目が似ている", reason: "単剤と配合剤の取り違えに注意" },
+      { name: "コディオ", similar: "ミコンビ", type: "見た目が似ている", reason: "ともにARB+利尿剤配合" },
+      
+      // 効能・用法が似ている
+      { name: "ランソプラゾール", similar: "オメプラゾール", type: "効能が似ている", reason: "ともにPPI。用量・相互作用が異なる" },
+      { name: "アムロジピン", similar: "アゼルニジピン", type: "効能が似ている", reason: "ともにカルシウム拮抗薬。作用時間が異なる" },
+      { name: "ロサルタン", similar: "バルサルタン", type: "効能が似ている", reason: "ともにARB。用量が異なる" },
+      { name: "メトホルミン", similar: "ミチゴール", type: "効能が似ている", reason: "メトホルミンは糖尿病薬、ミチゴールは脂質異常症薬" },
+      { name: "レボチロキシン", similar: "リオチロニン", type: "効能が似ている", reason: "ともに甲状腺ホルモン。T4とT3で作用が異なる" },
+      
+      // 高リスクペア（特に注意が必要）
+      { name: "ワルファリン", similar: "ワルファリンカリウム", type: "高リスク", reason: "同一成分だが製剤により力価が異なる場合あり" },
+      { name: "ジゴキシン", similar: "ジギトキシン", type: "高リスク", reason: "ともに強心配糖体だが半減期が大きく異なる" },
+      { name: "フェニトイン", similar: "フェノバルビタール", type: "高リスク", reason: "ともに抗てんかん薬だつ作用機序が異なる" },
+      { name: "インスリン", similar: "インスリンアナログ", type: "高リスク", reason: "作用発現時間・持続時間が異なる" },
+      { name: "モルヒネ", similar: "オキシコドン", type: "高リスク", reason: "ともにオピオイドだつ鎮痛効果・副作用が異なる" }
+    ];
+
+    let checklistText = "";
+
+    function checkSimilar() {
+      const input = document.getElementById("drugInput").value.trim();
+      if (!input) {
+        alert("薬品名を入力してください");
+        return;
+      }
+
+      const matches = [];
+      const inputLower = input.toLowerCase();
+
+      similarDrugs.forEach(drug => {
+        const nameLower = drug.name.toLowerCase();
+        const similarLower = drug.similar.toLowerCase();
+        
+        if (nameLower.includes(inputLower) || inputLower.includes(nameLower) ||
+            similarLower.includes(inputLower) || inputLower.includes(similarLower)) {
+          matches.push(drug);
+        }
+      });
+
+      displayResult(input, matches);
+    }
+
+    function displayResult(input, matches) {
+      const resultDiv = document.getElementById("result");
+      const resultContent = document.getElementById("resultContent");
+      const checklistDiv = document.getElementById("checklist");
+      const checklistContent = document.getElementById("checklistContent");
+
+      resultDiv.style.display = "block";
+      checklistDiv.style.display = "block";
+
+      if (matches.length === 0) {
+        resultContent.innerHTML = `
+          <div class="result-box result-success">
+            <div class="result-title">✅ 類似薬名の該当なし</div>
+            <p>「${input}」と紛らわしい薬品名はデータベースに登録されていません。</p>
+            <p style="margin-top: 8px; font-size: 0.85rem; color: var(--muted);">※全ての類似薬名が網羅されているわけではありません。必ず実際の処方内容と照合してください。</p>
+          </div>
+        `;
+        checklistContent.innerHTML = `
+          <li>処方医の意図を確認</li>
+          <li>患者の既往歴・併用薬と照合</li>
+          <li>薬品名・規格・用量を正確に確認</li>
+        `;
+      } else {
+        const highRisk = matches.filter(m => m.type === "高リスク");
+        const soundAlike = matches.filter(m => m.type === "音が似ている");
+        const lookAlike = matches.filter(m => m.type === "見た目が似ている");
+        const similarEfficacy = matches.filter(m => m.type === "効能が似ている");
+
+        let html = "";
+        
+        if (highRisk.length > 0) {
+          html += `<div class="result-box result-danger">
+            <div class="result-title">⚠️ 高リスク - 特に注意が必要</div>`;
+          highRisk.forEach(m => {
+            html += `<div class="similar-item">
+              <div>
+                <div class="similar-names">${m.name} ⇔ ${m.similar}</div>
+                <div class="similar-reason">${m.reason}</div>
+              </div>
+              <span class="similar-type">${m.type}</span>
+            </div>`;
+          });
+          html += `</div>`;
+        }
+
+        if (soundAlike.length > 0 || lookAlike.length > 0 || similarEfficacy.length > 0) {
+          html += `<div class="result-box result-warning">
+            <div class="result-title">⚡ 類似薬名が見つかりました</div>`;
+          
+          [...soundAlike, ...lookAlike, ...similarEfficacy].forEach(m => {
+            html += `<div class="similar-item">
+              <div>
+                <div class="similar-names">${m.name} ⇔ ${m.similar}</div>
+                <div class="similar-reason">${m.reason}</div>
+              </div>
+              <span class="similar-type">${m.type}</span>
+            </div>`;
+          });
+          html += `</div>`;
+        }
+
+        resultContent.innerHTML = html;
+
+        // チェックリスト生成
+        let checklist = [
+          `「${input}」の正確な薬品名・規格・用量を確認`,
+          "処方医の意図を確認（疑義照会の検討）",
+          "患者の既往歴・併用薬と照合"
+        ];
+
+        matches.forEach(m => {
+          checklist.push(`${m.name}と${m.similar}の取り違えに注意`);
+        });
+
+        checklist.push("在庫の確認（誤って類似薬をピッキングしていないか）");
+        checklist.push("調剤後のダブルチェック実施");
+
+        checklistContent.innerHTML = checklist.map(item => `<li>${item}</li>`).join("");
+        checklistText = `【類似薬名チェックリスト】\n\n対象薬品: ${input}\n\n確認事項:\n${checklist.map((item, i) => `${i + 1}. ${item}`).join("\n")}\n\n※チェック日時: ${new Date().toLocaleString("ja-JP")}`;
+      }
+    }
+
+    function clearInput() {
+      document.getElementById("drugInput").value = "";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("checklist").style.display = "none";
+    }
+
+    function copyChecklist() {
+      if (!checklistText) {
+        alert("先にチェックを実行してください");
+        return;
+      }
+      navigator.clipboard.writeText(checklistText).then(() => {
+        alert("チェックリストをコピーしました");
+      }).catch(() => {
+        alert("コピーに失敗しました");
+      });
+    }
+
+    // Enterキーでチェック実行
+    document.getElementById("drugInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        checkSimilar();
+      }
+    });
+  </script>
+  <!-- 収益化CTA -->
+  <section style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af;">🎁 さらに業務を効率化しませんか？</h3>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📖 薬剤師向けAIプロンプト集</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">ChatGPT/Claudeで時短する100+のプロンプトテンプレート</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥300</p>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📋 薬局業務Notionテンプレート</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">訪問記録・在庫管理・患者管理を一元化</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥500</p>
+    </div>
+    <p style="font-size: 0.8rem; color: #666;">※ 準備中（近日公開）</p>
+  </section>
+
+  <div class="section">
+    <div class="section-title">🔗 他の無料ツール</div>
+    <div class="links">
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">腎機能別用量</a>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会メール</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+      <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+      <a href="https://yusuketakuma.github.io/pharma-di-query/">DI照会生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+      <a href="https://yusuketakuma.github.io/pharma-adherence-check/">アドヒアランス</a>
+      <a href="https://yusuketakuma.github.io/pharma-similar-drug-check/">類似薬名</a>
+      <a href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/">服薬指導シナリオ</a>
+      <a href="https://yusuketakuma.github.io/pharma-fee-calculator/">調剤報酬計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-homecare-report/">在宅医療報告書</a>
+    </div>
+  </div>
+</body>
+</html>

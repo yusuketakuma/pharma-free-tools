@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>薬剤師業務効率化診断 v2 | 無料ツール</title>
+  <meta name="description" content="薬剤師の業務効率化レベルを診断。薬歴入力・疑義照会・在庫管理・服薬指導の4領域をスコア化し、具体的改善策を提案します。">
+  
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "薬剤師業務効率化診断 v2",
+    "description": "薬剤師の業務効率化レベルを診断し、具体的改善策を提案する無料ツール",
+    "url": "https://yusuketakuma.github.io/free-tool-pharmacist-efficiency-diagnosis-v2/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "薬剤師"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      color: #1e293b;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      color: #0c4a6e;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+    
+    .section {
+      margin-bottom: 32px;
+      padding: 24px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0369a1;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .section-title span {
+      font-size: 1.5rem;
+    }
+    
+    .question {
+      margin-bottom: 16px;
+    }
+    
+    .question-label {
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .option:hover {
+      border-color: #0ea5e9;
+      background: #f0f9ff;
+    }
+    
+    .option.selected {
+      border-color: #0284c7;
+      background: #e0f2fe;
+    }
+    
+    .option input {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+    }
+    
+    .option-text {
+      flex: 1;
+    }
+    
+    .option-score {
+      font-weight: 700;
+      color: #0284c7;
+      font-size: 0.9rem;
+    }
+    
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    #result {
+      display: none;
+      margin-top: 32px;
+    }
+    
+    .result-card {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      padding: 24px;
+      border-radius: 16px;
+      border: 2px solid #f59e0b;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    
+    .total-score {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    
+    .score-label {
+      font-size: 1.2rem;
+      color: #78350f;
+      margin-bottom: 16px;
+    }
+    
+    .score-breakdown {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .score-item {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .score-item-title {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+    
+    .score-item-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0369a1;
+    }
+    
+    .improvements {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .improvements-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0369a1;
+      margin-bottom: 12px;
+    }
+    
+    .improvement-list {
+      list-style: none;
+    }
+    
+    .improvement-list li {
+      padding: 12px;
+      margin-bottom: 8px;
+      background: white;
+      border-radius: 8px;
+      border-left: 4px solid #0ea5e9;
+    }
+    
+    .cta-section {
+      margin-top: 32px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 16px;
+      border: 1px solid #bfdbfe;
+    }
+    
+    .cta-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1e40af;
+    }
+    
+    .cta-description {
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 16px;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .cta-button {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px 24px;
+      background: #2563eb;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    
+    .cta-button:hover {
+      background: #1d4ed8;
+    }
+    
+    .cta-button.secondary {
+      background: #7c3aed;
+    }
+    
+    .cta-button.secondary:hover {
+      background: #6d28d9;
+    }
+    
+    .footer-links {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+    
+    .footer-links-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+    
+    .footer-links-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+      list-style: none;
+    }
+    
+    .footer-links-list a {
+      color: #0369a1;
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 4px 0;
+      display: block;
+    }
+    
+    .footer-links-list a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .score-breakdown {
+        grid-template-columns: 1fr;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>薬剤師業務効率化診断 v2</h1>
+    <p class="subtitle">4領域の効率化レベルを診断し、具体的改善策を提案します</p>
+    
+    <form id="diagnosis-form">
+      <!-- セクション1: 薬歴入力 -->
+      <div class="section">
+        <h2 class="section-title"><span>📝</span> 薬歴入力の効率化</h2>
+        
+        <div class="question">
+          <label class="question-label">Q1. 薬歴入力に平均どのくらい時間をかけていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q1" value="10">
+              <span class="option-text">5分以内（テンプレート・AI活用）</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q1" value="7">
+              <span class="option-text">5-10分（定型文活用）</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q1" value="4">
+              <span class="option-text">10-15分（手入力中心）</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q1" value="1">
+              <span class="option-text">15分以上（毎回ゼロから）</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">Q2. 薬歴の品質管理（修正・振り返り）を行っていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q2" value="10">
+              <span class="option-text">定期的に見直し・改善している</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q2" value="7">
+              <span class="option-text">必要時に見直す</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q2" value="4">
+              <span class="option-text">ほとんど見直さない</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q2" value="1">
+              <span class="option-text">見直す時間がない</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション2: 疑義照会 -->
+      <div class="section">
+        <h2 class="section-title"><span>📞</span> 疑義照会の効率化</h2>
+        
+        <div class="question">
+          <label class="question-label">Q3. 疑義照会の問い合わせ文面作成にどのくらい時間をかけていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q3" value="10">
+              <span class="option-text">即座（テンプレート・AI活用）</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q3" value="7">
+              <span class="option-text">2-3分（定型文あり）</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q3" value="4">
+              <span class="option-text">5-10分（毎回作成）</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q3" value="1">
+              <span class="option-text">10分以上（悩みながら作成）</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">Q4. 疑義照会の記録・共有はどうしていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q4" value="10">
+              <span class="option-text">システム化・テンプレートで共有</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q4" value="7">
+              <span class="option-text">口頭・メモで共有</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q4" value="4">
+              <span class="option-text">個人記録のみ</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q4" value="1">
+              <span class="option-text">記録していない</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション3: 在庫管理 -->
+      <div class="section">
+        <h2 class="section-title"><span>📦</span> 在庫管理の効率化</h2>
+        
+        <div class="question">
+          <label class="question-label">Q5. 在庫発注の判断にどのくらい時間をかけていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q5" value="10">
+              <span class="option-text">自動発注・アラート活用</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q5" value="7">
+              <span class="option-text">在庫表確認で迅速判断</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q5" value="4">
+              <span class="option-text">その都度棚を見て判断</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q5" value="1">
+              <span class="option-text">欠品してから気づく</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">Q6. 期限管理・返品対応はどうしていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q6" value="10">
+              <span class="option-text">システムで自動管理</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q6" value="7">
+              <span class="option-text">定期チェックリスト活用</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q6" value="4">
+              <span class="option-text">不定期にチェック</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q6" value="1">
+              <span class="option-text">期限切れをよく発見する</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション4: 服薬指導 -->
+      <div class="section">
+        <h2 class="section-title"><span>💊</span> 服薬指導の効率化</h2>
+        
+        <div class="question">
+          <label class="question-label">Q7. 服薬指導の準備にどのくらい時間をかけていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q7" value="10">
+              <span class="option-text">AI・テンプレートで即座</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q7" value="7">
+              <span class="option-text">2-3分（過去薬歴確認）</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q7" value="4">
+              <span class="option-text">5-10分（情報収集必要）</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q7" value="1">
+              <span class="option-text">準備時間が取れない</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">Q8. 患者説明文・資材作成はどうしていますか？</label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q8" value="10">
+              <span class="option-text">AI活用で即座に作成</span>
+              <span class="option-score">10点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q8" value="7">
+              <span class="option-text">テンプレートをカスタマイズ</span>
+              <span class="option-score">7点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q8" value="4">
+              <span class="option-text">必要時に一から作成</span>
+              <span class="option-score">4点</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q8" value="1">
+              <span class="option-text">作成する余裕がない</span>
+              <span class="option-score">1点</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit">診断結果を見る</button>
+    </form>
+    
+    <div id="result">
+      <div class="result-card">
+        <div class="total-score" id="total-score">0</div>
+        <div class="score-label">/ 80点</div>
+      </div>
+      
+      <div class="score-breakdown">
+        <div class="score-item">
+          <div class="score-item-title">薬歴入力</div>
+          <div class="score-item-value" id="score-history">0/20</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-title">疑義照会</div>
+          <div class="score-item-value" id="score-inquiry">0/20</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-title">在庫管理</div>
+          <div class="score-item-value" id="score-inventory">0/20</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-title">服薬指導</div>
+          <div class="score-item-value" id="score-guidance">0/20</div>
+        </div>
+      </div>
+      
+      <div class="improvements">
+        <h3 class="improvements-title">🎯 優先改善アクション</h3>
+        <ul class="improvement-list" id="improvement-list">
+        </ul>
+      </div>
+      
+      <!-- 収益化CTA -->
+      <div class="cta-section">
+        <h3 class="cta-title">🎁 さらに業務を効率化しませんか？</h3>
+        <p class="cta-description">
+          薬剤師向けChatGPT/Claudeプロンプト集47種類<br>
+          薬歴入力・疑義照会・服薬指導を爆速化
+        </p>
+        <div class="cta-buttons">
+          <a href="[URL]" class="cta-button" onclick="trackPromptCTA()">プロンプト集を見る（¥300）</a>
+          <a href="[NOTION_URL]" class="cta-button secondary" onclick="trackNotionCTA()">Notionテンプレート（¥500〜）</a>
+        </div>
+      </div>
+    </div>
+    
+                <!-- ポータルサイト -->
+            <div style="text-align: center; margin: 24px 0;">
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">🏠 全ツール一覧（ポータルサイト）</a>
+            </div>
+
+<!-- 他の無料ツールへのリンク -->
+    <div class="footer-links">
+      <h3 class="footer-links-title">📚 他の無料ツール</h3>
+      <ul class="footer-links-list">
+        <li><a href="https://yusuketakuma.github.io/free-tool-drug-price/">薬価シミュレーター</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-medication-history/">薬歴テンプレート生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-fee-calculator/">調剤報酬シミュレーター</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-renal-dose/">腎機能別用量調整</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-homecare-report/">在宅医療報告書生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-adherence-check/">服薬アドヒアランス評価</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-bringing-medicine/">持参薬チェック</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-medication-calendar/">服薬カレンダー生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-medication-guidance/">服薬指導チェックリスト</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-medication-guidance-scenario/">服薬指導シナリオ生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-medication-summary/">薬歴サマリー生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-patient-explanation/">患者説明文生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-prescription-checklist/">処方チェックリスト生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-prescription-screening/">処方鑑別チェック</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-side-effect-checker/">副作用リスク評価</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-polypharmacy/">ポリファーマシー検出</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-similar-drug-check/">類似薬名チェック</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-inventory-alert/">在庫アラート通知</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-inquiry-email/">疑義照会メール生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-di-query/">DI照会生成</a></li>
+        <li><a href="https://yusuketakuma.github.io/free-tool-medication-reminder/">服薬リマインダー生成</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // GA4イベント計測関数
+    function trackPromptCTA() {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'cta_click', {
+          event_category: 'monetization',
+          event_label: 'efficiency-diagnosis-v2-prompt'
+        });
+      }
+    }
+    
+    function trackNotionCTA() {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'cta_click', {
+          event_category: 'monetization',
+          event_label: 'efficiency-diagnosis-v2-notion'
+        });
+      }
+    }
+    
+    function trackDiagnosis() {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'tool_usage', {
+          event_category: 'engagement',
+          event_label: 'efficiency-diagnosis-v2'
+        });
+      }
+    }
+    
+    document.getElementById('diagnosis-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // スコア計算
+      const scores = {
+        history: 0,
+        inquiry: 0,
+        inventory: 0,
+        guidance: 0
+      };
+      
+      // Q1, Q2: 薬歴入力
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      if (q1) scores.history += parseInt(q1.value);
+      if (q2) scores.history += parseInt(q2.value);
+      
+      // Q3, Q4: 疑義照会
+      const q3 = document.querySelector('input[name="q3"]:checked');
+      const q4 = document.querySelector('input[name="q4"]:checked');
+      if (q3) scores.inquiry += parseInt(q3.value);
+      if (q4) scores.inquiry += parseInt(q4.value);
+      
+      // Q5, Q6: 在庫管理
+      const q5 = document.querySelector('input[name="q5"]:checked');
+      const q6 = document.querySelector('input[name="q6"]:checked');
+      if (q5) scores.inventory += parseInt(q5.value);
+      if (q6) scores.inventory += parseInt(q6.value);
+      
+      // Q7, Q8: 服薬指導
+      const q7 = document.querySelector('input[name="q7"]:checked');
+      const q8 = document.querySelector('input[name="q8"]:checked');
+      if (q7) scores.guidance += parseInt(q7.value);
+      if (q8) scores.guidance += parseInt(q8.value);
+      
+      // 合計スコア
+      const total = scores.history + scores.inquiry + scores.inventory + scores.guidance;
+      
+      // 結果表示
+      document.getElementById('total-score').textContent = total;
+      document.getElementById('score-history').textContent = scores.history + '/20';
+      document.getElementById('score-inquiry').textContent = scores.inquiry + '/20';
+      document.getElementById('score-inventory').textContent = scores.inventory + '/20';
+      document.getElementById('score-guidance').textContent = scores.guidance + '/20';
+      
+      // 改善提案生成
+      const improvements = [];
+      
+      if (scores.history < 14) {
+        improvements.push({
+          priority: 'high',
+          text: '薬歴入力: AIプロンプト活用で入力時間を5分以内に短縮'
+        });
+      }
+      
+      if (scores.inquiry < 14) {
+        improvements.push({
+          priority: 'high',
+          text: '疑義照会: テンプレート準備で問い合わせ文面を即座に作成'
+        });
+      }
+      
+      if (scores.inventory < 14) {
+        improvements.push({
+          priority: 'medium',
+          text: '在庫管理: アラート通知で欠品・期限切れを予防'
+        });
+      }
+      
+      if (scores.guidance < 14) {
+        improvements.push({
+          priority: 'high',
+          text: '服薬指導: AI活用で患者説明文・指導シナリオを即座に準備'
+        });
+      }
+      
+      // 優先度順にソート
+      improvements.sort((a, b) => {
+        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      });
+      
+      // 改善リスト表示
+      const improvementList = document.getElementById('improvement-list');
+      improvementList.innerHTML = '';
+      
+      improvements.forEach((improvement, index) => {
+        const li = document.createElement('li');
+        li.textContent = (index + 1) + '. ' + improvement.text;
+        improvementList.appendChild(li);
+      });
+      
+      // 結果表示
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('diagnosis-form').style.display = 'none';
+      
+      // GA4イベント計測
+      trackDiagnosis();
+      
+      // 結果までスクロール
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // ラジオボタン選択時のスタイル変更
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', function() {
+        const name = this.querySelector('input').name;
+        document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+          radio.closest('.option').classList.remove('selected');
+        });
+        this.classList.add('selected');
+      });
+    });
+  </script>
+
+  <footer style="text-align: center; padding: 40px 20px; background: #f8f9fa; margin-top: 40px;">
+    <p style="margin-bottom: 16px; color: #666;">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" style="color: #667eea; text-decoration: none; font-weight: bold;">
+        📚 薬剤師無料ツール集（25ツール）へ戻る
+      </a>
+    </p>
+    <p style="font-size: 0.85rem; color: #999;">
+      © 2026 薬剤師業務効率化プロジェクト
+    </p>
+  </footer>
+</body>
+</html>

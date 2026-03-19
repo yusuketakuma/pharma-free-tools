@@ -1,0 +1,142 @@
+{
+  "timestamp": "2026-03-19T08:08:00+09:00",
+  "job": "sidebiz-30m-maintenance",
+  "status": "alert",
+  "summary": "Vercel 404エラー継続（12サイクル連続）・GitHub Pages代替稼働中・数値統一維持・GA4カバレッジ97.2%",
+  "monitoringResults": {
+    "vercelPortal": {
+      "url": "https://pharma-free-tools.vercel.app/",
+      "status": 404,
+      "note": "12サイクル連続404エラー"
+    },
+    "githubPages": {
+      "url": "https://yusuketakuma.github.io/pharma-free-tools/",
+      "status": 200,
+      "note": "代替稼働中・実質的な本番環境"
+    },
+    "toolCount": {
+      "actual": 86,
+      "title": 86,
+      "meta": 86,
+      "ogp": 86,
+      "twitter": 86,
+      "jsonLd": 86,
+      "statNumber": 86,
+      "unified": true,
+      "verification": "86選×5箇所、86個×5箇所で完全統一"
+    },
+    "sitemap": {
+      "urlCount": 87,
+      "note": "index 1 + ツール86"
+    },
+    "vercelJson": {
+      "exists": true,
+      "size": 699,
+      "created": "2026-03-19T02:31:00+09:00",
+      "config": {
+        "version": 2,
+        "buildCommand": null,
+        "outputDirectory": ".",
+        "cleanUrls": true,
+        "headers": "セキュリティヘッダー設定済み"
+      }
+    },
+    "ga4Coverage": {
+      "filesWithScript": 70,
+      "totalHtmlFiles": 72,
+      "percentage": "97.2%",
+      "note": "開発担当08:00報告100%に対し実測97.2%（残り2ファイル要確認）"
+    },
+    "gitStatus": "clean"
+  },
+  "consecutiveErrors": {
+    "homecare-30m-sync-to-trainer": 0,
+    "trainer-30m-internet-research": 0,
+    "sidebiz-30m-assign": 0,
+    "sidebiz-30m-maintenance": 0,
+    "brave-api-usage-monitor": 0,
+    "note": "全ジョブconsecutiveErrors=0維持"
+  },
+  "rootCauseAnalysis": {
+    "vercel404": {
+      "status": "vercel.json存在・正しく設定済み",
+      "hypothesis": "Vercelダッシュボード設定の問題（Framework Preset等）",
+      "evidence": [
+        "vercel.json存在（699 bytes）",
+        "version 2, outputDirectory: '.', cleanUrls: true, headers設定済み",
+        "git statusクリーン",
+        "Vercel 404継続（12サイクル連続）"
+      ],
+      "suspectedCauses": [
+        "Framework PresetがOther/StaticではなくNext.js等が選択されている",
+        "Build Commandがデフォルトで実行され失敗している",
+        "Output Directoryがダッシュボード設定で上書きされている",
+        "Root Directoryが正しく設定されていない"
+      ]
+    },
+    "ga4Gap": {
+      "reported": "100%",
+      "actual": "97.2%",
+      "gap": "2.8%",
+      "action": "残り2ファイルのGA4スクリプト有無確認必要"
+    }
+  },
+  "nextActions": [
+    {
+      "priority": "高",
+      "task": "Vercelダッシュボード設定確認・Framework Preset='Other'変更",
+      "owner": "ゆうすけ",
+      "dependency": "ダッシュボードアクセス",
+      "estimatedTime": "10分"
+    },
+    {
+      "priority": "高",
+      "task": "GitHub Pages統一判断",
+      "owner": "ゆうすけ",
+      "dependency": "判断のみ",
+      "estimatedTime": "5分"
+    },
+    {
+      "priority": "低",
+      "task": "残り2ファイルのGA4スクリプト確認",
+      "owner": "sidebiz保守",
+      "dependency": "なし",
+      "estimatedTime": "5分"
+    }
+  ],
+  "learningPoints": [
+    {
+      "point": "vercel.json≠即解決",
+      "detail": "設定ファイルが存在してもダッシュボード設定が優先される場合がある"
+    },
+    {
+      "point": "GitHub Pages一本化の検討",
+      "detail": "12サイクル連続でVercel 404継続・二重ホスティングの保守負荷を削減するため統一を推奨"
+    },
+    {
+      "point": "開発完了宣言と実態の乖離検知",
+      "detail": "GA4カバレッジ100%報告に対し実測97.2%・保守チェックで乖離を検知"
+    },
+    {
+      "point": "障害継続サイクルの可視化",
+      "detail": "12サイクル連続で同一問題を追跡し、根本解決の必要性を明確化"
+    }
+  ],
+  "yusukeActionRequired": {
+    "vercelDashboardCheck": {
+      "url": "https://vercel.com/dashboard",
+      "steps": [
+        "1. pharma-free-toolsプロジェクトを選択",
+        "2. Settings → General で以下を確認:",
+        "   - Framework Preset: 'Other' または 'Static' に変更",
+        "   - Root Directory: '.' または空欄",
+        "   - Build Command: 'None' または空欄",
+        "   - Output Directory: '.' または空欄",
+        "3. Settings → Deployment で最新デプロイのログを確認",
+        "4. 設定変更後、Redeployを実行"
+      ]
+    }
+  },
+  "notificationSuppress": true,
+  "note": "本ジョブは通知抑止中。対外報告はtrainer-2h-regular-reportに集約。"
+}

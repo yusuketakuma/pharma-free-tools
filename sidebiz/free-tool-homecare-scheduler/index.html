@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訪問薬剤管理スケジューラー | 薬剤師向け無料ツール</title>
+    <meta name="description" content="訪問薬剤師の日程管理・患者優先度判定・スケジュール自動提案を行う無料ツール。在宅医療の実務経験に基づいた優先度アルゴリズムで効率的な訪問計画をサポート。">
+    <meta property="og:title" content="訪問薬剤管理スケジューラー | 薬剤師向け無料ツール">
+    <meta property="og:description" content="訪問薬剤師の日程管理・患者優先度判定・スケジュール自動提案を行う無料ツール。在宅医療の実務経験に基づいた優先度アルゴリズムで効率的な訪問計画をサポート。">
+    <meta property="og:type" content="website">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "訪問薬剤管理スケジューラー",
+        "applicationCategory": "MedicalApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "description": "訪問薬剤師の日程管理・患者優先度判定・スケジュール自動提案を行う無料ツール"
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        h1::before {
+            content: "📅";
+            font-size: 1.5rem;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 16px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab:hover {
+            transform: translateY(-2px);
+        }
+        .panel {
+            display: none;
+        }
+        .panel.active {
+            display: block;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd6;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 0.85rem;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        .priority-high {
+            background: #f8d7da;
+            color: #721c24;
+            font-weight: 600;
+        }
+        .priority-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .priority-low {
+            background: #d4edda;
+            color: #155724;
+        }
+        .schedule-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .schedule-card.high {
+            border-left-color: #dc3545;
+        }
+        .schedule-card.medium {
+            border-left-color: #ffc107;
+        }
+        .schedule-card.low {
+            border-left-color: #28a745;
+        }
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .schedule-patient {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .schedule-priority {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .schedule-details {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        .patient-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .checkbox-item input {
+            width: auto;
+        }
+        .note {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 24px;
+            text-align: center;
+        }
+        .cta-section h3 {
+            margin-bottom: 8px;
+        }
+        .cta-section p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        .cta-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 4px;
+        }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .links-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .links-title {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        .link-item {
+            display: block;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .link-item:hover {
+            background: #667eea;
+            color: white;
+        }
+        .day-column {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 100px;
+        }
+        .day-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+        }
+        .mini-card {
+            background: white;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            border-left: 3px solid #667eea;
+        }
+        .mini-card.high {
+            border-left-color: #dc3545;
+        }
+        .mini-card.medium {
+            border-left-color: #ffc107;
+        }
+        .mini-card.low {
+            border-left-color: #28a745;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px;
+            }
+            h1 {
+                font-size: 1.2rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .week-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>訪問薬剤管理スケジューラー</h1>
+        <p class="subtitle">訪問薬剤師の日程管理・患者優先度判定・スケジュール自動提案</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showPanel('schedule')">📊 今週のスケジュール</button>
+            <button class="tab" onclick="showPanel('patients')">👥 患者管理</button>
+            <button class="tab" onclick="showPanel('add')">➕ 患者追加</button>
+            <button class="tab" onclick="showPanel('report')">📋 レポート</button>
+        </div>
+        
+        <!-- スケジュールパネル -->
+        <div id="schedule-panel" class="panel active">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">登録患者</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-high">0</div>
+                    <div class="stat-label">高優先度</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-thisweek">0</div>
+                    <div class="stat-label">今週訪問予定</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-overdue">0</div>
+                    <div class="stat-label">訪問遅延</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">📅 今週の訪問スケジュール（自動提案）</h3>
+                <div class="note">
+                    ⚠️ 優先度は「前回訪問からの日数」「処方変更の有無」「副作用リスク」「服薬アドヒアランス」を総合的に判定しています。
+                </div>
+                <div id="schedule-list"></div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">📆 週間カレンダー</h3>
+                <div class="week-grid" id="week-calendar"></div>
+            </div>
+        </div>
+        
+        <!-- 患者管理パネル -->
+        <div id="patients-panel" class="panel">
+            <div class="section">
+                <h3 class="section-title">👥 患者リスト</h3>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="exportPatients()">📥 エクスポート</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">📤 インポート</button>
+                    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importPatients(event)">
+                    <button class="btn btn-danger" onclick="clearAllPatients()">🗑️ 全削除</button>
+                </div>
+                <div class="patient-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>患者名</th>
+                                <th>訪問頻度</th>
+                                <th>前回訪問</th>
+                                <th>優先度</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patient-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 患者追加パネル -->
+        <div id="add-panel" class="panel">
+            <div class="section">
+                <h3 class="section-title">➕ 新規患者登録</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>患者名（イニシャル可）</label>
+                        <input type="text" id="patient-name" placeholder="例: A.T.">
+                    </div>
+                    <div class="form-group">
+                        <label>年齢</label>
+                        <input type="number" id="patient-age" placeholder="例: 78">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>訪問頻度</label>
+                        <select id="visit-freq">
+                            <option value="weekly">週1回</option>
+                            <option value="biweekly">隔週</option>
+                            <option value="monthly">月1回</option>
+                            <option value="bimonthly">2ヶ月に1回</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>前回訪問日</label>
+                        <input type="date" id="last-visit">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>処方薬数</label>
+                        <input type="number" id="drug-count" placeholder="例: 8">
+                    </div>
+                    <div class="form-group">
+                        <label>要介護度</label>
+                        <select id="care-level">
+                            <option value="none">なし</option>
+                            <option value="support1">要支援1</option>
+                            <option value="support2">要支援2</option>
+                            <option value="care1">要介護1</option>
+                            <option value="care2">要介護2</option>
+                            <option value="care3">要介護3</option>
+                            <option value="care4">要介護4</option>
+                            <option value="care5">要介護5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>リスク因子（該当するもの）</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" id="risk-prescription"> 処方変更あり</label>
+                        <label class="checkbox-item"><input type="checkbox" id="risk-side"> 副作用リスクあり</label>
+                        <label class="checkbox-item"><input type="checkbox" id="risk-adherence"> アドヒアランス低下</label>
+                        <label class="checkbox-item"><input type="checkbox" id="risk-cognitive"> 認知機能低下</label>
+                        <label class="checkbox-item"><input type="checkbox" id="risk-fall"> 転倒リスクあり</label>
+                        <label class="checkbox-item"><input type="checkbox" id="risk-polypharmacy"> ポリファーマシー</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>メモ</label>
+                    <textarea id="patient-memo" rows="3" placeholder="特記事項があれば入力"></textarea>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addPatient()">💾 登録</button>
+                    <button class="btn btn-secondary" onclick="clearForm()">🗑️ クリア</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- レポートパネル -->
+        <div id="report-panel" class="panel">
+            <div class="section">
+                <h3 class="section-title">📋 訪問優先度レポート</h3>
+                <div class="btn-group">
+                    <button class="btn btn-success" onclick="generateReport()">📊 レポート生成</button>
+                    <button class="btn btn-secondary" onclick="copyReport()">📋 コピー</button>
+                    <button class="btn btn-secondary" onclick="printReport()">🖨️ 印刷</button>
+                </div>
+                <div id="report-content" style="margin-top: 16px; white-space: pre-wrap; font-size: 0.9rem; background: #f8f9fa; padding: 16px; border-radius: 8px;"></div>
+            </div>
+        </div>
+        
+        <!-- CTA セクション -->
+        <div class="cta-section">
+            <h3>🎯 業務効率化をもっと進める</h3>
+            <p>AIプロンプト集・Notionテンプレートで薬剤師業務を効率化</p>
+            <a href="#" class="cta-btn">AIプロンプト集 ¥300</a>
+            <a href="#" class="cta-btn">Notionテンプレート ¥500</a>
+        </div>
+        
+        <!-- 相互リンク -->
+        <div class="links-section">
+      <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; margin-bottom: 16px; padding: 8px 16px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">🏠 全ツール一覧（ポータル）</a><br><br>
+            <p class="links-title">🔧 その他の無料ツール</p>
+            <div class="links-grid">
+                <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/" class="link-item">薬価シミュレーター</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/" class="link-item">薬歴テンプレート</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-guidance-tool/" class="link-item">服薬指導チェックリスト</a>
+                <a href="https://yusuketakuma.github.io/pharma-renal-dose-tool/" class="link-item">腎機能別用量調整</a>
+                <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/" class="link-item">業務効率化診断</a>
+                <a href="https://yusuketakuma.github.io/pharma-homecare-report/" class="link-item">在宅医療報告書生成</a>
+                <a href="https://yusuketakuma.github.io/pharma-polypharmacy/" class="link-item">ポリファーマシー検出</a>
+                <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/" class="link-item">持参薬チェック</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // データ管理
+        let patients = JSON.parse(localStorage.getItem('homecare-patients') || '[]');
+        
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 今日の日付をデフォルトに設定
+            document.getElementById('last-visit').valueAsDate = new Date();
+            updateAll();
+        });
+        
+        // パネル切り替え
+        function showPanel(panel) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(panel + '-panel').classList.add('active');
+            event.target.classList.add('active');
+            if (panel === 'schedule') updateSchedule();
+            if (panel === 'patients') updatePatientTable();
+        }
+        
+        // 患者追加
+        function addPatient() {
+            const name = document.getElementById('patient-name').value.trim();
+            if (!name) {
+                alert('患者名を入力してください');
+                return;
+            }
+            
+            const patient = {
+                id: Date.now(),
+                name: name,
+                age: parseInt(document.getElementById('patient-age').value) || null,
+                visitFreq: document.getElementById('visit-freq').value,
+                lastVisit: document.getElementById('last-visit').value,
+                drugCount: parseInt(document.getElementById('drug-count').value) || 0,
+                careLevel: document.getElementById('care-level').value,
+                risks: {
+                    prescription: document.getElementById('risk-prescription').checked,
+                    side: document.getElementById('risk-side').checked,
+                    adherence: document.getElementById('risk-adherence').checked,
+                    cognitive: document.getElementById('risk-cognitive').checked,
+                    fall: document.getElementById('risk-fall').checked,
+                    polypharmacy: document.getElementById('risk-polypharmacy').checked
+                },
+                memo: document.getElementById('patient-memo').value,
+                createdAt: new Date().toISOString()
+            };
+            
+            patients.push(patient);
+            savePatients();
+            clearForm();
+            alert('患者を登録しました');
+        }
+        
+        // 患者削除
+        function deletePatient(id) {
+            if (confirm('この患者を削除しますか？')) {
+                patients = patients.filter(p => p.id !== id);
+                savePatients();
+                updateAll();
+            }
+        }
+        
+        // 訪問記録更新
+        function recordVisit(id) {
+            const patient = patients.find(p => p.id === id);
+            if (patient) {
+                patient.lastVisit = new Date().toISOString().split('T')[0];
+                patient.risks.prescription = false; // 処方変更リスクはリセット
+                savePatients();
+                updateAll();
+                alert('訪問を記録しました');
+            }
+        }
+        
+        // フォームクリア
+        function clearForm() {
+            document.getElementById('patient-name').value = '';
+            document.getElementById('patient-age').value = '';
+            document.getElementById('visit-freq').value = 'weekly';
+            document.getElementById('last-visit').valueAsDate = new Date();
+            document.getElementById('drug-count').value = '';
+            document.getElementById('care-level').value = 'none';
+            document.querySelectorAll('#add-panel input[type="checkbox"]').forEach(c => c.checked = false);
+            document.getElementById('patient-memo').value = '';
+        }
+        
+        // 保存
+        function savePatients() {
+            localStorage.setItem('homecare-patients', JSON.stringify(patients));
+        }
+        
+        // 全更新
+        function updateAll() {
+            updateStats();
+            updateSchedule();
+            updatePatientTable();
+        }
+        
+        // 統計更新
+        function updateStats() {
+            document.getElementById('stat-total').textContent = patients.length;
+            
+            const highPriority = patients.filter(p => calculatePriority(p) === 'high').length;
+            document.getElementById('stat-high').textContent = highPriority;
+            
+            const thisWeek = patients.filter(p => shouldVisitThisWeek(p)).length;
+            document.getElementById('stat-thisweek').textContent = thisWeek;
+            
+            const overdue = patients.filter(p => isOverdue(p)).length;
+            document.getElementById('stat-overdue').textContent = overdue;
+        }
+        
+        // 優先度計算
+        function calculatePriority(patient) {
+            let score = 0;
+            
+            // 前回訪問からの日数
+            const daysSinceVisit = getDaysSinceVisit(patient.lastVisit);
+            if (daysSinceVisit > 14) score += 3;
+            else if (daysSinceVisit > 7) score += 2;
+            else if (daysSinceVisit > 3) score += 1;
+            
+            // リスク因子
+            if (patient.risks.prescription) score += 3;
+            if (patient.risks.side) score += 2;
+            if (patient.risks.adherence) score += 2;
+            if (patient.risks.cognitive) score += 1;
+            if (patient.risks.fall) score += 1;
+            if (patient.risks.polypharmacy) score += 1;
+            
+            // 要介護度
+            const careLevelScore = {
+                'care5': 2, 'care4': 2, 'care3': 1, 'care2': 1, 'care1': 1,
+                'support2': 1, 'support1': 0, 'none': 0
+            };
+            score += careLevelScore[patient.careLevel] || 0;
+            
+            // ポリファーマシー（6薬剤以上）
+            if (patient.drugCount >= 6) score += 1;
+            
+            if (score >= 5) return 'high';
+            if (score >= 2) return 'medium';
+            return 'low';
+        }
+        
+        // 前回訪問からの日数
+        function getDaysSinceVisit(lastVisit) {
+            if (!lastVisit) return 999;
+            const last = new Date(lastVisit);
+            const today = new Date();
+            return Math.floor((today - last) / (1000 * 60 * 60 * 24));
+        }
+        
+        // 今週訪問すべきか
+        function shouldVisitThisWeek(patient) {
+            const daysSinceVisit = getDaysSinceVisit(patient.lastVisit);
+            const freqDays = {
+                'weekly': 7,
+                'biweekly': 14,
+                'monthly': 30,
+                'bimonthly': 60
+            };
+            return daysSinceVisit >= (freqDays[patient.visitFreq] || 7) - 2;
+        }
+        
+        // 遅延しているか
+        function isOverdue(patient) {
+            const daysSinceVisit = getDaysSinceVisit(patient.lastVisit);
+            const freqDays = {
+                'weekly': 7,
+                'biweekly': 14,
+                'monthly': 30,
+                'bimonthly': 60
+            };
+            return daysSinceVisit > (freqDays[patient.visitFreq] || 7);
+        }
+        
+        // スケジュール更新
+        function updateSchedule() {
+            const scheduleList = document.getElementById('schedule-list');
+            const weekCalendar = document.getElementById('week-calendar');
+            
+            // 今週訪問すべき患者を優先度順にソート
+            const toVisit = patients
+                .filter(p => shouldVisitThisWeek(p))
+                .sort((a, b) => {
+                    const priorityOrder = { 'high': 0, 'medium': 1, 'low': 2 };
+                    return priorityOrder[calculatePriority(a)] - priorityOrder[calculatePriority(b)];
+                });
+            
+            // スケジュールリスト表示
+            if (toVisit.length === 0) {
+                scheduleList.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">今週訪問予定の患者はいません</p>';
+            } else {
+                scheduleList.innerHTML = toVisit.map(p => {
+                    const priority = calculatePriority(p);
+                    const priorityClass = priority === 'high' ? 'high' : priority === 'medium' ? 'medium' : 'low';
+                    const priorityText = priority === 'high' ? '🔴 高' : priority === 'medium' ? '🟡 中' : '🟢 低';
+                    const daysSince = getDaysSinceVisit(p.lastVisit);
+                    
+                    return `
+                        <div class="schedule-card ${priorityClass}">
+                            <div class="schedule-header">
+                                <span class="schedule-patient">${p.name}${p.age ? ` (${p.age}歳)` : ''}</span>
+                                <span class="schedule-priority priority-${priorityClass}">${priorityText}</span>
+                            </div>
+                            <div class="schedule-details">
+                                前回訪問: ${p.lastVisit || '未登録'} (${daysSince}日前)<br>
+                                処方薬数: ${p.drugCount}種類 | 要介護: ${getCareLevelText(p.careLevel)}<br>
+                                ${getRiskText(p.risks)}
+                                ${p.memo ? `<br>メモ: ${p.memo}` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // 週間カレンダー表示
+            const days = ['月', '火', '水', '木', '金', '土', '日'];
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const monday = new Date(today);
+            monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+            
+            weekCalendar.innerHTML = days.map((day, i) => {
+                const date = new Date(monday);
+                date.setDate(monday.getDate() + i);
+                const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
+                
+                // 簡易的な割り当て（実際は手動調整が必要）
+                const dayPatients = toVisit.filter((p, idx) => idx % 7 === i);
+                
+                return `
+                    <div class="day-column">
+                        <div class="day-title">${day} (${dateStr})</div>
+                        ${dayPatients.map(p => {
+                            const priority = calculatePriority(p);
+                            return `<div class="mini-card ${priority}">${p.name}</div>`;
+                        }).join('')}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // 要介護度テキスト
+        function getCareLevelText(level) {
+            const texts = {
+                'none': 'なし',
+                'support1': '要支援1',
+                'support2': '要支援2',
+                'care1': '要介護1',
+                'care2': '要介護2',
+                'care3': '要介護3',
+                'care4': '要介護4',
+                'care5': '要介護5'
+            };
+            return texts[level] || 'なし';
+        }
+        
+        // リスクテキスト
+        function getRiskText(risks) {
+            const riskTexts = [];
+            if (risks.prescription) riskTexts.push('処方変更');
+            if (risks.side) riskTexts.push('副作用リスク');
+            if (risks.adherence) riskTexts.push('アドヒアランス低下');
+            if (risks.cognitive) riskTexts.push('認知機能低下');
+            if (risks.fall) riskTexts.push('転倒リスク');
+            if (risks.polypharmacy) riskTexts.push('ポリファーマシー');
+            return riskTexts.length > 0 ? '⚠️ ' + riskTexts.join(', ') : '';
+        }
+        
+        // 患者テーブル更新
+        function updatePatientTable() {
+            const tbody = document.getElementById('patient-table');
+            
+            if (patients.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">患者が登録されていません</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = patients.map(p => {
+                const priority = calculatePriority(p);
+                const priorityClass = priority === 'high' ? 'priority-high' : priority === 'medium' ? 'priority-medium' : 'priority-low';
+                const priorityText = priority === 'high' ? '🔴 高' : priority === 'medium' ? '🟡 中' : '🟢 低';
+                const freqText = {
+                    'weekly': '週1回',
+                    'biweekly': '隔週',
+                    'monthly': '月1回',
+                    'bimonthly': '2月1回'
+                }[p.visitFreq] || p.visitFreq;
+                
+                return `
+                    <tr>
+                        <td>${p.name}${p.age ? ` (${p.age}歳)` : ''}</td>
+                        <td>${freqText}</td>
+                        <td>${p.lastVisit || '-'}</td>
+                        <td class="${priorityClass}">${priorityText}</td>
+                        <td>
+                            <button class="btn btn-success" style="padding: 4px 8px; font-size: 0.75rem;" onclick="recordVisit(${p.id})">訪問</button>
+                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deletePatient(${p.id})">削除</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // レポート生成
+        function generateReport() {
+            const today = new Date().toLocaleDateString('ja-JP');
+            const toVisit = patients
+                .filter(p => shouldVisitThisWeek(p))
+                .sort((a, b) => {
+                    const priorityOrder = { 'high': 0, 'medium': 1, 'low': 2 };
+                    return priorityOrder[calculatePriority(a)] - priorityOrder[calculatePriority(b)];
+                });
+            
+            let report = `【訪問薬剤管理 週次レポート】\n`;
+            report += `生成日: ${today}\n`;
+            report += `${'='.repeat(40)}\n\n`;
+            
+            report += `■ サマリ\n`;
+            report += `登録患者数: ${patients.length}名\n`;
+            report += `今週訪問予定: ${toVisit.length}名\n`;
+            report += `高優先度: ${patients.filter(p => calculatePriority(p) === 'high').length}名\n`;
+            report += `訪問遅延: ${patients.filter(p => isOverdue(p)).length}名\n\n`;
+            
+            if (toVisit.length > 0) {
+                report += `■ 今週の訪問優先度順\n`;
+                report += `${'-'.repeat(40)}\n`;
+                
+                toVisit.forEach((p, i) => {
+                    const priority = calculatePriority(p);
+                    const priorityText = priority === 'high' ? '🔴【高】' : priority === 'medium' ? '🟡【中】' : '🟢【低】';
+                    report += `\n${i + 1}. ${priorityText} ${p.name}${p.age ? ` (${p.age}歳)` : ''}\n`;
+                    report += `   前回訪問: ${p.lastVisit || '未登録'} (${getDaysSinceVisit(p.lastVisit)}日前)\n`;
+                    report += `   処方薬数: ${p.drugCount}種類 | 要介護: ${getCareLevelText(p.careLevel)}\n`;
+                    if (getRiskText(p.risks)) {
+                        report += `   ${getRiskText(p.risks)}\n`;
+                    }
+                    if (p.memo) {
+                        report += `   メモ: ${p.memo}\n`;
+                    }
+                });
+            }
+            
+            document.getElementById('report-content').textContent = report;
+        }
+        
+        // レポートコピー
+        function copyReport() {
+            const report = document.getElementById('report-content').textContent;
+            navigator.clipboard.writeText(report).then(() => {
+                alert('レポートをコピーしました');
+            });
+        }
+        
+        // レポート印刷
+        function printReport() {
+            const report = document.getElementById('report-content').textContent;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`<pre style="font-family: monospace; white-space: pre-wrap;">${report}</pre>`);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        // エクスポート
+        function exportPatients() {
+            const data = JSON.stringify(patients, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `homecare-patients-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // インポート
+        function importPatients(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        if (confirm(`${imported.length}件の患者をインポートしますか？（既存データに追加）`)) {
+                            patients = [...patients, ...imported];
+                            savePatients();
+                            updateAll();
+                            alert('インポート完了');
+                        }
+                    } else {
+                        alert('無効なファイル形式です');
+                    }
+                } catch (err) {
+                    alert('ファイルの読み込みに失敗しました');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+        
+        // 全削除
+        function clearAllPatients() {
+            if (confirm('全ての患者データを削除しますか？この操作は取り消せません。')) {
+                patients = [];
+                savePatients();
+                updateAll();
+                alert('全ての患者データを削除しました');
+            }
+        }
+    </script>
+</body>
+</html>

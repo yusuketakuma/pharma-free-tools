@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポリファーマシー評価ツール | 薬剤師のための無料ツール</title>
+    <meta name="description" content="高齢者の多剤併用リスクをスクリーニングする無料ツール。6種類以上の内服薬がある患者のポリファーマシーを評価し、鑑別薬・注意すべき相互作用を抽出します。">
+    <meta name="keywords" content="ポリファーマシー,多剤併用,高齢者,薬剤師,鑑別,かかりつけ薬剤師,在宅医療">
+    <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/polypharmacy-assessment.html">
+    
+    <!-- OGP -->
+    <meta property="og:title" content="ポリファーマシー評価ツール | 薬剤師のための無料ツール">
+    <meta property="og:description" content="高齢者の多剤併用リスクをスクリーニング。6種類以上の内服薬がある患者のポリファーマシーを評価し、鑑別薬・注意すべき相互作用を抽出します。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/polypharmacy-assessment.html">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/og-polypharmacy.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ポリファーマシー評価ツール | 薬剤師のための無料ツール">
+    <meta name="twitter:description" content="高齢者の多剤併用リスクをスクリーニング。6種類以上の内服薬がある患者のポリファーマシーを評価します。">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 1.8rem; color: #2c3e50; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 1.5rem; }
+        
+        .card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; color: #2c3e50; }
+        
+        input, select, textarea { width: 100%; padding: 12px; border: 2px solid #e1e8ed; border-radius: 8px; font-size: 16px; transition: border-color 0.2s; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #3498db; }
+        
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        
+        .checkbox-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+        .checkbox-item { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; font-size: 14px; cursor: pointer; }
+        .checkbox-item:hover { background: #e9ecef; }
+        .checkbox-item input { width: auto; }
+        .checkbox-item.selected { background: #d4edda; border: 1px solid #28a745; }
+        
+        .drug-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .drug-tag { background: #3498db; color: white; padding: 6px 12px; border-radius: 20px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+        .drug-tag button { background: none; border: none; color: white; cursor: pointer; font-size: 16px; line-height: 1; }
+        
+        button.primary { background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.2s; }
+        button.primary:hover { transform: translateY(-2px); }
+        
+        button.secondary { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+        
+        .result-section { margin-top: 20px; }
+        .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .risk-badge { padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 14px; }
+        .risk-low { background: #d4edda; color: #155724; }
+        .risk-moderate { background: #fff3cd; color: #856404; }
+        .risk-high { background: #f8d7da; color: #721c24; }
+        
+        .score-display { text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px; }
+        .score-number { font-size: 3rem; font-weight: 700; color: #3498db; }
+        .score-label { color: #666; font-size: 14px; }
+        
+        .category-card { background: #f8f9fa; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .category-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .category-count { background: #3498db; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        
+        .warning-item { display: flex; align-items: flex-start; gap: 8px; padding: 10px; background: white; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid #ffc107; }
+        .warning-icon { color: #ffc107; font-size: 18px; }
+        
+        .deprescribing-candidate { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid #e74c3c; }
+        .drug-name { font-weight: 500; }
+        .deprescribe-reason { font-size: 13px; color: #666; }
+        
+        .copy-btn { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 16px; }
+        .copy-btn:hover { background: #218838; }
+        
+        .info-box { background: #e7f3ff; border-left: 4px solid #3498db; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 14px; }
+        
+        .hidden { display: none; }
+        
+        /* CTA Section */
+        .cta-section {
+            margin-top: 32px;
+            padding: 24px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 16px;
+            border: 1px solid #bfdbfe;
+        }
+        
+        .cta-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1e40af;
+        }
+        
+        .cta-section p {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 16px;
+        }
+        
+        .cta-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .cta-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .cta-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .cta-link.secondary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+        
+        footer { text-align: center; padding: 20px; color: #666; font-size: 13px; }
+        footer a { color: #3498db; text-decoration: none; }
+        
+        @media (max-width: 600px) {
+            .input-row { grid-template-columns: 1fr; }
+            .checkbox-group { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'polypharmacy-assessment-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'polypharmacy-assessment-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'polypharmacy-assessment-prompt-cta'
+      });
+    }
+  </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 ポリファーマシー評価ツール</h1>
+        <p class="subtitle">高齢者の多剤併用リスクをスクリーニングし、鑑別薬候補を抽出</p>
+        
+        <div class="info-box">
+            <strong>使い方:</strong> 患者情報と服用中の薬剤を入力すると、ポリファーマシースコア、鑑別候補薬、注意すべき相互作用を自動評価します。
+        </div>
+        
+        <div class="card">
+            <h2 style="margin-bottom: 16px;">患者基本情報</h2>
+            <div class="input-row">
+                <div class="form-group">
+                    <label>年齢</label>
+                    <input type="number" id="age" placeholder="例: 78" min="0" max="120">
+                </div>
+                <div class="form-group">
+                    <label>性別</label>
+                    <select id="gender">
+                        <option value="">選択</option>
+                        <option value="male">男性</option>
+                        <option value="female">女性</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="form-group">
+                    <label>体重 (kg)</label>
+                    <input type="number" id="weight" placeholder="例: 52" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>eGFR (mL/min/1.73m²)</label>
+                    <input type="number" id="egfr" placeholder="例: 45" step="0.1">
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 style="margin-bottom: 16px;">服用中の薬剤</h2>
+            <div class="form-group">
+                <label>薬効分類を選択（複数可）</label>
+                <div class="checkbox-group" id="drugCategories">
+                    <label class="checkbox-item"><input type="checkbox" data-category="antihypertensive"> 降圧薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="diuretic"> 利尿薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="antiplatelet"> 抗血小板薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="anticoagulant"> 抗凝固薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="statin"> スタチン</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="diabetes"> 糖尿病薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="ppi"> PPI</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="h2blocker"> H2ブロッカー</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="nsaid"> NSAIDs</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="opioid"> オピオイド</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="benzodiazepine"> ベンゾジアゼピン</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="antidepressant"> 抗うつ薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="antipsychotic"> 抗精神病薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="anticholinergic"> 抗コリン薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="antiParkinson"> 抗パーキンソン薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="osteoporosis"> 骨粗鬆症薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="thyroid"> 甲状腺薬</label>
+                    <label class="checkbox-item"><input type="checkbox" data-category="gout"> 痛風薬</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>その他の薬剤（自由入力・カンマ区切り）</label>
+                <input type="text" id="otherDrugs" placeholder="例: レボチロキシン, アロプリノール">
+            </div>
+            
+            <div class="form-group">
+                <label>内服薬総数</label>
+                <input type="number" id="totalDrugs" placeholder="上記以外も含めた総数" min="0">
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 style="margin-bottom: 16px;">リスク因子</h2>
+            <div class="checkbox-group" id="riskFactors">
+                <label class="checkbox-item"><input type="checkbox" data-factor="falls"> 転倒歴</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="cognitiveImpairment"> 認知機能低下</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="orthostatic"> 起立性低血圧</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="urinaryIncontinence"> 尿失禁</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="constipation"> 慢性便秘</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="dizziness"> めまい・ふらつき</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="drowsiness"> 眠気・鎮静</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="weightLoss"> 体重減少</label>
+                <label class="checkbox-item"><input type="checkbox" data-factor="polyuria"> 頻尿・多尿</label>
+            </div>
+        </div>
+        
+        <button class="primary" onclick="assessPolypharmacy()">ポリファーマシーを評価する</button>
+        
+        <div id="result" class="result-section hidden">
+            <div class="card">
+                <div class="result-header">
+                    <h2>評価結果</h2>
+                    <span id="riskBadge" class="risk-badge"></span>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-number" id="scoreNumber">0</div>
+                    <div class="score-label">ポリファーマシースコア (MAI簡易版)</div>
+                </div>
+                
+                <div id="drugCountSummary" class="category-card">
+                    <div class="category-title">📊 薬剤数サマリー</div>
+                    <div id="drugSummary"></div>
+                </div>
+                
+                <div id="deprescribingSection" class="hidden">
+                    <div class="category-card">
+                        <div class="category-title">
+                            ⚠️ 鑑別（処方中止・減量）候補薬
+                            <span class="category-count" id="deprescribeCount">0</span>
+                        </div>
+                        <div id="deprescribingList"></div>
+                    </div>
+                </div>
+                
+                <div id="interactionSection" class="hidden">
+                    <div class="category-card">
+                        <div class="category-title">
+                            🔔 注意すべき相互作用・重複
+                            <span class="category-count" id="interactionCount">0</span>
+                        </div>
+                        <div id="interactionList"></div>
+                    </div>
+                </div>
+                
+                <div id="anticholinergicSection" class="hidden">
+                    <div class="category-card">
+                        <div class="category-title">
+                            🧠 抗コリン作用負荷
+                            <span class="category-count" id="acbScore">0</span>
+                        </div>
+                        <div id="anticholinergicList"></div>
+                    </div>
+                </div>
+                
+                <div id="recommendationSection" class="hidden">
+                    <div class="category-card" style="background: #e7f3ff;">
+                        <div class="category-title">💡 推奨アクション</div>
+                        <div id="recommendations"></div>
+                    </div>
+                </div>
+                
+                <button class="copy-btn" onclick="copyResult()">📋 結果をコピー</button>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h3>🎁 さらに業務を効率化しませんか？</h3>
+            <p>薬剤師向けAIプロンプト集（100個）とNotionテンプレートで、鑑別・服薬指導・薬歴作成を自動化</p>
+            <div class="cta-links">
+                <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-link">AIプロンプト集を見る (¥500)</a>
+                <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-link secondary">Notionテンプレート (¥500)</a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>薬剤師のための無料ツール | <a href="index.html">ツール一覧に戻る</a></p>
+            <p style="margin-top: 8px;">※本ツールは補助的なスクリーニング用です。最終的な判断は処方医との相談に基づいてください。</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 鑑別候補薬の定義（Beers Criteria 2023 + 日本のガイドライン参考）
+        const deprescribingCandidates = {
+            benzodiazepine: {
+                reason: '高齢者では転倒・認知機能低下リスクが増加。徐々に減量を検討。',
+                priority: 'high'
+            },
+            anticholinergic: {
+                reason: '認知機能低下・転倒・便秘・尿閉リスク。代替薬への切り替えを検討。',
+                priority: 'high'
+            },
+            antidepressant: {
+                reason: '高齢者では抗コリン作用・転倒リスク。適応の再評価を推奨。',
+                priority: 'medium'
+            },
+            antipsychotic: {
+                reason: '認知症患者への使用はリスクが高い。行動・心理症状の再評価を推奨。',
+                priority: 'high'
+            },
+            ppi: {
+                reason: '長期使用の適応再評価を推奨。8週間以内の短期使用が基本。',
+                priority: 'medium'
+            },
+            h2blocker: {
+                reason: '長期使用の適応再評価。認知機能への影響も報告あり。',
+                priority: 'low'
+            },
+            nsaid: {
+                reason: '高齢者では消化性潰瘍・腎機能障害リスクが高い。必要最小限の使用を推奨。',
+                priority: 'high'
+            },
+            opioid: {
+                reason: '高齢者では鎮静・呼吸抑制・便秘リスク。定期的な鎮痛評価と減量を検討。',
+                priority: 'medium'
+            },
+            antiParkinson: {
+                reason: '抗コリン薬は高齢者では特にリスクが高い。ドパミン作動薬への切り替えを検討。',
+                priority: 'medium'
+            },
+            diuretic: {
+                reason: '脱水・電解質異常・転倒リスク。必要最小限の使用と定期的評価を推奨。',
+                priority: 'low'
+            }
+        };
+        
+        // 抗コリン作用スコア（Anticholinergic Cognitive Burden Scale参考）
+        const anticholinergicScore = {
+            anticholinergic: 3,
+            benzodiazepine: 1,
+            antidepressant: 2,
+            antipsychotic: 2,
+            antiParkinson: 2,
+            h2blocker: 1,
+            opioid: 1
+        };
+        
+        // 相互作用・重複パターン
+        const interactionPatterns = [
+            {
+                drugs: ['anticoagulant', 'antiplatelet'],
+                message: '抗凝固薬と抗血小板薬の併用 → 出血リスクが増大。適応の厳密な再評価を推奨。',
+                severity: 'high'
+            },
+            {
+                drugs: ['nsaid', 'anticoagulant'],
+                message: 'NSAIDsと抗凝固薬の併用 → 消化管出血リスクが著明に増加。',
+                severity: 'high'
+            },
+            {
+                drugs: ['nsaid', 'antiplatelet'],
+                message: 'NSAIDsと抗血小板薬の併用 → 消化性潰瘍リスクが増加。',
+                severity: 'medium'
+            },
+            {
+                drugs: ['acei', 'arb', 'diuretic'],
+                message: 'ACE-I/ARB + 利尿薬 + K保持性利尿薬 → 高カリウム血症リスク。',
+                severity: 'medium',
+                requires: ['acei', 'arb']
+            },
+            {
+                drugs: ['benzodiazepine', 'opioid'],
+                message: 'ベンゾジアゼピンとオピオイドの併用 → 鎮静・呼吸抑制リスク。',
+                severity: 'high'
+            },
+            {
+                drugs: ['ppi', 'h2blocker'],
+                message: 'PPIとH2ブロッカーの重複 → 通常はどちらかで十分。',
+                severity: 'low'
+            },
+            {
+                drugs: ['statin', 'nsaid'],
+                message: 'スタチンとNSAIDsの併用 → 横紋筋融解症リスクが増加の可能性。',
+                severity: 'medium'
+            }
+        ];
+        
+        // 推奨アクション
+        function getRecommendations(selectedCategories, riskFactors, score, age) {
+            const recommendations = [];
+            
+            if (selectedCategories.includes('benzodiazepine')) {
+                recommendations.push('ベンゾジアゼピンの徐々の減量を検討（認知機能・転倒リスク）');
+            }
+            if (selectedCategories.includes('ppi') || selectedCategories.includes('h2blocker')) {
+                recommendations.push('酸分泌抑制薬の適応再評価（長期使用の必要性確認）');
+            }
+            if (selectedCategories.includes('anticholinergic')) {
+                recommendations.push('第一世代抗ヒスタミン薬・抗コリン薬の中止または代替薬検討');
+            }
+            if (selectedCategories.includes('nsaid')) {
+                recommendations.push('NSAIDsの必要最小限の使用（アセトアミノフェンへの切り替え検討）');
+            }
+            if (riskFactors.includes('falls')) {
+                recommendations.push('転倒リスクのある薬剤（鎮静薬・降圧薬・利尿薬）の見直し');
+            }
+            if (riskFactors.includes('cognitiveImpairment')) {
+                recommendations.push('抗コリン作用のある薬剤の見直し（認知機能への影響）');
+            }
+            if (score >= 10) {
+                recommendations.push('多職種カンファレンスでの包括的薬物療法レビューを推奨');
+            }
+            if (age >= 75) {
+                recommendations.push('75歳以上：処方適正化の優先度が高い（日本老年医学会ガイドライン）');
+            }
+            
+            return recommendations;
+        }
+        
+        function assessPolypharmacy() {
+            // 入力値の取得
+            const age = parseInt(document.getElementById('age').value) || 0;
+            const gender = document.getElementById('gender').value;
+            const weight = parseFloat(document.getElementById('weight').value) || 0;
+            const egfr = parseFloat(document.getElementById('egfr').value) || 100;
+            const totalDrugs = parseInt(document.getElementById('totalDrugs').value) || 0;
+            
+            // 選択された薬効分類
+            const selectedCategories = [];
+            document.querySelectorAll('#drugCategories input:checked').forEach(cb => {
+                selectedCategories.push(cb.dataset.category);
+            });
+            
+            // その他の薬剤
+            const otherDrugsInput = document.getElementById('otherDrugs').value;
+            const otherDrugs = otherDrugsInput ? otherDrugsInput.split(',').map(d => d.trim()).filter(d => d) : [];
+            
+            // リスク因子
+            const riskFactors = [];
+            document.querySelectorAll('#riskFactors input:checked').forEach(cb => {
+                riskFactors.push(cb.dataset.factor);
+            });
+            
+            // 薬剤数の計算
+            const categoryCount = selectedCategories.length;
+            const otherCount = otherDrugs.length;
+            const finalDrugCount = totalDrugs > 0 ? totalDrugs : (categoryCount + otherCount);
+            
+            // ポリファーマシー判定
+            const isPolypharmacy = finalDrugCount >= 6;
+            const isExcessivePolypharmacy = finalDrugCount >= 10;
+            
+            // MAI簡易スコア計算（Medication Appropriateness Index参考）
+            let score = 0;
+            
+            // 薬剤数による加点
+            if (finalDrugCount >= 6) score += 2;
+            if (finalDrugCount >= 10) score += 3;
+            
+            // 高リスク薬剤による加点
+            selectedCategories.forEach(cat => {
+                if (deprescribingCandidates[cat]) {
+                    score += deprescribingCandidates[cat].priority === 'high' ? 3 : 
+                             deprescribingCandidates[cat].priority === 'medium' ? 2 : 1;
+                }
+            });
+            
+            // 年齢による加点
+            if (age >= 75) score += 2;
+            else if (age >= 65) score += 1;
+            
+            // 腎機能による加点
+            if (egfr < 30) score += 2;
+            else if (egfr < 60) score += 1;
+            
+            // リスク因子による加点
+            score += riskFactors.length;
+            
+            // 抗コリン作用負荷の計算
+            let acbTotal = 0;
+            const acbDrugs = [];
+            selectedCategories.forEach(cat => {
+                if (anticholinergicScore[cat]) {
+                    acbTotal += anticholinergicScore[cat];
+                    acbDrugs.push({ category: cat, score: anticholinergicScore[cat] });
+                }
+            });
+            
+            // 鑑別候補薬の抽出
+            const deprescribing = [];
+            selectedCategories.forEach(cat => {
+                if (deprescribingCandidates[cat]) {
+                    deprescribing.push({
+                        category: getCategoryName(cat),
+                        reason: deprescribingCandidates[cat].reason,
+                        priority: deprescribingCandidates[cat].priority
+                    });
+                }
+            });
+            
+            // 相互作用・重複の検出
+            const interactions = [];
+            interactionPatterns.forEach(pattern => {
+                const hasAllDrugs = pattern.drugs.every(d => selectedCategories.includes(d));
+                if (hasAllDrugs) {
+                    interactions.push({
+                        message: pattern.message,
+                        severity: pattern.severity
+                    });
+                }
+            });
+            
+            // 推奨アクションの生成
+            const recommendations = getRecommendations(selectedCategories, riskFactors, score, age);
+            
+            // 結果の表示
+            displayResult({
+                score,
+                finalDrugCount,
+                isPolypharmacy,
+                isExcessivePolypharmacy,
+                acbTotal,
+                acbDrugs,
+                deprescribing,
+                interactions,
+                recommendations,
+                age,
+                egfr,
+                riskFactors
+            });
+        }
+        
+        function getCategoryName(category) {
+            const names = {
+                antihypertensive: '降圧薬',
+                diuretic: '利尿薬',
+                antiplatelet: '抗血小板薬',
+                anticoagulant: '抗凝固薬',
+                statin: 'スタチン',
+                diabetes: '糖尿病薬',
+                ppi: 'PPI',
+                h2blocker: 'H2ブロッカー',
+                nsaid: 'NSAIDs',
+                opioid: 'オピオイド',
+                benzodiazepine: 'ベンゾジアゼピン',
+                antidepressant: '抗うつ薬',
+                antipsychotic: '抗精神病薬',
+                anticholinergic: '抗コリン薬',
+                antiParkinson: '抗パーキンソン薬',
+                osteoporosis: '骨粗鬆症薬',
+                thyroid: '甲状腺薬',
+                gout: '痛風薬'
+            };
+            return names[category] || category;
+        }
+        
+        function displayResult(data) {
+            document.getElementById('result').classList.remove('hidden');
+            
+            // スコア表示
+            document.getElementById('scoreNumber').textContent = data.score;
+            
+            // リスクバッジ
+            const riskBadge = document.getElementById('riskBadge');
+            if (data.score >= 15) {
+                riskBadge.textContent = '高リスク';
+                riskBadge.className = 'risk-badge risk-high';
+            } else if (data.score >= 8) {
+                riskBadge.textContent = '中等度リスク';
+                riskBadge.className = 'risk-badge risk-moderate';
+            } else {
+                riskBadge.textContent = '低リスク';
+                riskBadge.className = 'risk-badge risk-low';
+            }
+            
+            // 薬剤数サマリー
+            let summaryHtml = `
+                <p>内服薬総数: <strong>${data.finalDrugCount}種</strong></p>
+                <p>ポリファーマシー判定: <strong>${data.isExcessivePolypharmacy ? '過剰ポリファーマシー (≥10薬剤)' : data.isPolypharmacy ? 'ポリファーマシー (≥6薬剤)' : 'ポリファーマシーなし (<6薬剤)'}</strong></p>
+            `;
+            if (data.age >= 65) summaryHtml += `<p>年齢: ${data.age}歳 (高齢者) | eGFR: ${data.egfr} mL/min/1.73m²</p>`;
+            document.getElementById('drugSummary').innerHTML = summaryHtml;
+            
+            // 鑑別候補薬
+            if (data.deprescribing.length > 0) {
+                document.getElementById('deprescribingSection').classList.remove('hidden');
+                document.getElementById('deprescribeCount').textContent = data.deprescribing.length;
+                let deprescribeHtml = data.deprescribing.map(d => `
+                    <div class="deprescribing-candidate">
+                        <div>
+                            <div class="drug-name">${d.category}</div>
+                            <div class="deprescribe-reason">${d.reason}</div>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('deprescribingList').innerHTML = deprescribeHtml;
+            } else {
+                document.getElementById('deprescribingSection').classList.add('hidden');
+            }
+            
+            // 相互作用
+            if (data.interactions.length > 0) {
+                document.getElementById('interactionSection').classList.remove('hidden');
+                document.getElementById('interactionCount').textContent = data.interactions.length;
+                let interactionHtml = data.interactions.map(i => `
+                    <div class="warning-item">
+                        <span class="warning-icon">${i.severity === 'high' ? '🔴' : i.severity === 'medium' ? '🟡' : '⚪'}</span>
+                        <span>${i.message}</span>
+                    </div>
+                `).join('');
+                document.getElementById('interactionList').innerHTML = interactionHtml;
+            } else {
+                document.getElementById('interactionSection').classList.add('hidden');
+            }
+            
+            // 抗コリン作用負荷
+            if (data.acbTotal >= 2) {
+                document.getElementById('anticholinergicSection').classList.remove('hidden');
+                document.getElementById('acbScore').textContent = data.acbTotal;
+                let acbHtml = '<p>抗コリン作用スコア ≥ 3 は認知機能への影響リスクが高い</p>';
+                acbHtml += data.acbDrugs.map(d => 
+                    `<div class="warning-item"><span class="warning-icon">🧠</span><span>${getCategoryName(d.category)}: +${d.score}点</span></div>`
+                ).join('');
+                document.getElementById('anticholinergicList').innerHTML = acbHtml;
+            } else {
+                document.getElementById('anticholinergicSection').classList.add('hidden');
+            }
+            
+            // 推奨アクション
+            if (data.recommendations.length > 0) {
+                document.getElementById('recommendationSection').classList.remove('hidden');
+                let recHtml = '<ul style="margin: 0; padding-left: 20px;">' + 
+                    data.recommendations.map(r => `<li style="margin-bottom: 8px;">${r}</li>`).join('') + 
+                    '</ul>';
+                document.getElementById('recommendations').innerHTML = recHtml;
+            } else {
+                document.getElementById('recommendationSection').classList.add('hidden');
+            }
+            
+            // スクロール
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyResult() {
+            const score = document.getElementById('scoreNumber').textContent;
+            const riskBadge = document.getElementById('riskBadge').textContent;
+            const drugSummary = document.getElementById('drugSummary').innerText;
+            
+            let text = `【ポリファーマシー評価結果】\n`;
+            text += `スコア: ${score} (${riskBadge})\n\n`;
+            text += `${drugSummary}\n\n`;
+            
+            const deprescribeList = document.getElementById('deprescribingList');
+            if (deprescribeList && !document.getElementById('deprescribingSection').classList.contains('hidden')) {
+                text += `【鑑別候補薬】\n${deprescribeList.innerText}\n\n`;
+            }
+            
+            const interactionList = document.getElementById('interactionList');
+            if (interactionList && !document.getElementById('interactionSection').classList.contains('hidden')) {
+                text += `【注意すべき相互作用】\n${interactionList.innerText}\n\n`;
+            }
+            
+            const recommendations = document.getElementById('recommendations');
+            if (recommendations && !document.getElementById('recommendationSection').classList.contains('hidden')) {
+                text += `【推奨アクション】\n${recommendations.innerText}\n`;
+            }
+            
+            text += `\n評価日時: ${new Date().toLocaleString('ja-JP')}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ コピーしました';
+                setTimeout(() => btn.textContent = originalText, 2000);
+            });
+        }
+        
+        // チェックボックス選択時のスタイル変更
+        document.querySelectorAll('.checkbox-item').forEach(item => {
+            const checkbox = item.querySelector('input');
+            checkbox.addEventListener('change', () => {
+                item.classList.toggle('selected', checkbox.checked);
+            });
+        });
+    </script>
+
+<!-- 関連ツール セクション -->
+<div style="margin:40px auto;max-width:860px;padding:24px;background:#fafafa;border:1px solid #e2e8f0;border-radius:12px;text-align:center;">
+  <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">🔗 関連ツール</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <a href="renal-drug-dosing.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">🔬 腎機能別投与量計算</a>
+      <a href="doac-dosing.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">💊 DOAC投与量チェッカー</a>
+      <a href="antihypertensive-selector.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#f0f4ff'">❤️ 降圧薬選択ガイド</a>
+      <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🤖 薬剤師向けAIプロンプト集</a>
+  </div>
+</div>
+</body>
+</html>

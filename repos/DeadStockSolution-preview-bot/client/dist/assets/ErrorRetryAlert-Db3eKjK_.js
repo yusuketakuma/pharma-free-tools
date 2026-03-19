@@ -1,0 +1,1 @@
+import{j as e,h as t,c as s}from"./index-FgN5r-qv.js";function i({error:n,onRetry:r}){return e.jsxs(t,{variant:"danger",className:"d-flex justify-content-between align-items-center gap-2 flex-wrap",children:[e.jsx("span",{children:n}),r&&e.jsx(s,{size:"sm",variant:"outline-danger",onClick:r,children:"再試行"})]})}export{i as E};

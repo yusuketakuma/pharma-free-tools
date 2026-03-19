@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'medication-adherence-improvement-checklist-' + action
+      });
+    }
+  </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服薬アドヒアランス向上チェックリスト | 薬局無料ツール集</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #16a34a;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+        }
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .category-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+        .category-card:hover {
+            transform: translateY(-2px);
+        }
+        .category-header {
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
+        }
+        .category-patient { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1e40af; }
+        .category-follow { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; }
+        .category-manage { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #92400e; }
+        .category-side { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); color: #991b1b; }
+        .category-life { background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); color: #6b21a8; }
+        
+        .check-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .check-item:last-child {
+            border-bottom: none;
+        }
+        .check-item:hover {
+            background-color: #f8fafc;
+        }
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .progress-bar-custom {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e2e8f0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .risk-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        .risk-high { background-color: #fee2e2; color: #991b1b; }
+        .risk-medium { background-color: #fef3c7; color: #92400e; }
+        .risk-low { background-color: #dcfce7; color: #166534; }
+        .action-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .category-card { break-inside: avoid; }
+        }
+    </style>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'medication-adherence-improvement-checklist-' + action
+      });
+    }
+
+    function trackCopyAction() {
+      gtag('event', 'copy_action', {
+        'event_category': 'engagement',
+        'event_label': 'medication-adherence-improvement-checklist-copy'
+      });
+    }
+
+    function trackPromptCTA() {
+      gtag('event', 'cta_click', {
+        'event_category': 'monetization',
+        'event_label': 'medication-adherence-improvement-checklist-prompt-cta'
+      });
+    }
+  </script>
+
+  
+    <!-- OGP -->
+    <meta property="og:title" content="服薬アドヒアランス向上チェックリスト | 薬剤師無料ツール">
+    <meta property="og:description" content="薬剤師の業務効率化を支援する無料ツール">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/medication-adherence-improvement-checklist.html">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="服薬アドヒアランス向上チェックリスト | 薬剤師無料ツール">
+    <meta name="twitter:description" content="薬剤師の業務効率化を支援する無料ツール">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1 class="mb-2">💊 服薬アドヒアランス向上チェックリスト</h1>
+            <p class="mb-0 opacity-75">患者の服薬継続率向上を目指すための自己評価ツール</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 進捗サマリー -->
+        <div class="card category-card mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <div class="score-display text-primary" id="totalScore">0%</div>
+                        <div class="text-muted">アドヒアランス対応度</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <span class="text-muted">チェック進捗:</span>
+                            <span id="checkProgress" class="fw-bold">0 / 25</span>
+                        </div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill bg-primary" id="progressBar" style="width: 0%"></div>
+                        </div>
+                        <div class="mt-3" id="riskSummary">
+                            <span class="risk-badge risk-high me-1">高リスク: <span id="highCount">0</span></span>
+                            <span class="risk-badge risk-medium me-1">中リスク: <span id="mediumCount">0</span></span>
+                            <span class="risk-badge risk-low">低リスク: <span id="lowCount">0</span></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-end no-print">
+                        <button class="btn btn-outline-primary me-2" onclick="resetAll(); trackToolUsage('reset')">
+                            🔄 リセット
+                        </button>
+                        <button class="btn btn-primary" onclick="window.print(); trackToolUsage('print')">
+                            🖨️ 印刷
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリ1: 患者教育 -->
+        <div class="card category-card">
+            <div class="category-header category-patient">
+                📚 患者教育・理解促進
+            </div>
+            <div class="card-body p-0">
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item1" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item1">
+                        薬の効果・目的を患者が理解できる言葉で説明している
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item2" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item2">
+                        服薬スケジュールを患者の生活リズムに合わせて調整している
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item3" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item3">
+                        薬の形状・服用方法について視覚的な資料を活用している
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item4" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item4">
+                        服薬忘れ時の対応について患者に説明している
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item5" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item5">
+                        介護者・家族への服薬指導を実施している
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリ2: フォローアップ -->
+        <div class="card category-card">
+            <div class="category-header category-follow">
+                📞 フォローアップ体制
+            </div>
+            <div class="card-body p-0">
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item6" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item6">
+                        処方開始後の服薬状況確認の仕組みがある
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item7" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item7">
+                        服薬忘れが多い患者の早期発見システムがある
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item8" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item8">
+                        電話・来局での服薬相談を受け付けている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item9" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item9">
+                        処方変更時の影響確認を行っている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item10" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item10">
+                        長期処方患者の定期フォローを行っている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリ3: 服薬管理支援 -->
+        <div class="card category-card">
+            <div class="category-header category-manage">
+                🗂️ 服薬管理支援ツール
+            </div>
+            <div class="card-body p-0">
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item11" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item11">
+                        服薬カレンダー・お薬手帳の活用を推奨している
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item12" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item12">
+                        一包化・PTPシート選択など患者に合った方法を提案している
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item13" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item13">
+                        服薬支援アプリの紹介を行っている
+                    </label>
+                    <span class="risk-badge risk-low">参考</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item14" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item14">
+                        自動分包機・服薬支援器具の活用を検討している
+                    </label>
+                    <span class="risk-badge risk-low">参考</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item15" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item15">
+                        残薬確認・服薬状況の可視化を行っている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリ4: 副作用対策 -->
+        <div class="card category-card">
+            <div class="category-header category-side">
+                ⚠️ 副作用・不安への対応
+            </div>
+            <div class="card-body p-0">
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item16" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item16">
+                        想定される副作用について事前に説明している
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item17" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item17">
+                        副作用発生時の相談窓口を案内している
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item18" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item18">
+                        副作用不安による自己中断を防止する説明をしている
+                    </label>
+                    <span class="risk-badge risk-high">重要</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item19" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item19">
+                        薬への不安・不信感を倾听する機会を設けている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item20" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item20">
+                        代替薬・減量などの選択肢を医師と連携して検討している
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリ5: 生活指導 -->
+        <div class="card category-card">
+            <div class="category-header category-life">
+                🌟 生活習慣・継続支援
+            </div>
+            <div class="card-body p-0">
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item21" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item21">
+                        服薬継続のメリットを具体的に伝えている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item22" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item22">
+                        食事・運動など生活習慣改善のアドバイスを行っている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item23" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item23">
+                        経済的負担（薬剤費）への配慮・相談を受けている
+                    </label>
+                    <span class="risk-badge risk-medium">推奨</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item24" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item24">
+                        通院負担軽減（長期処方等）の調整を行っている
+                    </label>
+                    <span class="risk-badge risk-low">参考</span>
+                </div>
+                <div class="check-item">
+                    <input class="form-check-input" type="checkbox" id="item25" onchange="updateProgress()">
+                    <label class="form-check-label flex-grow-1" for="item25">
+                        服薬継続による健康改善事例を共有している
+                    </label>
+                    <span class="risk-badge risk-low">参考</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 改善アクション提案 -->
+        <div class="action-card no-print" id="actionCard" style="display: none;">
+            <h5 class="mb-3">📋 推奨改善アクション</h5>
+            <div id="actionList"></div>
+        </div>
+
+        <!-- フッター -->
+        <div class="text-center text-muted py-4">
+            <p>💊 薬局無料ツール集 | <a href="index.html">ツール一覧に戻る</a></p>
+            <p class="small">チェック結果はブラウザに保存されます</p>
+        </div>
+    </div>
+
+    <script>
+        // チェック項目定義
+        const items = [
+            { id: 'item1', category: 'patient', risk: 'high', action: '患者教育資料の整備・わかりやすい説明の実践' },
+            { id: 'item2', category: 'patient', risk: 'high', action: '服薬スケジュールの個別最適化' },
+            { id: 'item3', category: 'patient', risk: 'medium', action: '視覚的資料（図解・写真）の活用' },
+            { id: 'item4', category: 'patient', risk: 'medium', action: '服薬忘れ時の対応マニュアル作成' },
+            { id: 'item5', category: 'patient', risk: 'medium', action: '家族・介護者への服薬指導フロー確立' },
+            { id: 'item6', category: 'follow', risk: 'high', action: '処方開始後の確認コール・来局促進' },
+            { id: 'item7', category: 'follow', risk: 'high', action: '服薬忘れ患者の早期発見アラート設定' },
+            { id: 'item8', category: 'follow', risk: 'medium', action: '電話相談窓口の周知・対応時間設定' },
+            { id: 'item9', category: 'follow', risk: 'medium', action: '処方変更時の影響確認フロー確立' },
+            { id: 'item10', category: 'follow', risk: 'medium', action: '長期処方患者の定期フォロースケジュール設定' },
+            { id: 'item11', category: 'manage', risk: 'medium', action: 'お薬手帳・カレンダーの積極的活用推奨' },
+            { id: 'item12', category: 'manage', risk: 'high', action: '一包化・PTP選択の個別提案強化' },
+            { id: 'item13', category: 'manage', risk: 'low', action: '服薬支援アプリの紹介資料作成' },
+            { id: 'item14', category: 'manage', risk: 'low', action: '服薬支援器具の導入検討' },
+            { id: 'item15', category: 'manage', risk: 'medium', action: '残薬確認の定期実施・記録' },
+            { id: 'item16', category: 'side', risk: 'high', action: '副作用説明資料の標準化' },
+            { id: 'item17', category: 'side', risk: 'high', action: '相談窓口の連絡先明示' },
+            { id: 'item18', category: 'side', risk: 'high', action: '自己中断防止の事前説明強化' },
+            { id: 'item19', category: 'side', risk: 'medium', action: '不安・不信感を聞き取る機会の設定' },
+            { id: 'item20', category: 'side', risk: 'medium', action: '医師との副作用対応連携フロー確立' },
+            { id: 'item21', category: 'life', risk: 'medium', action: '服薬継続メリットの具体的説明資料作成' },
+            { id: 'item22', category: 'life', risk: 'medium', action: '生活習慣アドバイスの標準化' },
+            { id: 'item23', category: 'life', risk: 'medium', action: '経済的負担への配慮・ジェネリック提案' },
+            { id: 'item24', category: 'life', risk: 'low', action: '長期処方の活用検討' },
+            { id: 'item25', category: 'life', risk: 'low', action: '健康改善事例の収集・共有' }
+        ];
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadState();
+            updateProgress();
+        });
+
+        // 状態読み込み
+        function loadState() {
+            items.forEach(item => {
+                const saved = localStorage.getItem('adherence_' + item.id);
+                if (saved === 'true') {
+                    document.getElementById(item.id).checked = true;
+                }
+            });
+        }
+
+        // 状態保存
+        function saveState() {
+            items.forEach(item => {
+                const checked = document.getElementById(item.id).checked;
+                localStorage.setItem('adherence_' + item.id, checked);
+            });
+        }
+
+        // 進捗更新
+        function updateProgress() {
+            saveState();
+            
+            let checkedCount = 0;
+            let highCount = 0;
+            let mediumCount = 0;
+            let lowCount = 0;
+            let highUnchecked = [];
+            let mediumUnchecked = [];
+
+            items.forEach(item => {
+                const el = document.getElementById(item.id);
+                if (el.checked) {
+                    checkedCount++;
+                    if (item.risk === 'high') highCount++;
+                    else if (item.risk === 'medium') mediumCount++;
+                    else lowCount++;
+                } else {
+                    if (item.risk === 'high') highUnchecked.push(item);
+                    else if (item.risk === 'medium') mediumUnchecked.push(item);
+                }
+            });
+
+            const totalItems = items.length;
+            const score = Math.round((checkedCount / totalItems) * 100);
+
+            document.getElementById('totalScore').textContent = score + '%';
+            document.getElementById('checkProgress').textContent = `${checkedCount} / ${totalItems}`;
+            document.getElementById('progressBar').style.width = score + '%';
+            
+            // スコアに応じた色変更
+            const progressBar = document.getElementById('progressBar');
+            if (score >= 80) {
+                progressBar.className = 'progress-fill bg-success';
+            } else if (score >= 50) {
+                progressBar.className = 'progress-fill bg-warning';
+            } else {
+                progressBar.className = 'progress-fill bg-danger';
+            }
+
+            document.getElementById('highCount').textContent = highCount;
+            document.getElementById('mediumCount').textContent = mediumCount;
+            document.getElementById('lowCount').textContent = lowCount;
+
+            // 改善アクション表示
+            updateActionCard(highUnchecked, mediumUnchecked);
+        }
+
+        // 改善アクション更新
+        function updateActionCard(highUnchecked, mediumUnchecked) {
+            const actionCard = document.getElementById('actionCard');
+            const actionList = document.getElementById('actionList');
+            
+            if (highUnchecked.length === 0 && mediumUnchecked.length === 0) {
+                actionCard.style.display = 'none';
+                return;
+            }
+
+            actionCard.style.display = 'block';
+            let html = '';
+
+            if (highUnchecked.length > 0) {
+                html += '<div class="mb-3"><strong class="text-danger">🔴 優先度高（未実施項目）</strong><ul class="mt-2">';
+                highUnchecked.slice(0, 3).forEach(item => {
+                    html += `<li>${item.action}</li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            if (mediumUnchecked.length > 0) {
+                html += '<div><strong class="text-warning">🟡 優先度中（未実施項目）</strong><ul class="mt-2">';
+                mediumUnchecked.slice(0, 3).forEach(item => {
+                    html += `<li>${item.action}</li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            actionList.innerHTML = html;
+        }
+
+        // リセット
+        function resetAll() {
+            if (confirm('すべてのチェックをリセットしますか？')) {
+                items.forEach(item => {
+                    document.getElementById(item.id).checked = false;
+                    localStorage.removeItem('adherence_' + item.id);
+                });
+                updateProgress();
+            }
+        }
+    </script>
+
+<!-- 関連ツール セクション -->
+<div style="margin:40px auto;max-width:860px;padding:24px;background:#fafafa;border:1px solid #e2e8f0;border-radius:12px;text-align:center;">
+  <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">🔗 関連ツール</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <a href="dementia-elderly-medication-support-checklist.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">🧓 認知症高齢者服薬支援チェックリスト</a>
+      <a href="polypharmacy-assessment.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">📊 ポリファーマシー評価</a>
+      <a href="medication-reminder.html" style="display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">⏰ 服薬リマインダー</a>
+      <a href="ai-prompts-lp.html" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🤖 薬剤師向けAIプロンプト集</a>
+  </div>
+</div>
+
+</body>
+</html>

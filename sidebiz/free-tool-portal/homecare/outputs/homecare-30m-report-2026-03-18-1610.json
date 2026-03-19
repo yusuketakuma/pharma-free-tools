@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-03-18T07:10:00Z",
+  "job": "homecare-30m-assign",
+  "status": "done",
+  "tasks": [
+    {
+      "description": "CloseDi 3/18更新反映",
+      "result": "done",
+      "details": "供給停止:キロサイド注200mg、限定出荷:アミトリプチリン塩酸塩錠10mgサワイ、限定出荷解除:アトモキセチン錠5mgニプロ"
+    },
+    {
+      "description": "PMDA URL回復確認",
+      "result": "done",
+      "details": "トップページ→安全対策業務→回収情報でアクセス可能。クラスI回収は血液製剤関連（在宅影響なし）"
+    },
+    {
+      "description": "調剤報酬改定在宅関連詳細追記",
+      "result": "done",
+      "details": "在宅薬学総合体制加算1→30点、かかりつけ薬剤師廃止詳細、残薬調整加算・ベースアップ評価料・物価対応料新設を追記"
+    },
+    {
+      "description": "チェックリスト・残日数更新",
+      "result": "done",
+      "details": "3/31まで13日、5/1まで44日。CloseDi・調剤報酬情報反映"
+    }
+  ],
+  "alerts": [
+    {
+      "level": "ALERT",
+      "issue": "経過措置医薬品患者抽出未着手",
+      "deadline": "2026-03-31",
+      "remaining": "13日",
+      "action": "ゆうすけによるMCS患者抽出Phase1が急務。部長経由リマインド必要"
+    },
+    {
+      "level": "INFO",
+      "issue": "アミトリプチリン塩酸塩錠10mgサワイ限定出荷",
+      "details": "三環系抗うつ薬・慢性疼痛使用。在宅患者で服用中の可能性あり。代替品確認推奨"
+    },
+    {
+      "level": "INFO",
+      "issue": "PMDA URL回復",
+      "details": "トップページからナビゲーションでアクセス可能に回復"
+    }
+  ],
+  "nextActions": [
+    "アミトリプチリン限定出荷の在宅影響調査・代替品確認",
+    "経過措置Phase1リマインド継続（残り13日）",
+    "指定濫用防止スタッフ教育進捗確認",
+    "調剤報酬改定6月施行の実務準備チェックリスト作成"
+  ],
+  "updatedFiles": [
+    "homecare-checklists.md",
+    "2026-chouzai-houshu-kaisei-zaitaku-summary.md",
+    "status.md"
+  ],
+  "learningPoints": [
+    "PMDA URL変更時はトップページからのナビゲーション確認が有効",
+    "CloseDi更新は在宅影響評価をセットで実施すべき（アミトリプチリンのように在宅で使用される薬剤の見落とし防止）"
+  ],
+  "channelNotification": "none",
+  "reportAggregation": "trainer-2h-regular-report"
+}
