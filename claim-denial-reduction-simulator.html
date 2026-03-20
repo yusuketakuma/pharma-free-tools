@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        'event_category': 'engagement',
+        'event_label': 'claim-denial-reduction-simulator-' + action
+      });
+    }
+  </script>
+
   <meta charset="UTF-8">
     <meta property="og:title" content="請求返戣削減シミュレーター - 薬局収益改善予測">
     <meta property="og:description" content="薬剤師・薬局向け無料ツール - 請求返戣削減シミュレーター - 薬局収益改善予測">
