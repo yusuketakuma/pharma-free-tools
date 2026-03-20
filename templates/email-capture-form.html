@@ -1,0 +1,102 @@
+<!-- メール登録フォーム（Buttondown対応） -->
+<!-- 使用方法: このHTMLスニペットをポータルトップやLP下部に埋め込む -->
+
+<style>
+.email-capture {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 32px 24px;
+  border-radius: 12px;
+  margin: 40px 0;
+  text-align: center;
+}
+
+.email-capture h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.4em;
+}
+
+.email-capture p {
+  margin: 0 0 20px 0;
+  opacity: 0.9;
+  font-size: 0.95em;
+}
+
+.email-capture-form {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.email-capture-form input[type="email"] {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  width: 280px;
+  max-width: 100%;
+}
+
+.email-capture-form button {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.email-capture-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.email-capture .privacy {
+  margin-top: 12px;
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .email-capture-form {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .email-capture-form input[type="email"] {
+    width: 100%;
+  }
+}
+</style>
+
+<div class="email-capture">
+  <h3>📬 薬剤師向け業務効率化ニュースレター</h3>
+  <p>新ツール追加・薬価改定情報・業務改善Tipsを週1回お届け<br>今なら「服薬指導チェックリストPDF」を無料プレゼント</p>
+  
+  <form class="email-capture-form" action="https://buttondown.email/api/emails/embed-subscribe/YOUR_USERNAME" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/YOUR_USERNAME', 'popupwindow'); trackEmailSignup(); return true">
+    <input type="email" name="email" placeholder="メールアドレスを入力" required>
+    <input type="hidden" value="1" name="embed">
+    <button type="submit">無料登録 →</button>
+  </form>
+  
+  <p class="privacy">※ いつでも配信停止可能。プライバシーポリシーに同意の上登録ください。</p>
+</div>
+
+<script>
+function trackEmailSignup() {
+  // GA4イベントトラッキング
+  if (typeof gtag === 'function') {
+    gtag('event', 'email_signup', {
+      'event_category': 'conversion',
+      'event_label': 'portal_top'
+    });
+  }
+  
+  // ローカルストレージに記録（重複防止）
+  localStorage.setItem('email_signup_attempted', new Date().toISOString());
+}
+</script>

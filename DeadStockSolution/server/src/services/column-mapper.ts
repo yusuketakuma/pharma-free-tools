@@ -155,29 +155,52 @@ function scoreUsedMedicationMapping(mapping: ColumnMapping): number {
 // 早期終了閾値: 3つ以上のキーワードカテゴリが一致した場合はヘッダ行確定とみなす
 const EARLY_TERMINATION_KEYWORD_SCORE = 15;
 
+// Pre-compute keyword groups to avoid Object.values() allocation per row scan
+const KEYWORD_GROUPS: string[][] = Object.values(KEYWORD_MAP);
+
+// Pre-compiled regex per keyword group: single regex test replaces N includes() calls
+const KEYWORD_REGEXES: RegExp[] = KEYWORD_GROUPS.map(
+  (keywords) => new RegExp(keywords.map((kw) => kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')),
+);
+
 export function detectHeaderRow(rows: unknown[][]): number {
   let bestRow = 0;
   let bestScore = 0;
 
+  const groupCount = KEYWORD_REGEXES.length;
   const scanLimit = Math.min(rows.length, 10);
   for (let i = 0; i < scanLimit; i++) {
     const row = rows[i];
     if (!row) continue;
 
-    // Count non-empty string cells
-    const nonEmptyStrings = row.filter(
-      (cell) => cell !== null && cell !== undefined && String(cell).trim().length > 0
-    ).length;
+    // Pre-normalize all cells once per row
+    const normalizedCells: string[] = [];
+    let nonEmptyStrings = 0;
+    for (let c = 0; c < row.length; c++) {
+      const cell = row[c];
+      if (cell !== null && cell !== undefined) {
+        const str = String(cell).normalize('NFKC');
+        normalizedCells.push(str);
+        if (str.trim().length > 0) {
+          nonEmptyStrings++;
+        }
+      } else {
+        normalizedCells.push('');
+      }
+    }
 
-    // Bonus for cells that contain known keywords
+    // Score keyword matches using pre-compiled regexes
+    // Track matched groups to avoid counting a group more than once per cell
     let keywordScore = 0;
-    for (const cell of row) {
-      const cellStr = String(cell || '').normalize('NFKC');
-      for (const keywords of Object.values(KEYWORD_MAP)) {
-        if (keywords.some((kw) => cellStr.includes(kw))) {
+    for (const cellStr of normalizedCells) {
+      if (!cellStr) continue;
+      for (let g = 0; g < groupCount; g++) {
+        if (KEYWORD_REGEXES[g].test(cellStr)) {
           keywordScore += 5;
         }
       }
+      // Inner-loop early termination: stop scanning cells when threshold is already met
+      if (keywordScore >= EARLY_TERMINATION_KEYWORD_SCORE) break;
     }
 
     const totalScore = nonEmptyStrings + keywordScore;

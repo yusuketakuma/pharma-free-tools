@@ -1,25 +1,18 @@
 # Sidebiz KPI Tracker
-最終更新: 2026-03-19 16:05
+最終更新: 2026-03-19 17:40
 
-> 2026-03-19より、件数・CTA・GA4埋め込みの判定は手動記載ではなく `sidebiz/free-tool-portal/verify-portal-integrity.sh` の実測値を正とする。
-> 以下の詳細一覧は旧版を含むため、件数判断には使わない。
+## 実測サマリー
+| 指標 | 実測値 | 備考 |
+|------|--------|------|
+| ツール総数 | 73 | ルート直下HTML実測 |
+| CTA設置 | 72 | `scripts/verify-portal-integrity.sh` 実測（index除く全HTML） |
+| OGP設定 | 73 | ルート直下HTML実測 |
+| GA4プレースホルダー残存 | 72 | 実ID判明後に一括置換 |
+| sitemap URL数 | 87 | index 1 + ツール86 |
 
-## 実測スナップショット（2026-03-19 16:05 JST）
+> 運用ルール: 手動記入値ではなく `scripts/verify-portal-integrity.sh` の実測値を正とする。
 
-| 指標 | 実測値 | 検証コマンド |
-|------|--------|--------------|
-| ポータルHTML総数 | 73 | `find . -maxdepth 1 -name '*.html' | wc -l` |
-| CTA設置数 | 73 | `grep -l '<!-- CTA Section -->' *.html | wc -l` |
-| GA4イベント埋め込み数 | 73 | `grep -l "gtag('event'" *.html | wc -l` |
-| GA4 Measurement ID未差し替え | 72 | `grep -l 'G-XXXXXXXXXX' *.html | wc -l` |
-
-- サンプル確認:
-  - `claim-denial-reduction-simulator.html:324` → `<!-- CTA Section -->`
-  - `pharmacy-bottleneck-diagnosis.html:593` → `<!-- CTA Section -->`
-  - `index.html:1556` → `<!-- CTA Section -->`
-- 補足: CTA/GA4イベントは 73/73 で整備済み。残ボトルネックは **GA4 Measurement ID の実ID差し替え（72ページ）**。
-
-## 無料ツール一覧（旧手動一覧・52ツール時点）
+## 無料ツール一覧（52ツール・旧台帳）
 
 ### ポータル内ツール（GitHub Pages公開）
 | # | ツール名 | URL | ステータス | CTA |

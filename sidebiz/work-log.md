@@ -2,6 +2,109 @@
 
 ---
 
+## 2026-03-21 07:57 JST — サイクル実行（静音モード・計画策定）
+
+### タスク1: SEOメタディスクリプション監査（73ファイル）
+
+**指示元**: dispatch.md 2026-03-20 22:06 タスク2
+**作業内容**: 全73 HTMLファイルのmeta description充実度をPythonスクリプトで自動監査
+**結果**:
+- 適正（50-160ch）: 63ファイル（86%）
+- MISSING: 4件（emergency-disaster-response, medication-adherence, patient-informed-consent, pharmacy-risk-management）
+- SHORT(<50ch): 5件（burnout-diagnosis 37ch, billing-checklist 45ch, followup-efficiency 45ch, ict-diagnosis 47ch, revenue-improvement 47ch）
+- LONG(>160ch): 1件（index.html 367ch）
+- 統計: 平均72ch、中央値68ch
+**次アクション**: 要改善10件をリスト化完了→次回バッチで改善実施
+
+### タスク2: AIプロンプト集拡充計画策定（15本→30本）
+
+**指示元**: dispatch.md 2026-03-20 22:06 タスク1
+**作業内容**: 既存15本の構成分析→追加15本の企画（3カテゴリ×5本）
+**新規カテゴリ**:
+- 📝 薬歴記載効率化（#16-20）: DO処方テンプレ、個別化フレーズ、ヒアリング→薬歴変換、ハイリスク薬チェック、監査指摘対策
+- 🔍 監査対策（#21-25）: 個別指導Q&A、標準手順書、算定要件点検、管理記録テンプレ、返戻分析
+- 🎓 新人教育（#26-30）: OJTスケジュール、調剤手順指導、ロールプレイ、暗記カード、スキル評価
+**品質基準**: 全15本が用途明確・出力例付き・150字以上を充足する設計
+**LP実装計画**: タブUI横スクロール6タブ化、CTA数値更新、GA4イベント追加
+**想定実装時間**: 55-70分
+**成果物**: `sidebiz/outputs/ai-prompts-expansion-plan-2026-03-20.md`
+
+---
+
+## 2026-03-21 06:00 JST — サイクル実行
+
+### タスク1: クロスリンクBatch3（9ファイル）
+
+**指示元**: dispatch.md 2026-03-20 20:23 タスク3
+**作業内容**: クロスリンク未設置の残り9ファイルに「関連ツール」セクション追加
+**対象**:
+- antibiotic-stewardship.html (+3リンク: doac-dosing, drug-induced-ade, polypharmacy)
+- claim-denial-reduction-simulator.html (+3リンク: claim-denial-diagnosis, billing, revenue)
+- doac-dosing.html (+3リンク: renal-drug-dosing, antibiotic, polypharmacy)
+- pharmacy-automation-roi.html (+3リンク: dx-roi, dx-assessment, bottleneck)
+- pharmacy-bottleneck-diagnosis.html (+3リンク: dispensing-time, time-study, automation-roi)
+- pharmacy-drug-price-revision-2026.html (+3リンク: dispensing-fee-revision, revision-2026, generic-switch)
+- pharmacy-medication-history-efficiency.html (+3リンク: history-time-saving, dispensing-time, followup)
+- pharmacy-patient-communication.html (+3リンク: informed-consent, adherence, followup)
+- renal-drug-dosing.html (+3リンク: doac-dosing, polypharmacy, drug-induced-ade)
+**結果**: クロスリンク率 98.6% → **100%**（72/72、index.html除く）
+
+### タスク2: アウトバウンドリンク0件対応（4ファイル）
+
+**指示元**: dispatch.md 2026-03-20 20:23 タスク5
+**作業内容**: 外部参考リンク（参考リンクセクション）を追加
+**対象**:
+- pharmacist-career-diagnosis.html (+2: 日本薬剤師会, 厚労省薬剤師)
+- pharmacy-bottleneck-diagnosis.html (+2: 日本薬剤師会, 厚労省薬局)
+- pharmacy-claim-denial-diagnosis.html (+2: 支払基金, 厚労省診療報酬)
+- pharmacy-ict-diagnosis.html (+2: 厚労省医療DX, 日本薬剤師会)
+**結果**: アウトバウンドリンク0件ファイル = 0（全解消）
+
+### 検証
+
+実ファイルgrepベースで確認:
+- GA4: 73/73 (100%)
+- クロスリンク: 72/72 (100%, index.html除く)
+- アウトバウンドリンク0件: 0ファイル
+
+---
+
+## 2026-03-20 20:30 JST — サイクル実行（復旧）
+
+### タスク1: 前回CRITICAL未処理確認
+
+**指示元**: dispatch.md 2026-03-20 20:23
+**作業内容**: vercel.json存在確認、GA4カバレッジ実ファイルカウント
+**結果**:
+- vercel.json: 存在確認済み（セキュリティヘッダー・sitemap設定含む）
+- GA4カバレッジ: 73/73 = 100%（全ファイルにgtag/googletagmanagerを確認）
+- プレースホルダー `G-XXXXXXXXXX` は全ファイルに残存（実ID差し替え待ち）
+**備考**: 前回status.md（2026-03-19）の「65%」は旧数値。実態は過去サイクルで100%達成済み。
+
+### タスク2: クロスリンク改善（5ファイル）
+
+**指示元**: dispatch.md タスク3・5
+**作業内容**: アウトバウンドリンク0件/低リンクファイルに関連ツールセクション追加
+**対象**:
+- pharmacy-role-clarity-diagnosis.html (+4リンク)
+- pharmacy-staff-development.html (+4リンク)
+- claim-denial-reduction-simulator.html (+3リンク)
+- pharmacy-automation-roi.html (+3リンク)
+- pharmacy-bottleneck-diagnosis.html (+3リンク)
+**結果**: クロスリンク率 95.8% → **98.6%**（71/72）。残り1件はpharmacy-talent-development.html（削除待ち）。
+
+### タスク3: ai-prompts-lp.html 内部リンク強化
+
+**指示元**: dispatch.md タスク4
+**作業内容**: 関連ツールセクションに3リンク追加（ICT活用度診断・DXロードマップ・キャリア診断）
+**結果**: 内部リンク 4→7に強化
+
+### 38時間中断原因
+
+scheduled task実行環境の再起動未実施。前回最終: 2026-03-19 06:11 JST → 本サイクル: 2026-03-20 20:30 JST
+
+---
+
 ## 2026-03-19 06:11 JST — サイクル実行（静音モード）
 
 ### タスク1: スリープ継続確認・ステータス更新

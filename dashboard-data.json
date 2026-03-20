@@ -1,36 +1,46 @@
 {
-  "lastUpdated": "2026-03-19 06:01",
+  "lastUpdated": "2026-03-21 00:06 JST",
   "agents": {
     "coding": {
-      "status": "異常",
-      "lastUpdate": "2026-03-08",
-      "currentTask": "未稼働（40サイクル未応答・社長報告済み）",
-      "summary": "status.md未作成。エージェント自体が起動していない。翌朝ゆうすけ再起動確認待ち"
+      "status": "更新停滞（3h40m）",
+      "lastUpdate": "2026-03-20 20:26",
+      "currentTask": "T219 detectHeaderRow最適化 + 定期保守",
+      "summary": "復帰後12h超、outputs空。status更新停滞。次回巡回で4h閾値判定。"
     },
     "homecare": {
-      "status": "正常",
-      "lastUpdate": "2026-03-19 05:47",
-      "currentTask": "スリープ中（翌朝08:00以降dispatch待ち）",
-      "summary": "28サイクル連続全完了。成果物26件以上。テリパラチド返品3/28・経過措置3/31期限管理中。翌朝HTMLパッチ適用予定"
+      "status": "正常稼働",
+      "lastUpdate": "2026-03-20 22:26",
+      "currentTask": "MCS最終日対応・テリパラチド・三環系ALERT・供給監視",
+      "summary": "36サイクル連続全完了。MCS推奨期間残2日（3/21-22）。三環系ALERT継続。"
     },
     "sidebiz": {
-      "status": "正常",
-      "lastUpdate": "2026-03-19 05:38",
-      "currentTask": "スリープ中（翌朝08:00以降dispatch待ち）",
-      "summary": "24サイクル連続全完了。GA4 65%→翌朝Batch4で100%予定。Notion商品ページ準備完了。GA4実ID・販売アカウント待ち"
+      "status": "正常稼働",
+      "lastUpdate": "2026-03-20 23:00",
+      "currentTask": "AIプロンプト15本執筆＋HTML実装・SEOメタ改善10件",
+      "summary": "全品質100%維持。計画完了→翌朝実装フェーズ。推定55-70分。"
     }
   },
   "alerts": [
-    "coding: 40サイクル連続未応答（社長報告済み・翌朝対応待ち）",
-    "homecare: テリパラチド返品期限 3/28（残9日）— 本日ゆうすけアクション開始",
-    "homecare: 経過措置患者抽出期限 3/31（残12日）— 本日〜22日MCS操作推奨",
-    "sidebiz: GA4 Measurement ID プレースホルダー未差し替え"
+    "[ALERT] 三環系抗うつ薬 複合リスク（アミトリプチリン限定出荷＋経過措置削除2品目）",
+    "MCS操作推奨期間 最終2日（3/21-22）— ゆうすけ着手未確認",
+    "テリパラチド返品期限 残り7日（3/28）— Day1-2進捗未確認",
+    "coding: status.md 3h40m未更新・outputs空",
+    "GA4実ID差し替え未実施（全73ファイルがプレースホルダー）",
+    "販売プラットフォーム・アカウント開設未着手"
   ],
   "nextActions": [
-    "08:00 静音モード解除 → 社長定例報告",
-    "coding再起動確認（ゆうすけ対応）",
-    "homecare: HTMLパッチ適用・revenue-simulator確認",
-    "sidebiz: GA4 Batch4実行（25ファイル→100%）",
-    "ゆうすけリマインド: GA4実ID・Notionアカウント・テリパラチド在庫確認・MCS患者抽出"
-  ]
+    "coding: 4h閾値チェック（次回巡回）",
+    "homecare: MCS最終日対応準備・三環系ALERT継続調査",
+    "sidebiz: AIプロンプト15本実装（翌朝08:00以降）",
+    "08:00以降: 社長定例報告（MCS最終日フォロー含む）"
+  ],
+  "qualityMetrics": {
+    "sidebiz": {
+      "ga4Coverage": "73/73 (100%)",
+      "crosslinkCoverage": "72/72 (100%)",
+      "outboundLinks": "全ファイル1件以上",
+      "seoMetaDescriptionRate": "63/73 (86%)",
+      "totalHtmlFiles": 73
+    }
+  }
 }
