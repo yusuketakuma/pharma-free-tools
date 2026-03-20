@@ -15,6 +15,13 @@
         'event_label': 'index-' + action
       });
     }
+
+    function trackNewsletterIntent() {
+      gtag('event', 'newsletter_intent', {
+        'event_category': 'conversion',
+        'event_label': 'index-newsletter-prelaunch'
+      });
+    }
   </script>
 
   <meta charset="UTF-8">
@@ -988,6 +995,16 @@
       <p style="font-size: 1rem; color: #333;">薬剤師がChatGPT/Claudeで業務を効率化するプロンプテンプレート集<br><strong>38セクション・100プロンプト収録</strong>（薬歴/疑義照会/在宅医療/経営分析等）</p>
       <p style="font-size: 0.9rem; color: #e65100; margin-bottom: 12px;">⏰ 早期価格 <strong>¥300</strong>（通常¥500）</p>
       <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-button" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">今すぐチェック →</a>
+    </div>
+
+    <div class="cta-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; max-width: 760px;">
+      <h3 style="color: white; font-size: 1.3rem;">📬 薬剤師向け業務改善ニュースレター</h3>
+      <p style="font-size: 0.98rem; color: rgba(255,255,255,0.92);">新ツール追加・薬価改定対応・在宅/請求の改善ヒントを週1回まとめてお届け。<br><strong>登録導線は準備中</strong>のため、当面はAIプロンプト集LPから先行案内を受け取れます。</p>
+      <form onsubmit="trackNewsletterIntent(); window.location.href='https://yusuketakuma.github.io/promo-ai-prompts-lp/'; return false;" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px;">
+        <input type="email" placeholder="メールアドレス（登録導線準備中）" aria-label="メールアドレス" disabled style="width: 280px; max-width: 100%; padding: 12px 16px; border-radius: 8px; border: none; background: rgba(255,255,255,0.92); color: #555;">
+        <button type="submit" class="cta-button" style="padding: 12px 24px;">先行案内を見る →</button>
+      </form>
+      <p style="font-size: 0.82rem; color: rgba(255,255,255,0.72); margin-top: 12px;">※ Buttondown連携後はこの欄をメール登録フォームへ切り替え予定です。</p>
     </div>
     
     <main>
