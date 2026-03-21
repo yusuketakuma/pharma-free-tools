@@ -227,6 +227,14 @@ const INTERACTION_DATA = [
   { drugA: "ゲシタビン", drugB: "シスプラチン", level: 3, reason: "骨髄抑制・腎障害増強" },
   { drugA: "ペメトレキセド", drugB: "NSAIDs", level: 3, reason: "腎排泄抑制・血中濃度上昇" },
   { drugA: "ペメトレキセド", drugB: "プロベネシド", level: 3, reason: "腎排泄抑制・血中濃度上昇" },
+
+  // ========== 免疫チェックポイント阻害薬・CAR-T療法（Level 3）==========
+  { drugA: "ニボルマブ", drugB: "TNF阻害薬", level: 3, reason: "感染症リスク増大・免疫関連有害事象" },
+  { drugA: "ペムブロリズマブ", drugB: "高用量ステロイド", level: 3, reason: "免疫抑制効果減弱・治療効果低下" },
+  { drugA: "イピリムマブ", drugB: "抗凝固薬", level: 3, reason: "消化管出血リスク増大" },
+  { drugA: "ニボルマブ", drugB: "抗VEGF薬", level: 3, reason: "血管毒性・高血圧リスク増大" },
+  { drugA: "アテゾリズマブ", drugB: "抗凝固薬", level: 3, reason: "出血リスク増大" },
+  { drugA: "CAR-T療法", drugB: "高用量ステロイド", level: 3, reason: "CAR-T細胞機能低下・治療効果減弱" },
 ];
 
 // 互換性確保（グローバル公開）
