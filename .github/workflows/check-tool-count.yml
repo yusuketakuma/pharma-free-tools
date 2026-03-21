@@ -1,0 +1,52 @@
+name: Check Tool Count
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Count HTML files
+        id: count
+        run: |
+          ACTUAL=$(ls *.html 2>/dev/null | wc -l | tr -d ' ')
+          echo "actual=$ACTUAL" >> $GITHUB_OUTPUT
+          echo "Actual HTML files: $ACTUAL"
+      
+      - name: Check displayed count in index.html
+        id: displayed
+        run: |
+          # index.htmlから「〇〇選」を抽出
+          DISPLAYED=$(grep -oE '[0-9]+選' index.html | head -1 | grep -oE '[0-9]+')
+          echo "displayed=$DISPLAYED" >> $GITHUB_OUTPUT
+          echo "Displayed count: $DISPLAYED"
+      
+      - name: Verify count match
+        run: |
+          ACTUAL=${{ steps.count.outputs.actual }}
+          DISPLAYED=${{ steps.displayed.outputs.displayed }}
+          
+          if [ "$ACTUAL" != "$DISPLAYED" ]; then
+            echo "::error::Tool count mismatch! Actual: $ACTUAL, Displayed: $DISPLAYED"
+            echo "Please update the displayed count in index.html"
+            exit 1
+          fi
+          
+          echo "✅ Tool count verified: $ACTUAL tools"
+      
+      - name: Check GA4 placeholder
+        run: |
+          # G-XXXXXXXXXX プレースホルダーの存在確認
+          PLACEHOLDER_COUNT=$(grep -r "G-XXXXXXXXXX" *.html 2>/dev/null | wc -l || echo "0")
+          
+          if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
+            echo "::warning::Found $PLACEHOLDER_COUNT GA4 placeholder(s). Consider replacing with actual measurement ID."
+          fi
+          
+          echo "GA4 placeholders: $PLACEHOLDER_COUNT"
