@@ -44,9 +44,44 @@ jobs:
         run: |
           # G-XXXXXXXXXX プレースホルダーの存在確認
           PLACEHOLDER_COUNT=$(grep -r "G-XXXXXXXXXX" *.html 2>/dev/null | wc -l || echo "0")
-          
+
           if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
             echo "::warning::Found $PLACEHOLDER_COUNT GA4 placeholder(s). Consider replacing with actual measurement ID."
           fi
-          
+
           echo "GA4 placeholders: $PLACEHOLDER_COUNT"
+
+      - name: Check OGP URLs
+        run: |
+          # 旧URLパターンの検出（vercel.app, yusuke-ai）
+          INVALID_URLS=$(grep -E "vercel\.app|yusuke-ai" *.html 2>/dev/null | wc -l || echo "0")
+
+          if [ "$INVALID_URLS" -gt 0 ]; then
+            echo "::error::Found $INVALID_URLS invalid OGP URL(s) (vercel.app or yusuke-ai). Use yusuketakuma.github.io instead."
+            echo "Invalid URLs found:"
+            grep -E "vercel\.app|yusuke-ai" *.html 2>/dev/null || true
+            exit 1
+          fi
+
+          echo "✅ All OGP URLs are valid (yusuketakuma.github.io)"
+
+      - name: Check internal links
+        run: |
+          # HTMLファイル内の内部リンクが実在するか確認
+          BROKEN=0
+          for file in *.html; do
+            # href="*.html"パターンを抽出
+            LINKS=$(grep -oE 'href="[^"]*\.html"' "$file" 2>/dev/null | grep -oE '[^/]+\.html' | sort -u)
+            for link in $LINKS; do
+              if [ ! -f "$link" ] && [ "$link" != "index.html" ]; then
+                echo "::warning::Broken link in $file: $link"
+                BROKEN=$((BROKEN + 1))
+              fi
+            done
+          done
+
+          if [ "$BROKEN" -gt 0 ]; then
+            echo "::warning::Found $BROKEN potentially broken internal link(s)"
+          else
+            echo "✅ All internal links verified"
+          fi
