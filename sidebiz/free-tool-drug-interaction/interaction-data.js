@@ -276,6 +276,33 @@ const INTERACTION_DATA = [
   { drugA: "リラグルチド", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
   { drugA: "GLP-1受容体作動薬", drugB: "消化管運動抑制薬", level: 3, reason: "消化器症状悪化" },
   { drugA: "GLP-1受容体作動薬", drugB: "消化管吸収に影響する薬剤", level: 3, reason: "薬物吸収変化" },
+
+  // ========== DOAC（直接経口抗凝固薬）（Level 2-3）==========
+  // 重大な副作用（Level 2）
+  { drugA: "DOAC", drugB: "抗血小板薬", level: 2, reason: "出血リスク増大" },
+  { drugA: "アピキサバン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "リバーロキサバン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "ダビガトラン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "エドキサバン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "DOAC", drugB: "NSAIDs", level: 2, reason: "出血リスク増大" },
+  { drugA: "アピキサバン", drugB: "クロピドグレル", level: 2, reason: "出血リスク増大" },
+  { drugA: "リバーロキサバン", drugB: "クロピドグレル", level: 2, reason: "出血リスク増大" },
+  { drugA: "ダビガトラン", drugB: "クロピドグレル", level: 2, reason: "出血リスク増大" },
+  { drugA: "DOAC", drugB: "ワルファリン", level: 2, reason: "過剰抗凝固・出血リスク" },
+  { drugA: "DOAC", drugB: "ヘパリン", level: 2, reason: "過剰抗凝固・出血リスク" },
+
+  // 併用注意（Level 3）
+  { drugA: "アピキサバン", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "アピキサバン", drugB: "CYP3A4誘導薬", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "リバーロキサバン", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "リバーロキサバン", drugB: "CYP3A4誘導薬", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "ダビガトラン", drugB: "P-gp阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "ダビガトラン", drugB: "P-gp誘導薬", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "DOAC", drugB: "アゾール系抗真菌薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "DOAC", drugB: "リファンピシン", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "DOAC", drugB: "抗HIV薬", level: 3, reason: "血中濃度変動・出血/血栓リスク" },
+  { drugA: "エドキサバン", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "エドキサバン", drugB: "P-gp阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
 ];
 
 // 互換性確保（グローバル公開）
