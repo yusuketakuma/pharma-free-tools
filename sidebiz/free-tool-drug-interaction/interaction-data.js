@@ -184,6 +184,49 @@ const INTERACTION_DATA = [
   { drugA: "甲状腺ホルモン", drugB: "鉄剤", level: 3, reason: "吸収低下" },
   { drugA: "甲状腺ホルモン", drugB: "カルシウム", level: 3, reason: "吸収低下" },
   { drugA: "甲状腺ホルモン", drugB: "コレスチラミン", level: 3, reason: "吸収低下" },
+  
+  // ========== 抗がん薬・免疫抑制薬（Level 1-3）==========
+  // 併用禁忌（Level 1）
+  { drugA: "5-FU", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "カペシタビン", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "テガフール", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "ドキシフルリジン", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "イリノテカン", drugB: "セイヨウオトギリソウ", level: 1, reason: "イリノテカン血中濃度低下・効果減弱" },
+  { drugA: "シタラビン", drugB: "デフィブロチド", level: 1, reason: "重篤な肺毒性リスク" },
+  { drugA: "フルダラビン", drugB: "デフィブロトド", level: 1, reason: "重篤な肺毒性リスク" },
+  
+  // 重大な副作用（Level 2）
+  { drugA: "メトトレキサート", drugB: "NSAIDs", level: 2, reason: "骨髄抑制・血中濃度上昇" },
+  { drugA: "メトトレキサート", drugB: "アスピリン", level: 2, reason: "骨髄抑制・血中濃度上昇" },
+  { drugA: "メトトレキサート", drugB: "プロベネシド", level: 2, reason: "腎排泄抑制・血中濃度上昇" },
+  { drugA: "シスプラチン", drugB: "アミノグリコシド系", level: 2, reason: "腎障害・聴器毒性増強" },
+  { drugA: "シスプラチン", drugB: "ループ利尿薬", level: 2, reason: "聴器毒性増強" },
+  { drugA: "シスプラチン", drugB: "アムホテリシンB", level: 2, reason: "腎障害増強" },
+  { drugA: "ドキソルビシン", drugB: "トラスタズマブ", level: 2, reason: "心機能障害リスク増大" },
+  { drugA: "シクロホスファミド", drugB: "アントラサイクリン系", level: 2, reason: "心毒性リスク増大" },
+  { drugA: "ブレオマイシン", drugB: "酸素投与", level: 2, reason: "肺毒性リスク増大" },
+  { drugA: "ブレオマイシン", drugB: "腎毒性薬剤", level: 2, reason: "肺毒性リスク増大" },
+  { drugA: "イマチニブ", drugB: "ワルファリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "ソラフェニブ", drugB: "ワルファリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "スニチニブ", drugB: "ワルファリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "パクリタキセル", drugB: "ドキソルビシン", level: 2, reason: "心毒性リスク増大" },
+  
+  // 併用注意（Level 3）
+  { drugA: "イマチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ゲフィチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "エルロチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ソラフェニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "スニチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "パクリタキセル", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ドセタキセル", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ビンカアルカロイド", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "シクロホスファミド", drugB: "フェノバルビタール", level: 3, reason: "活性代謝物増加・毒性増強" },
+  { drugA: "ブスルファン", drugB: "メトクロプラミド", level: 3, reason: "ブスルファン血中濃度変動" },
+  { drugA: "テモゾロミド", drugB: "バルプロ酸", level: 3, reason: "テモゾロミド血中濃度低下" },
+  { drugA: "エ拓扑テカン", drugB: "プラチナ製剤", level: 3, reason: "骨髄抑制増強" },
+  { drugA: "ゲシタビン", drugB: "シスプラチン", level: 3, reason: "骨髄抑制・腎障害増強" },
+  { drugA: "ペメトレキセド", drugB: "NSAIDs", level: 3, reason: "腎排泄抑制・血中濃度上昇" },
+  { drugA: "ペメトレキセド", drugB: "プロベネシド", level: 3, reason: "腎排泄抑制・血中濃度上昇" },
 ];
 
 // 互換性確保（グローバル公開）
