@@ -184,6 +184,58 @@ const INTERACTION_DATA = [
   { drugA: "甲状腺ホルモン", drugB: "鉄剤", level: 3, reason: "吸収低下" },
   { drugA: "甲状腺ホルモン", drugB: "カルシウム", level: 3, reason: "吸収低下" },
   { drugA: "甲状腺ホルモン", drugB: "コレスチラミン", level: 3, reason: "吸収低下" },
+  
+  // ========== 抗てんかん薬の相互作用 ==========
+  // バルプロ酸ナトリウム
+  { drugA: "バルプロ酸", drugB: "カルバマゼピン", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "バルプロ酸", drugB: "ラモトリギン", level: 2, reason: "ラモトリギン血中濃度上昇・皮疹リスク" },
+  { drugA: "バルプロ酸", drugB: "フェノバルビタール", level: 2, reason: "フェノバルビタール血中濃度上昇" },
+  { drugA: "バルプロ酸", drugB: "メルカプトプリン", level: 2, reason: "肝毒性リスク増大" },
+  { drugA: "バルプロ酸", drugB: "カルバペネム系", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
+  { drugA: "バルプロ酸", drugB: "ドルテプラーズ", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
+  { drugA: "バルプロ酸", drugB: "パネバクタム", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
+  { drugA: "バルプロ酸", drugB: "ビオプラゾン", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
+  
+  // カルバマゼピン
+  { drugA: "カルバマゼピン", drugB: "エリスロマイシン", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "クラリスロマイシン", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "フルコナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "イトラコナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "ボリコナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "ダナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "ベラパミル", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "ジルチアゼム", level: 2, reason: "カルバマゼピン中毒のリスク" },
+  { drugA: "カルバマゼピン", drugB: "シメチジン", level: 3, reason: "カルバマゼピン血中濃度上昇" },
+  
+  // フェニトイン
+  { drugA: "フェニトイン", drugB: "フルコナゾール", level: 2, reason: "フェニトイン中毒のリスク" },
+  { drugA: "フェニトイン", drugB: "イトラコナゾール", level: 2, reason: "フェニトイン中毒のリスク" },
+  { drugA: "フェニトイン", drugB: "ボリコナゾール", level: 2, reason: "フェニトイン中毒のリスク" },
+  { drugA: "フェニトイン", drugB: "シメチジン", level: 3, reason: "フェニトイン血中濃度上昇" },
+  { drugA: "フェニトイン", drugB: "アモキサピン", level: 2, reason: "フェニトイン血中濃度上昇" },
+  { drugA: "フェニトイン", drugB: "クロラムフェニコール", level: 2, reason: "フェニトイン中毒のリスク" },
+  { drugA: "フェニトイン", drugB: "イソニアジド", level: 2, reason: "フェニトイン中毒のリスク" },
+  { drugA: "フェニトイン", drugB: "スルファメトキサゾール", level: 2, reason: "フェニトイン中毒のリスク" },
+  
+  // ラモトリギン
+  { drugA: "ラモトリギン", drugB: "バルプロ酸", level: 2, reason: "ラモトリギン血中濃度上昇・皮疹リスク" },
+  { drugA: "ラモトリギン", drugB: "カルバマゼピン", level: 3, reason: "ラモトリギン血中濃度低下" },
+  { drugA: "ラモトリギン", drugB: "フェニトイン", level: 3, reason: "ラモトリギン血中濃度低下" },
+  { drugA: "ラモトリギン", drugB: "フェノバルビタール", level: 3, reason: "ラモトリギン血中濃度低下" },
+  { drugA: "ラモトリギン", drugB: "プリミドン", level: 3, reason: "ラモトリギン血中濃度低下" },
+  
+  // トピラマート
+  { drugA: "トピラマート", drugB: "カルバマゼピン", level: 3, reason: "トピラマート血中濃度低下" },
+  { drugA: "トピラマート", drugB: "フェニトイン", level: 3, reason: "トピラマート血中濃度低下" },
+  { drugA: "トピラマート", drugB: "バルプロ酸", level: 3, reason: "アンモニア血症リスク" },
+  
+  // フェノバルビタール
+  { drugA: "フェノバルビタール", drugB: "バルプロ酸", level: 2, reason: "フェノバルビタール血中濃度上昇" },
+  { drugA: "フェノバルビタール", drugB: " DOAC", level: 3, reason: "DOAC血中濃度低下・効果減弱" },
+  { drugA: "フェノバルビタール", drugB: "ワルファリン", level: 2, reason: "ワルファリン効果減弱" },
+  { drugA: "フェノバルビタール", drugB: "ステロイド", level: 3, reason: "ステロイド効果減弱" },
+  { drugA: "フェノバルビタール", drugB: "テオフィリン", level: 3, reason: "テオフィリン血中濃度低下" },
+  { drugA: "フェノバルビタール", drugB: "経口避妊薬", level: 3, reason: "避妊効果減弱" },
 ];
 
 // 互換性確保（グローバル公開）
