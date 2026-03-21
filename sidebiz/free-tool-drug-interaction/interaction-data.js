@@ -235,6 +235,47 @@ const INTERACTION_DATA = [
   { drugA: "ニボルマブ", drugB: "抗VEGF薬", level: 3, reason: "血管毒性・高血圧リスク増大" },
   { drugA: "アテゾリズマブ", drugB: "抗凝固薬", level: 3, reason: "出血リスク増大" },
   { drugA: "CAR-T療法", drugB: "高用量ステロイド", level: 3, reason: "CAR-T細胞機能低下・治療効果減弱" },
+
+  // ========== 糖尿病薬：SGLT2阻害薬（Level 2-3）==========
+  // 重大な副作用（Level 2）
+  { drugA: "SGLT2阻害薬", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク増大" },
+  { drugA: "SGLT2阻害薬", drugB: "チアジド系利尿薬", level: 2, reason: "脱水・低血糖リスク増大" },
+  { drugA: "イプラグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・脳梗塞リスク" },
+  { drugA: "ダパグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク" },
+  { drugA: "エンパグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク" },
+  { drugA: "カナグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク" },
+
+  // 併用注意（Level 3）
+  { drugA: "SGLT2阻害薬", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "SGLT2阻害薬", drugB: "インスリン", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "SGLT2阻害薬", drugB: "血糖降下薬", level: 3, reason: "低血糖リスク" },
+  { drugA: "SGLT2阻害薬", drugB: "ACE阻害薬", level: 3, reason: "腎機能悪化リスク" },
+  { drugA: "SGLT2阻害薬", drugB: "ARB", level: 3, reason: "腎機能悪化リスク" },
+  { drugA: "SGLT2阻害薬", drugB: "NSAIDs", level: 3, reason: "腎機能悪化リスク" },
+
+  // ========== 糖尿病薬：DPP-4阻害薬（Level 3）==========
+  { drugA: "DPP-4阻害薬", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "DPP-4阻害薬", drugB: "インスリン", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "シタグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "ビルダグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "アログリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "リナグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "テネリグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+
+  // ========== 糖尿病薬：GLP-1受容体作動薬（Level 2-3）==========
+  // 重大な副作用（Level 2）
+  { drugA: "GLP-1受容体作動薬", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+  { drugA: "セマグルチド", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+  { drugA: "リラグルチド", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+  { drugA: "デューラグルチド", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+
+  // 併用注意（Level 3）
+  { drugA: "GLP-1受容体作動薬", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "GLP-1受容体作動薬", drugB: "経口血糖降下薬", level: 3, reason: "低血糖リスク" },
+  { drugA: "セマグルチド", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "リラグルチド", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "GLP-1受容体作動薬", drugB: "消化管運動抑制薬", level: 3, reason: "消化器症状悪化" },
+  { drugA: "GLP-1受容体作動薬", drugB: "消化管吸収に影響する薬剤", level: 3, reason: "薬物吸収変化" },
 ];
 
 // 互換性確保（グローバル公開）
