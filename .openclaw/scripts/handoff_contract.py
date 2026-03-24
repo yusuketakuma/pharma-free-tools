@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List
 
-from task_runtime import WORKSPACE_ROOT, atomic_write_json, atomic_write_text, load_json, normalize_path, now_iso
+from task_runtime import CONFIG_ROOT, WORKSPACE_ROOT, atomic_write_json, atomic_write_text, load_json, normalize_path, now_iso
 
 
 def _project_id_from_task(task: Dict[str, Any]) -> str | None:
@@ -21,34 +21,38 @@ def _project_id_from_task(task: Dict[str, Any]) -> str | None:
     return None
 
 
+REGISTRY_PATH = CONFIG_ROOT / "project-injection-registry.json"
+
+
+def _load_registry() -> Dict[str, Any]:
+    payload = load_json(REGISTRY_PATH, default={}) or {}
+    if not isinstance(payload, dict):
+        return {}
+    return payload
+
+
+def _registry_project(project_id: str | None) -> Dict[str, Any]:
+    registry = _load_registry()
+    default_cfg = registry.get("default") if isinstance(registry.get("default"), dict) else {}
+    projects = registry.get("projects") if isinstance(registry.get("projects"), dict) else {}
+    project_cfg = projects.get(project_id, {}) if project_id else {}
+    merged = dict(default_cfg)
+    for key, value in project_cfg.items():
+        if isinstance(value, list) and isinstance(merged.get(key), list):
+            merged[key] = [*merged[key], *value]
+        elif isinstance(value, dict) and isinstance(merged.get(key), dict):
+            tmp = dict(merged[key])
+            tmp.update(value)
+            merged[key] = tmp
+        else:
+            merged[key] = value
+    return merged
+
+
 def _project_rules(project_id: str | None) -> List[str]:
-    common = [
-        "Prefer narrow, reviewable changes over broad rewrites.",
-        "Keep verification artifacts when commands are run.",
-    ]
-    if project_id == "pharma-free-tools":
-        return common + [
-            "Read long docs before updating them.",
-            "Do not depend on exact-match replacement for large markdown files.",
-            "Prefer heading-scoped edits or append-only recovery notes for status files.",
-        ]
-    if project_id == "deadstocksolution":
-        return common + [
-            "Do not stage unrelated dirty files.",
-            "Treat migrations, production callbacks, and deployment settings as review-sensitive.",
-            "Keep runtime / DB / Vercel changes explicitly separated in the summary.",
-        ]
-    if project_id in {"careroute-rx", "careviax-pharmacy"}:
-        return common + [
-            "Treat PHI / security-sensitive areas as review-sensitive.",
-            "Prefer the smallest safe change set and explicit verification notes.",
-        ]
-    if project_id == "openclaw-core":
-        return common + [
-            "Do not change protected control-plane policy files without explicit review.",
-            "Prefer additive artifacts and backward-compatible wiring.",
-        ]
-    return common
+    cfg = _registry_project(project_id)
+    rules = cfg.get("projectRules") if isinstance(cfg.get("projectRules"), list) else []
+    return [str(item) for item in rules]
 
 
 def _repo_root_for_project(project_id: str | None) -> str:
@@ -95,6 +99,7 @@ def _load_previous_run_summary(task_dir: Path) -> str:
 def build_handoff_pack(task: Dict[str, Any], route: Dict[str, Any], dispatch_plan: Dict[str, Any] | None, task_dir: Path) -> Dict[str, Any]:
     requested_paths = [normalize_path(str(item)) for item in (task.get("requested_paths") or []) if str(item).strip()]
     project_id = _project_id_from_task(task)
+    registry_cfg = _registry_project(project_id)
     repo_context = {
         "projectId": project_id,
         "sourceRepoPath": _repo_root_for_project(project_id),
@@ -103,12 +108,7 @@ def build_handoff_pack(task: Dict[str, Any], route: Dict[str, Any], dispatch_pla
         "targetPaths": requested_paths,
         "protectedPaths": route.get("protected_paths", []),
         "projectRules": _project_rules(project_id),
-        "sourceOfTruthHints": [
-            "task.json",
-            "route-decision.json",
-            "dispatch-plan.json",
-            "context-pack.md",
-        ],
+        "sourceOfTruthHints": [str(item) for item in registry_cfg.get("sourceOfTruthHints", [])],
     }
     working_context = {
         "taskId": task.get("task_id"),
@@ -117,38 +117,21 @@ def build_handoff_pack(task: Dict[str, Any], route: Dict[str, Any], dispatch_pla
         "reviewFocus": task.get("review_focus", []),
         "knownFailures": [],
         "unresolvedQuestions": [],
-        "assumptions": [
-            "If the task is ambiguous, return a narrow plan before broad implementation.",
-            "If verification cannot be completed, report the blocker explicitly.",
-        ],
+        "assumptions": [str(item) for item in registry_cfg.get("assumptions", [])],
     }
     execution_constraints = {
+        **(registry_cfg.get("executionConstraints") if isinstance(registry_cfg.get("executionConstraints"), dict) else {}),
         "noDestructive": True,
         "approvalRequired": bool(route.get("approval_required")),
         "protectedPaths": route.get("protected_paths", []),
         "allowedWriteScope": requested_paths,
-        "allowedNetworkScope": "project-needed-only",
-        "timeoutMinutes": 30,
     }
     verification_plan = {
+        **(registry_cfg.get("verificationPlan") if isinstance(registry_cfg.get("verificationPlan"), dict) else {}),
         "requiredCommands": task.get("verification_commands", []),
-        "optionalCommands": [],
-        "passCriteria": [
-            "Return changed files explicitly.",
-            "Return verification outcomes explicitly.",
-        ],
     }
     success_criteria = {
-        "doneDefinition": [
-            "Requested change or investigation is completed within declared scope.",
-            "Summary, changed files, and verification outcomes are returned.",
-        ],
-        "mustHaveOutput": [
-            "summary",
-            "changed_files",
-            "verification_results",
-            "remaining_risks",
-        ],
+        **(registry_cfg.get("successCriteria") if isinstance(registry_cfg.get("successCriteria"), dict) else {}),
         "manualReviewRequiredWhen": route.get("protected_paths", []),
     }
     previous_summary = _load_previous_run_summary(task_dir)

@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "default": {
+    "projectRules": [
+      "Prefer narrow, reviewable changes over broad rewrites.",
+      "Keep verification artifacts when commands are run."
+    ],
+    "sourceOfTruthHints": [
+      "task.json",
+      "route-decision.json",
+      "dispatch-plan.json",
+      "context-pack.md"
+    ],
+    "assumptions": [
+      "If the task is ambiguous, return a narrow plan before broad implementation.",
+      "If verification cannot be completed, report the blocker explicitly."
+    ],
+    "executionConstraints": {
+      "noDestructive": true,
+      "allowedNetworkScope": "project-needed-only",
+      "timeoutMinutes": 30
+    },
+    "verificationPlan": {
+      "optionalCommands": [],
+      "passCriteria": [
+        "Return changed files explicitly.",
+        "Return verification outcomes explicitly."
+      ]
+    },
+    "successCriteria": {
+      "doneDefinition": [
+        "Requested change or investigation is completed within declared scope.",
+        "Summary, changed files, and verification outcomes are returned."
+      ],
+      "mustHaveOutput": [
+        "summary",
+        "changed_files",
+        "verification_results",
+        "remaining_risks"
+      ]
+    }
+  },
+  "projects": {
+    "pharma-free-tools": {
+      "projectRules": [
+        "Read long docs before updating them.",
+        "Do not depend on exact-match replacement for large markdown files.",
+        "Prefer heading-scoped edits or append-only recovery notes for status files."
+      ],
+      "sourceOfTruthHints": [
+        "docs/status.md",
+        "backlog/queue.md",
+        "learn/",
+        "ops/"
+      ]
+    },
+    "deadstocksolution": {
+      "projectRules": [
+        "Do not stage unrelated dirty files.",
+        "Treat migrations, production callbacks, and deployment settings as review-sensitive.",
+        "Keep runtime / DB / Vercel changes explicitly separated in the summary."
+      ],
+      "sourceOfTruthHints": [
+        "server/src/routes/openclaw-connect.ts",
+        "server/src/services/dds-agent-service.ts",
+        "server/drizzle/",
+        "docs/"
+      ]
+    },
+    "careviax-pharmacy": {
+      "projectRules": [
+        "Treat PHI / security-sensitive areas as review-sensitive.",
+        "Prefer the smallest safe change set and explicit verification notes."
+      ],
+      "sourceOfTruthHints": [
+        "project docs",
+        "security-sensitive flows",
+        "verification commands"
+      ]
+    },
+    "careroute-rx": {
+      "projectRules": [
+        "Treat PHI / security-sensitive areas as review-sensitive.",
+        "Prefer the smallest safe change set and explicit verification notes."
+      ],
+      "sourceOfTruthHints": [
+        "project docs",
+        "security-sensitive flows",
+        "verification commands"
+      ]
+    },
+    "openclaw-core": {
+      "projectRules": [
+        "Do not change protected control-plane policy files without explicit review.",
+        "Prefer additive artifacts and backward-compatible wiring."
+      ],
+      "sourceOfTruthHints": [
+        ".openclaw/config/",
+        ".openclaw/scripts/",
+        ".openclaw/schemas/",
+        "docs/"
+      ]
+    }
+  }
+}
