@@ -469,6 +469,111 @@ def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> D
 
 
 def ledger_snapshot(hours: int = 24) -> Dict[str, Any]:
+def _rows_in_window(hours: int, offset_hours: int = 0) -> List[Dict[str, Any]]:
+    end = datetime.now(timezone.utc) - timedelta(hours=offset_hours)
+    start = end - timedelta(hours=hours)
+    rows: List[Dict[str, Any]] = []
+    for row in read_ledger():
+        decided_at = row.get("decided_at")
+        try:
+            ts = datetime.fromisoformat(str(decided_at))
+        except Exception:
+            continue
+        if start <= ts < end:
+            rows.append(row)
+    return rows
+
+
+def _decision_summaries(rows: List[Dict[str, Any]], result: str | None = None, limit: int = 10) -> List[Dict[str, Any]]:
+    picked = []
+    for row in rows:
+        if result and row.get("ruling", {}).get("result") != result:
+            continue
+        picked.append({
+            "decision_id": row.get("decision_id"),
+            "summary": row.get("reporting", {}).get("board_summary", ""),
+            "lane": row.get("lane", {}).get("risk_lane", "unknown"),
+            "mode": row.get("board_mode", {}).get("type", "unknown"),
+        })
+    return picked[-limit:]
+
+
+def report_input_model(hours: int = 6) -> Dict[str, Any]:
+    current = _rows_in_window(hours=hours, offset_hours=0)
+    previous = _rows_in_window(hours=hours, offset_hours=hours)
+    current_lane = Counter(row.get("lane", {}).get("risk_lane", "unknown") for row in current)
+    previous_lane = Counter(row.get("lane", {}).get("risk_lane", "unknown") for row in previous)
+    current_ruling = Counter(row.get("ruling", {}).get("result", "unknown") for row in current)
+    previous_ruling = Counter(row.get("ruling", {}).get("result", "unknown") for row in previous)
+    unresolved = active_unresolved_items()
+    deep_items = [
+        {
+            "decision_id": row.get("decision_id"),
+            "summary": row.get("reporting", {}).get("board_summary", ""),
+            "result": row.get("ruling", {}).get("result", "unknown"),
+        }
+        for row in current if row.get("lane", {}).get("risk_lane") == "deep"
+    ]
+    return {
+        "generated_at": now_iso(),
+        "window_hours": hours,
+        "decision_count": len(current),
+        "board_summary": _decision_summaries(current, limit=8),
+        "adopted": _decision_summaries(current, result="adopted", limit=8),
+        "deferred": _decision_summaries(current, result="deferred", limit=8),
+        "rejected": _decision_summaries(current, result="rejected", limit=8),
+        "deep_review_state": deep_items[-8:],
+        "active_unresolved_items": unresolved[:12],
+        "last_cycle_diff": {
+            "decision_count_delta": len(current) - len(previous),
+            "lane_counts_current": dict(current_lane),
+            "lane_counts_previous": dict(previous_lane),
+            "ruling_counts_current": dict(current_ruling),
+            "ruling_counts_previous": dict(previous_ruling),
+        },
+    }
+
+
+def render_report_input_view(hours: int = 6) -> str:
+    model = report_input_model(hours=hours)
+    lines = [
+        "# Board Report Input View",
+        "",
+        f"- generated_at: {model['generated_at']}",
+        f"- window_hours: {model['window_hours']}",
+        f"- decision_count: {model['decision_count']}",
+        f"- decision_count_delta: {model['last_cycle_diff']['decision_count_delta']}",
+        "",
+        "## Board Summary",
+    ]
+    for item in model["board_summary"]:
+        lines.append(f"- [{item['decision_id']}] ({item['lane']}/{item['mode']}) {item['summary']}")
+    if not model["board_summary"]:
+        lines.append("- (none)")
+    for label, key in [("Adopted", "adopted"), ("Deferred", "deferred"), ("Rejected", "rejected")]:
+        lines.extend(["", f"## {label}"])
+        items = model[key]
+        if items:
+            for item in items:
+                lines.append(f"- [{item['decision_id']}] {item['summary']}")
+        else:
+            lines.append("- (none)")
+    lines.extend(["", "## Deep Review State"])
+    if model["deep_review_state"]:
+        for item in model["deep_review_state"]:
+            lines.append(f"- [{item['decision_id']}] {item['result']}: {item['summary']}")
+    else:
+        lines.append("- (none)")
+    lines.extend(["", "## Active Unresolved Items"])
+    if model["active_unresolved_items"]:
+        for item in model["active_unresolved_items"]:
+            lines.append(f"- [{item.get('item_id')}] {item.get('reason', '')}")
+    else:
+        lines.append("- (none)")
+    lines.extend(["", "## Last Cycle Diff", json.dumps(model["last_cycle_diff"], ensure_ascii=False)])
+    return "\n".join(lines).rstrip() + "\n"
+
+
     cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
     rows = []
     for row in read_ledger():
@@ -522,6 +627,10 @@ def parse_args() -> argparse.Namespace:
     sub = parser.add_subparsers(dest="command", required=True)
     view = sub.add_parser("view")
     view.add_argument("--hours", type=int, default=24)
+    report_view = sub.add_parser("report-view")
+    report_view.add_argument("--hours", type=int, default=6)
+    report_json = sub.add_parser("report-json")
+    report_json.add_argument("--hours", type=int, default=6)
     snap = sub.add_parser("snapshot")
     snap.add_argument("--hours", type=int, default=24)
     return parser.parse_args()
@@ -531,6 +640,12 @@ def main() -> int:
     args = parse_args()
     if args.command == "view":
         print(render_report_view(hours=args.hours))
+        return 0
+    if args.command == "report-view":
+        print(render_report_input_view(hours=args.hours))
+        return 0
+    if args.command == "report-json":
+        print(json.dumps(report_input_model(hours=args.hours), ensure_ascii=False, indent=2))
         return 0
     if args.command == "snapshot":
         print(json.dumps(ledger_snapshot(hours=args.hours), ensure_ascii=False, indent=2))
