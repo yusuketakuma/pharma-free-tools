@@ -19,6 +19,9 @@ HEARTBEAT_STATE_PATH = HEARTBEAT_RUNTIME_ROOT / "heartbeat-state.json"
 SCOUT_REQUESTS_PATH = HEARTBEAT_RUNTIME_ROOT / "scout-requests.jsonl"
 ARTIFACT_UPDATES_PATH = HEARTBEAT_RUNTIME_ROOT / "artifact-updates.jsonl"
 GOVERNANCE_CONFIG_PATH = CONFIG_ROOT / "heartbeat-governance.json"
+BOARD_RUNTIME_ROOT = ROOT / "runtime" / "board"
+BOARD_DECISIONS_PATH = BOARD_RUNTIME_ROOT / "decision-ledger.jsonl"
+BOARD_CASES_PATH = BOARD_RUNTIME_ROOT / "agenda-cases.jsonl"
 
 EXECUTION_ROLES = {"research-analyst", "github-operator", "ops-automator", "doc-editor", "dss-manager"}
 BOARD_ROLES = {"supervisor-core", "board-visionary", "board-user-advocate", "board-operator", "board-auditor"}
@@ -360,20 +363,77 @@ def write_heartbeat_result(result: Dict[str, Any]) -> Dict[str, Any]:
 def report_governance_snapshot(hours: int = 24) -> Dict[str, Any]:
     rows = recent_results(hours=hours)
     outcome_counts: Dict[str, int] = {}
+    board_origin_candidate_count = 0
+    scout_request_count = 0
     for row in rows:
-        outcome_counts[row.get("outcome_type", "unknown")] = outcome_counts.get(row.get("outcome_type", "unknown"), 0) + 1
+        outcome = row.get("outcome_type", "unknown")
+        outcome_counts[outcome] = outcome_counts.get(outcome, 0) + 1
+        if outcome == "agenda_candidate" and role_kind(str(row.get("source_role", ""))) == "board":
+            board_origin_candidate_count += 1
+        if outcome == "scout_request":
+            scout_request_count += 1
     duplicate_count = sum(1 for row in rows if row.get("duplicate_check", {}).get("is_duplicate"))
     noop_count = outcome_counts.get("noop", 0)
+    signal_count = outcome_counts.get("signal_only", 0)
     candidate_count = outcome_counts.get("agenda_candidate", 0)
+    scout_backlog = len(_load_jsonl(SCOUT_REQUESTS_PATH))
+    board_cases = _load_jsonl(BOARD_CASES_PATH) if BOARD_CASES_PATH.exists() else []
+    board_decisions = _load_jsonl(BOARD_DECISIONS_PATH) if BOARD_DECISIONS_PATH.exists() else []
+    now = datetime.now(timezone.utc)
+    one_day_ago = now - timedelta(hours=hours)
+    recent_case_count = 0
+    for row in board_cases:
+        ts_raw = row.get("created_at") or row.get("occurred_at") or row.get("decided_at")
+        try:
+            ts = datetime.fromisoformat(str(ts_raw)) if ts_raw else one_day_ago
+        except Exception:
+            ts = one_day_ago
+        if ts >= one_day_ago:
+            recent_case_count += 1
+    recent_decision_count = 0
+    deep_count = 0
+    for row in board_decisions:
+        ts_raw = row.get("decided_at")
+        try:
+            ts = datetime.fromisoformat(str(ts_raw)) if ts_raw else one_day_ago
+        except Exception:
+            ts = one_day_ago
+        if ts >= one_day_ago:
+            recent_decision_count += 1
+            if row.get("lane", {}).get("risk_lane") == "deep":
+                deep_count += 1
+    candidate_to_case_ratio = (recent_case_count / candidate_count) if candidate_count else 0
+    candidate_to_board_touch_ratio = (recent_decision_count / candidate_count) if candidate_count else 0
+    warnings = []
+    if candidate_count and candidate_to_board_touch_ratio > 0.8:
+        warnings.append("board_touch_high")
+    if duplicate_count and (duplicate_count / len(rows)) > 0.3:
+        warnings.append("duplicate_spike")
+    if scout_backlog > int((_cfg().get("opportunityScoutOpenCap") or 1)):
+        warnings.append("scout_backlog_high")
+    if noop_count and (noop_count / len(rows)) > 0.7:
+        warnings.append("noop_heavy")
     return {
         "generated_at": now_iso(),
         "window_hours": hours,
         "heartbeat_run_count": len(rows),
         "outcome_counts": outcome_counts,
         "noop_rate": (noop_count / len(rows)) if rows else 0,
-        "duplicate_candidate_rate": (duplicate_count / len(rows)) if rows else 0,
+        "signal_rate": (signal_count / len(rows)) if rows else 0,
         "candidate_rate": (candidate_count / len(rows)) if rows else 0,
-        "active_leases": len(_active_leases())
+        "scout_request_rate": (scout_request_count / len(rows)) if rows else 0,
+        "duplicate_suppression_rate": (duplicate_count / len(rows)) if rows else 0,
+        "board_origin_candidate_count": board_origin_candidate_count,
+        "candidate_to_case_ratio": candidate_to_case_ratio,
+        "candidate_to_board_touch_ratio": candidate_to_board_touch_ratio,
+        "scout_backlog": scout_backlog,
+        "warnings": warnings,
+        "board_overload_risk": candidate_to_board_touch_ratio > 0.8 and candidate_count >= 3,
+        "scout_saturation_risk": scout_backlog > int((_cfg().get("opportunityScoutOpenCap") or 1)),
+        "duplicate_spike_risk": duplicate_count > 0 and (duplicate_count / len(rows)) > 0.3 if rows else False,
+        "exploration_drift_risk": candidate_count > 0 and signal_count == 0 and scout_request_count == 0,
+        "active_leases": len(_active_leases()),
+        "deep_review_rate": (deep_count / recent_decision_count) if recent_decision_count else 0,
     }
 
 
@@ -382,6 +442,10 @@ def parse_args() -> argparse.Namespace:
     sub = parser.add_subparsers(dest="command", required=True)
     emit = sub.add_parser("emit")
     emit.add_argument("payloadPath")
+    report_view = sub.add_parser("report-view")
+    report_view.add_argument("--hours", type=int, default=24)
+    report_json = sub.add_parser("report-json")
+    report_json.add_argument("--hours", type=int, default=24)
     snap = sub.add_parser("snapshot")
     snap.add_argument("--hours", type=int, default=24)
     return parser.parse_args()
@@ -393,6 +457,12 @@ def main() -> int:
         payload = json.loads(Path(args.payloadPath).read_text(encoding="utf-8"))
         result = build_heartbeat_result(payload)
         print(json.dumps(write_heartbeat_result(result), ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "report-view":
+        print(json.dumps(report_governance_snapshot(hours=args.hours), ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "report-json":
+        print(json.dumps(report_governance_snapshot(hours=args.hours), ensure_ascii=False, indent=2))
         return 0
     if args.command == "snapshot":
         print(json.dumps(report_governance_snapshot(hours=args.hours), ensure_ascii=False, indent=2))

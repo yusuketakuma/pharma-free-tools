@@ -9,6 +9,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
+from heartbeat_runtime import report_governance_snapshot as heartbeat_governance_snapshot
 from task_runtime import CONFIG_ROOT, ROOT, TASKS_ROOT, ValidationError, append_jsonl, ensure_schema_valid, load_json, now_iso
 
 BOARD_RUNTIME_ROOT = ROOT / "runtime" / "board"
@@ -611,6 +612,7 @@ def report_input_model(hours: int = 6) -> Dict[str, Any]:
         "reopen_candidates": load_reopen_candidates()[:12],
         "precedent_promotions": load_precedent_promotions(window_hours=max(24, hours))[:12],
         "cycle_diff": compute_last_cycle_diff(previous, current),
+        "heartbeat_governance_snapshot": heartbeat_governance_snapshot(max(24, hours)),
         "coverage": {},
     }
     model["coverage"] = report_guardrail_summary(model)
@@ -680,6 +682,7 @@ def render_report_input_view(hours: int = 6) -> str:
             lines.append(f"- [{item['decision_id']}] {item['summary']}")
     else:
         lines.append("- (none)")
+    lines.extend(["", "## Heartbeat Governance Snapshot", json.dumps(model["heartbeat_governance_snapshot"], ensure_ascii=False)])
     lines.extend(["", "## Coverage", json.dumps(model["coverage"], ensure_ascii=False)])
     lines.extend(["", "## Last Cycle Diff", json.dumps(model["cycle_diff"], ensure_ascii=False)])
     return "\n".join(lines).rstrip() + "\n"
