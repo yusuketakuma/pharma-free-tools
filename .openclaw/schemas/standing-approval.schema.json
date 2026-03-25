@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StandingApproval",
+  "type": "object",
+  "required": ["approval_id", "based_on_precedent_id", "scope", "allowed_actions", "forbidden_conditions", "required_checks", "max_blast_radius", "expires_at", "auto_archive_to_ledger"],
+  "properties": {
+    "approval_id": {"type": "string"},
+    "based_on_precedent_id": {"type": "string"},
+    "scope": {"type": "string"},
+    "allowed_actions": {"type": "array", "items": {"type": "string"}},
+    "forbidden_conditions": {"type": "array", "items": {"type": "string"}},
+    "required_checks": {"type": "array", "items": {"type": "string"}},
+    "max_blast_radius": {"type": "string", "enum": ["low", "medium"]},
+    "expires_at": {"type": ["string", "null"]},
+    "auto_archive_to_ledger": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

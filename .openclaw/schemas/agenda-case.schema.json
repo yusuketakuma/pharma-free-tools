@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgendaCase",
+  "type": "object",
+  "required": ["case_id", "source_proposals", "source_signals", "canonical_title", "canonical_summary", "root_issue", "desired_change", "impact_profile", "precedent_match", "risk", "disposition_options", "routing", "state"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "source_proposals": {"type": "array", "items": {"type": "string"}},
+    "source_signals": {"type": "array", "items": {"type": "string"}},
+    "canonical_title": {"type": "string"},
+    "canonical_summary": {"type": "string"},
+    "root_issue": {"type": "string"},
+    "desired_change": {"type": "string"},
+    "impact_profile": {
+      "type": "object",
+      "required": ["domains", "agents", "repos", "layers"],
+      "properties": {
+        "domains": {"type": "array", "items": {"type": "string"}},
+        "agents": {"type": "array", "items": {"type": "string"}},
+        "repos": {"type": "array", "items": {"type": "string"}},
+        "layers": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "precedent_match": {
+      "type": "object",
+      "required": ["matched", "precedent_id", "standing_approval", "confidence"],
+      "properties": {
+        "matched": {"type": "boolean"},
+        "precedent_id": {"type": ["string", "null"]},
+        "standing_approval": {"type": "boolean"},
+        "confidence": {"type": "string", "enum": ["low", "medium", "high"]}
+      },
+      "additionalProperties": false
+    },
+    "risk": {
+      "type": "object",
+      "required": ["score", "lane", "mandatory_deep", "reasons"],
+      "properties": {
+        "score": {"type": "integer", "minimum": 0, "maximum": 12},
+        "lane": {"type": "string", "enum": ["fast", "review", "deep"]},
+        "mandatory_deep": {"type": "boolean"},
+        "reasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "disposition_options": {"type": "array", "items": {"type": "string", "enum": ["adopt", "defer", "reject", "investigate"]}},
+    "routing": {
+      "type": "object",
+      "required": ["board_mode", "quorum_profile"],
+      "properties": {
+        "board_mode": {"type": "string", "enum": ["auto", "chair_ack", "quorum_review", "deep_review"]},
+        "quorum_profile": {"type": ["string", "null"], "enum": ["user_impact", "ops_audit", "strategy_ops", "full_board", null]}
+      },
+      "additionalProperties": false
+    },
+    "state": {"type": "string", "enum": ["intake", "normalized", "clustered", "precedent_applied", "routed", "queued", "decided", "executed", "closed", "reopened"]}
+  },
+  "additionalProperties": false
+}

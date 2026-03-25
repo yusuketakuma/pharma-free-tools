@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgendaCandidate",
+  "type": "object",
+  "required": ["proposal_id", "created_at", "source", "title", "summary", "requested_action", "change_scope", "why_now", "expected_benefit", "possible_harm", "boundary_impact", "reversibility", "blast_radius", "novelty", "evidence", "recommendation"],
+  "properties": {
+    "proposal_id": {"type": "string"},
+    "created_at": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["type", "name"],
+      "properties": {
+        "type": {"type": "string", "enum": ["cron", "agent", "monitor", "ceo", "board_followup"]},
+        "name": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "title": {"type": "string"},
+    "summary": {"type": "string"},
+    "requested_action": {
+      "type": "object",
+      "required": ["type", "target"],
+      "properties": {
+        "type": {"type": "string", "enum": ["adopt", "defer", "reject", "investigate", "tune", "escalate"]},
+        "target": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "change_scope": {
+      "type": "object",
+      "required": ["domains", "repos", "agents", "layers"],
+      "properties": {
+        "domains": {"type": "array", "items": {"type": "string", "enum": ["prompt", "staffing", "routing", "auth", "reporting", "policy", "execution", "monitoring"]}},
+        "repos": {"type": "array", "items": {"type": "string"}},
+        "agents": {"type": "array", "items": {"type": "string"}},
+        "layers": {"type": "array", "items": {"type": "string", "enum": ["ceo", "board", "execution", "infra", "user-facing"]}}
+      },
+      "additionalProperties": false
+    },
+    "why_now": {"type": "string"},
+    "expected_benefit": {"type": "string"},
+    "possible_harm": {"type": "string"},
+    "boundary_impact": {
+      "type": "object",
+      "required": ["ceo_board", "board_execution", "trust_boundary", "approval_boundary"],
+      "properties": {
+        "ceo_board": {"type": "string", "enum": ["none", "low", "medium", "high"]},
+        "board_execution": {"type": "string", "enum": ["none", "low", "medium", "high"]},
+        "trust_boundary": {"type": "string", "enum": ["none", "low", "medium", "high"]},
+        "approval_boundary": {"type": "string", "enum": ["none", "low", "medium", "high"]}
+      },
+      "additionalProperties": false
+    },
+    "reversibility": {
+      "type": "object",
+      "required": ["level", "rollback_path"],
+      "properties": {
+        "level": {"type": "string", "enum": ["high", "medium", "low"]},
+        "rollback_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "blast_radius": {
+      "type": "object",
+      "required": ["users", "agents", "production"],
+      "properties": {
+        "users": {"type": "string", "enum": ["none", "low", "medium", "high"]},
+        "agents": {"type": "string", "enum": ["none", "low", "medium", "high"]},
+        "production": {"type": "string", "enum": ["none", "low", "medium", "high"]}
+      },
+      "additionalProperties": false
+    },
+    "novelty": {
+      "type": "object",
+      "required": ["level"],
+      "properties": {
+        "level": {"type": "string", "enum": ["low", "medium", "high"]}
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["metrics", "signals", "refs"],
+      "properties": {
+        "metrics": {"type": "array", "items": {"type": ["string", "number", "object"]}},
+        "signals": {"type": "array", "items": {"type": "string"}},
+        "refs": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "recommendation": {
+      "type": "object",
+      "required": ["proposed_lane", "proposed_disposition"],
+      "properties": {
+        "proposed_lane": {"type": "string", "enum": ["fast", "review", "deep", "unknown"]},
+        "proposed_disposition": {"type": "string", "enum": ["adopt", "defer", "reject", "investigate", "unknown"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

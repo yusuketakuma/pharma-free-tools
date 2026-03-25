@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "scoreBands": {
+    "fast": {"min": 0, "max": 3},
+    "review": {"min": 4, "max": 7},
+    "deep": {"min": 8, "max": 12}
+  },
+  "mandatoryDeepFlags": [
+    "auth_root_change",
+    "trust_boundary_redefinition",
+    "approval_root_change",
+    "routing_root_change",
+    "ceo_board_execution_boundary_change",
+    "authority_redistribution_major",
+    "irreversible_production_change",
+    "user_trust_critical",
+    "root_governance_multi_layer_change"
+  ],
+  "quorumProfiles": {
+    "user_impact": ["chair", "user_advocate", "operator"],
+    "ops_audit": ["chair", "operator", "auditor"],
+    "strategy_ops": ["chair", "visionary", "operator"],
+    "full_board": ["chair", "visionary", "user_advocate", "operator", "auditor"]
+  }
+}

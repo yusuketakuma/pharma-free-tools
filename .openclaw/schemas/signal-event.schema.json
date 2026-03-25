@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SignalEvent",
+  "type": "object",
+  "required": ["signal_id", "occurred_at", "source", "category", "domain", "summary", "severity", "evidence", "related_entities", "candidate_hint"],
+  "properties": {
+    "signal_id": {"type": "string"},
+    "occurred_at": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["type", "name"],
+      "properties": {
+        "type": {"type": "string", "enum": ["agent", "cron", "monitor", "ceo", "board"]},
+        "name": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "category": {"type": "string", "enum": ["metric", "anomaly", "lesson", "conflict", "dependency", "suggestion", "risk_hint"]},
+    "domain": {"type": "string", "enum": ["prompt", "staffing", "routing", "auth", "reporting", "policy", "execution", "monitoring"]},
+    "summary": {"type": "string"},
+    "severity": {"type": "string", "enum": ["low", "medium", "high"]},
+    "evidence": {
+      "type": "object",
+      "required": ["metrics", "refs"],
+      "properties": {
+        "metrics": {"type": "array", "items": {"type": ["string", "number", "object"]}},
+        "refs": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "related_entities": {
+      "type": "object",
+      "required": ["agents", "repos", "layers"],
+      "properties": {
+        "agents": {"type": "array", "items": {"type": "string"}},
+        "repos": {"type": "array", "items": {"type": "string"}},
+        "layers": {"type": "array", "items": {"type": "string", "enum": ["ceo", "board", "execution", "infra", "user-facing"]}}
+      },
+      "additionalProperties": false
+    },
+    "candidate_hint": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

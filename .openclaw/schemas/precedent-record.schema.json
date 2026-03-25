@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrecedentRecord",
+  "type": "object",
+  "required": ["precedent_id", "created_from_decision_id", "title", "applies_if", "excludes_if", "default_lane", "default_ruling", "required_guardrails", "monitoring_requirements", "expires_at", "revoked", "revoke_reason"],
+  "properties": {
+    "precedent_id": {"type": "string"},
+    "created_from_decision_id": {"type": "string"},
+    "title": {"type": "string"},
+    "applies_if": {"type": "array", "items": {"type": "string"}},
+    "excludes_if": {"type": "array", "items": {"type": "string"}},
+    "default_lane": {"type": "string", "enum": ["fast", "review"]},
+    "default_ruling": {"type": "string", "enum": ["adopted", "deferred", "rejected", "investigate"]},
+    "required_guardrails": {"type": "array", "items": {"type": "string"}},
+    "monitoring_requirements": {"type": "array", "items": {"type": "string"}},
+    "expires_at": {"type": ["string", "null"]},
+    "revoked": {"type": "boolean"},
+    "revoke_reason": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}
