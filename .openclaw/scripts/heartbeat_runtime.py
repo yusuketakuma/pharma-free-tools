@@ -8,7 +8,6 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from board_runtime import emit_candidate, emit_signal
 from task_runtime import CONFIG_ROOT, ROOT, TASKS_ROOT, ValidationError, append_jsonl, ensure_schema_valid, load_json, now_iso
 
 HEARTBEAT_RUNTIME_ROOT = ROOT / "runtime" / "heartbeat"
@@ -75,6 +74,24 @@ def role_kind(source_role: str) -> str:
     if source_role in SCOUT_ROLES:
         return "scout"
     return "execution"
+
+
+def signal_source_type_for_role(source_role: str) -> str:
+    kind = role_kind(source_role)
+    if kind == "ceo":
+        return "ceo"
+    if kind == "board":
+        return "board"
+    return "agent"
+
+
+def candidate_source_type_for_role(source_role: str) -> str:
+    kind = role_kind(source_role)
+    if kind == "ceo":
+        return "ceo"
+    if kind == "board":
+        return "board_followup"
+    return "agent"
 
 
 def allowed_outcomes(source_role: str) -> List[str]:
@@ -307,7 +324,7 @@ def map_heartbeat_result(result: Dict[str, Any]) -> Dict[str, Any]:
         payload = {
             "signal_id": _hash_id("signal", result["heartbeat_run_id"]),
             "occurred_at": result.get("created_at") or now_iso(),
-            "source": {"type": role_kind(result["source_role"]), "name": result["source_role"]},
+            "source": {"type": signal_source_type_for_role(result["source_role"]), "name": result["source_role"]},
             "category": "suggestion",
             "domain": domain if domain in {"prompt","staffing","routing","auth","reporting","policy","execution","monitoring"} else "monitoring",
             "summary": result.get("root_issue") or result.get("desired_change") or f"heartbeat from {result['source_role']}",
@@ -316,6 +333,7 @@ def map_heartbeat_result(result: Dict[str, Any]) -> Dict[str, Any]:
             "related_entities": {"agents": [result["source_role"]], "repos": [], "layers": ["board" if role_kind(result["source_role"]) == "board" else "execution"]},
             "candidate_hint": False,
         }
+        from board_runtime import emit_signal
         emit_signal(payload)
         mapped["written"] = True
         mapped["signal_id"] = payload["signal_id"]
@@ -324,7 +342,7 @@ def map_heartbeat_result(result: Dict[str, Any]) -> Dict[str, Any]:
         payload = {
             "proposal_id": result.get("source_proposal_id") or _hash_id("proposal", result["heartbeat_run_id"]),
             "created_at": result.get("created_at") or now_iso(),
-            "source": {"type": role_kind(result["source_role"]), "name": result["source_role"]},
+            "source": {"type": candidate_source_type_for_role(result["source_role"]), "name": result["source_role"]},
             "title": result.get("desired_change") or result.get("root_issue") or f"heartbeat agenda from {result['source_role']}",
             "summary": result.get("root_issue") or result.get("desired_change") or f"heartbeat agenda from {result['source_role']}",
             "root_issue": result.get("root_issue") or result.get("desired_change") or "heartbeat issue",
@@ -341,6 +359,7 @@ def map_heartbeat_result(result: Dict[str, Any]) -> Dict[str, Any]:
             "evidence": {"metrics": [], "signals": [], "refs": result.get("evidence_refs") or []},
             "recommendation": {"proposed_lane":"fast","proposed_disposition":"investigate"},
         }
+        from board_runtime import emit_candidate
         emit_candidate(payload)
         mapped["written"] = True
         mapped["proposal_id"] = payload["proposal_id"]
