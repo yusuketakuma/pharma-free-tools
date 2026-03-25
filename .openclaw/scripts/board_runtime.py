@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from collections import Counter
-from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, Iterable, List, Tuple
 
-from task_runtime import CONFIG_ROOT, ROOT, SCHEMAS_ROOT, TASKS_ROOT, ValidationError, append_jsonl, ensure_schema_valid, load_json, now_iso
+from task_runtime import CONFIG_ROOT, ROOT, TASKS_ROOT, ValidationError, append_jsonl, ensure_schema_valid, load_json, now_iso
 
 BOARD_RUNTIME_ROOT = ROOT / "runtime" / "board"
 BOARD_RUNTIME_ROOT.mkdir(parents=True, exist_ok=True)
@@ -21,6 +21,12 @@ SIGNALS_PATH = BOARD_RUNTIME_ROOT / "signals.jsonl"
 CANDIDATES_PATH = BOARD_RUNTIME_ROOT / "agenda-candidates.jsonl"
 CASES_PATH = BOARD_RUNTIME_ROOT / "agenda-cases.jsonl"
 RISK_CONFIG_PATH = CONFIG_ROOT / "board-risk-scoring.json"
+
+BOUNDARY_SCORE = {"none": 0, "low": 0, "medium": 1, "high": 2}
+BLAST_SCORE = {"none": 0, "low": 0, "medium": 1, "high": 2}
+REVERSIBILITY_SCORE = {"high": 0, "medium": 1, "low": 2}
+NOVELTY_SCORE = {"low": 0, "medium": 1, "high": 2}
+LAYER_WEIGHT = {"ceo": 1, "board": 1, "execution": 1, "infra": 2, "user-facing": 2}
 
 
 def _load_jsonl(path: Path) -> List[Dict[str, Any]]:
@@ -36,13 +42,47 @@ def _load_jsonl(path: Path) -> List[Dict[str, Any]]:
     return rows
 
 
-def _new_id(prefix: str) -> str:
+def _hash_id(prefix: str, payload: str) -> str:
+    digest = hashlib.sha1(payload.encode("utf-8")).hexdigest()[:12]
     ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
-    return f"{prefix}-{ts}-{Path('/tmp').stat().st_mtime_ns % 1000000:06d}"
+    return f"{prefix}-{ts}-{digest}"
+
+
+def new_proposal_id(source: str, title: str) -> str:
+    return _hash_id("proposal", f"{source}:{title}")
+
+
+def new_case_id(keys: Iterable[str]) -> str:
+    return _hash_id("case", "|".join(keys))
+
+
+def new_decision_id(case_id: str) -> str:
+    return _hash_id("decision", case_id)
+
+
+def new_precedent_id(title: str) -> str:
+    return _hash_id("precedent", title)
+
+
+def new_approval_id(scope: str) -> str:
+    return _hash_id("approval", scope)
 
 
 def _risk_cfg() -> Dict[str, Any]:
     return load_json(RISK_CONFIG_PATH, default={}) or {}
+
+
+def ensure_payload(payload: Dict[str, Any], schema_name: str) -> None:
+    path = TASKS_ROOT / "_board_validate_tmp.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    try:
+        ensure_schema_valid(path, schema_name)
+    finally:
+        try:
+            path.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def write_signal(payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -87,17 +127,185 @@ def write_deferred(payload: Dict[str, Any]) -> Dict[str, Any]:
     return payload
 
 
-def ensure_payload(payload: Dict[str, Any], schema_name: str) -> None:
-    path = TASKS_ROOT / "_board_validate_tmp.json"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    try:
-        ensure_schema_valid(path, schema_name)
-    finally:
-        try:
-            path.unlink()
-        except FileNotFoundError:
-            pass
+def read_ledger() -> List[Dict[str, Any]]:
+    return _load_jsonl(LEDGER_PATH)
+
+
+def read_deferred() -> List[Dict[str, Any]]:
+    return _load_jsonl(DEFERRED_QUEUE_PATH)
+
+
+def read_precedents() -> List[Dict[str, Any]]:
+    return _load_jsonl(PRECEDENTS_PATH)
+
+
+def read_standing_approvals() -> List[Dict[str, Any]]:
+    return _load_jsonl(STANDING_APPROVALS_PATH)
+
+
+def active_unresolved_items() -> List[Dict[str, Any]]:
+    return [item for item in read_deferred() if item.get("status") in {"open", "reopened"}]
+
+
+def normalize_candidate(candidate: Dict[str, Any]) -> Dict[str, Any]:
+    normalized = dict(candidate)
+    scope = dict(candidate.get("change_scope") or {})
+    for key in ("domains", "repos", "agents", "layers"):
+        values = scope.get(key) or []
+        scope[key] = sorted({str(v) for v in values if str(v).strip()})
+    normalized["change_scope"] = scope
+    normalized["root_issue"] = str(candidate.get("root_issue") or candidate.get("summary") or "").strip()
+    normalized["desired_change"] = str(candidate.get("desired_change") or f"{candidate['requested_action']['type']}:{candidate['requested_action']['target']}").strip()
+    return normalized
+
+
+def candidate_dedupe_key(candidate: Dict[str, Any]) -> str:
+    c = normalize_candidate(candidate)
+    scope = c["change_scope"]
+    major_impact = ",".join(sorted(scope.get("layers") or []))
+    key = "|".join([
+        ",".join(scope.get("domains") or []),
+        c["requested_action"]["target"],
+        c["requested_action"]["type"],
+        c["root_issue"],
+        major_impact,
+    ])
+    return hashlib.sha1(key.encode("utf-8")).hexdigest()
+
+
+def _match_rule_texts(texts: List[str], candidate: Dict[str, Any]) -> bool:
+    haystacks = [
+        candidate.get("title", "").lower(),
+        candidate.get("summary", "").lower(),
+        candidate.get("desired_change", "").lower(),
+        candidate.get("root_issue", "").lower(),
+        candidate.get("requested_action", {}).get("target", "").lower(),
+        " ".join((candidate.get("change_scope") or {}).get("domains", [])).lower(),
+    ]
+    blob = " \n ".join(haystacks)
+    return all(str(text).lower() in blob for text in texts)
+
+
+def match_precedent(candidate: Dict[str, Any]) -> Dict[str, Any]:
+    normalized = normalize_candidate(candidate)
+    precedents = read_precedents()
+    approvals = read_standing_approvals()
+    best = {
+        "matched": False,
+        "precedent_id": None,
+        "standing_approval": False,
+        "confidence": "low",
+        "applies_if": [],
+        "excludes_if": [],
+        "required_guardrails": [],
+    }
+    for precedent in precedents:
+        if precedent.get("revoked"):
+            continue
+        applies_if = [str(x) for x in precedent.get("applies_if", [])]
+        excludes_if = [str(x) for x in precedent.get("excludes_if", [])]
+        applies = _match_rule_texts(applies_if, normalized) if applies_if else False
+        excludes = _match_rule_texts(excludes_if, normalized) if excludes_if else False
+        if excludes:
+            continue
+        if applies:
+            confidence = "high"
+        else:
+            same_target = precedent.get("title", "").lower() in normalized.get("title", "").lower() or normalized["requested_action"]["target"].lower() in precedent.get("title", "").lower()
+            overlapping_domain = bool(set((normalized.get("change_scope") or {}).get("domains", [])) & set(" ".join(applies_if).split()))
+            if same_target or overlapping_domain:
+                confidence = "medium"
+            else:
+                continue
+        best = {
+            "matched": True,
+            "precedent_id": precedent.get("precedent_id"),
+            "standing_approval": False,
+            "confidence": confidence,
+            "applies_if": applies_if,
+            "excludes_if": excludes_if,
+            "required_guardrails": [str(x) for x in precedent.get("required_guardrails", [])],
+        }
+        for approval in approvals:
+            if approval.get("based_on_precedent_id") != best["precedent_id"]:
+                continue
+            forbidden = [str(x) for x in approval.get("forbidden_conditions", [])]
+            if _match_rule_texts(forbidden, normalized):
+                continue
+            best["standing_approval"] = True
+            best["required_guardrails"] = sorted({*best["required_guardrails"], *[str(x) for x in approval.get("required_checks", [])]})
+            break
+        if confidence == "high":
+            break
+    return best
+
+
+def _mandatory_deep_flags(candidate: Dict[str, Any]) -> List[str]:
+    cfg = _risk_cfg()
+    flags: List[str] = []
+    domains = set((candidate.get("change_scope") or {}).get("domains", []))
+    layers = set((candidate.get("change_scope") or {}).get("layers", []))
+    boundary = candidate.get("boundary_impact") or {}
+    blast = candidate.get("blast_radius") or {}
+    text = " ".join([
+        candidate.get("title", ""),
+        candidate.get("summary", ""),
+        candidate.get("why_now", ""),
+        candidate.get("possible_harm", ""),
+    ]).lower()
+    if "auth" in domains or boundary.get("trust_boundary") == "high":
+        flags.append("auth_root_change")
+    if boundary.get("trust_boundary") in {"medium", "high"}:
+        flags.append("trust_boundary_redefinition")
+    if boundary.get("approval_boundary") in {"medium", "high"}:
+        flags.append("approval_root_change")
+    if "routing" in domains and boundary.get("board_execution") in {"medium", "high"}:
+        flags.append("routing_root_change")
+    if boundary.get("ceo_board") in {"medium", "high"} or boundary.get("board_execution") in {"medium", "high"}:
+        flags.append("ceo_board_execution_boundary_change")
+    if "authority" in text or "権限" in text:
+        flags.append("authority_redistribution_major")
+    if candidate.get("reversibility", {}).get("level") == "low" and blast.get("production") in {"medium", "high"}:
+        flags.append("irreversible_production_change")
+    if blast.get("users") == "high" or "trust" in text:
+        flags.append("user_trust_critical")
+    if len((candidate.get("change_scope") or {}).get("repos", [])) >= 2 and len(layers) >= 2:
+        flags.append("root_governance_multi_layer_change")
+    allowed = set((_risk_cfg().get("mandatoryDeepFlags") or []))
+    return [flag for flag in flags if flag in allowed]
+
+
+def score_candidate(candidate: Dict[str, Any]) -> Dict[str, Any]:
+    c = normalize_candidate(candidate)
+    boundary = c.get("boundary_impact") or {}
+    blast = c.get("blast_radius") or {}
+    scope = c.get("change_scope") or {}
+    dependency_spread = 0
+    if len(scope.get("repos", [])) >= 2 or len(scope.get("agents", [])) >= 3:
+        dependency_spread = 2
+    elif len(scope.get("repos", [])) == 1 and (len(scope.get("agents", [])) >= 2 or len(scope.get("layers", [])) >= 2):
+        dependency_spread = 1
+    layer_score = max([LAYER_WEIGHT.get(layer, 0) for layer in scope.get("layers", [])], default=0)
+    dependency_spread = max(dependency_spread, 1 if layer_score == 1 and len(scope.get("layers", [])) >= 2 else 0)
+    if layer_score == 2 and len(scope.get("layers", [])) >= 2:
+        dependency_spread = 2
+    score_breakdown = {
+        "boundary_impact": max(BOUNDARY_SCORE.get(str(boundary.get("ceo_board", "none")), 0), BOUNDARY_SCORE.get(str(boundary.get("board_execution", "none")), 0), BOUNDARY_SCORE.get(str(boundary.get("trust_boundary", "none")), 0), BOUNDARY_SCORE.get(str(boundary.get("approval_boundary", "none")), 0)),
+        "blast_radius": max(BLAST_SCORE.get(str(blast.get("users", "none")), 0), BLAST_SCORE.get(str(blast.get("agents", "none")), 0), BLAST_SCORE.get(str(blast.get("production", "none")), 0)),
+        "reversibility": REVERSIBILITY_SCORE.get(str(c.get("reversibility", {}).get("level", "high")), 0),
+        "novelty": NOVELTY_SCORE.get(str(c.get("novelty", {}).get("level", "low")), 0),
+        "trust_user_impact": max(BLAST_SCORE.get(str(blast.get("users", "none")), 0), BOUNDARY_SCORE.get(str(boundary.get("trust_boundary", "none")), 0), BOUNDARY_SCORE.get(str(boundary.get("approval_boundary", "none")), 0)),
+        "dependency_spread": dependency_spread,
+    }
+    reason_codes = [key for key, val in score_breakdown.items() if val > 0]
+    mandatory = _mandatory_deep_flags(c)
+    score_total = sum(score_breakdown.values())
+    return {
+        "score_breakdown": score_breakdown,
+        "score_total": score_total,
+        "mandatory_deep_flags": mandatory,
+        "reason_codes": reason_codes,
+    }
 
 
 def compute_lane(score: int, mandatory_deep: bool = False) -> str:
@@ -111,75 +319,102 @@ def compute_lane(score: int, mandatory_deep: bool = False) -> str:
     return "deep"
 
 
-def build_case_from_candidate(candidate: Dict[str, Any], matched_precedent_id: str | None = None, confidence: str = "low") -> Dict[str, Any]:
-    risk_score = int(candidate.get("risk_score", 0)) if isinstance(candidate.get("risk_score"), int) else 0
-    mandatory_deep = bool(candidate.get("mandatory_deep", False))
-    lane = compute_lane(risk_score, mandatory_deep)
-    quorum = None
-    board_mode = "auto"
-    if lane == "review":
-        quorum = "strategy_ops"
-        board_mode = "quorum_review"
-    elif lane == "deep":
-        quorum = "full_board"
-        board_mode = "deep_review"
-    elif matched_precedent_id:
-        board_mode = "auto"
-    else:
-        board_mode = "chair_ack"
-    payload = {
-        "case_id": _new_id("case"),
-        "source_proposals": [candidate["proposal_id"]],
-        "source_signals": candidate.get("evidence", {}).get("signals", []),
-        "canonical_title": candidate["title"],
-        "canonical_summary": candidate["summary"],
-        "root_issue": candidate["summary"],
-        "desired_change": candidate["requested_action"]["type"] + ":" + candidate["requested_action"]["target"],
-        "impact_profile": candidate["change_scope"],
+def route_case(candidate: Dict[str, Any], precedent: Dict[str, Any], scored: Dict[str, Any]) -> Dict[str, Any]:
+    mandatory = bool(scored["mandatory_deep_flags"])
+    lane = compute_lane(scored["score_total"], mandatory)
+    board_mode = "deep_review"
+    quorum_profile = "full_board"
+    auto_disposition_eligible = False
+    if lane == "fast":
+        quorum_profile = None
+        if precedent["matched"] and precedent["standing_approval"]:
+            board_mode = "auto"
+            auto_disposition_eligible = True
+        else:
+            board_mode = "chair_ack"
+    elif lane == "review":
+        domains = set((candidate.get("change_scope") or {}).get("domains", []))
+        if domains & {"policy", "auth", "routing"}:
+            quorum_profile = "full_board"
+            board_mode = "deep_review" if mandatory else "quorum_review"
+        elif domains & {"execution", "monitoring"}:
+            quorum_profile = "ops_audit"
+            board_mode = "quorum_review"
+        elif domains & {"prompt", "staffing", "reporting"}:
+            quorum_profile = "user_impact" if "reporting" in domains else "strategy_ops"
+            board_mode = "quorum_review"
+        else:
+            quorum_profile = "strategy_ops"
+            board_mode = "quorum_review"
+    return {
+        "risk_lane": lane,
+        "board_mode": board_mode,
+        "quorum_profile": quorum_profile,
+        "auto_disposition_eligible": auto_disposition_eligible,
+    }
+
+
+def build_case_from_candidate(candidate: Dict[str, Any]) -> Dict[str, Any]:
+    normalized = normalize_candidate(candidate)
+    precedent = match_precedent(normalized)
+    scored = score_candidate(normalized)
+    routed = route_case(normalized, precedent, scored)
+    case = {
+        "case_id": new_case_id([
+            candidate_dedupe_key(normalized),
+            normalized["requested_action"]["target"],
+            normalized["requested_action"]["type"],
+        ]),
+        "source_proposals": [normalized["proposal_id"]],
+        "source_signals": normalized.get("evidence", {}).get("signals", []),
+        "canonical_title": normalized["title"],
+        "canonical_summary": normalized["summary"],
+        "root_issue": normalized["root_issue"],
+        "desired_change": normalized["desired_change"],
+        "impact_profile": normalized["change_scope"],
         "precedent_match": {
-            "matched": bool(matched_precedent_id),
-            "precedent_id": matched_precedent_id,
-            "standing_approval": False,
-            "confidence": confidence,
+            "matched": precedent["matched"],
+            "precedent_id": precedent["precedent_id"],
+            "standing_approval": precedent["standing_approval"],
+            "confidence": precedent["confidence"],
         },
         "risk": {
-            "score": risk_score,
-            "lane": lane,
-            "mandatory_deep": mandatory_deep,
-            "reasons": candidate.get("risk_reasons", []),
+            "score": scored["score_total"],
+            "lane": routed["risk_lane"],
+            "mandatory_deep": bool(scored["mandatory_deep_flags"]),
+            "reasons": scored["reason_codes"] + scored["mandatory_deep_flags"],
         },
         "disposition_options": ["adopt", "defer", "reject", "investigate"],
-        "routing": {"board_mode": board_mode, "quorum_profile": quorum},
-        "state": "routed",
+        "routing": {
+            "board_mode": routed["board_mode"],
+            "quorum_profile": routed["quorum_profile"],
+            "auto_disposition_eligible": routed["auto_disposition_eligible"],
+        },
+        "state": "routed" if routed["board_mode"] != "auto" else "precedent_applied",
     }
-    return payload
+    return case
 
 
 def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> Dict[str, Any]:
-    lane = case["risk"]["lane"]
-    board_mode = {
-        "fast": "chair_ack" if case["routing"]["board_mode"] == "chair_ack" else "fast_auto",
-        "review": "quorum_review",
-        "deep": "deep_review",
-    }[lane]
-    participants = {
-        "fast_auto": ["chair"],
+    board_mode = case["routing"]["board_mode"]
+    participants_map = {
+        "auto": ["chair"],
         "chair_ack": ["chair"],
-        "quorum_review": ["chair", "visionary", "operator"],
-        "deep_review": ["chair", "visionary", "user_advocate", "operator", "auditor"],
-    }[board_mode]
+        "quorum_review": (_risk_cfg().get("quorumProfiles") or {}).get(case["routing"].get("quorum_profile") or "strategy_ops", ["chair", "visionary", "operator"]),
+        "deep_review": (_risk_cfg().get("quorumProfiles") or {}).get("full_board", ["chair", "visionary", "user_advocate", "operator", "auditor"]),
+    }
     decision = {
-        "decision_id": _new_id("decision"),
+        "decision_id": new_decision_id(case["case_id"]),
         "case_id": case["case_id"],
         "proposal_ids": case["source_proposals"],
         "decided_at": now_iso(),
         "board_mode": {
-            "type": board_mode,
-            "participants": participants,
-            "quorum_profile": case["routing"]["quorum_profile"],
+            "type": "fast_auto" if board_mode == "auto" else "chair_ack" if board_mode == "chair_ack" else "quorum_review" if board_mode == "quorum_review" else "deep_review",
+            "participants": participants_map[board_mode],
+            "quorum_profile": case["routing"].get("quorum_profile"),
         },
         "lane": {
-            "risk_lane": lane,
+            "risk_lane": case["risk"]["lane"],
             "risk_score": case["risk"]["score"],
             "mandatory_deep": case["risk"]["mandatory_deep"],
             "score_breakdown": {
@@ -196,13 +431,13 @@ def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> D
             "accepted_because": [case["canonical_summary"]] if ruling == "adopted" else [],
             "deferred_because": [case["canonical_summary"]] if ruling == "deferred" else [],
             "rejected_because": [case["canonical_summary"]] if ruling == "rejected" else [],
-            "tradeoffs": [],
+            "tradeoffs": case["risk"]["reasons"],
         },
         "guardrail": {
             "constraints": [],
             "forbidden_actions": [],
             "required_checks": [],
-            "rollout_mode": "direct" if lane == "fast" else "staged" if lane == "review" else "simulation",
+            "rollout_mode": "direct" if case["risk"]["lane"] == "fast" else "staged" if case["risk"]["lane"] == "review" else "simulation",
         },
         "followup": {
             "owner": "supervisor-core",
@@ -214,7 +449,7 @@ def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> D
         "precedent": {
             "creates_precedent": False,
             "precedent_id": case["precedent_match"]["precedent_id"],
-            "standing_approval_candidate": False,
+            "standing_approval_candidate": case["risk"]["lane"] == "fast",
             "precedent_scope": None,
         },
         "reporting": {
@@ -231,23 +466,6 @@ def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> D
         },
     }
     return decision
-
-
-def read_ledger() -> List[Dict[str, Any]]:
-    return _load_jsonl(LEDGER_PATH)
-
-
-def read_deferred() -> List[Dict[str, Any]]:
-    return _load_jsonl(DEFERRED_QUEUE_PATH)
-
-
-def read_precedents() -> List[Dict[str, Any]]:
-    return _load_jsonl(PRECEDENTS_PATH)
-
-
-def active_unresolved_items() -> List[Dict[str, Any]]:
-    deferred = [item for item in read_deferred() if item.get("status") in {"open", "reopened"}]
-    return deferred
 
 
 def ledger_snapshot(hours: int = 24) -> Dict[str, Any]:
@@ -304,7 +522,8 @@ def parse_args() -> argparse.Namespace:
     sub = parser.add_subparsers(dest="command", required=True)
     view = sub.add_parser("view")
     view.add_argument("--hours", type=int, default=24)
-    sub.add_parser("snapshot")
+    snap = sub.add_parser("snapshot")
+    snap.add_argument("--hours", type=int, default=24)
     return parser.parse_args()
 
 
@@ -314,7 +533,7 @@ def main() -> int:
         print(render_report_view(hours=args.hours))
         return 0
     if args.command == "snapshot":
-        print(json.dumps(ledger_snapshot(), ensure_ascii=False, indent=2))
+        print(json.dumps(ledger_snapshot(hours=args.hours), ensure_ascii=False, indent=2))
         return 0
     raise ValidationError(f"unknown command: {args.command}")
 

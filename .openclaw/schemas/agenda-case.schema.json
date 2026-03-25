@@ -47,10 +47,11 @@
     "disposition_options": {"type": "array", "items": {"type": "string", "enum": ["adopt", "defer", "reject", "investigate"]}},
     "routing": {
       "type": "object",
-      "required": ["board_mode", "quorum_profile"],
+      "required": ["board_mode", "quorum_profile", "auto_disposition_eligible"],
       "properties": {
         "board_mode": {"type": "string", "enum": ["auto", "chair_ack", "quorum_review", "deep_review"]},
-        "quorum_profile": {"type": ["string", "null"], "enum": ["user_impact", "ops_audit", "strategy_ops", "full_board", null]}
+        "quorum_profile": {"type": ["string", "null"], "enum": ["user_impact", "ops_audit", "strategy_ops", "full_board", null]},
+        "auto_disposition_eligible": {"type": "boolean"}
       },
       "additionalProperties": false
     },

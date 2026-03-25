@@ -88,6 +88,10 @@
       },
       "additionalProperties": false
     },
+    "root_issue": {"type": "string"},
+    "desired_change": {"type": "string"},
+    "mandatory_deep_flags": {"type": "array", "items": {"type": "string"}},
+    "risk_hints": {"type": "array", "items": {"type": "string"}},
     "recommendation": {
       "type": "object",
       "required": ["proposed_lane", "proposed_disposition"],
