@@ -776,6 +776,123 @@ def report_guardrail_summary(report_model: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+
+
+def _recent_jsonl(path: Path, hours: int = 24) -> List[Dict[str, Any]]:
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
+    rows = []
+    for row in _load_jsonl(path):
+        ts_raw = row.get("created_at") or row.get("occurred_at") or row.get("decided_at")
+        try:
+            ts = datetime.fromisoformat(str(ts_raw)) if ts_raw else cutoff
+        except Exception:
+            ts = cutoff
+        if ts >= cutoff:
+            rows.append(row)
+    return rows
+
+
+def _existing_case_ids() -> set[str]:
+    return {str(row.get("case_id")) for row in _load_jsonl(CASES_PATH) if row.get("case_id")}
+
+
+def _existing_decision_case_ids() -> set[str]:
+    return {str(row.get("source_case_id") or row.get("case_id")) for row in read_ledger() if row.get("source_case_id") or row.get("case_id")}
+
+
+def _existing_deferred_case_ids() -> set[str]:
+    return {str(row.get("source_case_id")) for row in read_deferred() if row.get("source_case_id")}
+
+
+def assemble_cases(hours: int = 24) -> Dict[str, Any]:
+    candidates = _recent_jsonl(CANDIDATES_PATH, hours=hours)
+    signals = _recent_jsonl(SIGNALS_PATH, hours=hours)
+    existing_cases = _existing_case_ids()
+    existing_decisions = _existing_decision_case_ids()
+    existing_deferred = _existing_deferred_case_ids()
+    created_cases = 0
+    created_decisions = 0
+    created_deferred = 0
+    lane_counts: Counter[str] = Counter()
+    grouped: Dict[str, List[Dict[str, Any]]] = {}
+    for candidate in candidates:
+        key = candidate_dedupe_key(candidate)
+        grouped.setdefault(key, []).append(candidate)
+    for _, group in grouped.items():
+        base = group[-1]
+        case = build_case_from_candidate(base)
+        case["source_proposals"] = sorted({str(c.get("proposal_id")) for c in group if c.get("proposal_id")})
+        related_signals = []
+        for sig in signals:
+            if any(ref in (sig.get("evidence", {}).get("refs") or []) for ref in (base.get("evidence", {}).get("refs") or [])):
+                if sig.get("signal_id"):
+                    related_signals.append(sig.get("signal_id"))
+        case["source_signals"] = sorted(set(case.get("source_signals", []) + related_signals))
+        if case["case_id"] not in existing_cases:
+            write_case(case)
+            created_cases += 1
+            existing_cases.add(case["case_id"])
+        lane_counts[case["risk"]["lane"]] += 1
+        if case["case_id"] in existing_decisions or case["case_id"] in existing_deferred:
+            continue
+        if case["routing"]["board_mode"] == "auto":
+            decision = build_decision_from_case(case, ruling="adopted")
+            write_decision(decision)
+            created_decisions += 1
+            existing_decisions.add(case["case_id"])
+        elif case["routing"]["board_mode"] == "chair_ack":
+            decision = build_decision_from_case(case, ruling="investigate")
+            write_decision(decision)
+            created_decisions += 1
+            existing_decisions.add(case["case_id"])
+        else:
+            ruling = "deferred" if case["routing"]["board_mode"] == "deep_review" else "investigate"
+            decision = build_decision_from_case(case, ruling=ruling)
+            write_decision(decision)
+            created_decisions += 1
+            existing_decisions.add(case["case_id"])
+            deferred = {
+                "item_id": _hash_id("deferred", case["case_id"]),
+                "decision_id": decision["decision_id"],
+                "reason": f"awaiting {case['routing']['board_mode']}",
+                "required_investigation": [case["canonical_summary"]],
+                "reopen_if": ["board review requested", "new evidence", "risk escalation"],
+                "review_after": None,
+                "status": "open",
+                "source_case_id": case["case_id"],
+                "source_proposal_ids": case["source_proposals"],
+                "deep_review_status": decision["deep_review_status"],
+            }
+            write_deferred(deferred)
+            created_deferred += 1
+            existing_deferred.add(case["case_id"])
+    return {
+        "hours": hours,
+        "candidate_count": len(candidates),
+        "signal_count": len(signals),
+        "case_count": len(grouped),
+        "created_cases": created_cases,
+        "created_decisions": created_decisions,
+        "created_deferred": created_deferred,
+        "lane_counts": dict(lane_counts),
+    }
+
+
+def emit_candidate(payload: Dict[str, Any]) -> Dict[str, Any]:
+    if not payload.get("proposal_id"):
+        payload["proposal_id"] = new_proposal_id(str(payload.get("source", {}).get("name", "unknown")), str(payload.get("title", "untitled")))
+    if not payload.get("created_at"):
+        payload["created_at"] = now_iso()
+    return write_candidate(payload)
+
+
+def emit_signal(payload: Dict[str, Any]) -> Dict[str, Any]:
+    if not payload.get("signal_id"):
+        payload["signal_id"] = _hash_id("signal", str(payload.get("summary", "signal")))
+    if not payload.get("occurred_at"):
+        payload["occurred_at"] = now_iso()
+    return write_signal(payload)
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Board runtime helpers")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -785,6 +902,12 @@ def parse_args() -> argparse.Namespace:
     report_view.add_argument("--hours", type=int, default=6)
     report_json = sub.add_parser("report-json")
     report_json.add_argument("--hours", type=int, default=6)
+    assemble = sub.add_parser("assemble")
+    assemble.add_argument("--hours", type=int, default=24)
+    emit_signal_p = sub.add_parser("emit-signal")
+    emit_signal_p.add_argument("payloadPath")
+    emit_candidate_p = sub.add_parser("emit-candidate")
+    emit_candidate_p.add_argument("payloadPath")
     snap = sub.add_parser("snapshot")
     snap.add_argument("--hours", type=int, default=24)
     return parser.parse_args()
@@ -800,6 +923,17 @@ def main() -> int:
         return 0
     if args.command == "report-json":
         print(json.dumps(report_input_model(hours=args.hours), ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "assemble":
+        print(json.dumps(assemble_cases(hours=args.hours), ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "emit-signal":
+        payload = json.loads(Path(args.payloadPath).read_text(encoding="utf-8"))
+        print(json.dumps(emit_signal(payload), ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "emit-candidate":
+        payload = json.loads(Path(args.payloadPath).read_text(encoding="utf-8"))
+        print(json.dumps(emit_candidate(payload), ensure_ascii=False, indent=2))
         return 0
     if args.command == "snapshot":
         print(json.dumps(ledger_snapshot(hours=args.hours), ensure_ascii=False, indent=2))

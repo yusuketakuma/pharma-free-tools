@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from board_runtime import emit_candidate, emit_signal
 from task_runtime import CONFIG_ROOT, ROOT, TASKS_ROOT, ValidationError, append_jsonl, ensure_schema_valid, load_json, now_iso
 
 HEARTBEAT_RUNTIME_ROOT = ROOT / "runtime" / "heartbeat"
@@ -15,6 +16,8 @@ HEARTBEAT_RUNTIME_ROOT.mkdir(parents=True, exist_ok=True)
 HEARTBEAT_RESULTS_PATH = HEARTBEAT_RUNTIME_ROOT / "heartbeat-results.jsonl"
 EXPLORATION_LEASES_PATH = HEARTBEAT_RUNTIME_ROOT / "exploration-leases.jsonl"
 HEARTBEAT_STATE_PATH = HEARTBEAT_RUNTIME_ROOT / "heartbeat-state.json"
+SCOUT_REQUESTS_PATH = HEARTBEAT_RUNTIME_ROOT / "scout-requests.jsonl"
+ARTIFACT_UPDATES_PATH = HEARTBEAT_RUNTIME_ROOT / "artifact-updates.jsonl"
 GOVERNANCE_CONFIG_PATH = CONFIG_ROOT / "heartbeat-governance.json"
 
 EXECUTION_ROLES = {"research-analyst", "github-operator", "ops-automator", "doc-editor", "dss-manager"}
@@ -292,10 +295,65 @@ def build_heartbeat_result(payload: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
+
+
+def map_heartbeat_result(result: Dict[str, Any]) -> Dict[str, Any]:
+    mapped: Dict[str, Any] = {"kind": result.get("outcome_type"), "written": False}
+    if result.get("outcome_type") == "signal_only":
+        domain = (result.get("domain_scope") or ["monitoring"])[0]
+        payload = {
+            "signal_id": _hash_id("signal", result["heartbeat_run_id"]),
+            "occurred_at": result.get("created_at") or now_iso(),
+            "source": {"type": role_kind(result["source_role"]), "name": result["source_role"]},
+            "category": "suggestion",
+            "domain": domain if domain in {"prompt","staffing","routing","auth","reporting","policy","execution","monitoring"} else "monitoring",
+            "summary": result.get("root_issue") or result.get("desired_change") or f"heartbeat from {result['source_role']}",
+            "severity": "low" if result.get("estimated_value") == "low" else "medium",
+            "evidence": {"metrics": [], "refs": result.get("evidence_refs") or []},
+            "related_entities": {"agents": [result["source_role"]], "repos": [], "layers": ["board" if role_kind(result["source_role"]) == "board" else "execution"]},
+            "candidate_hint": False,
+        }
+        emit_signal(payload)
+        mapped["written"] = True
+        mapped["signal_id"] = payload["signal_id"]
+    elif result.get("outcome_type") == "agenda_candidate":
+        domain = (result.get("domain_scope") or ["monitoring"])[0]
+        payload = {
+            "proposal_id": result.get("source_proposal_id") or _hash_id("proposal", result["heartbeat_run_id"]),
+            "created_at": result.get("created_at") or now_iso(),
+            "source": {"type": role_kind(result["source_role"]), "name": result["source_role"]},
+            "title": result.get("desired_change") or result.get("root_issue") or f"heartbeat agenda from {result['source_role']}",
+            "summary": result.get("root_issue") or result.get("desired_change") or f"heartbeat agenda from {result['source_role']}",
+            "root_issue": result.get("root_issue") or result.get("desired_change") or "heartbeat issue",
+            "desired_change": result.get("desired_change") or result.get("root_issue") or "investigate",
+            "requested_action": {"type": "investigate", "target": domain},
+            "change_scope": {"domains": result.get("domain_scope") or [domain], "repos": [], "agents": [result["source_role"]], "layers": ["board" if role_kind(result["source_role"]) == "board" else "execution"]},
+            "why_now": result.get("trigger_reason") or "heartbeat",
+            "expected_benefit": f"estimated_value={result.get('estimated_value','low')}",
+            "possible_harm": f"estimated_cost={result.get('estimated_cost','low')}",
+            "boundary_impact": {"ceo_board":"none","board_execution":"low","trust_boundary":"none","approval_boundary":"none"},
+            "reversibility": {"level":"high","rollback_path":"revert or ignore candidate"},
+            "blast_radius": {"users":"none","agents":"low","production":"none"},
+            "novelty": {"level":"medium" if result.get("duplicate_key") else "low"},
+            "evidence": {"metrics": [], "signals": [], "refs": result.get("evidence_refs") or []},
+            "recommendation": {"proposed_lane":"fast","proposed_disposition":"investigate"},
+        }
+        emit_candidate(payload)
+        mapped["written"] = True
+        mapped["proposal_id"] = payload["proposal_id"]
+    elif result.get("outcome_type") == "scout_request":
+        append_jsonl(SCOUT_REQUESTS_PATH, result)
+        mapped["written"] = True
+    elif result.get("outcome_type") == "artifact_update":
+        append_jsonl(ARTIFACT_UPDATES_PATH, result)
+        mapped["written"] = True
+    return mapped
+
 def write_heartbeat_result(result: Dict[str, Any]) -> Dict[str, Any]:
     ensure_payload(result, "heartbeat-result")
     append_jsonl(HEARTBEAT_RESULTS_PATH, result)
     update_cooldown_state(result["source_role"], result["outcome_type"], bool(result.get("duplicate_check", {}).get("is_duplicate")))
+    result["mapped_output"] = map_heartbeat_result(result)
     return result
 
 
@@ -322,6 +380,8 @@ def report_governance_snapshot(hours: int = 24) -> Dict[str, Any]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Heartbeat governance runtime")
     sub = parser.add_subparsers(dest="command", required=True)
+    emit = sub.add_parser("emit")
+    emit.add_argument("payloadPath")
     snap = sub.add_parser("snapshot")
     snap.add_argument("--hours", type=int, default=24)
     return parser.parse_args()
@@ -329,6 +389,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.command == "emit":
+        payload = json.loads(Path(args.payloadPath).read_text(encoding="utf-8"))
+        result = build_heartbeat_result(payload)
+        print(json.dumps(write_heartbeat_result(result), ensure_ascii=False, indent=2))
+        return 0
     if args.command == "snapshot":
         print(json.dumps(report_governance_snapshot(hours=args.hours), ensure_ascii=False, indent=2))
         return 0
