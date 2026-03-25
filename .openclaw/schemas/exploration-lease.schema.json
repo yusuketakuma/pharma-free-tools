@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExplorationLease",
+  "type": "object",
+  "required": ["lease_id", "issue_family", "owner", "created_at", "expires_at", "status"],
+  "properties": {
+    "lease_id": {"type": "string"},
+    "issue_family": {"type": "string"},
+    "owner": {"type": "string"},
+    "created_at": {"type": "string"},
+    "expires_at": {"type": "string"},
+    "status": {"type": "string", "enum": ["active", "expired", "released"]},
+    "source_role": {"type": ["string", "null"]},
+    "duplicate_key": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

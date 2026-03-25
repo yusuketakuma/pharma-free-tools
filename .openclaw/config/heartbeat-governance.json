@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "duplicateSuppressHours": 12,
+  "noopCooldownAfter": 2,
+  "candidateSuppressAfterNoop": true,
+  "boardWindowHours": 2,
+  "boardCandidateCapPerWindow": 1,
+  "opportunityScoutOpenCap": 1,
+  "leaseTtlHours": 4,
+  "rolePolicies": {
+    "execution": {
+      "allowedOutcomeTypes": ["noop", "signal_only", "agenda_candidate", "scout_request", "artifact_update"]
+    },
+    "board": {
+      "allowedOutcomeTypes": ["noop", "signal_only", "agenda_candidate", "board_note", "artifact_update"]
+    },
+    "scout": {
+      "allowedOutcomeTypes": ["noop", "signal_only", "agenda_candidate", "artifact_update"]
+    },
+    "ceo": {
+      "allowedOutcomeTypes": ["noop", "signal_only", "agenda_candidate", "board_note", "artifact_update"]
+    }
+  }
+}

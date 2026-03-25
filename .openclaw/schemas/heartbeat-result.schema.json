@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HeartbeatResult",
+  "type": "object",
+  "required": [
+    "heartbeat_run_id",
+    "source_role",
+    "domain_scope",
+    "trigger_reason",
+    "outcome_type",
+    "duplicate_key",
+    "suppress_until",
+    "estimated_value",
+    "estimated_cost",
+    "evidence_refs"
+  ],
+  "properties": {
+    "heartbeat_run_id": {"type": "string"},
+    "source_role": {"type": "string"},
+    "domain_scope": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trigger_reason": {"type": "string"},
+    "outcome_type": {
+      "type": "string",
+      "enum": ["noop", "signal_only", "agenda_candidate", "scout_request", "artifact_update", "board_note"]
+    },
+    "duplicate_key": {"type": ["string", "null"]},
+    "suppress_until": {"type": ["string", "null"]},
+    "estimated_value": {"type": "string", "enum": ["low", "medium", "high"]},
+    "estimated_cost": {"type": "string", "enum": ["low", "medium", "high"]},
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "source_case_id": {"type": ["string", "null"]},
+    "source_proposal_id": {"type": ["string", "null"]},
+    "root_issue": {"type": ["string", "null"]},
+    "desired_change": {"type": ["string", "null"]},
+    "permission_check": {
+      "type": "object",
+      "properties": {
+        "allowed": {"type": "boolean"},
+        "allowed_outcomes": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "reason": {"type": ["string", "null"]}
+      },
+      "required": ["allowed", "allowed_outcomes", "reason"],
+      "additionalProperties": false
+    },
+    "duplicate_check": {
+      "type": "object",
+      "properties": {
+        "is_duplicate": {"type": "boolean"},
+        "matched_run_id": {"type": ["string", "null"]},
+        "reason": {"type": ["string", "null"]}
+      },
+      "required": ["is_duplicate", "matched_run_id", "reason"],
+      "additionalProperties": false
+    },
+    "lease": {
+      "type": "object",
+      "properties": {
+        "lease_id": {"type": ["string", "null"]},
+        "issue_family": {"type": ["string", "null"]},
+        "owner": {"type": ["string", "null"]},
+        "status": {"type": "string", "enum": ["not-needed", "acquired", "held-by-other", "renewed"]},
+        "expires_at": {"type": ["string", "null"]}
+      },
+      "required": ["lease_id", "issue_family", "owner", "status", "expires_at"],
+      "additionalProperties": false
+    },
+    "cooldown": {
+      "type": "object",
+      "properties": {
+        "candidate_allowed": {"type": "boolean"},
+        "cooldown_until": {"type": ["string", "null"]},
+        "reason": {"type": ["string", "null"]}
+      },
+      "required": ["candidate_allowed", "cooldown_until", "reason"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
