@@ -9,7 +9,6 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
-from heartbeat_runtime import report_governance_snapshot as heartbeat_governance_snapshot
 from task_runtime import CONFIG_ROOT, ROOT, TASKS_ROOT, ValidationError, append_jsonl, ensure_schema_valid, load_json, now_iso
 
 BOARD_RUNTIME_ROOT = ROOT / "runtime" / "board"
@@ -334,13 +333,13 @@ def _mandatory_deep_flags(candidate: Dict[str, Any]) -> List[str]:
     ]).lower()
     if "auth" in domains or boundary.get("trust_boundary") == "high":
         flags.append("auth_root_change")
-    if boundary.get("trust_boundary") in {"medium", "high"}:
+    if boundary.get("trust_boundary") == "high":
         flags.append("trust_boundary_redefinition")
-    if boundary.get("approval_boundary") in {"medium", "high"}:
+    if boundary.get("approval_boundary") == "high":
         flags.append("approval_root_change")
-    if "routing" in domains and boundary.get("board_execution") in {"medium", "high"}:
+    if "routing" in domains and boundary.get("board_execution") == "high":
         flags.append("routing_root_change")
-    if boundary.get("ceo_board") in {"medium", "high"} or boundary.get("board_execution") in {"medium", "high"}:
+    if boundary.get("ceo_board") == "high" or boundary.get("board_execution") == "high":
         flags.append("ceo_board_execution_boundary_change")
     if "authority" in text or "権限" in text:
         flags.append("authority_redistribution_major")
@@ -348,7 +347,7 @@ def _mandatory_deep_flags(candidate: Dict[str, Any]) -> List[str]:
         flags.append("irreversible_production_change")
     if blast.get("users") == "high" or "trust" in text:
         flags.append("user_trust_critical")
-    if len((candidate.get("change_scope") or {}).get("repos", [])) >= 2 and len(layers) >= 2:
+    if len((candidate.get("change_scope") or {}).get("repos", [])) >= 2 and {"ceo", "board", "execution"}.issubset(layers):
         flags.append("root_governance_multi_layer_change")
     allowed = set((_risk_cfg().get("mandatoryDeepFlags") or []))
     return [flag for flag in flags if flag in allowed]
@@ -595,6 +594,11 @@ def compute_last_cycle_diff(prev_cycle: List[Dict[str, Any]], current_cycle: Lis
     }
 
 
+def _heartbeat_governance_snapshot(hours: int) -> Dict[str, Any]:
+    from heartbeat_runtime import report_governance_snapshot
+    return report_governance_snapshot(hours)
+
+
 def report_input_model(hours: int = 6) -> Dict[str, Any]:
     current = load_recent_decisions(window_hours=hours, offset_hours=0)
     previous = load_recent_decisions(window_hours=hours, offset_hours=hours)
@@ -612,7 +616,7 @@ def report_input_model(hours: int = 6) -> Dict[str, Any]:
         "reopen_candidates": load_reopen_candidates()[:12],
         "precedent_promotions": load_precedent_promotions(window_hours=max(24, hours))[:12],
         "cycle_diff": compute_last_cycle_diff(previous, current),
-        "heartbeat_governance_snapshot": heartbeat_governance_snapshot(max(24, hours)),
+        "heartbeat_governance_snapshot": _heartbeat_governance_snapshot(max(24, hours)),
         "coverage": {},
     }
     model["coverage"] = report_guardrail_summary(model)
