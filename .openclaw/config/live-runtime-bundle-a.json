@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "name": "live-runtime-bundle-a",
+  "description": "Minimum contract-preserving runtime bundle for OpenClaw -> Claude Code handoff",
+  "items": [
+    ".openclaw/scripts/task_runtime.py",
+    ".openclaw/scripts/execute_task.py",
+    ".openclaw/scripts/dispatch_task.py",
+    ".openclaw/scripts/run_claude_acp.py",
+    ".openclaw/scripts/run_claude_code.sh",
+    ".openclaw/scripts/handoff_contract.py",
+    ".openclaw/config/project-injection-registry.json",
+    ".openclaw/schemas/execution-request.schema.json",
+    ".openclaw/schemas/execution-result.schema.json",
+    ".openclaw/schemas/dispatch-plan.schema.json",
+    ".openclaw/schemas/lane-selection.schema.json",
+    ".openclaw/schemas/claude-structured-output.schema.json"
+  ]
+}
