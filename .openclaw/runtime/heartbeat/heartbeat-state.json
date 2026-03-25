@@ -1,0 +1,14 @@
+{
+  "roles": {
+    "board-operator": {
+      "noop_streak": 0,
+      "duplicate_streak": 0,
+      "cooldown_until": null
+    },
+    "ops-automator": {
+      "noop_streak": 0,
+      "duplicate_streak": 0,
+      "cooldown_until": null
+    }
+  }
+}
