@@ -2,15 +2,74 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "DeferredItem",
   "type": "object",
-  "required": ["item_id", "decision_id", "reason", "required_investigation", "reopen_if", "review_after", "status"],
+  "required": [
+    "item_id",
+    "decision_id",
+    "reason",
+    "required_investigation",
+    "reopen_if",
+    "review_after",
+    "status",
+    "source_case_id",
+    "source_proposal_ids",
+    "deep_review_status"
+  ],
   "properties": {
-    "item_id": {"type": "string"},
-    "decision_id": {"type": "string"},
-    "reason": {"type": "string"},
-    "required_investigation": {"type": "array", "items": {"type": "string"}},
-    "reopen_if": {"type": "array", "items": {"type": "string"}},
-    "review_after": {"type": ["string", "null"]},
-    "status": {"type": "string", "enum": ["open", "satisfied", "expired", "reopened"]}
+    "item_id": {
+      "type": "string"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "required_investigation": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reopen_if": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "review_after": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "satisfied",
+        "expired",
+        "reopened"
+      ]
+    },
+    "source_case_id": {
+      "type": "string"
+    },
+    "source_proposal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deep_review_status": {
+      "type": "string",
+      "enum": [
+        "none",
+        "pending",
+        "in_progress",
+        "completed",
+        "deferred"
+      ]
+    }
   },
   "additionalProperties": false
 }

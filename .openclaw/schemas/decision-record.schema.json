@@ -2,39 +2,170 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "DecisionRecord",
   "type": "object",
-  "required": ["decision_id", "case_id", "proposal_ids", "decided_at", "board_mode", "lane", "ruling", "reason", "guardrail", "followup", "precedent", "reporting"],
+  "required": [
+    "decision_id",
+    "case_id",
+    "proposal_ids",
+    "decided_at",
+    "board_mode",
+    "lane",
+    "ruling",
+    "reason",
+    "guardrail",
+    "followup",
+    "precedent",
+    "reporting",
+    "decision_status",
+    "source_case_id",
+    "source_proposal_ids",
+    "deep_review_status"
+  ],
   "properties": {
-    "decision_id": {"type": "string"},
-    "case_id": {"type": "string"},
-    "proposal_ids": {"type": "array", "items": {"type": "string"}},
-    "decided_at": {"type": "string"},
+    "decision_id": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "proposal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decided_at": {
+      "type": "string"
+    },
     "board_mode": {
       "type": "object",
-      "required": ["type", "participants", "quorum_profile"],
+      "required": [
+        "type",
+        "participants",
+        "quorum_profile"
+      ],
       "properties": {
-        "type": {"type": "string", "enum": ["fast_auto", "chair_ack", "quorum_review", "deep_review"]},
-        "participants": {"type": "array", "items": {"type": "string", "enum": ["chair", "visionary", "user_advocate", "operator", "auditor"]}},
-        "quorum_profile": {"type": ["string", "null"], "enum": ["user_impact", "ops_audit", "strategy_ops", "full_board", null]}
+        "type": {
+          "type": "string",
+          "enum": [
+            "fast_auto",
+            "chair_ack",
+            "quorum_review",
+            "deep_review"
+          ]
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "chair",
+              "visionary",
+              "user_advocate",
+              "operator",
+              "auditor"
+            ]
+          }
+        },
+        "quorum_profile": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "user_impact",
+            "ops_audit",
+            "strategy_ops",
+            "full_board",
+            null
+          ]
+        }
       },
       "additionalProperties": false
     },
     "lane": {
       "type": "object",
-      "required": ["risk_lane", "risk_score", "mandatory_deep", "score_breakdown"],
+      "required": [
+        "risk_lane",
+        "risk_score",
+        "mandatory_deep",
+        "score_breakdown"
+      ],
       "properties": {
-        "risk_lane": {"type": "string", "enum": ["fast", "review", "deep"]},
-        "risk_score": {"type": "integer", "minimum": 0, "maximum": 12},
-        "mandatory_deep": {"type": "boolean"},
+        "risk_lane": {
+          "type": "string",
+          "enum": [
+            "fast",
+            "review",
+            "deep"
+          ]
+        },
+        "risk_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "mandatory_deep": {
+          "type": "boolean"
+        },
         "score_breakdown": {
           "type": "object",
-          "required": ["boundary_impact", "blast_radius", "reversibility", "novelty", "trust_user_impact", "dependency_spread"],
+          "required": [
+            "boundary_impact",
+            "blast_radius",
+            "reversibility",
+            "novelty",
+            "trust_user_impact",
+            "dependency_spread"
+          ],
           "properties": {
-            "boundary_impact": {"type": "integer", "enum": [0, 1, 2]},
-            "blast_radius": {"type": "integer", "enum": [0, 1, 2]},
-            "reversibility": {"type": "integer", "enum": [0, 1, 2]},
-            "novelty": {"type": "integer", "enum": [0, 1, 2]},
-            "trust_user_impact": {"type": "integer", "enum": [0, 1, 2]},
-            "dependency_spread": {"type": "integer", "enum": [0, 1, 2]}
+            "boundary_impact": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            "blast_radius": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            "reversibility": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            "novelty": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            "trust_user_impact": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            "dependency_spread": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            }
           },
           "additionalProperties": false
         }
@@ -43,78 +174,266 @@
     },
     "ruling": {
       "type": "object",
-      "required": ["result", "confidence"],
+      "required": [
+        "result",
+        "confidence"
+      ],
       "properties": {
-        "result": {"type": "string", "enum": ["adopted", "deferred", "rejected", "investigate"]},
-        "confidence": {"type": "string", "enum": ["low", "medium", "high"]}
+        "result": {
+          "type": "string",
+          "enum": [
+            "adopted",
+            "deferred",
+            "rejected",
+            "investigate"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        }
       },
       "additionalProperties": false
     },
     "reason": {
       "type": "object",
-      "required": ["accepted_because", "deferred_because", "rejected_because", "tradeoffs"],
+      "required": [
+        "accepted_because",
+        "deferred_because",
+        "rejected_because",
+        "tradeoffs"
+      ],
       "properties": {
-        "accepted_because": {"type": "array", "items": {"type": "string"}},
-        "deferred_because": {"type": "array", "items": {"type": "string"}},
-        "rejected_because": {"type": "array", "items": {"type": "string"}},
-        "tradeoffs": {"type": "array", "items": {"type": "string"}}
+        "accepted_because": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deferred_because": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rejected_because": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tradeoffs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "additionalProperties": false
     },
     "guardrail": {
       "type": "object",
-      "required": ["constraints", "forbidden_actions", "required_checks", "rollout_mode"],
+      "required": [
+        "constraints",
+        "forbidden_actions",
+        "required_checks",
+        "rollout_mode"
+      ],
       "properties": {
-        "constraints": {"type": "array", "items": {"type": "string"}},
-        "forbidden_actions": {"type": "array", "items": {"type": "string"}},
-        "required_checks": {"type": "array", "items": {"type": "string"}},
-        "rollout_mode": {"type": "string", "enum": ["direct", "staged", "canary", "flag_only", "simulation"]}
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rollout_mode": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "staged",
+            "canary",
+            "flag_only",
+            "simulation"
+          ]
+        }
       },
       "additionalProperties": false
     },
     "followup": {
       "type": "object",
-      "required": ["owner", "target_agents", "monitor_metrics", "checkpoint_at", "reopen_condition"],
+      "required": [
+        "owner",
+        "target_agents",
+        "monitor_metrics",
+        "checkpoint_at",
+        "reopen_condition",
+        "followup_due"
+      ],
       "properties": {
-        "owner": {"type": "string"},
-        "target_agents": {"type": "array", "items": {"type": "string"}},
-        "monitor_metrics": {"type": "array", "items": {"type": "string"}},
-        "checkpoint_at": {"type": ["string", "null"]},
-        "reopen_condition": {"type": "array", "items": {"type": "string"}}
+        "owner": {
+          "type": "string"
+        },
+        "target_agents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "monitor_metrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checkpoint_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reopen_condition": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "followup_due": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       },
       "additionalProperties": false
     },
     "precedent": {
       "type": "object",
-      "required": ["creates_precedent", "precedent_id", "standing_approval_candidate", "precedent_scope"],
+      "required": [
+        "creates_precedent",
+        "precedent_id",
+        "standing_approval_candidate",
+        "precedent_scope"
+      ],
       "properties": {
-        "creates_precedent": {"type": "boolean"},
-        "precedent_id": {"type": ["string", "null"]},
-        "standing_approval_candidate": {"type": "boolean"},
-        "precedent_scope": {"type": ["string", "null"]}
+        "creates_precedent": {
+          "type": "boolean"
+        },
+        "precedent_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "standing_approval_candidate": {
+          "type": "boolean"
+        },
+        "precedent_scope": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       },
       "additionalProperties": false
     },
     "reporting": {
       "type": "object",
-      "required": ["board_summary", "adopted_summary", "deferred_summary", "rejected_summary"],
+      "required": [
+        "board_summary",
+        "adopted_summary",
+        "deferred_summary",
+        "rejected_summary"
+      ],
       "properties": {
-        "board_summary": {"type": "string"},
-        "adopted_summary": {"type": "string"},
-        "deferred_summary": {"type": "string"},
-        "rejected_summary": {"type": "string"}
+        "board_summary": {
+          "type": "string"
+        },
+        "adopted_summary": {
+          "type": "string"
+        },
+        "deferred_summary": {
+          "type": "string"
+        },
+        "rejected_summary": {
+          "type": "string"
+        }
       },
       "additionalProperties": false
     },
     "provenance": {
       "type": "object",
       "properties": {
-        "derived_from_signals": {"type": "array", "items": {"type": "string"}},
-        "derived_from_candidates": {"type": "array", "items": {"type": "string"}},
-        "applied_precedents": {"type": "array", "items": {"type": "string"}},
-        "supersedes_decision_id": {"type": ["string", "null"]}
+        "derived_from_signals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "derived_from_candidates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "applied_precedents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supersedes_decision_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       },
       "additionalProperties": false
+    },
+    "decision_status": {
+      "type": "string",
+      "enum": [
+        "adopted",
+        "deferred",
+        "rejected",
+        "investigate",
+        "deep_review_pending"
+      ]
+    },
+    "source_case_id": {
+      "type": "string"
+    },
+    "source_proposal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deep_review_status": {
+      "type": "string",
+      "enum": [
+        "none",
+        "pending",
+        "in_progress",
+        "completed",
+        "deferred"
+      ]
     }
   },
   "additionalProperties": false

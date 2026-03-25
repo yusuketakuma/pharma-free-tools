@@ -147,6 +147,84 @@ def active_unresolved_items() -> List[Dict[str, Any]]:
     return [item for item in read_deferred() if item.get("status") in {"open", "reopened"}]
 
 
+def load_recent_decisions(window_hours: int = 6, offset_hours: int = 0) -> List[Dict[str, Any]]:
+    return _rows_in_window(hours=window_hours, offset_hours=offset_hours)
+
+
+def load_active_unresolved_items() -> List[Dict[str, Any]]:
+    return active_unresolved_items()
+
+
+def load_deep_review_status(window_hours: int = 24) -> List[Dict[str, Any]]:
+    rows = load_recent_decisions(window_hours=window_hours)
+    items = []
+    for row in rows:
+        deep_state = row.get("deep_review_status", "none")
+        if deep_state == "none" and row.get("lane", {}).get("risk_lane") != "deep":
+            continue
+        items.append({
+            "decision_id": row.get("decision_id"),
+            "case_id": row.get("source_case_id") or row.get("case_id"),
+            "status": deep_state,
+            "result": row.get("ruling", {}).get("result", "unknown"),
+            "summary": row.get("reporting", {}).get("board_summary", ""),
+        })
+    return items[-20:]
+
+
+def load_followups_due(hours_ahead: int = 24) -> List[Dict[str, Any]]:
+    due = []
+    now = datetime.now(timezone.utc)
+    limit = now + timedelta(hours=hours_ahead)
+    for row in read_ledger():
+        follow = row.get("followup", {}) if isinstance(row.get("followup"), dict) else {}
+        due_at = follow.get("followup_due") or follow.get("checkpoint_at")
+        if not due_at:
+            continue
+        try:
+            ts = datetime.fromisoformat(str(due_at))
+        except Exception:
+            continue
+        if now <= ts <= limit:
+            due.append({
+                "decision_id": row.get("decision_id"),
+                "owner": follow.get("owner", ""),
+                "due_at": due_at,
+                "summary": row.get("reporting", {}).get("board_summary", ""),
+            })
+    return due[-20:]
+
+
+def load_reopen_candidates() -> List[Dict[str, Any]]:
+    items = []
+    for row in read_ledger():
+        follow = row.get("followup", {}) if isinstance(row.get("followup"), dict) else {}
+        reasons = follow.get("reopen_condition") or []
+        if reasons:
+            items.append({
+                "decision_id": row.get("decision_id"),
+                "case_id": row.get("source_case_id") or row.get("case_id"),
+                "reopen_condition": reasons,
+                "summary": row.get("reporting", {}).get("board_summary", ""),
+            })
+    return items[-20:]
+
+
+def load_precedent_promotions(window_hours: int = 24) -> List[Dict[str, Any]]:
+    rows = load_recent_decisions(window_hours=window_hours)
+    items = []
+    for row in rows:
+        prec = row.get("precedent", {}) if isinstance(row.get("precedent"), dict) else {}
+        if prec.get("creates_precedent") or prec.get("standing_approval_candidate"):
+            items.append({
+                "decision_id": row.get("decision_id"),
+                "precedent_id": prec.get("precedent_id"),
+                "standing_approval_candidate": bool(prec.get("standing_approval_candidate")),
+                "summary": row.get("reporting", {}).get("board_summary", ""),
+            })
+    return items[-20:]
+
+
 def normalize_candidate(candidate: Dict[str, Any]) -> Dict[str, Any]:
     normalized = dict(candidate)
     scope = dict(candidate.get("change_scope") or {})
@@ -408,6 +486,10 @@ def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> D
         "case_id": case["case_id"],
         "proposal_ids": case["source_proposals"],
         "decided_at": now_iso(),
+        "decision_status": ruling if board_mode != "deep_review" else ("deep_review_pending" if ruling in {"investigate", "deferred"} else ruling),
+        "source_case_id": case["case_id"],
+        "source_proposal_ids": case["source_proposals"],
+        "deep_review_status": "completed" if board_mode == "deep_review" and ruling == "adopted" else "deferred" if board_mode == "deep_review" and ruling == "deferred" else "pending" if board_mode == "deep_review" else "none",
         "board_mode": {
             "type": "fast_auto" if board_mode == "auto" else "chair_ack" if board_mode == "chair_ack" else "quorum_review" if board_mode == "quorum_review" else "deep_review",
             "participants": participants_map[board_mode],
@@ -444,6 +526,7 @@ def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> D
             "target_agents": [],
             "monitor_metrics": [],
             "checkpoint_at": None,
+            "followup_due": None,
             "reopen_condition": [],
         },
         "precedent": {
@@ -497,23 +580,24 @@ def _decision_summaries(rows: List[Dict[str, Any]], result: str | None = None, l
     return picked[-limit:]
 
 
-def report_input_model(hours: int = 6) -> Dict[str, Any]:
-    current = _rows_in_window(hours=hours, offset_hours=0)
-    previous = _rows_in_window(hours=hours, offset_hours=hours)
-    current_lane = Counter(row.get("lane", {}).get("risk_lane", "unknown") for row in current)
-    previous_lane = Counter(row.get("lane", {}).get("risk_lane", "unknown") for row in previous)
-    current_ruling = Counter(row.get("ruling", {}).get("result", "unknown") for row in current)
-    previous_ruling = Counter(row.get("ruling", {}).get("result", "unknown") for row in previous)
-    unresolved = active_unresolved_items()
-    deep_items = [
-        {
-            "decision_id": row.get("decision_id"),
-            "summary": row.get("reporting", {}).get("board_summary", ""),
-            "result": row.get("ruling", {}).get("result", "unknown"),
-        }
-        for row in current if row.get("lane", {}).get("risk_lane") == "deep"
-    ]
+def compute_last_cycle_diff(prev_cycle: List[Dict[str, Any]], current_cycle: List[Dict[str, Any]]) -> Dict[str, Any]:
+    current_lane = Counter(row.get("lane", {}).get("risk_lane", "unknown") for row in current_cycle)
+    previous_lane = Counter(row.get("lane", {}).get("risk_lane", "unknown") for row in prev_cycle)
+    current_ruling = Counter(row.get("ruling", {}).get("result", "unknown") for row in current_cycle)
+    previous_ruling = Counter(row.get("ruling", {}).get("result", "unknown") for row in prev_cycle)
     return {
+        "decision_count_delta": len(current_cycle) - len(prev_cycle),
+        "lane_counts_current": dict(current_lane),
+        "lane_counts_previous": dict(previous_lane),
+        "ruling_counts_current": dict(current_ruling),
+        "ruling_counts_previous": dict(previous_ruling),
+    }
+
+
+def report_input_model(hours: int = 6) -> Dict[str, Any]:
+    current = load_recent_decisions(window_hours=hours, offset_hours=0)
+    previous = load_recent_decisions(window_hours=hours, offset_hours=hours)
+    model = {
         "generated_at": now_iso(),
         "window_hours": hours,
         "decision_count": len(current),
@@ -521,16 +605,16 @@ def report_input_model(hours: int = 6) -> Dict[str, Any]:
         "adopted": _decision_summaries(current, result="adopted", limit=8),
         "deferred": _decision_summaries(current, result="deferred", limit=8),
         "rejected": _decision_summaries(current, result="rejected", limit=8),
-        "deep_review_state": deep_items[-8:],
-        "active_unresolved_items": unresolved[:12],
-        "last_cycle_diff": {
-            "decision_count_delta": len(current) - len(previous),
-            "lane_counts_current": dict(current_lane),
-            "lane_counts_previous": dict(previous_lane),
-            "ruling_counts_current": dict(current_ruling),
-            "ruling_counts_previous": dict(previous_ruling),
-        },
+        "deep_review": load_deep_review_status(window_hours=max(24, hours)),
+        "active_unresolved": load_active_unresolved_items()[:12],
+        "followups_due": load_followups_due(hours_ahead=max(24, hours)),
+        "reopen_candidates": load_reopen_candidates()[:12],
+        "precedent_promotions": load_precedent_promotions(window_hours=max(24, hours))[:12],
+        "cycle_diff": compute_last_cycle_diff(previous, current),
+        "coverage": {},
     }
+    model["coverage"] = report_guardrail_summary(model)
+    return model
 
 
 def ledger_snapshot(hours: int = 24) -> Dict[str, Any]:
@@ -556,7 +640,7 @@ def render_report_input_view(hours: int = 6) -> str:
         f"- generated_at: {model['generated_at']}",
         f"- window_hours: {model['window_hours']}",
         f"- decision_count: {model['decision_count']}",
-        f"- decision_count_delta: {model['last_cycle_diff']['decision_count_delta']}",
+        f"- decision_count_delta: {model['cycle_diff']['decision_count_delta']}",
         "",
         "## Board Summary",
     ]
@@ -573,18 +657,31 @@ def render_report_input_view(hours: int = 6) -> str:
         else:
             lines.append("- (none)")
     lines.extend(["", "## Deep Review State"])
-    if model["deep_review_state"]:
-        for item in model["deep_review_state"]:
-            lines.append(f"- [{item['decision_id']}] {item['result']}: {item['summary']}")
+    if model["deep_review"]:
+        for item in model["deep_review"]:
+            lines.append(f"- [{item['decision_id']}] {item['status']}/{item['result']}: {item['summary']}")
     else:
         lines.append("- (none)")
     lines.extend(["", "## Active Unresolved Items"])
-    if model["active_unresolved_items"]:
-        for item in model["active_unresolved_items"]:
+    if model["active_unresolved"]:
+        for item in model["active_unresolved"]:
             lines.append(f"- [{item.get('item_id')}] {item.get('reason', '')}")
     else:
         lines.append("- (none)")
-    lines.extend(["", "## Last Cycle Diff", json.dumps(model["last_cycle_diff"], ensure_ascii=False)])
+    lines.extend(["", "## Followups Due"])
+    if model["followups_due"]:
+        for item in model["followups_due"]:
+            lines.append(f"- [{item['decision_id']}] due {item['due_at']} owner={item['owner']}: {item['summary']}")
+    else:
+        lines.append("- (none)")
+    lines.extend(["", "## Reopen Candidates"])
+    if model["reopen_candidates"]:
+        for item in model["reopen_candidates"]:
+            lines.append(f"- [{item['decision_id']}] {item['summary']}")
+    else:
+        lines.append("- (none)")
+    lines.extend(["", "## Coverage", json.dumps(model["coverage"], ensure_ascii=False)])
+    lines.extend(["", "## Last Cycle Diff", json.dumps(model["cycle_diff"], ensure_ascii=False)])
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -634,6 +731,49 @@ def render_report_view(hours: int = 24) -> str:
         for item in active_unresolved_items()[:20]:
             lines.append(f"- [{item.get('item_id')}] {item.get('reason', '')}")
     return "\n".join(lines).rstrip() + "\n"
+
+
+def decision_coverage_check(report_model: Dict[str, Any]) -> Dict[str, Any]:
+    missing = []
+    for key in ("adopted", "deferred", "rejected", "deep_review"):
+        for item in report_model.get(key, []):
+            if not item.get("decision_id"):
+                missing.append({"section": key, "item": item})
+    return {"ok": not missing, "missing": missing}
+
+
+def raw_fallback_check(report_text: str) -> Dict[str, Any]:
+    suspicious = [token for token in ["execution.stdout.log", "execution.stderr.log", "raw log", "claude-raw.json"] if token in report_text]
+    return {"ok": not suspicious, "tokens": suspicious}
+
+
+def deep_review_explicitness_check(report_model: Dict[str, Any]) -> Dict[str, Any]:
+    adopted_ids = {item.get("decision_id") for item in report_model.get("adopted", [])}
+    invalid = []
+    for item in report_model.get("deep_review", []):
+        if item.get("status") in {"pending", "in_progress", "deferred"} and item.get("decision_id") in adopted_ids:
+            invalid.append(item)
+    return {"ok": not invalid, "invalid": invalid}
+
+
+def report_guardrail_summary(report_model: Dict[str, Any]) -> Dict[str, Any]:
+    draft = render_report_input_view(report_model.get("window_hours", 6)) if False else ""
+    coverage = decision_coverage_check(report_model)
+    deep = deep_review_explicitness_check(report_model)
+    raw = raw_fallback_check(draft)
+    gaps = []
+    if not coverage["ok"]:
+        gaps.append("ledger_coverage_gap")
+    if not deep["ok"]:
+        gaps.append("deep_review_explicitness_gap")
+    if not raw["ok"]:
+        gaps.append("raw_fallback_gap")
+    return {
+        "decision_coverage_check": coverage,
+        "deep_review_explicitness_check": deep,
+        "raw_fallback_check": raw,
+        "ledger_coverage_gap": gaps,
+    }
 
 
 def parse_args() -> argparse.Namespace:
