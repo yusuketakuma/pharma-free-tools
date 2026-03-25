@@ -468,7 +468,6 @@ def build_decision_from_case(case: Dict[str, Any], ruling: str = "adopted") -> D
     return decision
 
 
-def ledger_snapshot(hours: int = 24) -> Dict[str, Any]:
 def _rows_in_window(hours: int, offset_hours: int = 0) -> List[Dict[str, Any]]:
     end = datetime.now(timezone.utc) - timedelta(hours=offset_hours)
     start = end - timedelta(hours=hours)
@@ -531,6 +530,21 @@ def report_input_model(hours: int = 6) -> Dict[str, Any]:
             "ruling_counts_current": dict(current_ruling),
             "ruling_counts_previous": dict(previous_ruling),
         },
+    }
+
+
+def ledger_snapshot(hours: int = 24) -> Dict[str, Any]:
+    rows = _rows_in_window(hours=hours, offset_hours=0)
+    lane_counts = Counter(row.get("lane", {}).get("risk_lane", "unknown") for row in rows)
+    ruling_counts = Counter(row.get("ruling", {}).get("result", "unknown") for row in rows)
+    return {
+        "generated_at": now_iso(),
+        "window_hours": hours,
+        "decision_count": len(rows),
+        "lane_counts": dict(lane_counts),
+        "ruling_counts": dict(ruling_counts),
+        "active_unresolved_count": len(active_unresolved_items()),
+        "latest_decisions": rows[-10:],
     }
 
 
