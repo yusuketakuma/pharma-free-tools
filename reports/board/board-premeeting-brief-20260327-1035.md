@@ -1,9 +1,11 @@
-# Board input brief
+# Board premeeting brief
 
-- board_cycle_slot_id: 20260327-1035
+- board_cycle_slot_id: `20260327-1035`
+- checked_at: 2026-03-27 10:35 JST
+- source_artifact: board-input-brief-20260327-1035.md
+
 - input_gate: ready
 - freshness: ready
-- checked_at: 2026-03-27 10:33 JST
 
 ## Freshness check
 - `reports/board/agenda-seed-latest.md` → `board_cycle_slot_id=20260327-1035`, `generated_at=2026-03-27 10:30 JST`
