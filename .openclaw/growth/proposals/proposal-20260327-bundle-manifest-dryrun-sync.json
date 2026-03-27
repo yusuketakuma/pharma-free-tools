@@ -1,0 +1,98 @@
+{
+  "proposal_id": "proposal-20260327-bundle-manifest-dryrun-sync",
+  "created_at": "2026-03-27T02:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "board / heartbeat runtime recent report",
+    "board-premeeting-all-agent-business-report",
+    "board-premeeting-brief-20260326-0925",
+    "cross-agent-knowledge-sync-20260326-0650",
+    "openclaw-live-runtime-reflection-audit-2026-03-25",
+    "board-runtime-implementation-plan-2026-03-25",
+    "proactive-idle-work-discovery-20260326-1420"
+  ],
+  "title": "Require bundle manifest + dry-run sync before live runtime reflection",
+  "summary": "board / runtime 反映を bundle 単位に揃え、dry-run / smoke を通してから publish する wording と手順を標準化する。",
+  "observations": [
+    "board-premeeting の直近報告では、live runtime reflection を bundle + manifest + dry-run に固定するかが明示的な判断項目になっている。",
+    "同じ board 報告で、board runtime への append 経路の統一と producer 複線化の抑制も論点になっている。",
+    "openclaw-live-runtime-reflection-audit では、次の最適手は Bundle A manifest + dry-run sync script とされている。",
+    "cross-agent-knowledge-sync でも、live runtime reflection の前に bundle manifest + dry-run sync を必須化する流れが定着し始めている。",
+    "proactive-idle-work-discovery では、bundle sync dry-run / smoke を 1 ページ化し、partial live reflection を止めやすくする方針が出ている。"
+  ],
+  "proposed_changes": [
+    "board runtime / reflection の runbook に bundle manifest の必須化を追記する。",
+    "live 反映の前に dry-run diff と最小 smoke check を通す wording を標準化する。",
+    "producer map の実装変更は行わず、まずは manifest / dry-run / smoke の手順と記録項目を揃える。",
+    "docs / reports / runbook / cron wording に限定し、routing root や authority 変更は含めない。"
+  ],
+  "affected_paths": [
+    "reports/board-runtime-implementation-plan-2026-03-25.md",
+    "reports/openclaw-live-runtime-reflection-audit-2026-03-25.md",
+    "reports/cron/cross-agent-knowledge-sync-20260326-0650.md",
+    "reports/board/board-premeeting-brief-20260326-0925.md",
+    "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md",
+    "reports/cron/proactive-idle-work-discovery-20260326-1420.md"
+  ],
+  "evidence": [
+    "board-premeeting: live runtime reflection should be bundle + manifest + dry-run",
+    "board-premeeting: append path unification / producer map is a pending discussion",
+    "audit: next best step is Bundle A manifest + dry-run sync script",
+    "cross-agent-knowledge-sync: require bundle manifest + dry-run sync before live runtime reflection",
+    "proactive-idle-work-discovery: bundle sync dry-run / smoke should be 1-page gated",
+    "reports/board/board-premeeting-brief-20260326-0925.md",
+    "reports/openclaw-live-runtime-reflection-audit-2026-03-25.md",
+    "reports/cron/cross-agent-knowledge-sync-20260326-0650.md",
+    "reports/cron/proactive-idle-work-discovery-20260326-1420.md"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run verification before moving to VERIFIED.",
+  "cycle_id": "proposal-20260327-bundle-manifest-dryrun-sync",
+  "status": "APPLIED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T02:41:02+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-27T02:41:02+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-27T02:41:02+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "APPLIED",
+      "at": "2026-03-27T19:26:00+09:00",
+      "note": "manual report-side execution completed"
+    }
+  ],
+  "reviewed_at": "2026-03-27T02:41:02+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 02:35 JST で approve 候補。docs/reports/runbook/cron wording に限定され、bundle manifest + dry-run + smoke の標準化は reversible で protected path / auth / routing root / trust boundary に触れないため approve。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      "reports/board-runtime-implementation-plan-2026-03-25.md",
+      "reports/board/board-premeeting-brief-20260326-0925.md",
+      "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md",
+      "reports/cron/cross-agent-knowledge-sync-20260326-0650.md",
+      "reports/cron/proactive-idle-work-discovery-20260326-1420.md",
+      "reports/openclaw-live-runtime-reflection-audit-2026-03-25.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-27T02:41:02+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-bundle-manifest-dryrun-sync.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-bundle-manifest-dryrun-sync.apply.json"
+}

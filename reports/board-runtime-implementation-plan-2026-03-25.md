@@ -66,3 +66,8 @@ Phase 0〜1 の先行実装として、次を追加した。
 ## Recommendation
 
 次は report を ledger 起点へ寄せるのが最も効果が高い。これにより Board の再審議を減らし、仕様の価値を最短で実感できる。
+
+## 反映単位ルール
+- live runtime reflection は file-by-file ではなく **bundle manifest 単位**で扱う。
+- publish 前に **dry-run diff** と **最小 smoke check** を通す。
+- producer map や authority の変更はここでは行わず、まずは manifest / dry-run / smoke の記録様式を固定する。
