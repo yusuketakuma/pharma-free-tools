@@ -1,0 +1,40 @@
+{
+  "proposal_id": "proposal-20260327-supervisor-boundary-manual-review",
+  "created_at": "2026-03-27T19:20:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "manual-followup",
+    "name": "ceo-tama"
+  },
+  "derived_from": [
+    "proposal-20260326-supervisor-boundary-preflight"
+  ],
+  "title": "Isolate supervisor boundary and dominant-prefix routing changes for manual review",
+  "summary": "supervisor-core から triage を外し、dominant-prefix triage の既定経路や staffing 境界を変える部分だけを manual review proposal として分離する。",
+  "observations": [
+    "元 proposal は boundary/staffing 変更と low-risk wording が混在していた。",
+    "dominant-prefix triage の既定経路固定は routing root / trust boundary に接続し、Board でも manual approval required とされている。",
+    "役割境界変更は運用品質に効くが、低リスク文言変更とは分けて扱う必要がある。"
+  ],
+  "proposed_changes": [
+    "supervisor-core を観測集約と escalation 中心に縮め、triage 主経路から外す案を独立評価する。",
+    "dominant-prefix triage を Queue Triage Analyst の既定経路に固定する案を manual review で審査する。",
+    "agent staffing guidelines と supervisor runbook の境界変更を、trust boundary / routing root 観点で別途確認する。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/supervisor-core-runbook.md",
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md"
+  ],
+  "requires_manual_approval": true,
+  "next_step": "Hold for manual review; do not assisted-apply.",
+  "cycle_id": "proposal-20260327-supervisor-boundary-manual-review",
+  "status": "INBOX",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T19:20:00+09:00",
+      "note": "split from proposal-20260326-supervisor-boundary-preflight for manual review"
+    }
+  ]
+}

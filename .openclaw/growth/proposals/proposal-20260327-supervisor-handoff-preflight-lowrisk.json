@@ -1,0 +1,41 @@
+{
+  "proposal_id": "proposal-20260327-supervisor-handoff-preflight-lowrisk",
+  "created_at": "2026-03-27T19:20:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "manual-followup",
+    "name": "ceo-tama"
+  },
+  "derived_from": [
+    "proposal-20260326-supervisor-boundary-preflight"
+  ],
+  "title": "Split out low-risk handoff preflight wording from supervisor-boundary proposal",
+  "summary": "supervisor 境界変更を含めず、軽微タスクと scout / PoC handoff に exact target / owner / due / success criteria を必須化する low-risk wording だけを独立 proposal として再提出する。",
+  "observations": [
+    "元 proposal は boundary / routing root と docs/runbook wording が混在し、revise / blocked で止まっている。",
+    "exact target / owner / due / success criteria の preflight は既存 lesson と performance review でも再発抑制の低リスク策として示されている。",
+    "authority / routing root / trust boundary を触らない wording 部分だけなら assisted review の対象にできる。"
+  ],
+  "proposed_changes": [
+    "light-edit / scout / PoC handoff の前に exact target / owner / due / success criteria を1行で確認する wording を report / runbook に固定する。",
+    "handoff preflight の欠落を retry cost の主因として lesson / performance review / premeeting report に反映する。",
+    "supervisor-core の権限・routing root・staffing 境界には触れない。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/handoff-preflight.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Submit for Board review as low-risk assisted candidate.",
+  "cycle_id": "proposal-20260327-supervisor-handoff-preflight-lowrisk",
+  "status": "INBOX",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T19:20:00+09:00",
+      "note": "split from proposal-20260326-supervisor-boundary-preflight"
+    }
+  ]
+}
