@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在宅医療報告書生成 | 薬剤師向け無料ツール</title>
+  <meta name="description" content="訪問薬剤管理の報告書を自動生成する無料ツール。医師への報告書・訪問記録・引継ぎ資料をワンクリックで作成。">
+  <meta property="og:title" content="在宅医療報告書生成 | 薬剤師向け無料ツール">
+  <meta property="og:description" content="訪問薬剤管理の報告書を自動生成。医師報告・訪問記録・引継ぎ資料を簡単作成。">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "在宅医療報告書生成",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "description": "訪問薬剤管理の報告書・訪問記録・引継ぎ資料をワンクリックで自動生成する無料ツール",
+    "author": { "@type": "Person", "name": "薬剤師" },
+    "inLanguage": "ja"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "在宅医療報告書生成ツールは無料ですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "はい、完全無料でご利用いただけます。登録やログインも不要です。" }
+      },
+      {
+        "@type": "Question",
+        "name": "どのような報告書が作成できますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "医師への報告書、訪問記録、引き継ぎ資料の3種類を生成できます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータは保存されますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "いいえ、すべてブラウザ内で処理され、サーバーには送信・保存されません。" }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "在宅医療報告書の作成方法",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "報告書タイプを選択", "text": "医師報告書・訪問記録・引継ぎ資料から選択します。" },
+      { "@type": "HowToStep", "position": 2, "name": "患者情報を入力", "text": "患者名、訪問日、処方内容などを入力します。" },
+      { "@type": "HowToStep", "position": 3, "name": "生成ボタンをクリック", "text": "「報告書を生成」ボタンを押すと自動で報告書が作成されます。" },
+      { "@type": "HowToStep", "position": 4, "name": "コピーして利用", "text": "生成された報告書をコピーして、電子カルテや文書ファイルに貼り付けます。" }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #667eea;
+      --primary-dark: #5a6fd6;
+      --secondary: #764ba2;
+      --danger: #dc3545;
+      --success: #28a745;
+      --text: #333;
+      --text-secondary: #666;
+      --bg-body: #f5f5f7;
+      --bg-card: #fff;
+      --border: #e0e0e0;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-body); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1 { font-size: 1.5rem; color: #1a1a2e; margin-bottom: 8px; }
+    .subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px; }
+    .section { background: var(--bg-card); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .section-title { font-size: 1rem; font-weight: 600; margin-bottom: 12px; color: #1a1a2e; border-bottom: 2px solid #4a90d9; padding-bottom: 6px; }
+    label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; color: #555; }
+    input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 16px; margin-bottom: 12px; }
+    textarea { min-height: 80px; resize: vertical; }
+    .row { display: flex; gap: 12px; }
+    .row > * { flex: 1; }
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .checkbox-group label { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; cursor: pointer; }
+    .checkbox-group input { width: auto; }
+    .btn { background: #4a90d9; color: white; border: none; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 1rem; cursor: pointer; min-height: 44px; margin-top: 8px; }
+    .btn:hover { background: #3a7bc8; }
+    .btn-secondary { background: #6c757d; }
+    .btn-block { width: 100%; }
+    .output { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: var(--radius-sm); padding: 16px; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.8; display: none; }
+    .output.show { display: block; }
+    .copy-btn { background: var(--success); margin-top: 12px; }
+    .export-btn { background: #5a6fd6; margin-top: 12px; margin-left: 8px; }
+    .btn-row { display: flex; gap: 8px; }
+    .btn-row .btn { flex: 1; margin-top: 12px; }
+    .type-selector { display: flex; gap: 8px; margin-bottom: 16px; }
+    .type-btn { flex: 1; padding: 10px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; min-height: 44px; }
+    .type-btn.active { border-color: #4a90d9; background: #e8f4fd; color: #4a90d9; font-weight: 600; }
+    .cta-box { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 16px; border-radius: var(--radius); margin-top: 20px; text-align: center; }
+    .cta-box h3 { font-size: 1rem; margin-bottom: 8px; }
+    .cta-box p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 12px; }
+    .cta-box a { color: #fff; text-decoration: underline; }
+    .links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; font-size: 0.75rem; }
+    .links a { color: #4a90d9; text-decoration: none; padding: 4px 8px; background: #e8f4fd; border-radius: 4px; }
+    .links a:hover { background: #d0e8f9; }
+    .save-indicator {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--success);
+      color: white;
+      padding: 6px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .save-indicator.visible { opacity: 1; }
+    @media (max-width: 600px) { .row { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <div id="saveIndicator" class="save-indicator">保存済み ✓</div>
+
+  <div class="container">
+    <h1>🏥 在宅医療報告書生成</h1>
+    <p class="subtitle">訪問薬剤管理の報告書・訪問記録・引継ぎ資料を自動生成</p>
+
+    <div class="section">
+      <div class="section-title">📝 報告書タイプ</div>
+      <div class="type-selector">
+        <button class="type-btn active" data-type="doctor">医師報告書</button>
+        <button class="type-btn" data-type="record">訪問記録</button>
+        <button class="type-btn" data-type="handover">引継ぎ資料</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">👤 患者基本情報</div>
+      <div class="row">
+        <div>
+          <label>患者氏名</label>
+          <input type="text" id="patientName" placeholder="山田 太郎">
+        </div>
+        <div>
+          <label>年齢</label>
+          <input type="number" id="age" placeholder="85">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>性別</label>
+          <select id="gender">
+            <option value="男性">男性</option>
+            <option value="女性">女性</option>
+          </select>
+        </div>
+        <div>
+          <label>要介護度</label>
+          <select id="careLevel">
+            <option value="">なし</option>
+            <option value="要支援1">要支援1</option>
+            <option value="要支援2">要支援2</option>
+            <option value="要介護1">要介護1</option>
+            <option value="要介護2">要介護2</option>
+            <option value="要介護3">要介護3</option>
+            <option value="要介護4">要介護4</option>
+            <option value="要介護5">要介護5</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label>訪問日</label>
+        <input type="date" id="visitDate">
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">💊 処方内容</div>
+      <textarea id="prescriptions" placeholder="アムロジピン 5mg 1錠 朝食後&#10;メトホルミン 500mg 1錠 朝夕食後&#10;リシノプリル 10mg 1錠 夕食後"></textarea>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📋 評価項目</div>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="checkAdherence" checked> 服薬アドヒアランス</label>
+        <label><input type="checkbox" id="checkSideEffect" checked> 副作用モニタリング</label>
+        <label><input type="checkbox" id="checkStorage" checked> 保管状況</label>
+        <label><input type="checkbox" id="checkRemaining" checked> 残薬確認</label>
+        <label><input type="checkbox" id="checkInteraction" checked> 相互作用</label>
+        <label><input type="checkbox" id="checkRenal" checked> 腎機能</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📝 観察・評価内容</div>
+      <textarea id="observations" placeholder="患者様の状態、服薬状況、副作用の有無などを記載"></textarea>
+    </div>
+
+    <div class="section">
+      <div class="section-title">⚠️ 問題点・課題</div>
+      <textarea id="problems" placeholder="服薬忘れあり、残薬増加傾向など"></textarea>
+    </div>
+
+    <div class="section">
+      <div class="section-title">✅ 提案・対応内容</div>
+      <textarea id="suggestions" placeholder="服薬カレンダーの導入提案、OD錠への変更提案など"></textarea>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🏥 医療機関・薬局情報</div>
+      <div class="row">
+        <div>
+          <label>主治医</label>
+          <input type="text" id="doctor" placeholder="〇〇クリニック 〇〇先生">
+        </div>
+        <div>
+          <label>担当薬剤師</label>
+          <input type="text" id="pharmacist" placeholder="山田 薬子">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-block" onclick="generateReport()">📄 報告書生成</button>
+
+    <div class="output" id="output"></div>
+    <div class="btn-row" id="actionBtns" style="display:none">
+      <button class="btn copy-btn" id="copyBtn" onclick="copyToClipboard()">📋 コピー</button>
+      <button class="btn export-btn" id="exportBtn" onclick="exportAsText()">📥 テキスト出力</button>
+    </div>
+
+    <div class="cta-box">
+      <h3>🎁 薬剤師向けお役立ち資料</h3>
+      <p>AI活用プロンプト集・Notionテンプレートで業務効率化</p>
+      <a href="#">詳しく見る →</a>
+    </div>
+
+    <div class="links">
+      <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導</a>
+      <a href="https://yusuketakuma.github.io/pharma-renal-dose/">腎機能用量</a>
+      <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+      <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+      <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+      <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+      <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+      <a href="https://yusuketakuma.github.io/pharma-di-query/">DI照会</a>
+      <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬</a>
+      <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+      <a href="https://yusuketakuma.github.io/pharma-adherence-check/">アドヒアランス</a>
+      <a href="https://yusuketakuma.github.io/pharma-similar-drug-names/">類似薬名</a>
+      <a href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+                    <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" target="_blank">服薬リマインダー生成</a>
+      <a href="https://yusuketakuma.github.io/pharma-fee-calculator/">調剤報酬</a>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'homecare-report-data';
+    let reportType = 'doctor';
+    let saveTimer;
+
+    // ---- localStorage persistence ----
+
+    function saveToLocalStorage() {
+      const data = {
+        reportType: reportType,
+        patientName: document.getElementById('patientName').value,
+        age: document.getElementById('age').value,
+        gender: document.getElementById('gender').value,
+        careLevel: document.getElementById('careLevel').value,
+        visitDate: document.getElementById('visitDate').value,
+        prescriptions: document.getElementById('prescriptions').value,
+        checks: {
+          adherence: document.getElementById('checkAdherence').checked,
+          sideEffect: document.getElementById('checkSideEffect').checked,
+          storage: document.getElementById('checkStorage').checked,
+          remaining: document.getElementById('checkRemaining').checked,
+          interaction: document.getElementById('checkInteraction').checked,
+          renal: document.getElementById('checkRenal').checked
+        },
+        observations: document.getElementById('observations').value,
+        problems: document.getElementById('problems').value,
+        suggestions: document.getElementById('suggestions').value,
+        doctor: document.getElementById('doctor').value,
+        pharmacist: document.getElementById('pharmacist').value
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        showSaveIndicator();
+      } catch (e) {
+        // localStorage unavailable — silently ignore
+      }
+    }
+
+    function debouncedSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveToLocalStorage, 300);
+    }
+
+    function showSaveIndicator() {
+      const el = document.getElementById('saveIndicator');
+      el.classList.add('visible');
+      clearTimeout(el._hideTimer);
+      el._hideTimer = setTimeout(() => el.classList.remove('visible'), 1800);
+    }
+
+    function restoreFromLocalStorage() {
+      let data;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        data = JSON.parse(raw);
+      } catch (e) {
+        return false;
+      }
+
+      if (data.reportType) {
+        reportType = data.reportType;
+        document.querySelectorAll('.type-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.type === reportType);
+        });
+      }
+
+      const setText = (id, val) => { if (val !== undefined) document.getElementById(id).value = val; };
+      setText('patientName', data.patientName);
+      setText('age', data.age);
+      if (data.gender) document.getElementById('gender').value = data.gender;
+      if (data.careLevel !== undefined) document.getElementById('careLevel').value = data.careLevel;
+      if (data.visitDate) document.getElementById('visitDate').value = data.visitDate;
+      setText('prescriptions', data.prescriptions);
+      setText('observations', data.observations);
+      setText('problems', data.problems);
+      setText('suggestions', data.suggestions);
+      setText('doctor', data.doctor);
+      setText('pharmacist', data.pharmacist);
+
+      if (data.checks) {
+        const setCheck = (id, val) => { if (val !== undefined) document.getElementById(id).checked = val; };
+        setCheck('checkAdherence', data.checks.adherence);
+        setCheck('checkSideEffect', data.checks.sideEffect);
+        setCheck('checkStorage', data.checks.storage);
+        setCheck('checkRemaining', data.checks.remaining);
+        setCheck('checkInteraction', data.checks.interaction);
+        setCheck('checkRenal', data.checks.renal);
+      }
+
+      return !!data.visitDate;
+    }
+
+    // ---- Initialization ----
+
+    const hadSavedDate = restoreFromLocalStorage();
+    if (!hadSavedDate) {
+      document.getElementById('visitDate').valueAsDate = new Date();
+    }
+
+    // ---- Event delegation for auto-save ----
+
+    document.querySelector('.container').addEventListener('input', debouncedSave);
+    document.querySelector('.container').addEventListener('change', debouncedSave);
+
+    // ---- Type selector ----
+
+    document.querySelectorAll('.type-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        reportType = btn.dataset.type;
+        debouncedSave();
+      });
+    });
+
+    // ---- Report generation ----
+
+    function generateReport() {
+      const patientName = document.getElementById('patientName').value || '【患者氏名】';
+      const age = document.getElementById('age').value || '【年齢】';
+      const gender = document.getElementById('gender').value;
+      const careLevel = document.getElementById('careLevel').value;
+      const visitDate = document.getElementById('visitDate').value || '【訪問日】';
+      const prescriptions = document.getElementById('prescriptions').value || '【処方内容未入力】';
+      const observations = document.getElementById('observations').value || '【観察内容未入力】';
+      const problems = document.getElementById('problems').value || '【問題点未入力】';
+      const suggestions = document.getElementById('suggestions').value || '【提案内容未入力】';
+      const doctor = document.getElementById('doctor').value || '【主治医】';
+      const pharmacist = document.getElementById('pharmacist').value || '【担当薬剤師】';
+
+      const careLevelText = careLevel ? `（${careLevel}）` : '';
+      const dateFormatted = formatDate(visitDate);
+
+      // チェック項目
+      let checkItems = [];
+      if (document.getElementById('checkAdherence').checked) checkItems.push('服薬アドヒアランス評価');
+      if (document.getElementById('checkSideEffect').checked) checkItems.push('副作用モニタリング');
+      if (document.getElementById('checkStorage').checked) checkItems.push('保管状況確認');
+      if (document.getElementById('checkRemaining').checked) checkItems.push('残薬確認');
+      if (document.getElementById('checkInteraction').checked) checkItems.push('相互作用チェック');
+      if (document.getElementById('checkRenal').checked) checkItems.push('腎機能評価');
+
+      let report = '';
+
+      if (reportType === 'doctor') {
+        report = `═══════════════════════════════════════
+          在宅患者訪問薬剤管理指導 報告書
+═══════════════════════════════════════
+
+【患者情報】
+氏名：${patientName} 様
+年齢：${age}歳（${gender}）${careLevelText}
+
+【訪問情報】
+訪問日：${dateFormatted}
+担当薬剤師：${pharmacist}
+主治医：${doctor}
+
+【処方内容】
+${prescriptions}
+
+【評価実施項目】
+${checkItems.map(i => '✓ ' + i).join('\n')}
+
+【観察・評価内容】
+${observations}
+
+【問題点・課題】
+${problems}
+
+【提案・対応内容】
+${suggestions}
+
+【次回訪問予定】
+次回訪問予定日：約2週間後（必要に応じて変更可）
+
+═══════════════════════════════════════
+以上、ご報告申し上げます。
+何かご不明な点がございましたら、ご連絡ください。
+═══════════════════════════════════════`;
+      } else if (reportType === 'record') {
+        report = `【訪問薬剤管理指導記録】
+
+日時：${dateFormatted}
+患者：${patientName} 様（${age}歳 ${gender}）${careLevelText}
+
+■処方内容
+${prescriptions}
+
+■評価項目
+${checkItems.join(' / ')}
+
+■観察内容
+${observations}
+
+■問題点
+${problems}
+
+■対応・提案
+${suggestions}
+
+■担当：${pharmacist}
+────────────────────────────────`;
+      } else {
+        report = `【引継ぎ資料】
+
+患者名：${patientName} 様
+年齢・性別：${age}歳 ${gender}${careLevelText}
+主治医：${doctor}
+
+■現在の処方
+${prescriptions}
+
+■評価項目
+${checkItems.join(' / ')}
+
+■観察内容
+${observations}
+
+■現在の問題点
+${problems}
+
+■対応・提案済み
+${suggestions}
+
+■次回担当者への申し送り
+・上記内容を引き続きフォロー
+・処方変更時は医師への報告を実施
+
+作成者：${pharmacist}
+作成日：${dateFormatted}
+────────────────────────────────`;
+      }
+
+      document.getElementById('output').textContent = report;
+      document.getElementById('output').classList.add('show');
+      document.getElementById('actionBtns').style.display = 'flex';
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = '✅ コピー完了';
+        setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);
+      });
+    }
+
+    function exportAsText() {
+      const text = document.getElementById('output').textContent;
+      if (!text) return;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const patientName = document.getElementById('patientName').value || '報告書';
+      const visitDate = document.getElementById('visitDate').value || '';
+      const datePart = visitDate ? visitDate.replace(/-/g, '') : '';
+      a.href = url;
+      a.download = `在宅医療報告書_${patientName}${datePart ? '_' + datePart : ''}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+
+  <!-- 収益化CTA -->
+  <section style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 16px; border: 1px solid #bfdbfe;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #1e40af;">🎁 さらに業務を効率化しませんか？</h3>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📖 薬剤師向けAIプロンプト集</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">ChatGPT/Claudeで時短する100+のプロンプトテンプレート</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥300</p>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>📋 薬局業務Notionテンプレート</strong></p>
+      <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">訪問記録・在庫管理・患者管理を一元化</p>
+      <p style="font-size: 1rem; font-weight: 600; color: #1e40af;">¥500</p>
+    </div>
+    <p style="font-size: 0.8rem; color: #666;">※ 準備中（近日公開）</p>
+  </section>
+
+  <div class="tools-section">
+<!-- ポータルサイト -->
+            <div style="text-align: center; margin: 24px 0;">
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">🏠 全ツール一覧（ポータルサイト）</a>
+            </div>
+    <div class="tools-title">🔗 他の無料ツール</div>
+    <div class="tools-grid">
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導チェック</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-renal-dose-tool/">腎機能別用量</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会メール</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-di-query/">DI照会生成</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-adherence-check/">アドヒアランス</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-similar-drug-check/">類似薬名</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+                    <a href="https://yusuketakuma.github.io/pharma-medication-reminder/" target="_blank">服薬リマインダー生成</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-medication-guidance-scenario/">服薬指導シナリオ</a>
+      <a class="tool-link" href="https://yusuketakuma.github.io/pharma-fee-calculator/">調剤報酬計算</a>
+    </div>
+  </div>
+</body>
+</html>
