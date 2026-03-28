@@ -602,6 +602,22 @@
         // データ管理
         let patients = [];
 
+        // 共有患者データストア ユーティリティ
+        const SharedPatientStore = {
+            KEY: 'homecare-shared-patients',
+            getAll() { return JSON.parse(localStorage.getItem(this.KEY) || '[]'); },
+            save(patients) { localStorage.setItem(this.KEY, JSON.stringify(patients)); },
+            getById(id) { return this.getAll().find(p => p.id === id); },
+            upsert(patient) {
+                const all = this.getAll();
+                const idx = all.findIndex(p => p.id === patient.id);
+                if (idx >= 0) { all[idx] = { ...all[idx], ...patient, updatedAt: new Date().toISOString() }; }
+                else { all.push({ ...patient, id: patient.id || 'p_' + Date.now(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }); }
+                this.save(all);
+                return patient.id || all[all.length - 1].id;
+            }
+        };
+
         // 初期化
         document.addEventListener('DOMContentLoaded', () => {
             // Migrate old key to new key
@@ -659,6 +675,17 @@
 
             patients.push(patient);
             savePatients();
+            // 共有ストアにも基本情報を保存
+            SharedPatientStore.upsert({
+                id: 'p_' + patient.id,
+                name: patient.name,
+                age: patient.age,
+                gender: '',
+                careLevel: getCareLevelText(patient.careLevel),
+                doctor: '',
+                diagnoses: '',
+                allergies: ''
+            });
             clearForm();
             alert('患者を登録しました');
         }

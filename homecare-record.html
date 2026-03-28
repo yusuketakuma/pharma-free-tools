@@ -187,6 +187,13 @@
         <h1>🏥 訪問薬剤管理レコード生成</h1>
         <p class="subtitle">訪問薬剤管理指導の記録を効率化。医師報告書も自動生成。</p>
 
+        <!-- 患者セレクタ -->
+        <div class="card">
+            <h2>🔍 患者を選択</h2>
+            <select id="patientSelector" style="width:100%; padding:12px; border:2px solid var(--border); border-radius:var(--radius-sm); font-size:16px; margin-bottom:0;">
+            </select>
+        </div>
+
         <!-- 患者基本情報 -->
         <div class="card">
             <h2>👤 患者基本情報</h2>
@@ -400,6 +407,36 @@
 
     <script>
         const STORAGE_KEY = 'homecare-record-data';
+
+        // 共有患者データストア ユーティリティ
+        const SharedPatientStore = {
+            KEY: 'homecare-shared-patients',
+            getAll() { return JSON.parse(localStorage.getItem(this.KEY) || '[]'); },
+            save(patients) { localStorage.setItem(this.KEY, JSON.stringify(patients)); },
+            getById(id) { return this.getAll().find(p => p.id === id); },
+            upsert(patient) {
+                const patients = this.getAll();
+                const idx = patients.findIndex(p => p.id === patient.id);
+                if (idx >= 0) { patients[idx] = { ...patients[idx], ...patient, updatedAt: new Date().toISOString() }; }
+                else { patients.push({ ...patient, id: patient.id || 'p_' + Date.now(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }); }
+                this.save(patients);
+                return patient.id || patients[patients.length - 1].id;
+            },
+            populateSelector(selectEl, onSelect) {
+                const patients = this.getAll();
+                selectEl.innerHTML = '<option value="">-- 患者を選択 --</option><option value="__new__">+ 新規患者</option>';
+                patients.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = p.name + (p.age ? ' (' + p.age + '歳)' : '');
+                    selectEl.appendChild(opt);
+                });
+                selectEl.onchange = () => {
+                    if (selectEl.value === '__new__') { onSelect(null); }
+                    else if (selectEl.value) { onSelect(SharedPatientStore.getById(selectEl.value)); }
+                };
+            }
+        };
         let prescriptionCount = 0;
         let visitCount = 0;
         let sideEffectCount = 0;
@@ -481,6 +518,26 @@
             } catch (e) {
                 // localStorage unavailable, silently ignore
             }
+        // 共有ストアにupsert
+        const currentId = document.getElementById('patientSelector').dataset.currentId;
+        const patientName = patient.name;
+        if (patientName) {
+            const sharedPatient = {
+                id: currentId || 'p_' + Date.now(),
+                name: patientName,
+                age: parseInt(patient.age) || null,
+                gender: patient.gender || '',
+                careLevel: patient.careLevel || '',
+                doctor: patient.doctor || '',
+                diagnoses: patient.diagnoses || '',
+                allergies: patient.allergies || ''
+            };
+            const newId = SharedPatientStore.upsert(sharedPatient);
+            if (!currentId) {
+                document.getElementById('patientSelector').dataset.currentId = newId;
+                SharedPatientStore.populateSelector(document.getElementById('patientSelector'), document.getElementById('patientSelector').onchange);
+            }
+        }
         }
 
         function loadFromLocalStorage() {
@@ -569,6 +626,33 @@
                 addPrescription();
                 addVisit();
             }
+
+            // 患者セレクタ初期化
+            SharedPatientStore.populateSelector(document.getElementById('patientSelector'), function(patient) {
+                if (!patient) {
+                    // 新規患者: フォームクリア
+                    document.getElementById('patientName').value = '';
+                    document.getElementById('patientKana').value = '';
+                    document.getElementById('patientAge').value = '';
+                    document.getElementById('patientGender').value = '';
+                    document.getElementById('careLevel').value = '';
+                    document.getElementById('primaryDoctor').value = '';
+                    document.getElementById('diagnoses').value = '';
+                    document.getElementById('allergies').value = '';
+                    document.getElementById('patientSelector').dataset.currentId = '';
+                    return;
+                }
+                // 共有ストアからフォームに反映
+                document.getElementById('patientName').value = patient.name || '';
+                document.getElementById('patientAge').value = patient.age || '';
+                document.getElementById('patientGender').value = patient.gender || '';
+                document.getElementById('careLevel').value = patient.careLevel || '';
+                document.getElementById('primaryDoctor').value = patient.doctor || '';
+                document.getElementById('diagnoses').value = patient.diagnoses || '';
+                document.getElementById('allergies').value = patient.allergies || '';
+                document.getElementById('patientSelector').dataset.currentId = patient.id;
+                debouncedSave();
+            });
 
             // Auto-save event delegation on container
             document.querySelector('.container').addEventListener('input', debouncedSave);
