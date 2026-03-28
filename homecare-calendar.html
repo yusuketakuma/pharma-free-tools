@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服薬カレンダー生成 | 薬剤師向け無料ツール</title>
+  <meta name="description" content="患者さんの服薬スケジュールを週間・月間カレンダーで生成。印刷対応で高齢者にも見やすい。">
+  <meta property="og:title" content="服薬カレンダー生成 | 薬剤師向け無料ツール">
+  <meta property="og:description" content="服薬スケジュールを週間・月間カレンダーで生成。印刷対応。">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "服薬カレンダー生成ツール",
+      "description": "患者さんの服薬スケジュールを週間・月間カレンダーで生成。印刷対応で高齢者にも見やすい無料ツール。",
+      "applicationCategory": "MedicalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+      "author": { "@type": "Person", "name": "薬剤師" }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "服薬カレンダーはどのように使いますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "患者情報と処方薬を入力し、開始日と期間を設定してカレンダーを生成します。生成されたカレンダーは印刷またはテキストとしてエクスポートできます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "印刷時の文字サイズはどれくらいですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "印刷時は高齢者向けに大きめのフォントを使用し、A4横向きに最適化されたレイアウトで出力されます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "複数の患者のカレンダーを管理できますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "はい。SharedPatientStoreを使って複数の患者データを保存・切り替えることができます。他の訪問薬剤管理ツールとも患者データを共有できます。"
+          }
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "服薬カレンダーの作り方",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "患者情報を入力",
+          "text": "患者セレクタから既存患者を選ぶか、新規で氏名・年齢を入力します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "処方薬を追加",
+          "text": "薬品名・服用タイミング・服用量・日数を入力し「薬を追加」ボタンを押します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "カレンダーを生成",
+          "text": "開始日と期間を選択し「カレンダー生成」ボタンを押すと週間または月間カレンダーが表示されます。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "印刷・エクスポート",
+          "text": "印刷ボタンでA4横向き印刷、コピーボタンでテキストコピー、エクスポートボタンでtxtファイルとして保存できます。"
+        }
+      ]
+    }
+  ]
+  </script>
+  <style>
+    :root {
+      --primary: #667eea;
+      --primary-dark: #5a6fd6;
+      --secondary: #764ba2;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --success: #28a745;
+      --text: #333;
+      --text-secondary: #666;
+      --bg-body: #f5f5f7;
+      --bg-card: #fff;
+      --border: #e0e0e0;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-body);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .container { max-width: 800px; margin: 0 auto; }
+
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      border-bottom: 2px solid #4a90d9;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      color: var(--text);
+      background: var(--bg-card);
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row > * { flex: 1; }
+
+    .field { margin-bottom: 12px; }
+
+    @media (max-width: 600px) {
+      .row { flex-direction: column; }
+    }
+
+    /* Buttons */
+    button {
+      min-height: 44px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:active { transform: scale(0.98); }
+
+    .btn {
+      background: #4a90d9;
+      color: white;
+      padding: 12px 24px;
+      width: 100%;
+    }
+
+    .btn:hover { background: #3a7bc8; }
+
+    .btn-sm {
+      background: var(--danger);
+      color: white;
+      padding: 6px 12px;
+      min-height: 32px;
+      font-size: 0.8rem;
+    }
+
+    .btn-sm:hover { background: #c82333; }
+
+    .btn-add {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+    }
+
+    .btn-add:hover { background: var(--primary-dark); }
+
+    .copy-btn {
+      background: var(--success);
+      color: white;
+      padding: 12px 24px;
+    }
+
+    .copy-btn:hover { background: #218838; }
+
+    .export-btn {
+      background: #5a6fd6;
+      color: white;
+      padding: 12px 24px;
+    }
+
+    .export-btn:hover { background: #4a5fc6; }
+
+    .print-btn {
+      background: var(--text-secondary);
+      color: white;
+      padding: 12px 24px;
+    }
+
+    .print-btn:hover { background: #555; }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .btn-row > button { flex: 1; }
+
+    /* Timing checkboxes */
+    .timing-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .timing-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      transition: background 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+
+    .timing-label input[type="checkbox"] { display: none; }
+
+    .timing-label.checked {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Drug cards */
+    .drug-list { margin-top: 10px; }
+
+    .drug-card {
+      background: #f8f9fa;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .drug-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
+
+    .drug-info p { font-size: 0.8rem; color: var(--text-secondary); margin: 0; }
+
+    .drug-timing-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .timing-badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Save indicator */
+    .save-indicator {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--success);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .save-indicator.show { opacity: 1; }
+
+    /* Output area */
+    .output {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      display: none;
+      margin-top: 12px;
+    }
+
+    .output.show { display: block; }
+
+    /* Calendar styles */
+    .calendar-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .calendar-header h2 { font-size: 1.1rem; color: var(--text); }
+
+    .calendar-header p { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* Weekly calendar */
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .day-cell {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      min-height: 120px;
+      background: white;
+    }
+
+    .day-cell.sunday { border-top: 3px solid var(--danger); }
+    .day-cell.saturday { border-top: 3px solid var(--primary); }
+
+    .day-header {
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .day-header .date-num { font-size: 1.1rem; }
+    .day-header .day-name { font-size: 0.75rem; color: var(--text-secondary); }
+
+    .timing-section { margin-bottom: 6px; }
+
+    .timing-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .med-entry {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 2px;
+    }
+
+    .med-entry input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+    }
+
+    .med-entry label {
+      font-size: 0.7rem;
+      margin: 0;
+      cursor: pointer;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    /* Monthly calendar */
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .month-day-header {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px;
+      color: var(--text-secondary);
+    }
+
+    .month-cell {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px;
+      min-height: 70px;
+      background: white;
+      font-size: 0.65rem;
+    }
+
+    .month-cell.sunday { border-top: 2px solid var(--danger); }
+    .month-cell.saturday { border-top: 2px solid var(--primary); }
+
+    .month-cell .date-num {
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 2px;
+    }
+
+    .month-med {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      line-height: 1.2;
+      margin-bottom: 1px;
+    }
+
+    .month-med input[type="checkbox"] {
+      width: 11px;
+      height: 11px;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    /* CTA Box */
+    .cta-box {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 16px;
+      border-radius: var(--radius);
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .cta-box h3 { font-size: 1rem; margin-bottom: 6px; }
+    .cta-box p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 10px; }
+    .cta-box a {
+      display: inline-block;
+      background: white;
+      color: var(--primary);
+      padding: 8px 20px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* Links section */
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .links a {
+      background: #e8f4fd;
+      color: #1a73e8;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-size: 0.75rem;
+      transition: background 0.2s;
+    }
+
+    .links a:hover { background: #c5e3f9; }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        font-size: 14pt;
+      }
+
+      .container { max-width: 100%; }
+
+      .no-print { display: none !important; }
+
+      .section {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        margin-bottom: 8px;
+      }
+
+      .print-only { display: block !important; }
+
+      .output { display: block !important; border: none; padding: 0; background: white; }
+
+      .day-cell {
+        min-height: 140px;
+        padding: 6px;
+      }
+
+      .day-header .date-num { font-size: 1.4rem; }
+      .day-header .day-name { font-size: 0.9rem; }
+      .timing-title { font-size: 0.85rem; }
+
+      .med-entry label { font-size: 0.85rem; }
+      .med-entry input[type="checkbox"] { width: 16px; height: 16px; }
+
+      .month-cell { min-height: 80px; font-size: 0.75rem; }
+
+      @page {
+        size: A4 landscape;
+        margin: 10mm;
+      }
+    }
+
+    .print-only { display: none; }
+
+    /* Calendar view toggle */
+    .view-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .view-tab {
+      padding: 8px 16px;
+      min-height: 36px;
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-sm);
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .view-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .calendar-view { display: none; }
+    .calendar-view.active { display: block; }
+
+    /* No drugs placeholder */
+    .no-drugs {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .week-period {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .week-nav {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      min-height: 36px;
+    }
+
+    .week-nav:hover { background: var(--primary-dark); }
+
+    .week-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex: 1;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="save-indicator" id="saveIndicator">保存済み</div>
+
+  <div class="container">
+    <h1>服薬カレンダー生成</h1>
+    <p class="subtitle">処方薬の服用スケジュールをカレンダー形式で生成・印刷できます</p>
+
+    <!-- 患者情報 -->
+    <div class="section no-print">
+      <div class="section-title">患者情報</div>
+
+      <div class="field">
+        <label for="patientSelector">保存済み患者から選択</label>
+        <select id="patientSelector"></select>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="patientName">患者氏名 <span style="color:var(--danger)">*</span></label>
+          <input type="text" id="patientName" placeholder="例: 山田 太郎">
+        </div>
+        <div class="field">
+          <label for="patientAge">年齢</label>
+          <input type="number" id="patientAge" placeholder="例: 75" min="0" max="120">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="pharmacistName">担当薬剤師名</label>
+        <input type="text" id="pharmacistName" placeholder="例: 薬局 花子">
+      </div>
+    </div>
+
+    <!-- 処方薬リスト -->
+    <div class="section no-print">
+      <div class="section-title">処方薬の登録</div>
+
+      <div class="row">
+        <div class="field">
+          <label for="drugName">薬品名 <span style="color:var(--danger)">*</span></label>
+          <input type="text" id="drugName" placeholder="例: アムロジピン錠5mg">
+        </div>
+        <div class="field">
+          <label for="drugDose">服用量</label>
+          <input type="text" id="drugDose" placeholder="例: 1錠">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>服用タイミング（複数選択可）</label>
+        <div class="timing-group" id="timingGroup">
+          <label class="timing-label" data-timing="朝食後">
+            <input type="checkbox" value="朝食後">
+            ☀️ 朝食後
+          </label>
+          <label class="timing-label" data-timing="昼食後">
+            <input type="checkbox" value="昼食後">
+            🌤️ 昼食後
+          </label>
+          <label class="timing-label" data-timing="夕食後">
+            <input type="checkbox" value="夕食後">
+            🌙 夕食後
+          </label>
+          <label class="timing-label" data-timing="就寝前">
+            <input type="checkbox" value="就寝前">
+            💤 就寝前
+          </label>
+          <label class="timing-label" data-timing="食間">
+            <input type="checkbox" value="食間">
+            ⏰ 食間
+          </label>
+          <label class="timing-label" data-timing="頓用">
+            <input type="checkbox" value="頓用">
+            🔔 頓用
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="drugDays">日数</label>
+          <input type="number" id="drugDays" placeholder="例: 28" min="1">
+        </div>
+        <div class="field">
+          <label for="drugNote">特記事項</label>
+          <input type="text" id="drugNote" placeholder="例: 食前30分">
+        </div>
+      </div>
+
+      <button class="btn-add" onclick="addDrug()">＋ 薬を追加</button>
+
+      <div class="drug-list" id="drugList">
+        <p class="no-drugs" id="noDrugsMsg">薬を追加してください</p>
+      </div>
+    </div>
+
+    <!-- カレンダー設定 -->
+    <div class="section no-print">
+      <div class="section-title">カレンダー設定</div>
+
+      <div class="row">
+        <div class="field">
+          <label for="startDate">開始日 <span style="color:var(--danger)">*</span></label>
+          <input type="date" id="startDate">
+        </div>
+        <div class="field">
+          <label for="period">表示期間</label>
+          <select id="period">
+            <option value="7">7日間（週間）</option>
+            <option value="14">14日間（2週間）</option>
+            <option value="30" selected>30日間（月間）</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn" onclick="generateCalendar()">カレンダーを生成</button>
+    </div>
+
+    <!-- カレンダー出力 -->
+    <div class="section output" id="calendarOutput">
+      <!-- 印刷時のみ表示するヘッダー -->
+      <div class="print-only" id="printHeader">
+        <h2 id="printPatientName" style="font-size:1.4rem; margin-bottom:4px;"></h2>
+        <p id="printMeta" style="font-size:0.9rem; color:#666; margin-bottom:12px;"></p>
+        <hr style="margin-bottom:12px;">
+      </div>
+
+      <div class="calendar-header no-print">
+        <h2 id="calendarTitle"></h2>
+        <p id="calendarMeta" style="font-size:0.85rem; color:var(--text-secondary);"></p>
+      </div>
+
+      <!-- ビュー切替 -->
+      <div class="view-tabs no-print" id="viewTabs">
+        <button class="view-tab active" onclick="switchView('week', this)">週間表示</button>
+        <button class="view-tab" onclick="switchView('month', this)">月間表示</button>
+      </div>
+
+      <!-- 週間カレンダー -->
+      <div class="calendar-view active" id="weekView">
+        <div class="week-period no-print">
+          <button class="week-nav" onclick="prevWeek()">&#9664; 前週</button>
+          <div class="week-label" id="weekLabel"></div>
+          <button class="week-nav" onclick="nextWeek()">次週 &#9654;</button>
+        </div>
+        <div class="week-grid" id="weekGrid"></div>
+      </div>
+
+      <!-- 月間カレンダー -->
+      <div class="calendar-view" id="monthView">
+        <div class="month-grid" id="monthGrid"></div>
+      </div>
+
+      <!-- アクションボタン -->
+      <div class="btn-row no-print">
+        <button class="print-btn" onclick="window.print()">印刷</button>
+        <button class="copy-btn" onclick="copyCalendar()">テキストコピー</button>
+        <button class="export-btn" onclick="exportTxt()">TXTエクスポート</button>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box no-print">
+      <h3>訪問薬剤管理の業務をまとめて効率化</h3>
+      <p>レポート生成・記録管理・スケジュール管理など、在宅業務を支援する無料ツールを提供しています。</p>
+      <a href="index.html">ツール一覧へ</a>
+    </div>
+
+    <!-- 関連ツールリンク -->
+    <div class="links no-print">
+      <a href="homecare-report.html">訪問報告書生成</a>
+      <a href="homecare-record.html">服薬記録管理</a>
+      <a href="homecare-scheduler.html">訪問スケジューラー</a>
+      <a href="homecare-contact.html">連絡先管理</a>
+      <a href="homecare-team.html">チーム連携</a>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'homecare-calendar-data';
+
+    // SharedPatientStore
+    const SharedPatientStore = {
+      KEY: "homecare-shared-patients",
+      getAll() { return JSON.parse(localStorage.getItem(this.KEY) || "[]"); },
+      save(patients) { localStorage.setItem(this.KEY, JSON.stringify(patients)); },
+      getById(id) { return this.getAll().find(p => p.id === id); },
+      upsert(patient) {
+        const patients = this.getAll();
+        const idx = patients.findIndex(p => p.id === patient.id);
+        if (idx >= 0) {
+          patients[idx] = { ...patients[idx], ...patient, updatedAt: new Date().toISOString() };
+        } else {
+          patients.push({ ...patient, id: patient.id || "p_" + Date.now(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+        }
+        this.save(patients);
+        return patients;
+      },
+      populateSelector(selectEl, onSelect) {
+        const patients = this.getAll();
+        selectEl.innerHTML = "<option value=''>-- 患者を選択 --</option><option value='__new__'>+ 新規患者</option>";
+        patients.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.id;
+          opt.textContent = p.name + " (" + p.age + "歳)";
+          selectEl.appendChild(opt);
+        });
+        selectEl.onchange = () => {
+          if (selectEl.value === "__new__") {
+            clearPatientForm();
+          } else if (selectEl.value) {
+            onSelect(this.getById(selectEl.value));
+          }
+        };
+      }
+    };
+
+    // App state
+    let drugs = [];
+    let generatedStartDate = null;
+    let generatedPeriod = 30;
+    let currentWeekOffset = 0;
+    let saveTimer = null;
+
+    // Timing config
+    const TIMINGS = [
+      { key: '朝食後', icon: '☀️', label: '朝' },
+      { key: '昼食後', icon: '🌤️', label: '昼' },
+      { key: '夕食後', icon: '🌙', label: '夕' },
+      { key: '就寝前', icon: '💤', label: '就寝前' },
+      { key: '食間',   icon: '⏰', label: '食間' },
+      { key: '頓用',   icon: '🔔', label: '頓用' }
+    ];
+
+    const DAY_NAMES_JA = ['日', '月', '火', '水', '木', '金', '土'];
+
+    // Initialize
+    function init() {
+      // Set today as default start date
+      const today = new Date();
+      document.getElementById('startDate').valueAsDate = today;
+
+      // Load saved data
+      loadData();
+
+      // Initialize patient selector
+      SharedPatientStore.populateSelector(
+        document.getElementById('patientSelector'),
+        function(patient) {
+          if (patient) {
+            document.getElementById('patientName').value = patient.name || '';
+            document.getElementById('patientAge').value = patient.age || '';
+          }
+        }
+      );
+
+      // Timing checkbox styling
+      document.querySelectorAll('.timing-label').forEach(lbl => {
+        const cb = lbl.querySelector('input[type="checkbox"]');
+        cb.addEventListener('change', () => {
+          lbl.classList.toggle('checked', cb.checked);
+        });
+      });
+
+      // Auto-save on input change
+      ['patientName', 'patientAge', 'pharmacistName', 'startDate', 'period'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', scheduleSave);
+      });
+    }
+
+    function clearPatientForm() {
+      document.getElementById('patientName').value = '';
+      document.getElementById('patientAge').value = '';
+    }
+
+    // Drug management
+    function addDrug() {
+      const name = document.getElementById('drugName').value.trim();
+      if (!name) { alert('薬品名を入力してください'); return; }
+
+      const timings = [];
+      document.querySelectorAll('#timingGroup input[type="checkbox"]').forEach(cb => {
+        if (cb.checked) timings.push(cb.value);
+      });
+
+      if (timings.length === 0) { alert('服用タイミングを選択してください'); return; }
+
+      const drug = {
+        id: 'd_' + Date.now(),
+        name: name,
+        dose: document.getElementById('drugDose').value.trim(),
+        timings: timings,
+        days: parseInt(document.getElementById('drugDays').value) || null,
+        note: document.getElementById('drugNote').value.trim()
+      };
+
+      drugs.push(drug);
+      renderDrugList();
+      clearDrugForm();
+      scheduleSave();
+    }
+
+    function clearDrugForm() {
+      document.getElementById('drugName').value = '';
+      document.getElementById('drugDose').value = '';
+      document.getElementById('drugDays').value = '';
+      document.getElementById('drugNote').value = '';
+      document.querySelectorAll('#timingGroup input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+        cb.closest('.timing-label').classList.remove('checked');
+      });
+    }
+
+    function deleteDrug(id) {
+      drugs = drugs.filter(d => d.id !== id);
+      renderDrugList();
+      scheduleSave();
+    }
+
+    function renderDrugList() {
+      const list = document.getElementById('drugList');
+      const noMsg = document.getElementById('noDrugsMsg');
+
+      if (drugs.length === 0) {
+        list.innerHTML = '<p class="no-drugs" id="noDrugsMsg">薬を追加してください</p>';
+        return;
+      }
+
+      list.innerHTML = drugs.map(d => `
+        <div class="drug-card">
+          <div class="drug-info">
+            <h4>${escHtml(d.name)}${d.dose ? ' &nbsp;<span style="font-weight:400;font-size:0.85rem;">'+escHtml(d.dose)+'</span>' : ''}</h4>
+            <div class="drug-timing-badges">
+              ${d.timings.map(t => `<span class="timing-badge">${getTimingIcon(t)} ${t}</span>`).join('')}
+            </div>
+            ${d.days ? '<p>'+d.days+'日分</p>' : ''}
+            ${d.note ? '<p>特記: '+escHtml(d.note)+'</p>' : ''}
+          </div>
+          <button class="btn-sm" onclick="deleteDrug('${d.id}')">削除</button>
+        </div>
+      `).join('');
+    }
+
+    function getTimingIcon(timing) {
+      const t = TIMINGS.find(x => x.key === timing);
+      return t ? t.icon : '';
+    }
+
+    // Calendar generation
+    function generateCalendar() {
+      const startDateVal = document.getElementById('startDate').value;
+      if (!startDateVal) { alert('開始日を入力してください'); return; }
+      if (drugs.length === 0) { alert('薬を1つ以上登録してください'); return; }
+
+      const period = parseInt(document.getElementById('period').value);
+      generatedStartDate = new Date(startDateVal + 'T00:00:00');
+      generatedPeriod = period;
+      currentWeekOffset = 0;
+
+      const patientName = document.getElementById('patientName').value.trim() || '患者名未設定';
+      const patientAge = document.getElementById('patientAge').value;
+      const pharmacist = document.getElementById('pharmacistName').value.trim();
+      const today = formatDate(new Date());
+
+      const output = document.getElementById('calendarOutput');
+      output.classList.add('show');
+
+      // Title
+      const endDate = new Date(generatedStartDate);
+      endDate.setDate(endDate.getDate() + period - 1);
+      document.getElementById('calendarTitle').textContent = '服薬カレンダー';
+      document.getElementById('calendarMeta').textContent =
+        patientName + (patientAge ? '（' + patientAge + '歳）' : '') +
+        ' / ' + formatDate(generatedStartDate) + ' 〜 ' + formatDate(endDate);
+
+      // Print header
+      document.getElementById('printPatientName').textContent =
+        '服薬カレンダー  ' + patientName + (patientAge ? '（' + patientAge + '歳）' : '');
+      document.getElementById('printMeta').textContent =
+        '期間: ' + formatDate(generatedStartDate) + ' 〜 ' + formatDate(endDate) +
+        (pharmacist ? '  担当: ' + pharmacist : '') + '  作成: ' + today;
+
+      // Render calendars
+      renderWeekCalendar();
+      renderMonthCalendar();
+
+      scheduleSave();
+      output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderWeekCalendar() {
+      const grid = document.getElementById('weekGrid');
+      const startOfWeek = new Date(generatedStartDate);
+      startOfWeek.setDate(startOfWeek.getDate() + currentWeekOffset * 7);
+
+      const weekDays = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(startOfWeek);
+        d.setDate(d.getDate() + i);
+        weekDays.push(d);
+      }
+
+      // Week label
+      document.getElementById('weekLabel').textContent =
+        formatDate(weekDays[0]) + ' 〜 ' + formatDate(weekDays[6]);
+
+      grid.innerHTML = weekDays.map(day => {
+        const dayOfWeek = day.getDay();
+        const isInRange = isDayInRange(day);
+        const cls = dayOfWeek === 0 ? 'sunday' : dayOfWeek === 6 ? 'saturday' : '';
+        const dateStr = day.toISOString().split('T')[0];
+        const monthNum = day.getMonth() + 1;
+        const dateNum = day.getDate();
+
+        let content = '';
+        if (isInRange) {
+          TIMINGS.forEach(timing => {
+            const activeDrugs = drugs.filter(d => d.timings.includes(timing.key));
+            if (activeDrugs.length === 0) return;
+            content += `<div class="timing-section">
+              <div class="timing-title">${timing.icon} ${timing.label}</div>
+              ${activeDrugs.map(drug => `
+                <div class="med-entry">
+                  <input type="checkbox" id="chk_${dateStr}_${timing.key}_${drug.id}"
+                         onchange="saveCheckboxState(this)" ${loadCheckboxState(dateStr, timing.key, drug.id) ? 'checked' : ''}>
+                  <label for="chk_${dateStr}_${timing.key}_${drug.id}">${escHtml(drug.name)}${drug.dose ? ' ' + escHtml(drug.dose) : ''}</label>
+                </div>
+              `).join('')}
+            </div>`;
+          });
+        } else {
+          content = '<div style="color:#ccc;font-size:0.7rem;text-align:center;margin-top:20px;">期間外</div>';
+        }
+
+        return `
+          <div class="day-cell ${cls}">
+            <div class="day-header">
+              <div class="date-num" style="color:${dayOfWeek===0?'var(--danger)':dayOfWeek===6?'var(--primary)':'var(--text)'}">${monthNum}/${dateNum}</div>
+              <div class="day-name">${DAY_NAMES_JA[dayOfWeek]}</div>
+            </div>
+            ${content}
+          </div>`;
+      }).join('');
+    }
+
+    function renderMonthCalendar() {
+      const grid = document.getElementById('monthGrid');
+      const days = [];
+
+      // Day of week headers
+      const headers = DAY_NAMES_JA.map((d, i) =>
+        `<div class="month-day-header" style="color:${i===0?'var(--danger)':i===6?'var(--primary)':'var(--text-secondary)'}">${d}</div>`
+      ).join('');
+
+      // Pad to start on correct day of week
+      const firstDay = new Date(generatedStartDate);
+      const startDayOfWeek = firstDay.getDay();
+      const paddedDays = new Array(startDayOfWeek).fill(null);
+
+      for (let i = 0; i < generatedPeriod; i++) {
+        const d = new Date(generatedStartDate);
+        d.setDate(d.getDate() + i);
+        paddedDays.push(d);
+      }
+
+      // Pad end to complete last row
+      while (paddedDays.length % 7 !== 0) paddedDays.push(null);
+
+      const cells = paddedDays.map(day => {
+        if (!day) return '<div class="month-cell" style="border:none;background:transparent;"></div>';
+
+        const dayOfWeek = day.getDay();
+        const cls = dayOfWeek === 0 ? 'sunday' : dayOfWeek === 6 ? 'saturday' : '';
+        const dateStr = day.toISOString().split('T')[0];
+        const dateNum = day.getDate();
+
+        let content = '';
+        TIMINGS.forEach(timing => {
+          const activeDrugs = drugs.filter(d => d.timings.includes(timing.key));
+          if (activeDrugs.length === 0) return;
+          content += activeDrugs.map(drug => `
+            <div class="month-med">
+              <input type="checkbox" id="mchk_${dateStr}_${timing.key}_${drug.id}"
+                     onchange="saveCheckboxState(this)" ${loadCheckboxState(dateStr, timing.key, drug.id) ? 'checked' : ''}>
+              <span>${timing.icon}${escHtml(drug.name)}</span>
+            </div>
+          `).join('');
+        });
+
+        return `
+          <div class="month-cell ${cls}">
+            <div class="date-num" style="color:${dayOfWeek===0?'var(--danger)':dayOfWeek===6?'var(--primary)':'var(--text)'}">${dateNum}</div>
+            ${content}
+          </div>`;
+      }).join('');
+
+      grid.innerHTML = headers + cells;
+    }
+
+    function isDayInRange(day) {
+      if (!generatedStartDate) return false;
+      const endDate = new Date(generatedStartDate);
+      endDate.setDate(endDate.getDate() + generatedPeriod - 1);
+      return day >= generatedStartDate && day <= endDate;
+    }
+
+    function prevWeek() {
+      currentWeekOffset--;
+      renderWeekCalendar();
+    }
+
+    function nextWeek() {
+      currentWeekOffset++;
+      renderWeekCalendar();
+    }
+
+    function switchView(view, btn) {
+      document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.calendar-view').forEach(v => v.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(view + 'View').classList.add('active');
+    }
+
+    // Checkbox state persistence
+    function getCheckboxKey() {
+      return 'homecare-calendar-checks';
+    }
+
+    function saveCheckboxState(cb) {
+      const checks = JSON.parse(localStorage.getItem(getCheckboxKey()) || '{}');
+      checks[cb.id] = cb.checked;
+      localStorage.setItem(getCheckboxKey(), JSON.stringify(checks));
+    }
+
+    function loadCheckboxState(dateStr, timing, drugId) {
+      const checks = JSON.parse(localStorage.getItem(getCheckboxKey()) || '{}');
+      const weekId = 'chk_' + dateStr + '_' + timing + '_' + drugId;
+      const monthId = 'mchk_' + dateStr + '_' + timing + '_' + drugId;
+      return checks[weekId] || checks[monthId] || false;
+    }
+
+    // Text calendar generation for copy/export
+    function buildTextCalendar() {
+      const patientName = document.getElementById('patientName').value.trim() || '患者名未設定';
+      const patientAge = document.getElementById('patientAge').value;
+      const pharmacist = document.getElementById('pharmacistName').value.trim();
+      const today = formatDate(new Date());
+
+      if (!generatedStartDate) return '';
+
+      let text = '=== 服薬カレンダー ===\n';
+      text += '患者: ' + patientName + (patientAge ? ' (' + patientAge + '歳)' : '') + '\n';
+      if (pharmacist) text += '担当薬剤師: ' + pharmacist + '\n';
+      text += '作成日: ' + today + '\n';
+      text += '\n';
+
+      for (let i = 0; i < generatedPeriod; i++) {
+        const day = new Date(generatedStartDate);
+        day.setDate(day.getDate() + i);
+        const dateStr = formatDate(day);
+        const dayName = DAY_NAMES_JA[day.getDay()];
+
+        text += '【' + dateStr + '（' + dayName + '）】\n';
+
+        let hasDrug = false;
+        TIMINGS.forEach(timing => {
+          const activeDrugs = drugs.filter(d => d.timings.includes(timing.key));
+          if (activeDrugs.length === 0) return;
+          hasDrug = true;
+          text += '  ' + timing.icon + ' ' + timing.label + '\n';
+          activeDrugs.forEach(drug => {
+            text += '    □ ' + drug.name + (drug.dose ? ' ' + drug.dose : '') + '\n';
+          });
+        });
+
+        if (!hasDrug) text += '  （服薬なし）\n';
+        text += '\n';
+      }
+
+      return text;
+    }
+
+    function copyCalendar() {
+      const text = buildTextCalendar();
+      if (!text) { alert('先にカレンダーを生成してください'); return; }
+      navigator.clipboard.writeText(text).then(() => {
+        showSaved('コピーしました');
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showSaved('コピーしました');
+      });
+    }
+
+    function exportTxt() {
+      const text = buildTextCalendar();
+      if (!text) { alert('先にカレンダーを生成してください'); return; }
+
+      const patientName = document.getElementById('patientName').value.trim() || 'patient';
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'medication-calendar-' + patientName + '-' + formatDateFile(new Date()) + '.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Persistence
+    function scheduleSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveData, 800);
+    }
+
+    function saveData() {
+      const data = {
+        patientName: document.getElementById('patientName').value,
+        patientAge: document.getElementById('patientAge').value,
+        pharmacistName: document.getElementById('pharmacistName').value,
+        startDate: document.getElementById('startDate').value,
+        period: document.getElementById('period').value,
+        drugs: drugs
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showSaved('自動保存しました');
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        if (data.patientName) document.getElementById('patientName').value = data.patientName;
+        if (data.patientAge) document.getElementById('patientAge').value = data.patientAge;
+        if (data.pharmacistName) document.getElementById('pharmacistName').value = data.pharmacistName;
+        if (data.startDate) document.getElementById('startDate').value = data.startDate;
+        if (data.period) document.getElementById('period').value = data.period;
+        if (data.drugs && Array.isArray(data.drugs)) {
+          drugs = data.drugs;
+          renderDrugList();
+        }
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+
+    // UI helpers
+    function showSaved(msg) {
+      const el = document.getElementById('saveIndicator');
+      el.textContent = msg || '保存済み';
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2000);
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatDate(d) {
+      return d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
+    }
+
+    function formatDateFile(d) {
+      return d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+    }
+
+    // Boot
+    init();
+  </script>
+</body>
+</html>
