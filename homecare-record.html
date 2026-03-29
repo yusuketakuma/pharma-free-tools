@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訪問薬剤管理レコード生成 | 薬剤師向け無料ツール</title>
+    <meta name="description" content="訪問薬剤管理指導の記録を効率化する無料ツール。患者情報・処方薬・服薬状況・副作用モニタリングを一元管理し、医師報告書を自動生成。">
+    <meta property="og:title" content="訪問薬剤管理レコード生成 | 薬剤師向け無料ツール">
+    <meta property="og:description" content="訪問薬剤管理指導の記録を効率化。医師報告書も自動生成。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-homecare-record/">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "訪問薬剤管理レコード生成ツール",
+        "description": "訪問薬剤管理指導の記録を効率化する無料ツール",
+        "applicationCategory": "MedicalApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+        "author": { "@type": "Person", "name": "薬剤師" }
+    }
+    </script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd6;
+            --secondary: #764ba2;
+            --danger: #dc3545;
+            --success: #28a745;
+            --text: #333;
+            --text-secondary: #666;
+            --bg-body: #f5f5f7;
+            --bg-card: #fff;
+            --border: #e0e0e0;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-body);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--text); text-align: center; margin-bottom: 10px; font-size: 1.5rem; }
+        .subtitle { color: var(--text-secondary); text-align: center; margin-bottom: 20px; font-size: 0.9rem; }
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+        h2 { color: var(--text); font-size: 1.1rem; margin-bottom: 16px; border-left: 4px solid var(--primary); padding-left: 12px; }
+        label { display: block; color: #555; font-size: 0.85rem; margin-bottom: 6px; font-weight: 500; }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s;
+            color: var(--text);
+            background: var(--bg-card);
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        @media (max-width: 600px) {
+            .row, .row-3 { grid-template-columns: 1fr; }
+        }
+        button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            min-height: 44px;
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+        button:active { transform: translateY(0); }
+        .btn-secondary { background: #6c757d; margin-top: 10px; }
+        .btn-success { background: linear-gradient(135deg, var(--success) 0%, #20c997 100%); margin-top: 10px; }
+        .btn-export { background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); margin-top: 10px; }
+        .prescription-item, .visit-item, .side-effect-item {
+            background: #f8f9fa;
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+        .prescription-item .row, .visit-item .row, .side-effect-item .row { margin-bottom: 8px; }
+        .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .item-header span { font-weight: 600; color: var(--primary); }
+        .remove-btn {
+            background: var(--danger);
+            color: #fff;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            min-height: 44px;
+            width: auto;
+        }
+        #output {
+            background: #f8f9fa;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.8;
+            border: 2px solid var(--primary);
+            display: none;
+        }
+        .cta-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .cta-box h3 { color: var(--text); font-size: 1rem; margin-bottom: 10px; }
+        .cta-box p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 12px; }
+        .cta-links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .cta-links a {
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .cta-links a:hover { background: var(--secondary); }
+        .other-tools { margin-top: 20px; }
+        .other-tools h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 10px; }
+        .tool-links { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tool-links a {
+            background: #f0f0f0;
+            color: #555;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .tool-links a:hover { background: var(--primary); color: #fff; }
+        .severity-low { color: var(--success); font-weight: 600; }
+        .severity-medium { color: #ffc107; font-weight: 600; }
+        .severity-high { color: var(--danger); font-weight: 600; }
+        .tag { display: inline-block; background: var(--primary); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 4px; }
+        .export-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+        .export-buttons button { flex: 1; min-width: 160px; }
+        /* Save indicator */
+        #saveIndicator {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: var(--success);
+            color: white;
+            padding: 6px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        #saveIndicator.visible { opacity: 1; }
+    </style>
+</head>
+<body>
+    <div id="saveIndicator">保存済み ✓</div>
+
+    <div class="container">
+        <h1>🏥 訪問薬剤管理レコード生成</h1>
+        <p class="subtitle">訪問薬剤管理指導の記録を効率化。医師報告書も自動生成。</p>
+
+        <!-- 患者セレクタ -->
+        <div class="card">
+            <h2>🔍 患者を選択</h2>
+            <select id="patientSelector" style="width:100%; padding:12px; border:2px solid var(--border); border-radius:var(--radius-sm); font-size:16px; margin-bottom:0;">
+            </select>
+        </div>
+
+        <!-- 患者基本情報 -->
+        <div class="card">
+            <h2>👤 患者基本情報</h2>
+            <div class="row">
+                <div>
+                    <label>氏名</label>
+                    <input type="text" id="patientName" placeholder="山田 太郎">
+                </div>
+                <div>
+                    <label>カナ</label>
+                    <input type="text" id="patientKana" placeholder="ヤマダ タロウ">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label>年齢</label>
+                    <input type="number" id="patientAge" placeholder="78">
+                </div>
+                <div>
+                    <label>性別</label>
+                    <select id="patientGender">
+                        <option value="">選択</option>
+                        <option value="男性">男性</option>
+                        <option value="女性">女性</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label>要介護度</label>
+                    <select id="careLevel">
+                        <option value="">選択</option>
+                        <option value="要支援1">要支援1</option>
+                        <option value="要支援2">要支援2</option>
+                        <option value="要介護1">要介護1</option>
+                        <option value="要介護2">要介護2</option>
+                        <option value="要介護3">要介護3</option>
+                        <option value="要介護4">要介護4</option>
+                        <option value="要介護5">要介護5</option>
+                        <option value="なし">なし</option>
+                    </select>
+                </div>
+                <div>
+                    <label>保険種別</label>
+                    <select id="insuranceType">
+                        <option value="">選択</option>
+                        <option value="後期高齢者">後期高齢者医療</option>
+                        <option value="国保">国民健康保険</option>
+                        <option value="社保">社会保険</option>
+                        <option value="公費">公費負担</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label>住所</label>
+                <input type="text" id="patientAddress" placeholder="〇〇県〇〇市〇〇町1-2-3">
+            </div>
+            <div class="row">
+                <div>
+                    <label>電話番号</label>
+                    <input type="tel" id="patientPhone" placeholder="090-1234-5678">
+                </div>
+                <div>
+                    <label>緊急連絡先</label>
+                    <input type="tel" id="emergencyContact" placeholder="03-1234-5678">
+                </div>
+            </div>
+            <div>
+                <label>主治医</label>
+                <input type="text" id="primaryDoctor" placeholder="〇〇病院 〇〇先生">
+            </div>
+            <div>
+                <label>主な疾患・病名（複数可）</label>
+                <input type="text" id="diagnoses" placeholder="高血圧、糖尿病、心不全">
+            </div>
+            <div>
+                <label>アレルギー・禁忌</label>
+                <input type="text" id="allergies" placeholder="ペニシリン系アレルギー">
+            </div>
+            <div>
+                <label>服薬管理状況</label>
+                <select id="medicationManagement">
+                    <option value="">選択</option>
+                    <option value="自己管理">自己管理可能</option>
+                    <option value="一部介助">一部介助必要</option>
+                    <option value="全介助">全介助必要</option>
+                    <option value="セット配合">セット配合剤使用</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 処方薬リスト -->
+        <div class="card">
+            <h2>💊 処方薬リスト</h2>
+            <div id="prescriptionList"></div>
+            <button type="button" class="btn-secondary" onclick="addPrescription()">+ 処方薬を追加</button>
+        </div>
+
+        <!-- 訪問記録 -->
+        <div class="card">
+            <h2>📅 訪問記録</h2>
+            <div id="visitList"></div>
+            <button type="button" class="btn-secondary" onclick="addVisit()">+ 訪問記録を追加</button>
+        </div>
+
+        <!-- 副作用モニタリング -->
+        <div class="card">
+            <h2>⚠️ 副作用モニタリング</h2>
+            <div id="sideEffectList"></div>
+            <button type="button" class="btn-secondary" onclick="addSideEffect()">+ 副作用記録を追加</button>
+        </div>
+
+        <!-- 次回訪問予定 -->
+        <div class="card">
+            <h2>📆 次回訪問予定</h2>
+            <div class="row">
+                <div>
+                    <label>予定日</label>
+                    <input type="date" id="nextVisitDate">
+                </div>
+                <div>
+                    <label>訪問区分</label>
+                    <select id="visitType">
+                        <option value="">選択</option>
+                        <option value="定期">定期訪問</option>
+                        <option value="臨時">臨時訪問</option>
+                        <option value="退院後">退院後訪問</option>
+                        <option value="紹介">紹介による訪問</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label>備考・特記事項</label>
+                <textarea id="nextVisitNote" rows="2" placeholder="次回確認すべき事項など"></textarea>
+            </div>
+        </div>
+
+        <!-- 出力オプション -->
+        <div class="card">
+            <h2>📄 出力形式</h2>
+            <div class="row-3">
+                <div>
+                    <label>形式</label>
+                    <select id="outputFormat">
+                        <option value="full">詳細レポート</option>
+                        <option value="summary">サマリー版</option>
+                        <option value="doctor">医師報告書</option>
+                        <option value="handover">引継ぎ用</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" onclick="generateRecord()">📋 レコード生成</button>
+            <button type="button" class="btn-success" onclick="copyToClipboard()">📋 コピー</button>
+            <button type="button" class="btn-secondary" onclick="printRecord()">🖨️ 印刷</button>
+        </div>
+
+        <!-- エクスポートボタン -->
+        <div class="card">
+            <h2>💾 エクスポート</h2>
+            <div class="export-buttons">
+                <button type="button" class="btn-export" onclick="exportPrescriptionsCSV()">📊 処方薬リストをCSV出力</button>
+                <button type="button" class="btn-export" onclick="exportRecordText()">📝 レコードをテキスト出力</button>
+            </div>
+        </div>
+
+        <!-- 出力エリア -->
+        <div id="output"></div>
+
+        <!-- CTA -->
+        <div class="cta-box">
+            <h3>🎁 薬剤師向け効率化リソース</h3>
+            <p>さらに業務を効率化するテンプレート・プロンプト集をチェック</p>
+            <div class="cta-links">
+                <a href="#" target="_blank">📦 Notionテンプレート</a>
+                <a href="#" target="_blank">🤖 AIプロンプト集</a>
+            </div>
+        </div>
+
+        <!-- 他ツールへのリンク -->
+        <div class="card other-tools">
+<!-- ポータルサイト -->
+            <div style="text-align: center; margin: 24px 0;">
+                <a href="https://yusuketakuma.github.io/pharma-free-tools/" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">🏠 全ツール一覧（ポータルサイト）</a>
+            </div>
+            <h3>🔗 他の無料ツール</h3>
+            <div class="tool-links">
+                <a href="https://yusuketakuma.github.io/pharma-drug-price-tool/">薬価計算</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-history-tool/">薬歴テンプレート</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-guidance/">服薬指導チェック</a>
+                <a href="https://yusuketakuma.github.io/pharma-renal-dose/">腎機能別用量</a>
+                <a href="https://yusuketakuma.github.io/pharma-efficiency-diagnosis/">業務効率化診断</a>
+                <a href="https://yusuketakuma.github.io/pharma-prescription-checklist/">処方チェック</a>
+                <a href="https://yusuketakuma.github.io/pharma-inquiry-email/">疑義照会メール</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-summary/">薬歴サマリー</a>
+                <a href="https://yusuketakuma.github.io/pharma-side-effect-checker/">副作用リスク</a>
+                <a href="https://yusuketakuma.github.io/pharma-medication-calendar/">服薬カレンダー</a>
+                <a href="https://yusuketakuma.github.io/pharma-prescription-screening/">処方鑑別</a>
+                <a href="https://yusuketakuma.github.io/pharma-di-query/">DI照会</a>
+                <a href="https://yusuketakuma.github.io/pharma-bringing-medicine/">持参薬チェック</a>
+                <a href="https://yusuketakuma.github.io/pharma-inventory-alert/">在庫アラート</a>
+                <a href="https://yusuketakuma.github.io/pharma-adherence-check/">服薬アドヒアランス</a>
+                <a href="https://yusuketakuma.github.io/pharma-similar-drug-name/">類似薬名</a>
+                <a href="https://yusuketakuma.github.io/pharma-polypharmacy/">ポリファーマシー</a>
+                <a href="https://yusuketakuma.github.io/pharma-homecare-report/">在宅医療報告書</a>
+                <a href="https://yusuketakuma.github.io/pharma-claim-simulator/">調剤報酬シミュレーター</a>
+                <a href="https://yusuketakuma.github.io/pharma-guidance-scenario/">服薬指導シナリオ</a>
+                <a href="https://yusuketakuma.github.io/pharma-patient-explanation/">患者向け説明文</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'homecare-record-data';
+
+        // 共有患者データストア ユーティリティ
+        const SharedPatientStore = {
+            KEY: 'homecare-shared-patients',
+            getAll() { return JSON.parse(localStorage.getItem(this.KEY) || '[]'); },
+            save(patients) { localStorage.setItem(this.KEY, JSON.stringify(patients)); },
+            getById(id) { return this.getAll().find(p => p.id === id); },
+            upsert(patient) {
+                const patients = this.getAll();
+                const idx = patients.findIndex(p => p.id === patient.id);
+                if (idx >= 0) { patients[idx] = { ...patients[idx], ...patient, updatedAt: new Date().toISOString() }; }
+                else { patients.push({ ...patient, id: patient.id || 'p_' + Date.now(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }); }
+                this.save(patients);
+                return patient.id || patients[patients.length - 1].id;
+            },
+            populateSelector(selectEl, onSelect) {
+                const patients = this.getAll();
+                selectEl.innerHTML = '<option value="">-- 患者を選択 --</option><option value="__new__">+ 新規患者</option>';
+                patients.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = p.name + (p.age ? ' (' + p.age + '歳)' : '');
+                    selectEl.appendChild(opt);
+                });
+                selectEl.onchange = () => {
+                    if (selectEl.value === '__new__') { onSelect(null); }
+                    else if (selectEl.value) { onSelect(SharedPatientStore.getById(selectEl.value)); }
+                };
+            }
+        };
+        let prescriptionCount = 0;
+        let visitCount = 0;
+        let sideEffectCount = 0;
+        let saveTimer;
+
+        // Debounced save
+        function debouncedSave() {
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(saveToLocalStorage, 300);
+        }
+
+        function showSaveIndicator() {
+            const el = document.getElementById('saveIndicator');
+            el.classList.add('visible');
+            setTimeout(function() { el.classList.remove('visible'); }, 1500);
+        }
+
+        function saveToLocalStorage() {
+            const patient = {
+                name: document.getElementById('patientName').value,
+                kana: document.getElementById('patientKana').value,
+                age: document.getElementById('patientAge').value,
+                gender: document.getElementById('patientGender').value,
+                careLevel: document.getElementById('careLevel').value,
+                insurance: document.getElementById('insuranceType').value,
+                address: document.getElementById('patientAddress').value,
+                phone: document.getElementById('patientPhone').value,
+                emergency: document.getElementById('emergencyContact').value,
+                doctor: document.getElementById('primaryDoctor').value,
+                diagnoses: document.getElementById('diagnoses').value,
+                allergies: document.getElementById('allergies').value,
+                management: document.getElementById('medicationManagement').value
+            };
+
+            const prescriptions = [];
+            document.querySelectorAll('.prescription-item').forEach(function(item) {
+                prescriptions.push({
+                    name: item.querySelector('.drug-name').value,
+                    dosage: item.querySelector('.drug-dosage').value,
+                    start: item.querySelector('.drug-start').value,
+                    category: item.querySelector('.drug-category').value,
+                    note: item.querySelector('.drug-note').value
+                });
+            });
+
+            const visits = [];
+            document.querySelectorAll('.visit-item').forEach(function(item) {
+                visits.push({
+                    date: item.querySelector('.visit-date').value,
+                    duration: item.querySelector('.visit-duration').value,
+                    adherence: item.querySelector('.visit-adherence').value,
+                    note: item.querySelector('.visit-note').value
+                });
+            });
+
+            const sideEffects = [];
+            document.querySelectorAll('.side-effect-item').forEach(function(item) {
+                sideEffects.push({
+                    date: item.querySelector('.se-date').value,
+                    drug: item.querySelector('.se-drug').value,
+                    symptom: item.querySelector('.se-symptom').value,
+                    severity: item.querySelector('.se-severity').value,
+                    action: item.querySelector('.se-action').value
+                });
+            });
+
+            const nextVisit = {
+                date: document.getElementById('nextVisitDate').value,
+                type: document.getElementById('visitType').value,
+                note: document.getElementById('nextVisitNote').value
+            };
+
+            const outputFormat = document.getElementById('outputFormat').value;
+
+            const data = { patient: patient, prescriptions: prescriptions, visits: visits, sideEffects: sideEffects, nextVisit: nextVisit, outputFormat: outputFormat };
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                showSaveIndicator();
+            } catch (e) {
+                // localStorage unavailable, silently ignore
+            }
+        // 共有ストアにupsert
+        const currentId = document.getElementById('patientSelector').dataset.currentId;
+        const patientName = patient.name;
+        if (patientName) {
+            const sharedPatient = {
+                id: currentId || 'p_' + Date.now(),
+                name: patientName,
+                age: parseInt(patient.age) || null,
+                gender: patient.gender || '',
+                careLevel: patient.careLevel || '',
+                doctor: patient.doctor || '',
+                diagnoses: patient.diagnoses || '',
+                allergies: patient.allergies || ''
+            };
+            const newId = SharedPatientStore.upsert(sharedPatient);
+            if (!currentId) {
+                document.getElementById('patientSelector').dataset.currentId = newId;
+                SharedPatientStore.populateSelector(document.getElementById('patientSelector'), document.getElementById('patientSelector').onchange);
+            }
+        }
+        }
+
+        function loadFromLocalStorage() {
+            let data;
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return false;
+                data = JSON.parse(raw);
+            } catch (e) {
+                return false;
+            }
+
+            // Restore patient fields
+            const p = data.patient || {};
+            if (p.name !== undefined) document.getElementById('patientName').value = p.name;
+            if (p.kana !== undefined) document.getElementById('patientKana').value = p.kana;
+            if (p.age !== undefined) document.getElementById('patientAge').value = p.age;
+            if (p.gender !== undefined) document.getElementById('patientGender').value = p.gender;
+            if (p.careLevel !== undefined) document.getElementById('careLevel').value = p.careLevel;
+            if (p.insurance !== undefined) document.getElementById('insuranceType').value = p.insurance;
+            if (p.address !== undefined) document.getElementById('patientAddress').value = p.address;
+            if (p.phone !== undefined) document.getElementById('patientPhone').value = p.phone;
+            if (p.emergency !== undefined) document.getElementById('emergencyContact').value = p.emergency;
+            if (p.doctor !== undefined) document.getElementById('primaryDoctor').value = p.doctor;
+            if (p.diagnoses !== undefined) document.getElementById('diagnoses').value = p.diagnoses;
+            if (p.allergies !== undefined) document.getElementById('allergies').value = p.allergies;
+            if (p.management !== undefined) document.getElementById('medicationManagement').value = p.management;
+
+            // Restore prescriptions
+            if (Array.isArray(data.prescriptions) && data.prescriptions.length > 0) {
+                data.prescriptions.forEach(function(rx) {
+                    addPrescription();
+                    const items = document.querySelectorAll('.prescription-item');
+                    const item = items[items.length - 1];
+                    item.querySelector('.drug-name').value = rx.name || '';
+                    item.querySelector('.drug-dosage').value = rx.dosage || '';
+                    item.querySelector('.drug-start').value = rx.start || '';
+                    item.querySelector('.drug-category').value = rx.category || '';
+                    item.querySelector('.drug-note').value = rx.note || '';
+                });
+            }
+
+            // Restore visits
+            if (Array.isArray(data.visits) && data.visits.length > 0) {
+                data.visits.forEach(function(v) {
+                    addVisit();
+                    const items = document.querySelectorAll('.visit-item');
+                    const item = items[items.length - 1];
+                    item.querySelector('.visit-date').value = v.date || '';
+                    item.querySelector('.visit-duration').value = v.duration || '';
+                    item.querySelector('.visit-adherence').value = v.adherence || '';
+                    item.querySelector('.visit-note').value = v.note || '';
+                });
+            }
+
+            // Restore side effects
+            if (Array.isArray(data.sideEffects) && data.sideEffects.length > 0) {
+                data.sideEffects.forEach(function(se) {
+                    addSideEffect();
+                    const items = document.querySelectorAll('.side-effect-item');
+                    const item = items[items.length - 1];
+                    item.querySelector('.se-date').value = se.date || '';
+                    item.querySelector('.se-drug').value = se.drug || '';
+                    item.querySelector('.se-symptom').value = se.symptom || '';
+                    item.querySelector('.se-severity').value = se.severity || '';
+                    item.querySelector('.se-action').value = se.action || '';
+                });
+            }
+
+            // Restore next visit
+            const nv = data.nextVisit || {};
+            if (nv.date !== undefined) document.getElementById('nextVisitDate').value = nv.date;
+            if (nv.type !== undefined) document.getElementById('visitType').value = nv.type;
+            if (nv.note !== undefined) document.getElementById('nextVisitNote').value = nv.note;
+
+            // Restore output format
+            if (data.outputFormat) document.getElementById('outputFormat').value = data.outputFormat;
+
+            return true;
+        }
+
+        // 初期データ追加
+        window.onload = function() {
+            const restored = loadFromLocalStorage();
+            if (!restored) {
+                addPrescription();
+                addVisit();
+            }
+
+            // 患者セレクタ初期化
+            SharedPatientStore.populateSelector(document.getElementById('patientSelector'), function(patient) {
+                if (!patient) {
+                    // 新規患者: フォームクリア
+                    document.getElementById('patientName').value = '';
+                    document.getElementById('patientKana').value = '';
+                    document.getElementById('patientAge').value = '';
+                    document.getElementById('patientGender').value = '';
+                    document.getElementById('careLevel').value = '';
+                    document.getElementById('primaryDoctor').value = '';
+                    document.getElementById('diagnoses').value = '';
+                    document.getElementById('allergies').value = '';
+                    document.getElementById('patientSelector').dataset.currentId = '';
+                    return;
+                }
+                // 共有ストアからフォームに反映
+                document.getElementById('patientName').value = patient.name || '';
+                document.getElementById('patientAge').value = patient.age || '';
+                document.getElementById('patientGender').value = patient.gender || '';
+                document.getElementById('careLevel').value = patient.careLevel || '';
+                document.getElementById('primaryDoctor').value = patient.doctor || '';
+                document.getElementById('diagnoses').value = patient.diagnoses || '';
+                document.getElementById('allergies').value = patient.allergies || '';
+                document.getElementById('patientSelector').dataset.currentId = patient.id;
+                debouncedSave();
+            });
+
+            // Auto-save event delegation on container
+            document.querySelector('.container').addEventListener('input', debouncedSave);
+            document.querySelector('.container').addEventListener('change', debouncedSave);
+        };
+
+        function addPrescription() {
+            prescriptionCount++;
+            const div = document.createElement('div');
+            div.className = 'prescription-item';
+            div.id = `prescription-${prescriptionCount}`;
+            div.innerHTML = `
+                <div class="item-header">
+                    <span>処方薬 ${prescriptionCount}</span>
+                    <button class="remove-btn" onclick="removeItem('prescription-${prescriptionCount}')">削除</button>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>薬品名</label>
+                        <input type="text" class="drug-name" placeholder="アムロジピンOD錠5mg">
+                    </div>
+                    <div>
+                        <label>用量</label>
+                        <input type="text" class="drug-dosage" placeholder="1回1錠 1日1回 朝食後">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>開始日</label>
+                        <input type="date" class="drug-start">
+                    </div>
+                    <div>
+                        <label>分類</label>
+                        <select class="drug-category">
+                            <option value="">選択</option>
+                            <option value="降圧薬">降圧薬</option>
+                            <option value="糖尿病薬">糖尿病薬</option>
+                            <option value="脂質異常症薬">脂質異常症薬</option>
+                            <option value="抗凝固薬">抗凝固・抗血小板薬</option>
+                            <option value="精神神経用薬">精神神経用薬</option>
+                            <option value="鎮痛薬">鎮痛薬</option>
+                            <option value="消化器用薬">消化器用薬</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>メモ</label>
+                    <input type="text" class="drug-note" placeholder="特記事項があれば入力">
+                </div>
+            `;
+            document.getElementById('prescriptionList').appendChild(div);
+        }
+
+        function addVisit() {
+            visitCount++;
+            const today = new Date().toISOString().split('T')[0];
+            const div = document.createElement('div');
+            div.className = 'visit-item';
+            div.id = `visit-${visitCount}`;
+            div.innerHTML = `
+                <div class="item-header">
+                    <span>訪問記録 ${visitCount}</span>
+                    <button class="remove-btn" onclick="removeItem('visit-${visitCount}')">削除</button>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>訪問日</label>
+                        <input type="date" class="visit-date" value="${today}">
+                    </div>
+                    <div>
+                        <label>所要時間</label>
+                        <input type="text" class="visit-duration" placeholder="30分">
+                    </div>
+                </div>
+                <div>
+                    <label>服薬状況</label>
+                    <select class="visit-adherence">
+                        <option value="">選択</option>
+                        <option value="良好">良好</option>
+                        <option value="概ね良好">概ね良好</option>
+                        <option value="一部問題あり">一部問題あり</option>
+                        <option value="問題あり">問題あり</option>
+                    </select>
+                </div>
+                <div>
+                    <label>指導内容・特記事項</label>
+                    <textarea class="visit-note" rows="3" placeholder="服薬指導内容、患者の状態変化、確認事項など"></textarea>
+                </div>
+            `;
+            document.getElementById('visitList').appendChild(div);
+        }
+
+        function addSideEffect() {
+            sideEffectCount++;
+            const div = document.createElement('div');
+            div.className = 'side-effect-item';
+            div.id = `sideEffect-${sideEffectCount}`;
+            div.innerHTML = `
+                <div class="item-header">
+                    <span>副作用記録 ${sideEffectCount}</span>
+                    <button class="remove-btn" onclick="removeItem('sideEffect-${sideEffectCount}')">削除</button>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>発生日</label>
+                        <input type="date" class="se-date">
+                    </div>
+                    <div>
+                        <label>疑われる薬剤</label>
+                        <input type="text" class="se-drug" placeholder="薬剤名">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>症状</label>
+                        <input type="text" class="se-symptom" placeholder="ふらつき、めまい">
+                    </div>
+                    <div>
+                        <label>重症度</label>
+                        <select class="se-severity">
+                            <option value="">選択</option>
+                            <option value="軽微">軽微</option>
+                            <option value="中等度">中等度</option>
+                            <option value="重度">重度</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>対応・経過</label>
+                    <textarea class="se-action" rows="2" placeholder="医師報告、減量、中止など"></textarea>
+                </div>
+            `;
+            document.getElementById('sideEffectList').appendChild(div);
+        }
+
+        function removeItem(id) {
+            document.getElementById(id).remove();
+            debouncedSave();
+        }
+
+        function generateRecord() {
+            const format = document.getElementById('outputFormat').value;
+            let output = '';
+
+            // 基本情報収集
+            const patient = {
+                name: document.getElementById('patientName').value || '（未入力）',
+                kana: document.getElementById('patientKana').value,
+                age: document.getElementById('patientAge').value,
+                gender: document.getElementById('patientGender').value,
+                careLevel: document.getElementById('careLevel').value,
+                insurance: document.getElementById('insuranceType').value,
+                address: document.getElementById('patientAddress').value,
+                phone: document.getElementById('patientPhone').value,
+                emergency: document.getElementById('emergencyContact').value,
+                doctor: document.getElementById('primaryDoctor').value,
+                diagnoses: document.getElementById('diagnoses').value,
+                allergies: document.getElementById('allergies').value,
+                management: document.getElementById('medicationManagement').value
+            };
+
+            // 処方薬収集
+            const prescriptions = [];
+            document.querySelectorAll('.prescription-item').forEach(function(item) {
+                const drug = {
+                    name: item.querySelector('.drug-name').value,
+                    dosage: item.querySelector('.drug-dosage').value,
+                    start: item.querySelector('.drug-start').value,
+                    category: item.querySelector('.drug-category').value,
+                    note: item.querySelector('.drug-note').value
+                };
+                if (drug.name) prescriptions.push(drug);
+            });
+
+            // 訪問記録収集
+            const visits = [];
+            document.querySelectorAll('.visit-item').forEach(function(item) {
+                const visit = {
+                    date: item.querySelector('.visit-date').value,
+                    duration: item.querySelector('.visit-duration').value,
+                    adherence: item.querySelector('.visit-adherence').value,
+                    note: item.querySelector('.visit-note').value
+                };
+                if (visit.date) visits.push(visit);
+            });
+
+            // 副作用記録収集
+            const sideEffects = [];
+            document.querySelectorAll('.side-effect-item').forEach(function(item) {
+                const se = {
+                    date: item.querySelector('.se-date').value,
+                    drug: item.querySelector('.se-drug').value,
+                    symptom: item.querySelector('.se-symptom').value,
+                    severity: item.querySelector('.se-severity').value,
+                    action: item.querySelector('.se-action').value
+                };
+                if (se.symptom) sideEffects.push(se);
+            });
+
+            const nextVisit = {
+                date: document.getElementById('nextVisitDate').value,
+                type: document.getElementById('visitType').value,
+                note: document.getElementById('nextVisitNote').value
+            };
+
+            // 形式別出力
+            if (format === 'full') {
+                output = generateFullReport(patient, prescriptions, visits, sideEffects, nextVisit);
+            } else if (format === 'summary') {
+                output = generateSummary(patient, prescriptions, visits, nextVisit);
+            } else if (format === 'doctor') {
+                output = generateDoctorReport(patient, prescriptions, visits, sideEffects);
+            } else if (format === 'handover') {
+                output = generateHandover(patient, prescriptions, visits, sideEffects, nextVisit);
+            }
+
+            const outputEl = document.getElementById('output');
+            outputEl.textContent = output;
+            outputEl.style.display = 'block';
+        }
+
+        function generateFullReport(patient, prescriptions, visits, sideEffects, nextVisit) {
+            let text = `═══════════════════════════════════════\n`;
+            text += `       訪問薬剤管理指導記録\n`;
+            text += `═══════════════════════════════════════\n\n`;
+
+            text += `【患者基本情報】\n`;
+            text += `氏名: ${patient.name}${patient.kana ? `（${patient.kana}）` : ''}\n`;
+            text += `年齢・性別: ${patient.age || '―'}歳 ${patient.gender || '―'}\n`;
+            text += `要介護度: ${patient.careLevel || '―'}\n`;
+            text += `保険: ${patient.insurance || '―'}\n`;
+            text += `住所: ${patient.address || '―'}\n`;
+            text += `電話: ${patient.phone || '―'} / 緊急連絡先: ${patient.emergency || '―'}\n`;
+            text += `主治医: ${patient.doctor || '―'}\n`;
+            text += `病名: ${patient.diagnoses || '―'}\n`;
+            text += `アレルギー・禁忌: ${patient.allergies || '―'}\n`;
+            text += `服薬管理: ${patient.management || '―'}\n\n`;
+
+            text += `【処方薬一覧】\n`;
+            text += `─────────────────────────────────────\n`;
+            prescriptions.forEach(function(drug, i) {
+                text += `${i + 1}. ${drug.name}\n`;
+                text += `   用法: ${drug.dosage || '―'}\n`;
+                text += `   開始: ${drug.start || '―'} / 分類: ${drug.category || '―'}\n`;
+                if (drug.note) text += `   メモ: ${drug.note}\n`;
+                text += `\n`;
+            });
+
+            text += `【訪問記録】\n`;
+            text += `─────────────────────────────────────\n`;
+            visits.forEach(function(visit) {
+                text += `■ ${visit.date}（${visit.duration || '―'}）\n`;
+                text += `服薬状況: ${visit.adherence || '―'}\n`;
+                if (visit.note) text += `指導内容: ${visit.note}\n`;
+                text += `\n`;
+            });
+
+            if (sideEffects.length > 0) {
+                text += `【副作用モニタリング】\n`;
+                text += `─────────────────────────────────────\n`;
+                sideEffects.forEach(function(se, i) {
+                    const severityClass = se.severity === '重度' ? '[重度]' : se.severity === '中等度' ? '[中等度]' : '[軽微]';
+                    text += `${i + 1}. ${se.date} ${severityClass}\n`;
+                    text += `   疑い薬: ${se.drug || '―'}\n`;
+                    text += `   症状: ${se.symptom}\n`;
+                    if (se.action) text += `   対応: ${se.action}\n`;
+                    text += `\n`;
+                });
+            }
+
+            text += `【次回訪問予定】\n`;
+            text += `─────────────────────────────────────\n`;
+            text += `予定日: ${nextVisit.date || '未定'}\n`;
+            text += `区分: ${nextVisit.type || '―'}\n`;
+            if (nextVisit.note) text += `備考: ${nextVisit.note}\n`;
+
+            return text;
+        }
+
+        function generateSummary(patient, prescriptions, visits, nextVisit) {
+            const lastVisit = visits[0];
+            let text = `【訪問薬剤管理サマリー】\n\n`;
+            text += `患者: ${patient.name}（${patient.age || '―'}歳 ${patient.gender || '―'}）\n`;
+            text += `要介護: ${patient.careLevel || '―'} / 主治医: ${patient.doctor || '―'}\n\n`;
+
+            text += `■ 処方薬（${prescriptions.length}剤）\n`;
+            prescriptions.forEach(function(drug) {
+                text += `・${drug.name} ${drug.dosage || ''}\n`;
+            });
+
+            text += `\n■ 直近訪問（${lastVisit?.date || '―'}）\n`;
+            text += `服薬状況: ${lastVisit?.adherence || '―'}\n`;
+            if (lastVisit?.note) text += `${lastVisit.note}\n`;
+
+            text += `\n■ 次回訪問: ${nextVisit.date || '未定'} ${nextVisit.type || ''}\n`;
+
+            return text;
+        }
+
+        function generateDoctorReport(patient, prescriptions, visits, sideEffects) {
+            const today = new Date().toLocaleDateString('ja-JP');
+            const lastVisit = visits[0];
+
+            let text = `【医師報告書】\n\n`;
+            text += `報告日: ${today}\n`;
+            text += `患者名: ${patient.name}\n`;
+            text += `報告者: 　　　　薬局 薬剤師\n\n`;
+
+            text += `─────────────────────────────────────\n`;
+            text += `【訪問薬剤管理指導の状況】\n`;
+            text += `─────────────────────────────────────\n`;
+            text += `訪問日: ${lastVisit?.date || '―'}\n`;
+            text += `服薬状況: ${lastVisit?.adherence || '―'}\n\n`;
+
+            text += `【現在の処方内容】\n`;
+            prescriptions.forEach(function(drug) {
+                text += `・${drug.name} ${drug.dosage || ''}\n`;
+            });
+
+            if (sideEffects.length > 0) {
+                text += `\n【副作用・問題点】\n`;
+                sideEffects.forEach(function(se) {
+                    text += `・${se.symptom}（${se.drug || '原因不明'}、${se.severity || '―'}）\n`;
+                    if (se.action) text += `  → ${se.action}\n`;
+                });
+            }
+
+            text += `\n【指導内容・特記事項】\n`;
+            if (lastVisit?.note) {
+                text += `${lastVisit.note}\n`;
+            } else {
+                text += `（特記事項なし）\n`;
+            }
+
+            text += `\n【今後の提案・要望】\n`;
+            text += `（必要に応じて記載）\n\n`;
+
+            text += `以上、ご報告申し上げます。\n`;
+
+            return text;
+        }
+
+        function generateHandover(patient, prescriptions, visits, sideEffects, nextVisit) {
+            let text = `【引継ぎ用シート】\n\n`;
+            text += `患者: ${patient.name}（${patient.age || '―'}歳 ${patient.gender || '―'}）\n`;
+            text += `住所: ${patient.address || '―'}\n`;
+            text += `電話: ${patient.phone || '―'} / 緊急連絡先: ${patient.emergency || '―'}\n`;
+            text += `主治医: ${patient.doctor || '―'}\n`;
+            text += `要介護: ${patient.careLevel || '―'} / 服薬管理: ${patient.management || '―'}\n\n`;
+
+            text += `【注意点】\n`;
+            text += `・アレルギー: ${patient.allergies || 'なし'}\n`;
+            text += `・病名: ${patient.diagnoses || '―'}\n\n`;
+
+            text += `【処方薬】\n`;
+            prescriptions.forEach(function(drug) {
+                text += `・${drug.name} ${drug.dosage || ''}\n`;
+            });
+
+            if (sideEffects.length > 0) {
+                text += `\n【副作用歴】\n`;
+                sideEffects.forEach(function(se) {
+                    text += `・${se.symptom}（${se.drug || '―'}）\n`;
+                });
+            }
+
+            text += `\n【次回予定】${nextVisit.date || '未定'} ${nextVisit.type || ''}\n`;
+            if (nextVisit.note) text += `備考: ${nextVisit.note}\n`;
+
+            return text;
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            if (output.style.display === 'none') {
+                generateRecord();
+            }
+            navigator.clipboard.writeText(output.textContent).then(function() {
+                alert('コピーしました');
+            });
+        }
+
+        function printRecord() {
+            const output = document.getElementById('output');
+            if (output.style.display === 'none') {
+                generateRecord();
+            }
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write('<pre style="font-family: monospace; white-space: pre-wrap;">' + output.textContent + '</pre>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function exportPrescriptionsCSV() {
+            const prescriptions = [];
+            document.querySelectorAll('.prescription-item').forEach(function(item) {
+                prescriptions.push({
+                    name: item.querySelector('.drug-name').value,
+                    dosage: item.querySelector('.drug-dosage').value,
+                    start: item.querySelector('.drug-start').value,
+                    category: item.querySelector('.drug-category').value,
+                    note: item.querySelector('.drug-note').value
+                });
+            });
+
+            function escapeCsvField(val) {
+                if (val === null || val === undefined) return '';
+                var str = String(val);
+                if (str.indexOf(',') !== -1 || str.indexOf('"') !== -1 || str.indexOf('\n') !== -1) {
+                    return '"' + str.replace(/"/g, '""') + '"';
+                }
+                return str;
+            }
+
+            var lines = ['\uFEFF薬品名,用量,開始日,分類,メモ'];
+            prescriptions.forEach(function(rx) {
+                lines.push([
+                    escapeCsvField(rx.name),
+                    escapeCsvField(rx.dosage),
+                    escapeCsvField(rx.start),
+                    escapeCsvField(rx.category),
+                    escapeCsvField(rx.note)
+                ].join(','));
+            });
+
+            var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = '処方薬リスト.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportRecordText() {
+            const outputEl = document.getElementById('output');
+            if (outputEl.style.display === 'none') {
+                generateRecord();
+            }
+            const text = outputEl.textContent;
+            var blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = '訪問薬剤管理レコード.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

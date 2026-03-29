@@ -185,57 +185,124 @@ const INTERACTION_DATA = [
   { drugA: "甲状腺ホルモン", drugB: "カルシウム", level: 3, reason: "吸収低下" },
   { drugA: "甲状腺ホルモン", drugB: "コレスチラミン", level: 3, reason: "吸収低下" },
   
-  // ========== 抗てんかん薬の相互作用 ==========
-  // バルプロ酸ナトリウム
-  { drugA: "バルプロ酸", drugB: "カルバマゼピン", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "バルプロ酸", drugB: "ラモトリギン", level: 2, reason: "ラモトリギン血中濃度上昇・皮疹リスク" },
-  { drugA: "バルプロ酸", drugB: "フェノバルビタール", level: 2, reason: "フェノバルビタール血中濃度上昇" },
-  { drugA: "バルプロ酸", drugB: "メルカプトプリン", level: 2, reason: "肝毒性リスク増大" },
-  { drugA: "バルプロ酸", drugB: "カルバペネム系", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
-  { drugA: "バルプロ酸", drugB: "ドルテプラーズ", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
-  { drugA: "バルプロ酸", drugB: "パネバクタム", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
-  { drugA: "バルプロ酸", drugB: "ビオプラゾン", level: 2, reason: "バルプロ酸血中濃度急激低下・発作リスク" },
+  // ========== 抗がん薬・免疫抑制薬（Level 1-3）==========
+  // 併用禁忌（Level 1）
+  { drugA: "5-FU", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "カペシタビン", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "テガフール", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "ドキシフルリジン", drugB: "ソリブジン", level: 1, reason: "5-FU血中濃度急上昇・重篤な副作用" },
+  { drugA: "イリノテカン", drugB: "セイヨウオトギリソウ", level: 1, reason: "イリノテカン血中濃度低下・効果減弱" },
+  { drugA: "シタラビン", drugB: "デフィブロチド", level: 1, reason: "重篤な肺毒性リスク" },
+  { drugA: "フルダラビン", drugB: "デフィブロトド", level: 1, reason: "重篤な肺毒性リスク" },
   
-  // カルバマゼピン
-  { drugA: "カルバマゼピン", drugB: "エリスロマイシン", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "クラリスロマイシン", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "フルコナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "イトラコナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "ボリコナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "ダナゾール", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "ベラパミル", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "ジルチアゼム", level: 2, reason: "カルバマゼピン中毒のリスク" },
-  { drugA: "カルバマゼピン", drugB: "シメチジン", level: 3, reason: "カルバマゼピン血中濃度上昇" },
+  // 重大な副作用（Level 2）
+  { drugA: "メトトレキサート", drugB: "NSAIDs", level: 2, reason: "骨髄抑制・血中濃度上昇" },
+  { drugA: "メトトレキサート", drugB: "アスピリン", level: 2, reason: "骨髄抑制・血中濃度上昇" },
+  { drugA: "メトトレキサート", drugB: "プロベネシド", level: 2, reason: "腎排泄抑制・血中濃度上昇" },
+  { drugA: "シスプラチン", drugB: "アミノグリコシド系", level: 2, reason: "腎障害・聴器毒性増強" },
+  { drugA: "シスプラチン", drugB: "ループ利尿薬", level: 2, reason: "聴器毒性増強" },
+  { drugA: "シスプラチン", drugB: "アムホテリシンB", level: 2, reason: "腎障害増強" },
+  { drugA: "ドキソルビシン", drugB: "トラスタズマブ", level: 2, reason: "心機能障害リスク増大" },
+  { drugA: "シクロホスファミド", drugB: "アントラサイクリン系", level: 2, reason: "心毒性リスク増大" },
+  { drugA: "ブレオマイシン", drugB: "酸素投与", level: 2, reason: "肺毒性リスク増大" },
+  { drugA: "ブレオマイシン", drugB: "腎毒性薬剤", level: 2, reason: "肺毒性リスク増大" },
+  { drugA: "イマチニブ", drugB: "ワルファリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "ソラフェニブ", drugB: "ワルファリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "スニチニブ", drugB: "ワルファリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "パクリタキセル", drugB: "ドキソルビシン", level: 2, reason: "心毒性リスク増大" },
   
-  // フェニトイン
-  { drugA: "フェニトイン", drugB: "フルコナゾール", level: 2, reason: "フェニトイン中毒のリスク" },
-  { drugA: "フェニトイン", drugB: "イトラコナゾール", level: 2, reason: "フェニトイン中毒のリスク" },
-  { drugA: "フェニトイン", drugB: "ボリコナゾール", level: 2, reason: "フェニトイン中毒のリスク" },
-  { drugA: "フェニトイン", drugB: "シメチジン", level: 3, reason: "フェニトイン血中濃度上昇" },
-  { drugA: "フェニトイン", drugB: "アモキサピン", level: 2, reason: "フェニトイン血中濃度上昇" },
-  { drugA: "フェニトイン", drugB: "クロラムフェニコール", level: 2, reason: "フェニトイン中毒のリスク" },
-  { drugA: "フェニトイン", drugB: "イソニアジド", level: 2, reason: "フェニトイン中毒のリスク" },
-  { drugA: "フェニトイン", drugB: "スルファメトキサゾール", level: 2, reason: "フェニトイン中毒のリスク" },
-  
-  // ラモトリギン
-  { drugA: "ラモトリギン", drugB: "バルプロ酸", level: 2, reason: "ラモトリギン血中濃度上昇・皮疹リスク" },
-  { drugA: "ラモトリギン", drugB: "カルバマゼピン", level: 3, reason: "ラモトリギン血中濃度低下" },
-  { drugA: "ラモトリギン", drugB: "フェニトイン", level: 3, reason: "ラモトリギン血中濃度低下" },
-  { drugA: "ラモトリギン", drugB: "フェノバルビタール", level: 3, reason: "ラモトリギン血中濃度低下" },
-  { drugA: "ラモトリギン", drugB: "プリミドン", level: 3, reason: "ラモトリギン血中濃度低下" },
-  
-  // トピラマート
-  { drugA: "トピラマート", drugB: "カルバマゼピン", level: 3, reason: "トピラマート血中濃度低下" },
-  { drugA: "トピラマート", drugB: "フェニトイン", level: 3, reason: "トピラマート血中濃度低下" },
-  { drugA: "トピラマート", drugB: "バルプロ酸", level: 3, reason: "アンモニア血症リスク" },
-  
-  // フェノバルビタール
-  { drugA: "フェノバルビタール", drugB: "バルプロ酸", level: 2, reason: "フェノバルビタール血中濃度上昇" },
-  { drugA: "フェノバルビタール", drugB: " DOAC", level: 3, reason: "DOAC血中濃度低下・効果減弱" },
-  { drugA: "フェノバルビタール", drugB: "ワルファリン", level: 2, reason: "ワルファリン効果減弱" },
-  { drugA: "フェノバルビタール", drugB: "ステロイド", level: 3, reason: "ステロイド効果減弱" },
-  { drugA: "フェノバルビタール", drugB: "テオフィリン", level: 3, reason: "テオフィリン血中濃度低下" },
-  { drugA: "フェノバルビタール", drugB: "経口避妊薬", level: 3, reason: "避妊効果減弱" },
+  // 併用注意（Level 3）
+  { drugA: "イマチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ゲフィチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "エルロチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ソラフェニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "スニチニブ", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "パクリタキセル", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ドセタキセル", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "ビンカアルカロイド", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・副作用増強" },
+  { drugA: "シクロホスファミド", drugB: "フェノバルビタール", level: 3, reason: "活性代謝物増加・毒性増強" },
+  { drugA: "ブスルファン", drugB: "メトクロプラミド", level: 3, reason: "ブスルファン血中濃度変動" },
+  { drugA: "テモゾロミド", drugB: "バルプロ酸", level: 3, reason: "テモゾロミド血中濃度低下" },
+  { drugA: "エ拓扑テカン", drugB: "プラチナ製剤", level: 3, reason: "骨髄抑制増強" },
+  { drugA: "ゲシタビン", drugB: "シスプラチン", level: 3, reason: "骨髄抑制・腎障害増強" },
+  { drugA: "ペメトレキセド", drugB: "NSAIDs", level: 3, reason: "腎排泄抑制・血中濃度上昇" },
+  { drugA: "ペメトレキセド", drugB: "プロベネシド", level: 3, reason: "腎排泄抑制・血中濃度上昇" },
+
+  // ========== 免疫チェックポイント阻害薬・CAR-T療法（Level 3）==========
+  { drugA: "ニボルマブ", drugB: "TNF阻害薬", level: 3, reason: "感染症リスク増大・免疫関連有害事象" },
+  { drugA: "ペムブロリズマブ", drugB: "高用量ステロイド", level: 3, reason: "免疫抑制効果減弱・治療効果低下" },
+  { drugA: "イピリムマブ", drugB: "抗凝固薬", level: 3, reason: "消化管出血リスク増大" },
+  { drugA: "ニボルマブ", drugB: "抗VEGF薬", level: 3, reason: "血管毒性・高血圧リスク増大" },
+  { drugA: "アテゾリズマブ", drugB: "抗凝固薬", level: 3, reason: "出血リスク増大" },
+  { drugA: "CAR-T療法", drugB: "高用量ステロイド", level: 3, reason: "CAR-T細胞機能低下・治療効果減弱" },
+
+  // ========== 糖尿病薬：SGLT2阻害薬（Level 2-3）==========
+  // 重大な副作用（Level 2）
+  { drugA: "SGLT2阻害薬", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク増大" },
+  { drugA: "SGLT2阻害薬", drugB: "チアジド系利尿薬", level: 2, reason: "脱水・低血糖リスク増大" },
+  { drugA: "イプラグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・脳梗塞リスク" },
+  { drugA: "ダパグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク" },
+  { drugA: "エンパグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク" },
+  { drugA: "カナグリフロジン", drugB: "ループ利尿薬", level: 2, reason: "脱水・低血糖リスク" },
+
+  // 併用注意（Level 3）
+  { drugA: "SGLT2阻害薬", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "SGLT2阻害薬", drugB: "インスリン", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "SGLT2阻害薬", drugB: "血糖降下薬", level: 3, reason: "低血糖リスク" },
+  { drugA: "SGLT2阻害薬", drugB: "ACE阻害薬", level: 3, reason: "腎機能悪化リスク" },
+  { drugA: "SGLT2阻害薬", drugB: "ARB", level: 3, reason: "腎機能悪化リスク" },
+  { drugA: "SGLT2阻害薬", drugB: "NSAIDs", level: 3, reason: "腎機能悪化リスク" },
+
+  // ========== 糖尿病薬：DPP-4阻害薬（Level 3）==========
+  { drugA: "DPP-4阻害薬", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "DPP-4阻害薬", drugB: "インスリン", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "シタグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "ビルダグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "アログリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "リナグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "テネリグリプチン", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+
+  // ========== 糖尿病薬：GLP-1受容体作動薬（Level 2-3）==========
+  // 重大な副作用（Level 2）
+  { drugA: "GLP-1受容体作動薬", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+  { drugA: "セマグルチド", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+  { drugA: "リラグルチド", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+  { drugA: "デューラグルチド", drugB: "インスリン", level: 2, reason: "低血糖リスク増大" },
+
+  // 併用注意（Level 3）
+  { drugA: "GLP-1受容体作動薬", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "GLP-1受容体作動薬", drugB: "経口血糖降下薬", level: 3, reason: "低血糖リスク" },
+  { drugA: "セマグルチド", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "リラグルチド", drugB: "スルホニル尿素系", level: 3, reason: "低血糖リスク増大" },
+  { drugA: "GLP-1受容体作動薬", drugB: "消化管運動抑制薬", level: 3, reason: "消化器症状悪化" },
+  { drugA: "GLP-1受容体作動薬", drugB: "消化管吸収に影響する薬剤", level: 3, reason: "薬物吸収変化" },
+
+  // ========== DOAC（直接経口抗凝固薬）（Level 2-3）==========
+  // 重大な副作用（Level 2）
+  { drugA: "DOAC", drugB: "抗血小板薬", level: 2, reason: "出血リスク増大" },
+  { drugA: "アピキサバン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "リバーロキサバン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "ダビガトラン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "エドキサバン", drugB: "アスピリン", level: 2, reason: "出血リスク増大" },
+  { drugA: "DOAC", drugB: "NSAIDs", level: 2, reason: "出血リスク増大" },
+  { drugA: "アピキサバン", drugB: "クロピドグレル", level: 2, reason: "出血リスク増大" },
+  { drugA: "リバーロキサバン", drugB: "クロピドグレル", level: 2, reason: "出血リスク増大" },
+  { drugA: "ダビガトラン", drugB: "クロピドグレル", level: 2, reason: "出血リスク増大" },
+  { drugA: "DOAC", drugB: "ワルファリン", level: 2, reason: "過剰抗凝固・出血リスク" },
+  { drugA: "DOAC", drugB: "ヘパリン", level: 2, reason: "過剰抗凝固・出血リスク" },
+
+  // 併用注意（Level 3）
+  { drugA: "アピキサバン", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "アピキサバン", drugB: "CYP3A4誘導薬", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "リバーロキサバン", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "リバーロキサバン", drugB: "CYP3A4誘導薬", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "ダビガトラン", drugB: "P-gp阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "ダビガトラン", drugB: "P-gp誘導薬", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "DOAC", drugB: "アゾール系抗真菌薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "DOAC", drugB: "リファンピシン", level: 3, reason: "血中濃度低下・効果減弱" },
+  { drugA: "DOAC", drugB: "抗HIV薬", level: 3, reason: "血中濃度変動・出血/血栓リスク" },
+  { drugA: "エドキサバン", drugB: "CYP3A4阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
+  { drugA: "エドキサバン", drugB: "P-gp阻害薬", level: 3, reason: "血中濃度上昇・出血リスク" },
 ];
 
 // 互換性確保（グローバル公開）

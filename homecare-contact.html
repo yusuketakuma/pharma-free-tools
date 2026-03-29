@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>医師連絡文書生成 | 薬剤師向け無料ツール</title>
+  <meta name="description" content="訪問薬剤管理での疑義照会・副作用報告・アドヒアランス低下など6種類の医師連絡文書を自動生成する薬剤師向け無料ツール。">
+  <meta property="og:title" content="医師連絡文書生成 | 薬剤師向け無料ツール">
+  <meta property="og:description" content="疑義照会・副作用報告など6種類の医師連絡文書を自動生成。テンプレート選択から即作成。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/homecare-contact.html">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "医師連絡文書生成ツール",
+    "applicationCategory": "MedicalApplication",
+    "operatingSystem": "Web Browser",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "description": "訪問薬剤管理における疑義照会・副作用報告・アドヒアランス低下・残薬報告・処方変更提案・退院時調整の医師連絡文書を自動生成する薬剤師向け無料ツール",
+    "author": { "@type": "Person", "name": "薬剤師" },
+    "inLanguage": "ja"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "医師連絡文書生成ツールは無料ですか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "はい、完全無料でご利用いただけます。登録やログインも不要です。" }
+      },
+      {
+        "@type": "Question",
+        "name": "どのような連絡文書を作成できますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "疑義照会・副作用報告・アドヒアランス低下・残薬報告・処方変更提案・退院時調整の6種類の文書を基本版・詳細版から選んで作成できます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータは保存されますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "薬局名・薬剤師名などの設定はブラウザのlocalStorageに保存されます。サーバーには一切送信されません。" }
+      },
+      {
+        "@type": "Question",
+        "name": "他の在宅医療ツールと患者情報を共有できますか？",
+        "acceptedAnswer": { "@type": "Answer", "text": "はい、共有患者データストアにより訪問薬剤管理レコード・報告書・スケジューラーと患者情報を共有できます。" }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "医師連絡文書の作成方法",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "連絡区分を選択", "text": "疑義照会・副作用報告など6種類から連絡区分を選びます。" },
+      { "@type": "HowToStep", "position": 2, "name": "患者・医師情報を入力", "text": "患者セレクタまたは手入力で患者情報と医師・医療機関情報を入力します。" },
+      { "@type": "HowToStep", "position": 3, "name": "テンプレートを選択して内容を入力", "text": "基本版または詳細版テンプレートを選択し、連絡内容の詳細を入力します。" },
+      { "@type": "HowToStep", "position": 4, "name": "文書を生成してコピー", "text": "「文書を生成」ボタンをクリックし、生成された文書をコピーまたは保存します。" }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --primary: #667eea;
+      --primary-dark: #5a6fd6;
+      --secondary: #764ba2;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --success: #28a745;
+      --text: #333;
+      --text-secondary: #666;
+      --bg-body: #f5f5f7;
+      --bg-card: #fff;
+      --border: #e0e0e0;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-body);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1 { font-size: 1.5rem; color: #1a1a2e; margin-bottom: 8px; }
+    .subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px; }
+    .section {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #1a1a2e;
+      border-bottom: 2px solid #4a90d9;
+      padding-bottom: 6px;
+    }
+    label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; color: #555; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      margin-bottom: 12px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg-card);
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; }
+    textarea { min-height: 80px; resize: vertical; }
+    .row { display: flex; gap: 12px; }
+    .row > * { flex: 1; }
+
+    /* Type selector */
+    .type-selector { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+    .type-btn {
+      flex: 1;
+      min-width: calc(33.33% - 6px);
+      padding: 10px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+      min-height: 44px;
+      font-family: inherit;
+      color: var(--text);
+    }
+    .type-btn.active {
+      border-color: #4a90d9;
+      background: #e8f4fd;
+      color: #4a90d9;
+      font-weight: 600;
+    }
+    .type-btn:hover:not(.active) { border-color: #aac4e8; background: #f4f9ff; }
+
+    /* Template selector */
+    .template-selector { display: flex; gap: 12px; margin-bottom: 12px; }
+    .template-radio { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem; }
+    .template-radio input[type="radio"] { width: auto; margin: 0; cursor: pointer; }
+
+    /* Buttons */
+    .btn {
+      background: #4a90d9;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      cursor: pointer;
+      min-height: 44px;
+      font-family: inherit;
+    }
+    .btn:hover { background: #3a7bc8; }
+    .btn-block { width: 100%; margin-top: 8px; }
+    .copy-btn { background: var(--success); }
+    .copy-btn:hover { background: #218838; }
+    .export-btn { background: #5a6fd6; }
+    .export-btn:hover { background: #4a5fc6; }
+    .print-btn { background: #6c757d; }
+    .print-btn:hover { background: #5a6268; }
+    .btn-row { display: flex; gap: 8px; }
+    .btn-row .btn { flex: 1; margin-top: 12px; }
+
+    /* Output */
+    .output {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      white-space: pre-wrap;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      display: none;
+      font-family: inherit;
+      margin-top: 12px;
+    }
+    .output.show { display: block; }
+
+    /* Save indicator */
+    .save-indicator {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--success);
+      color: white;
+      padding: 6px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .save-indicator.visible { opacity: 1; }
+
+    /* CTA */
+    .cta-box {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 16px;
+      border-radius: var(--radius);
+      margin-top: 20px;
+      text-align: center;
+    }
+    .cta-box h3 { font-size: 1rem; margin-bottom: 8px; }
+    .cta-box p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 12px; }
+    .cta-box a { color: #fff; text-decoration: underline; }
+
+    /* Links */
+    .links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; font-size: 0.75rem; }
+    .links a { color: #4a90d9; text-decoration: none; padding: 4px 8px; background: #e8f4fd; border-radius: 4px; }
+    .links a:hover { background: #d0e8f9; }
+
+    /* Print */
+    @media print {
+      .save-indicator, .btn, .btn-row, .type-selector, .template-selector,
+      .section:not(.output-section), .cta-box, .links, h1, .subtitle { display: none !important; }
+      .output { display: block !important; border: none; background: white; padding: 0; font-size: 11pt; }
+      body { background: white; }
+    }
+
+    @media (max-width: 600px) {
+      .row { flex-direction: column; }
+      .type-btn { min-width: calc(50% - 4px); }
+      .btn-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div id="saveIndicator" class="save-indicator">保存済み</div>
+
+  <div class="container">
+    <h1>医師連絡文書生成</h1>
+    <p class="subtitle">疑義照会・副作用報告など6種類の医師連絡文書をテンプレートから素早く作成</p>
+
+    <!-- 連絡区分 -->
+    <div class="section">
+      <div class="section-title">連絡区分</div>
+      <div class="type-selector" id="typeSelector">
+        <button class="type-btn active" data-type="inquiry">疑義照会</button>
+        <button class="type-btn" data-type="sideeffect">副作用報告</button>
+        <button class="type-btn" data-type="adherence">アドヒアランス低下</button>
+        <button class="type-btn" data-type="remaining">残薬報告</button>
+        <button class="type-btn" data-type="change">処方変更提案</button>
+        <button class="type-btn" data-type="discharge">退院時調整</button>
+      </div>
+    </div>
+
+    <!-- 患者セレクタ -->
+    <div class="section">
+      <div class="section-title">患者を選択</div>
+      <select id="patientSelector"></select>
+    </div>
+
+    <!-- 患者情報 -->
+    <div class="section">
+      <div class="section-title">患者情報</div>
+      <div class="row">
+        <div>
+          <label>患者氏名</label>
+          <input type="text" id="patientName" placeholder="山田 太郎">
+        </div>
+        <div>
+          <label>年齢</label>
+          <input type="number" id="age" placeholder="85">
+        </div>
+      </div>
+      <div>
+        <label>連絡日</label>
+        <input type="date" id="contactDate">
+      </div>
+    </div>
+
+    <!-- 薬局・薬剤師情報 -->
+    <div class="section">
+      <div class="section-title">薬局・薬剤師情報（デフォルト設定）</div>
+      <div class="row">
+        <div>
+          <label>薬局名</label>
+          <input type="text" id="pharmacyName" placeholder="〇〇薬局">
+        </div>
+        <div>
+          <label>薬剤師名</label>
+          <input type="text" id="pharmacistName" placeholder="山田 薬子">
+        </div>
+      </div>
+    </div>
+
+    <!-- 医師情報 -->
+    <div class="section">
+      <div class="section-title">医師・医療機関情報</div>
+      <div class="row">
+        <div>
+          <label>医師名</label>
+          <input type="text" id="doctorName" placeholder="田中 一郎">
+        </div>
+        <div>
+          <label>医療機関名</label>
+          <input type="text" id="clinicName" placeholder="〇〇クリニック">
+        </div>
+      </div>
+    </div>
+
+    <!-- テンプレート選択 -->
+    <div class="section">
+      <div class="section-title">テンプレート</div>
+      <div class="template-selector">
+        <label class="template-radio">
+          <input type="radio" name="templateVersion" value="basic" checked> 基本版
+        </label>
+        <label class="template-radio">
+          <input type="radio" name="templateVersion" value="detail"> 詳細版
+        </label>
+      </div>
+      <div>
+        <label id="contentLabel">連絡内容・確認事項</label>
+        <textarea id="content" placeholder="確認したい内容や報告事項を入力してください"></textarea>
+      </div>
+    </div>
+
+    <button class="btn btn-block" onclick="generateMessage()">文書を生成</button>
+
+    <!-- 出力エリア -->
+    <div class="section output-section" id="outputSection" style="display:none">
+      <div class="section-title">生成された文書（編集可）</div>
+      <textarea id="outputText" class="output show" style="min-height:300px; font-family:inherit; font-size:0.9rem;"></textarea>
+      <div class="btn-row">
+        <button class="btn copy-btn" onclick="copyToClipboard()">コピー</button>
+        <button class="btn export-btn" onclick="exportAsText()">テキスト保存</button>
+        <button class="btn print-btn" onclick="printMessage()">印刷</button>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <h3>在宅医療ツール一覧</h3>
+      <p>訪問薬剤管理レコード・報告書・スケジューラーなど在宅医療支援ツールを無料で利用できます</p>
+      <a href="index.html">ツール一覧を見る</a>
+    </div>
+
+    <div class="links">
+      <a href="homecare-record.html">訪問薬剤管理レコード</a>
+      <a href="homecare-report.html">在宅医療報告書</a>
+      <a href="homecare-scheduler.html">訪問スケジューラー</a>
+      <a href="homecare-joint-visit-checklist.html">同行訪問チェックリスト</a>
+      <a href="homecare-efficiency-diagnosis.html">在宅効率化診断</a>
+      <a href="drug-interaction-checker.html">薬物相互作用チェック</a>
+      <a href="drug-induced-ade-checklist.html">薬剤性有害事象</a>
+      <a href="dispensing-error-prevention-checklist.html">調剤過誤防止</a>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'homecare-contact-data';
+
+    // SharedPatientStore
+    const SharedPatientStore = {
+      KEY: "homecare-shared-patients",
+      getAll() { return JSON.parse(localStorage.getItem(this.KEY) || "[]"); },
+      save(patients) { localStorage.setItem(this.KEY, JSON.stringify(patients)); },
+      getById(id) { return this.getAll().find(p => p.id === id); },
+      upsert(patient) {
+        const patients = this.getAll();
+        const idx = patients.findIndex(p => p.id === patient.id);
+        if (idx >= 0) { patients[idx] = { ...patients[idx], ...patient, updatedAt: new Date().toISOString() }; }
+        else { patients.push({ ...patient, id: patient.id || "p_" + Date.now(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }); }
+        this.save(patients);
+        return patients;
+      },
+      populateSelector(selectEl, onSelect) {
+        const patients = this.getAll();
+        selectEl.innerHTML = "<option value=''>-- 患者を選択 --</option><option value='__new__'>+ 新規患者</option>";
+        patients.forEach(p => { const opt = document.createElement("option"); opt.value = p.id; opt.textContent = p.name + " (" + p.age + "歳)"; selectEl.appendChild(opt); });
+        selectEl.onchange = () => { if (selectEl.value === "__new__") { onSelect(null); } else if (selectEl.value) { onSelect(this.getById(selectEl.value)); } };
+      }
+    };
+
+    // Templates
+    const TEMPLATES = {
+      inquiry: {
+        basic: (d) =>
+`【疑義照会】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+処方日：${d.date}
+
+以下の点につきまして、ご確認させていただけますでしょうか。
+
+1. ${d.content}
+
+お忙しいところ恐縮ですが、ご検討いただけますと幸いです。
+よろしくお願い申し上げます。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`,
+        detail: (d) =>
+`【疑義照会】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+処方日：${d.date}
+
+以下の点につきまして、ご確認させていただけますでしょうか。
+
+■ 照会内容：
+${d.content}
+
+■ 現在の処方内容：
+
+
+■ 懸念事項：
+
+
+■ 代替案の提案：
+
+
+ご多忙のところ恐縮ですが、ご確認・ご指示いただけますと幸いです。
+よろしくお願い申し上げます。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`
+      },
+      sideeffect: {
+        basic: (d) =>
+`【副作用報告】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+下記の副作用と思われる症状についてご報告いたします。
+
+■ 被疑薬：${d.content}
+■ 発現症状：
+■ 発現時期：
+■ 重篤度：
+
+ご確認・ご対応のほど、よろしくお願い申し上げます。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`,
+        detail: (d) =>
+`【副作用報告】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+下記の副作用と思われる症状についてご報告いたします。
+
+■ 被疑薬：${d.content}
+■ 発現症状：
+■ 発現時期：
+■ 重篤度：
+
+■ 患者の状態変化：
+
+
+■ 対応状況（薬局での措置）：
+
+
+■ 今後の提案：
+
+
+引き続きモニタリングを継続してまいります。
+ご確認・ご指示のほど、よろしくお願い申し上げます。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`
+      },
+      adherence: {
+        basic: (d) =>
+`【服薬アドヒアランス低下のご報告】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+服薬状況に関して以下の点をご報告いたします。
+
+■ 状況：${d.content}
+■ 考えられる原因：
+■ 薬局での対応：
+
+ご確認のほどよろしくお願いいたします。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`,
+        detail: (d) =>
+`【服薬アドヒアランス低下のご報告】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+服薬状況に関して以下の点をご報告いたします。
+
+■ 状況：${d.content}
+■ 考えられる原因：
+■ 薬局での対応：
+
+■ 残薬数：
+
+
+■ フォローアップ予定：
+
+
+処方の見直しや支援方法についてご検討いただけますと幸いです。
+よろしくお願い申し上げます。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`
+      },
+      remaining: {
+        basic: (d) =>
+`【残薬増加のご報告】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+残薬状況についてご報告いたします。
+
+■ 残薬のある薬剤：${d.content}
+■ 推定残薬数：
+■ 考えられる原因：
+
+処方日数の調整等ご検討いただけますと幸いです。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`,
+        detail: (d) =>
+`【残薬増加のご報告】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+残薬状況についてご報告いたします。
+
+■ 残薬のある薬剤：${d.content}
+■ 推定残薬数：
+■ 考えられる原因：
+
+■ 前回処方からの経過：
+
+
+■ 服薬カレンダー確認結果：
+
+
+処方日数の調整や重複処方のご確認等、ご検討いただけますと幸いです。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`
+      },
+      change: {
+        basic: (d) =>
+`【処方変更のご提案】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+以下の処方変更についてご提案申し上げます。
+
+■ 現在の処方：${d.content}
+■ 変更提案：
+■ 提案理由：
+
+ご検討いただけますと幸いです。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`,
+        detail: (d) =>
+`【処方変更のご提案】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+以下の処方変更についてご提案申し上げます。
+
+■ 現在の処方：${d.content}
+■ 変更提案：
+■ 提案理由：
+
+■ エビデンス・根拠：
+
+
+■ 患者の希望・生活状況：
+
+
+■ リスク・ベネフィット：
+
+
+ご多忙のところ恐縮ですが、ご検討いただけますと幸いです。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`
+      },
+      discharge: {
+        basic: (d) =>
+`【退院時薬剤調整のご依頼】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+退院に際し、以下の薬剤調整についてご相談させていただきます。
+
+■ 入院前の処方：${d.content}
+■ 退院時の処方：
+■ 調整が必要な事項：
+
+ご確認・ご指示のほど、よろしくお願い申し上げます。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`,
+        detail: (d) =>
+`【退院時薬剤調整のご依頼】
+${d.doctorName}先生
+
+患者：${d.patientName}様（${d.age}歳）
+
+退院に際し、以下の薬剤調整についてご相談させていただきます。
+
+■ 入院前の処方：${d.content}
+■ 退院時の処方：
+■ 調整が必要な事項：
+
+■ 在宅での管理上の注意点：
+
+
+■ ケアチームへの共有事項：
+
+
+円滑な在宅復帰に向けてご協力よろしくお願い申し上げます。
+
+${d.pharmacyName} 薬剤師 ${d.pharmacistName}`
+      }
+    };
+
+    const CONTENT_LABELS = {
+      inquiry: '照会内容・確認事項',
+      sideeffect: '被疑薬・症状の概要',
+      adherence: '服薬状況の詳細',
+      remaining: '残薬のある薬剤',
+      change: '現在の処方内容',
+      discharge: '入院前の処方内容'
+    };
+
+    let currentType = 'inquiry';
+    let saveTimer;
+
+    // ---- Save indicator ----
+    function showSaveIndicator() {
+      const el = document.getElementById('saveIndicator');
+      el.classList.add('visible');
+      clearTimeout(el._hideTimer);
+      el._hideTimer = setTimeout(() => el.classList.remove('visible'), 1800);
+    }
+
+    // ---- localStorage ----
+    function saveToLocalStorage() {
+      const data = {
+        contactType: currentType,
+        pharmacyName: document.getElementById('pharmacyName').value,
+        pharmacistName: document.getElementById('pharmacistName').value,
+        doctorName: document.getElementById('doctorName').value,
+        clinicName: document.getElementById('clinicName').value,
+        patientName: document.getElementById('patientName').value,
+        age: document.getElementById('age').value,
+        contactDate: document.getElementById('contactDate').value,
+        templateVersion: document.querySelector('input[name="templateVersion"]:checked').value,
+        content: document.getElementById('content').value
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        showSaveIndicator();
+      } catch (e) {
+        // localStorage unavailable
+      }
+    }
+
+    function debouncedSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveToLocalStorage, 300);
+    }
+
+    function restoreFromLocalStorage() {
+      let data;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        data = JSON.parse(raw);
+      } catch (e) { return; }
+
+      if (data.contactType) {
+        currentType = data.contactType;
+        document.querySelectorAll('.type-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.type === currentType);
+        });
+        updateContentLabel();
+      }
+      const set = (id, val) => { if (val !== undefined && val !== null) document.getElementById(id).value = val; };
+      set('pharmacyName', data.pharmacyName);
+      set('pharmacistName', data.pharmacistName);
+      set('doctorName', data.doctorName);
+      set('clinicName', data.clinicName);
+      set('patientName', data.patientName);
+      set('age', data.age);
+      if (data.contactDate) set('contactDate', data.contactDate);
+      if (data.templateVersion) {
+        const radio = document.querySelector(`input[name="templateVersion"][value="${data.templateVersion}"]`);
+        if (radio) radio.checked = true;
+      }
+      set('content', data.content);
+    }
+
+    // ---- Type selector ----
+    function updateContentLabel() {
+      document.getElementById('contentLabel').textContent = CONTENT_LABELS[currentType] || '連絡内容';
+      const placeholders = {
+        inquiry: '確認したい処方内容や懸念点を入力してください',
+        sideeffect: '副作用が疑われる薬剤名と症状の概要を入力してください',
+        adherence: '服薬できていない状況や頻度を入力してください',
+        remaining: '残薬が確認された薬剤名を入力してください',
+        change: '現在処方されている薬剤名・用量を入力してください',
+        discharge: '入院前に処方されていた薬剤を入力してください'
+      };
+      document.getElementById('content').placeholder = placeholders[currentType] || '内容を入力してください';
+    }
+
+    document.getElementById('typeSelector').addEventListener('click', (e) => {
+      const btn = e.target.closest('.type-btn');
+      if (!btn) return;
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentType = btn.dataset.type;
+      updateContentLabel();
+      debouncedSave();
+    });
+
+    // ---- Patient selector ----
+    SharedPatientStore.populateSelector(document.getElementById('patientSelector'), function(patient) {
+      if (!patient) {
+        document.getElementById('patientName').value = '';
+        document.getElementById('age').value = '';
+        document.getElementById('doctorName').value = '';
+        return;
+      }
+      document.getElementById('patientName').value = patient.name || '';
+      document.getElementById('age').value = patient.age || '';
+      if (patient.doctor) document.getElementById('doctorName').value = patient.doctor;
+      debouncedSave();
+    });
+
+    // ---- Generate ----
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+    }
+
+    function generateMessage() {
+      const templateVersion = document.querySelector('input[name="templateVersion"]:checked').value;
+      const templateFn = TEMPLATES[currentType][templateVersion];
+
+      const d = {
+        patientName: document.getElementById('patientName').value || '【患者氏名】',
+        age: document.getElementById('age').value || '【年齢】',
+        date: formatDate(document.getElementById('contactDate').value) || '【日付】',
+        pharmacyName: document.getElementById('pharmacyName').value || '【薬局名】',
+        pharmacistName: document.getElementById('pharmacistName').value || '【薬剤師名】',
+        doctorName: document.getElementById('doctorName').value || '【医師名】',
+        clinicName: document.getElementById('clinicName').value || '',
+        content: document.getElementById('content').value || '【内容未入力】'
+      };
+
+      const text = templateFn(d);
+      document.getElementById('outputText').value = text;
+      document.getElementById('outputSection').style.display = 'block';
+      document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ---- Actions ----
+    function copyToClipboard() {
+      const text = document.getElementById('outputText').value;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        const orig = btn.textContent;
+        btn.textContent = 'コピーしました';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      }).catch(() => {
+        const ta = document.getElementById('outputText');
+        ta.select();
+        document.execCommand('copy');
+      });
+    }
+
+    function exportAsText() {
+      const text = document.getElementById('outputText').value;
+      const typeLabels = {
+        inquiry: '疑義照会', sideeffect: '副作用報告', adherence: 'アドヒアランス低下',
+        remaining: '残薬報告', change: '処方変更提案', discharge: '退院時調整'
+      };
+      const label = typeLabels[currentType] || '医師連絡';
+      const date = document.getElementById('contactDate').value || new Date().toISOString().slice(0, 10);
+      const filename = `医師連絡_${label}_${date}.txt`;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function printMessage() {
+      window.print();
+    }
+
+    // ---- Auto-save on input ----
+    document.querySelector('.container').addEventListener('input', debouncedSave);
+    document.querySelector('.container').addEventListener('change', debouncedSave);
+
+    // ---- Init ----
+    restoreFromLocalStorage();
+    updateContentLabel();
+    if (!document.getElementById('contactDate').value) {
+      document.getElementById('contactDate').valueAsDate = new Date();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+name: Check Tool Count
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Count HTML files
+        id: count
+        run: |
+          ACTUAL=$(ls *.html 2>/dev/null | wc -l | tr -d ' ')
+          echo "actual=$ACTUAL" >> $GITHUB_OUTPUT
+          echo "Actual HTML files: $ACTUAL"
+      
+      - name: Check displayed count in index.html
+        id: displayed
+        run: |
+          # index.htmlから「〇〇選」を抽出
+          DISPLAYED=$(grep -oE '[0-9]+選' index.html | head -1 | grep -oE '[0-9]+')
+          echo "displayed=$DISPLAYED" >> $GITHUB_OUTPUT
+          echo "Displayed count: $DISPLAYED"
+      
+      - name: Verify count match
+        run: |
+          ACTUAL=${{ steps.count.outputs.actual }}
+          DISPLAYED=${{ steps.displayed.outputs.displayed }}
+          
+          if [ "$ACTUAL" != "$DISPLAYED" ]; then
+            echo "::error::Tool count mismatch! Actual: $ACTUAL, Displayed: $DISPLAYED"
+            echo "Please update the displayed count in index.html"
+            exit 1
+          fi
+          
+          echo "✅ Tool count verified: $ACTUAL tools"
+      
+      - name: Check GA4 placeholder
+        run: |
+          # G-XXXXXXXXXX プレースホルダーの存在確認
+          PLACEHOLDER_COUNT=$(grep -r "G-XXXXXXXXXX" *.html 2>/dev/null | wc -l || echo "0")
+
+          if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
+            echo "::warning::Found $PLACEHOLDER_COUNT GA4 placeholder(s). Consider replacing with actual measurement ID."
+          fi
+
+          echo "GA4 placeholders: $PLACEHOLDER_COUNT"
+
+      - name: Check OGP URLs
+        run: |
+          # 旧URLパターンの検出（vercel.app, yusuke-ai）
+          INVALID_URLS=$(grep -E "vercel\.app|yusuke-ai" *.html 2>/dev/null | wc -l || echo "0")
+
+          if [ "$INVALID_URLS" -gt 0 ]; then
+            echo "::error::Found $INVALID_URLS invalid OGP URL(s) (vercel.app or yusuke-ai). Use yusuketakuma.github.io instead."
+            echo "Invalid URLs found:"
+            grep -E "vercel\.app|yusuke-ai" *.html 2>/dev/null || true
+            exit 1
+          fi
+
+          echo "✅ All OGP URLs are valid (yusuketakuma.github.io)"
+
+      - name: Check internal links
+        run: |
+          # HTMLファイル内の内部リンクが実在するか確認
+          BROKEN=0
+          for file in *.html; do
+            # href="*.html"パターンを抽出
+            LINKS=$(grep -oE 'href="[^"]*\.html"' "$file" 2>/dev/null | grep -oE '[^/]+\.html' | sort -u)
+            for link in $LINKS; do
+              if [ ! -f "$link" ] && [ "$link" != "index.html" ]; then
+                echo "::warning::Broken link in $file: $link"
+                BROKEN=$((BROKEN + 1))
+              fi
+            done
+          done
+
+          if [ "$BROKEN" -gt 0 ]; then
+            echo "::warning::Found $BROKEN potentially broken internal link(s)"
+          else
+            echo "✅ All internal links verified"
+          fi
+
+      - name: Check meta descriptions
+        run: |
+          # meta descriptionの長さチェック（推奨120文字以内、最大160文字）
+          TOO_LONG=0
+          MISSING=0
+
+          for file in *.html; do
+            DESC=$(grep -oP 'name="description" content="\K[^"]+' "$file" 2>/dev/null || echo "")
+            LENGTH=${#DESC}
+
+            if [ -z "$DESC" ]; then
+              echo "::warning::$file: Missing meta description"
+              MISSING=$((MISSING + 1))
+            elif [ "$LENGTH" -gt 160 ]; then
+              echo "::warning::$file: Meta description too long ($LENGTH chars, max 160)"
+              TOO_LONG=$((TOO_LONG + 1))
+            elif [ "$LENGTH" -gt 120 ]; then
+              echo "::notice::$file: Meta description slightly long ($LENGTH chars, recommended ≤120)"
+            fi
+          done
+
+          echo "Missing descriptions: $MISSING"
+          echo "Too long descriptions: $TOO_LONG"
+
+          if [ "$MISSING" -gt 0 ] || [ "$TOO_LONG" -gt 0 ]; then
+            echo "::warning::SEO improvements recommended for meta descriptions"
+          else
+            echo "✅ All meta descriptions are optimal"
+          fi

@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在宅ケアチーム情報共有 | 薬剤師向け無料ツール</title>
+  <meta name="description" content="在宅ケアチームの患者情報・メンバー管理・引継ぎメモを共有。JSONエクスポートで簡易情報共有。">
+  <meta property="og:title" content="在宅ケアチーム情報共有 | 薬剤師向け無料ツール">
+  <meta property="og:description" content="在宅ケアチームの患者情報・メンバー管理・引継ぎメモを共有。JSONエクスポートで簡易情報共有。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/homecare-team.html">
+  <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="在宅ケアチーム情報共有 | 薬剤師向け無料ツール">
+  <meta name="twitter:description" content="在宅ケアチームの患者情報・メンバー管理・引継ぎメモを共有。">
+  <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/homecare-team.html">
+
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "在宅ケアチーム情報共有ツール",
+      "description": "在宅ケアチームの患者情報・メンバー管理・引継ぎメモを共有する薬剤師向け無料ツール",
+      "applicationCategory": "MedicalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+      "author": { "@type": "Person", "name": "薬剤師" }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "在宅ケアチーム情報共有ツールとは何ですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "薬剤師を含む在宅ケアチームが患者情報・チームメンバー・引継ぎメモを管理・共有するための無料Webツールです。データはブラウザのlocalStorageに保存され、JSONでエクスポート・インポートできます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "データはどこに保存されますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "すべてのデータはお使いのブラウザのlocalStorageに保存されます。サーバーへの送信は行われません。JSONエクスポート機能で他のデバイスとのデータ共有が可能です。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "他の在宅ツールとデータを共有できますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "はい。SharedPatientStoreを使用して訪問薬剤管理レコード生成、スケジューラーなど同サイトの他ツールと患者データを共有できます。"
+          }
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "在宅ケアチーム情報共有ツールの使い方",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "患者を登録する",
+          "text": "「患者管理」タブで患者を選択または新規追加し、処方薬・注意事項・訪問記録を入力します。"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "チームメンバーを登録する",
+          "text": "「チーム管理」タブで薬剤師・看護師・ケアマネージャーなどのメンバーを登録します。"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "引継ぎメモを作成する",
+          "text": "「引継ぎ」タブで患者ごとの引継ぎメモを記録し、タイムライン形式で確認できます。"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "情報をエクスポートする",
+          "text": "「エクスポート」タブでJSONファイルのダウンロードや共有テキストの生成・コピーができます。"
+        }
+      ]
+    }
+  ]
+  </script>
+
+  <style>
+    :root {
+      --primary: #667eea;
+      --primary-dark: #5a6fd6;
+      --secondary: #764ba2;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --success: #28a745;
+      --text: #333;
+      --text-secondary: #666;
+      --bg-body: #f5f5f7;
+      --bg-card: #fff;
+      --border: #e0e0e0;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-body);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+
+    h1 {
+      text-align: center;
+      font-size: 1.4rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+    }
+
+    /* Sections */
+    .section {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      border-bottom: 2px solid #4a90d9;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 16px;
+      border: 2px solid var(--border);
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      min-height: 44px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      border-color: #4a90d9;
+      background: #e8f4fd;
+      color: #4a90d9;
+    }
+
+    .tab-btn:hover:not(.active) {
+      border-color: #aaa;
+      color: var(--text);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Forms */
+    .form-group { margin-bottom: 12px; }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #4a90d9;
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row .form-group { flex: 1; }
+
+    /* Buttons */
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn {
+      background: #4a90d9;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      min-height: 44px;
+    }
+
+    .btn:hover { background: #3a7bc8; }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      min-height: 36px;
+    }
+
+    .btn-secondary:hover { background: #5a6268; }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      min-height: 36px;
+    }
+
+    .btn-danger:hover { background: #c82333; }
+
+    .copy-btn {
+      background: var(--success);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      min-height: 44px;
+    }
+
+    .copy-btn:hover { background: #218838; }
+
+    .export-btn {
+      background: #5a6fd6;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      min-height: 44px;
+    }
+
+    .export-btn:hover { background: #4a5fc6; }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      min-height: 32px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin-bottom: 10px;
+      border-left: 4px solid #4a90d9;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Member cards */
+    .member-card { border-left-color: var(--secondary); }
+    .member-role-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #f0e6ff;
+      color: var(--secondary);
+      margin-bottom: 6px;
+    }
+
+    .member-info {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .member-info span {
+      display: inline-block;
+      margin-right: 12px;
+    }
+
+    /* Visit records */
+    .visit-record {
+      padding: 8px 10px;
+      background: #f8f9fa;
+      border-radius: var(--radius-sm);
+      margin-bottom: 6px;
+      font-size: 0.875rem;
+    }
+
+    .visit-date {
+      font-weight: 600;
+      color: #4a90d9;
+      font-size: 0.8rem;
+    }
+
+    /* Handover timeline */
+    .timeline-item {
+      position: relative;
+      padding: 12px 14px 12px 32px;
+      margin-bottom: 10px;
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      border-left: 4px solid var(--primary);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 16px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid #fff;
+    }
+
+    .timeline-meta {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .timeline-arrow { color: var(--primary); font-weight: 600; }
+
+    .timeline-content { font-size: 0.875rem; }
+
+    /* Drug list */
+    .drug-list { list-style: none; }
+
+    .drug-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+
+    .drug-item:last-child { border-bottom: none; }
+
+    .drug-item input {
+      flex: 1;
+      padding: 6px 8px;
+      font-size: 0.875rem;
+      min-height: 36px;
+    }
+
+    /* Drug remove button */
+    .drug-remove {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Save indicator */
+    .save-indicator {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--success);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .save-indicator.show { opacity: 1; }
+
+    /* CTA box */
+    .cta-box {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .cta-box h3 { margin-bottom: 8px; font-size: 1rem; }
+    .cta-box p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 12px; }
+
+    .cta-btn {
+      display: inline-block;
+      background: #fff;
+      color: var(--primary);
+      padding: 10px 24px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    /* Links */
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.75rem;
+    }
+
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      padding: 4px 8px;
+      background: #e8f4fd;
+      border-radius: 4px;
+    }
+
+    .links a:hover { background: #d0e8f8; }
+
+    /* Export text area */
+    .export-textarea {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      min-height: 200px;
+      background: #f8f9fa;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      color: var(--text-secondary);
+      padding: 24px;
+      font-size: 0.875rem;
+    }
+
+    /* Flex utility */
+    .flex { display: flex; gap: 8px; align-items: center; }
+    .flex-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-12 { margin-top: 12px; }
+
+    /* Patient info card */
+    .patient-info-card {
+      background: #f0f7ff;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 12px;
+      border-left: 4px solid #4a90d9;
+    }
+
+    .patient-info-card .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      font-size: 0.875rem;
+    }
+
+    .info-label { color: var(--text-secondary); font-size: 0.78rem; }
+    .info-value { font-weight: 600; }
+
+    /* Import section */
+    .import-preview {
+      background: #f8f9fa;
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-size: 0.8rem;
+      font-family: monospace;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .row { flex-direction: column; }
+      .tabs { flex-direction: column; }
+      .tab-btn { width: 100%; text-align: center; }
+      body { padding: 12px; }
+      .container { padding: 0 8px; }
+      .patient-info-card .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="save-indicator" id="saveIndicator">保存しました</div>
+
+  <div class="container">
+    <h1>在宅ケアチーム情報共有</h1>
+    <p class="subtitle">患者情報・チームメンバー・引継ぎを一元管理</p>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'patients')">患者管理</button>
+      <button class="tab-btn" onclick="switchTab(this,'team')">チーム管理</button>
+      <button class="tab-btn" onclick="switchTab(this,'handover')">引継ぎ</button>
+      <button class="tab-btn" onclick="switchTab(this,'export')">エクスポート</button>
+    </div>
+
+    <!-- Tab 1: 患者管理 -->
+    <div id="tab-patients" class="tab-panel active">
+      <div class="section">
+        <div class="section-title">患者選択</div>
+        <div class="form-group">
+          <label for="patientSelector">患者</label>
+          <select id="patientSelector"></select>
+        </div>
+      </div>
+
+      <!-- Patient detail (hidden until selected/new) -->
+      <div id="patientDetail" style="display:none;">
+        <!-- Basic info -->
+        <div class="section">
+          <div class="section-title">基本情報</div>
+          <div class="row">
+            <div class="form-group">
+              <label for="pName">氏名</label>
+              <input type="text" id="pName" placeholder="山田 太郎">
+            </div>
+            <div class="form-group">
+              <label for="pAge">年齢</label>
+              <input type="number" id="pAge" placeholder="75" min="0" max="150">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label for="pGender">性別</label>
+              <select id="pGender">
+                <option value="">--</option>
+                <option value="男性">男性</option>
+                <option value="女性">女性</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="pCareLevel">介護度</label>
+              <select id="pCareLevel">
+                <option value="">--</option>
+                <option value="要支援1">要支援1</option>
+                <option value="要支援2">要支援2</option>
+                <option value="要介護1">要介護1</option>
+                <option value="要介護2">要介護2</option>
+                <option value="要介護3">要介護3</option>
+                <option value="要介護4">要介護4</option>
+                <option value="要介護5">要介護5</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn mt-8" onclick="savePatientBasic()">患者情報を保存</button>
+        </div>
+
+        <!-- Drugs -->
+        <div class="section">
+          <div class="section-title">主要処方薬</div>
+          <ul class="drug-list" id="drugList"></ul>
+          <button class="btn-secondary mt-8" onclick="addDrugField()">+ 薬を追加</button>
+          <div class="mt-8">
+            <button class="btn" onclick="saveDrugs()">処方薬を保存</button>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="section">
+          <div class="section-title">注意事項</div>
+          <div class="form-group">
+            <label for="pNotes">アレルギー・腎機能・その他の注意事項</label>
+            <textarea id="pNotes" placeholder="例: ペニシリン系アレルギー&#13;&#10;eGFR 35（中等度腎機能低下）&#13;&#10;転倒リスクあり"></textarea>
+          </div>
+          <button class="btn" onclick="saveNotes()">注意事項を保存</button>
+        </div>
+
+        <!-- Visit records -->
+        <div class="section">
+          <div class="section-title">直近訪問記録</div>
+          <div id="visitList"></div>
+          <div class="section" style="background:#f8f9fa; box-shadow:none; border:1px solid var(--border);">
+            <div class="section-title" style="border-bottom-color: var(--border);">新規訪問記録を追加</div>
+            <div class="form-group">
+              <label for="visitDate">訪問日</label>
+              <input type="date" id="visitDate">
+            </div>
+            <div class="form-group">
+              <label for="visitSummary">記録内容</label>
+              <textarea id="visitSummary" placeholder="例: 服薬状況良好。血圧140/85。次回2週間後に訪問予定。"></textarea>
+            </div>
+            <button class="btn" onclick="addVisitRecord()">記録を追加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: チーム管理 -->
+    <div id="tab-team" class="tab-panel">
+      <div class="section">
+        <div class="section-title">メンバーを追加</div>
+        <div class="row">
+          <div class="form-group">
+            <label for="mRole">職種</label>
+            <select id="mRole">
+              <option value="pharmacist">薬剤師</option>
+              <option value="nurse">看護師</option>
+              <option value="care_manager">ケアマネージャー</option>
+              <option value="pt">理学療法士(PT)</option>
+              <option value="ot">作業療法士(OT)</option>
+              <option value="st">言語聴覚士(ST)</option>
+              <option value="doctor">医師</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mName">氏名</label>
+            <input type="text" id="mName" placeholder="田中 薬子">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="mOrg">所属</label>
+            <input type="text" id="mOrg" placeholder="〇〇薬局">
+          </div>
+          <div class="form-group">
+            <label for="mContact">連絡先</label>
+            <input type="text" id="mContact" placeholder="090-0000-0000">
+          </div>
+        </div>
+        <button class="btn mt-8" onclick="addMember()">メンバーを追加</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title">チームメンバー一覧</div>
+        <div id="memberList">
+          <div class="empty-state">チームメンバーが登録されていません</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: 引継ぎ -->
+    <div id="tab-handover" class="tab-panel">
+      <div class="section">
+        <div class="section-title">引継ぎメモを作成</div>
+        <div class="form-group">
+          <label for="hoPatient">対象患者</label>
+          <select id="hoPatient"></select>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="hoFrom">送信者</label>
+            <select id="hoFrom"></select>
+          </div>
+          <div class="form-group">
+            <label for="hoTo">受信者</label>
+            <select id="hoTo"></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="hoContent">内容</label>
+          <textarea id="hoContent" placeholder="例: 昨日の訪問で血圧が高めでした。次回訪問時に確認してください。"></textarea>
+        </div>
+        <button class="btn" onclick="addHandover()">引継ぎを追加</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title">引継ぎ履歴</div>
+        <div class="form-group">
+          <label for="hoFilterPatient">患者でフィルター</label>
+          <select id="hoFilterPatient" onchange="renderHandovers()">
+            <option value="">-- すべての患者 --</option>
+          </select>
+        </div>
+        <div id="handoverList">
+          <div class="empty-state">引継ぎメモがありません</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 4: エクスポート -->
+    <div id="tab-export" class="tab-panel">
+      <div class="section">
+        <div class="section-title">JSONエクスポート</div>
+        <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:12px;">
+          すべてのデータ（患者・メンバー・引継ぎ）をJSONファイルとしてダウンロードします。
+        </p>
+        <button class="export-btn" onclick="exportJSON()">JSONをダウンロード</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title">JSONインポート</div>
+        <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:12px;">
+          以前にエクスポートしたJSONファイルを読み込みます。既存データにマージされます。
+        </p>
+        <div class="form-group">
+          <label for="importFile">JSONファイルを選択</label>
+          <input type="file" id="importFile" accept=".json" onchange="previewImport(event)">
+        </div>
+        <div id="importPreview" class="import-preview"></div>
+        <button class="btn mt-8" onclick="importJSON()">インポート実行</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title">共有テキスト生成</div>
+        <div class="form-group">
+          <label for="sharePatient">患者を選択</label>
+          <select id="sharePatient" onchange="generateShareText()"></select>
+        </div>
+        <div class="form-group">
+          <label for="shareText">共有テキスト</label>
+          <textarea id="shareText" class="export-textarea" readonly placeholder="患者を選択すると共有テキストが生成されます"></textarea>
+        </div>
+        <div class="flex-wrap mt-8">
+          <button class="copy-btn" onclick="copyShareText()">テキストをコピー</button>
+          <button class="btn" onclick="generateShareText()">テキストを再生成</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h3>薬剤師向け無料ツール一覧</h3>
+      <p>在宅医療・業務効率化・薬局経営など75以上のツールを無料公開中</p>
+      <a href="index.html" class="cta-btn">ツール一覧を見る</a>
+    </div>
+
+    <!-- Related links -->
+    <div class="section">
+      <div class="section-title">関連ツール</div>
+      <div class="links">
+        <a href="homecare-record.html">訪問薬剤管理レコード生成</a>
+        <a href="homecare-scheduler.html">訪問スケジューラー</a>
+        <a href="homecare-report.html">訪問報告書作成</a>
+        <a href="homecare-efficiency-diagnosis.html">在宅効率化診断</a>
+        <a href="homecare-joint-visit-checklist.html">同行訪問チェックリスト</a>
+        <a href="polypharmacy-assessment.html">ポリファーマシー評価</a>
+        <a href="renal-drug-dosing.html">腎機能別用量調整</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== SharedPatientStore =====
+    const SharedPatientStore = {
+      KEY: "homecare-shared-patients",
+      getAll() { return JSON.parse(localStorage.getItem(this.KEY) || "[]"); },
+      save(patients) { localStorage.setItem(this.KEY, JSON.stringify(patients)); },
+      getById(id) { return this.getAll().find(p => p.id === id); },
+      upsert(patient) {
+        const patients = this.getAll();
+        const idx = patients.findIndex(p => p.id === patient.id);
+        if (idx >= 0) {
+          patients[idx] = { ...patients[idx], ...patient, updatedAt: new Date().toISOString() };
+        } else {
+          patients.push({
+            ...patient,
+            id: patient.id || "p_" + Date.now(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          });
+        }
+        this.save(patients);
+        return patients;
+      },
+      populateSelector(selectEl, onSelect) {
+        const patients = this.getAll();
+        selectEl.innerHTML = "<option value=''>-- 患者を選択 --</option><option value='__new__'>+ 新規患者</option>";
+        patients.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.id;
+          opt.textContent = p.name + " (" + p.age + "歳)";
+          selectEl.appendChild(opt);
+        });
+        selectEl.onchange = () => {
+          if (selectEl.value === "__new__") {
+            onSelect(null);
+          } else if (selectEl.value) {
+            onSelect(this.getById(selectEl.value));
+          } else {
+            onSelect(undefined);
+          }
+        };
+      }
+    };
+
+    // ===== App Data Store =====
+    const STORAGE_KEY = "homecare-team-data";
+
+    function loadData() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"members":[],"patientNotes":{},"handovers":[]}');
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showSaveIndicator();
+    }
+
+    // ===== Save indicator =====
+    let saveTimer = null;
+    function showSaveIndicator() {
+      const el = document.getElementById("saveIndicator");
+      el.classList.add("show");
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => el.classList.remove("show"), 1800);
+    }
+
+    // ===== Debounce =====
+    function debounce(fn, delay) {
+      let t;
+      return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
+    }
+
+    // ===== Tab switching =====
+    function switchTab(btn, name) {
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById("tab-" + name).classList.add("active");
+      btn.classList.add("active");
+
+      if (name === "handover") {
+        populateHandoverSelects();
+        renderHandovers();
+      }
+      if (name === "export") {
+        populateSharePatientSelect();
+      }
+    }
+
+    // ===== Role labels =====
+    const ROLE_LABELS = {
+      pharmacist: "薬剤師",
+      nurse: "看護師",
+      care_manager: "ケアマネージャー",
+      pt: "理学療法士(PT)",
+      ot: "作業療法士(OT)",
+      st: "言語聴覚士(ST)",
+      doctor: "医師",
+      other: "その他"
+    };
+
+    function roleLabel(role) {
+      return ROLE_LABELS[role] || role;
+    }
+
+    // ===== Patient Tab =====
+    let currentPatientId = null;
+
+    function initPatientSelector() {
+      SharedPatientStore.populateSelector(
+        document.getElementById("patientSelector"),
+        (patient) => {
+          if (patient === undefined) {
+            // No selection
+            currentPatientId = null;
+            document.getElementById("patientDetail").style.display = "none";
+          } else if (patient === null) {
+            // New patient
+            currentPatientId = null;
+            clearPatientForm();
+            document.getElementById("patientDetail").style.display = "block";
+          } else {
+            currentPatientId = patient.id;
+            loadPatientIntoForm(patient);
+            document.getElementById("patientDetail").style.display = "block";
+          }
+        }
+      );
+    }
+
+    function clearPatientForm() {
+      document.getElementById("pName").value = "";
+      document.getElementById("pAge").value = "";
+      document.getElementById("pGender").value = "";
+      document.getElementById("pCareLevel").value = "";
+      document.getElementById("pNotes").value = "";
+      renderDrugList([]);
+      renderVisitList([]);
+    }
+
+    function loadPatientIntoForm(patient) {
+      document.getElementById("pName").value = patient.name || "";
+      document.getElementById("pAge").value = patient.age || "";
+      document.getElementById("pGender").value = patient.gender || "";
+      document.getElementById("pCareLevel").value = patient.careLevel || "";
+
+      const data = loadData();
+      const notes = data.patientNotes[patient.id] || {};
+      document.getElementById("pNotes").value = notes.notes || "";
+      renderDrugList(notes.drugs || []);
+      renderVisitList(notes.visits || []);
+    }
+
+    function savePatientBasic() {
+      const name = document.getElementById("pName").value.trim();
+      const age = document.getElementById("pAge").value.trim();
+      if (!name) { alert("氏名を入力してください"); return; }
+
+      const patient = {
+        id: currentPatientId || ("p_" + Date.now()),
+        name,
+        age: age ? parseInt(age) : "",
+        gender: document.getElementById("pGender").value,
+        careLevel: document.getElementById("pCareLevel").value
+      };
+
+      SharedPatientStore.upsert(patient);
+      currentPatientId = patient.id;
+      initPatientSelector();
+
+      // Re-select the saved patient
+      const sel = document.getElementById("patientSelector");
+      sel.value = currentPatientId;
+
+      showSaveIndicator();
+    }
+
+    // Drug list
+    function renderDrugList(drugs) {
+      const list = document.getElementById("drugList");
+      list.innerHTML = "";
+      drugs.forEach((drug, i) => {
+        const li = document.createElement("li");
+        li.className = "drug-item";
+        li.innerHTML = `
+          <input type="text" value="${escapeHtml(drug)}" placeholder="薬品名 規格" data-idx="${i}">
+          <button class="drug-remove" onclick="removeDrug(${i})" title="削除">x</button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function addDrugField() {
+      const inputs = document.querySelectorAll("#drugList .drug-item input");
+      const drugs = Array.from(inputs).map(i => i.value.trim());
+      drugs.push("");
+      renderDrugList(drugs);
+      // Focus last input
+      const allInputs = document.querySelectorAll("#drugList .drug-item input");
+      if (allInputs.length > 0) allInputs[allInputs.length - 1].focus();
+    }
+
+    function removeDrug(idx) {
+      const inputs = document.querySelectorAll("#drugList .drug-item input");
+      const drugs = Array.from(inputs).map(i => i.value.trim());
+      drugs.splice(idx, 1);
+      renderDrugList(drugs);
+    }
+
+    function saveDrugs() {
+      if (!currentPatientId) { alert("先に患者情報を保存してください"); return; }
+      const inputs = document.querySelectorAll("#drugList .drug-item input");
+      const drugs = Array.from(inputs).map(i => i.value.trim()).filter(v => v);
+      const data = loadData();
+      if (!data.patientNotes[currentPatientId]) data.patientNotes[currentPatientId] = {};
+      data.patientNotes[currentPatientId].drugs = drugs;
+      saveData(data);
+    }
+
+    function saveNotes() {
+      if (!currentPatientId) { alert("先に患者情報を保存してください"); return; }
+      const data = loadData();
+      if (!data.patientNotes[currentPatientId]) data.patientNotes[currentPatientId] = {};
+      data.patientNotes[currentPatientId].notes = document.getElementById("pNotes").value.trim();
+      saveData(data);
+    }
+
+    // Visit records
+    function renderVisitList(visits) {
+      const container = document.getElementById("visitList");
+      if (!visits || visits.length === 0) {
+        container.innerHTML = '<div class="empty-state">訪問記録がありません</div>';
+        return;
+      }
+      const sorted = [...visits].sort((a, b) => b.date.localeCompare(a.date));
+      container.innerHTML = sorted.map(v => `
+        <div class="visit-record">
+          <div class="visit-date">${v.date}</div>
+          <div>${escapeHtml(v.summary)}</div>
+        </div>
+      `).join("");
+    }
+
+    function addVisitRecord() {
+      if (!currentPatientId) { alert("先に患者情報を保存してください"); return; }
+      const date = document.getElementById("visitDate").value;
+      const summary = document.getElementById("visitSummary").value.trim();
+      if (!date || !summary) { alert("日付と内容を入力してください"); return; }
+
+      const data = loadData();
+      if (!data.patientNotes[currentPatientId]) data.patientNotes[currentPatientId] = {};
+      if (!data.patientNotes[currentPatientId].visits) data.patientNotes[currentPatientId].visits = [];
+      data.patientNotes[currentPatientId].visits.push({ date, summary });
+      saveData(data);
+
+      renderVisitList(data.patientNotes[currentPatientId].visits);
+      document.getElementById("visitDate").value = "";
+      document.getElementById("visitSummary").value = "";
+    }
+
+    // Set today's date for visit
+    document.getElementById("visitDate").value = new Date().toISOString().split("T")[0];
+
+    // ===== Team Tab =====
+    function addMember() {
+      const name = document.getElementById("mName").value.trim();
+      if (!name) { alert("氏名を入力してください"); return; }
+
+      const data = loadData();
+      const member = {
+        id: "m_" + Date.now(),
+        role: document.getElementById("mRole").value,
+        name,
+        org: document.getElementById("mOrg").value.trim(),
+        contact: document.getElementById("mContact").value.trim()
+      };
+      data.members.push(member);
+      saveData(data);
+      renderMemberList();
+
+      document.getElementById("mName").value = "";
+      document.getElementById("mOrg").value = "";
+      document.getElementById("mContact").value = "";
+    }
+
+    function renderMemberList() {
+      const data = loadData();
+      const container = document.getElementById("memberList");
+      if (data.members.length === 0) {
+        container.innerHTML = '<div class="empty-state">チームメンバーが登録されていません</div>';
+        return;
+      }
+      container.innerHTML = data.members.map(m => `
+        <div class="card member-card">
+          <div class="card-header">
+            <div>
+              <div class="member-role-badge">${escapeHtml(roleLabel(m.role))}</div>
+              <div class="card-title">${escapeHtml(m.name)}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn-secondary btn-sm" onclick="editMember('${m.id}')">編集</button>
+              <button class="btn-danger btn-sm" onclick="deleteMember('${m.id}')">削除</button>
+            </div>
+          </div>
+          <div class="member-info">
+            ${m.org ? `<span>所属: ${escapeHtml(m.org)}</span>` : ""}
+            ${m.contact ? `<span>連絡先: ${escapeHtml(m.contact)}</span>` : ""}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function editMember(id) {
+      const data = loadData();
+      const m = data.members.find(x => x.id === id);
+      if (!m) return;
+      document.getElementById("mRole").value = m.role;
+      document.getElementById("mName").value = m.name;
+      document.getElementById("mOrg").value = m.org || "";
+      document.getElementById("mContact").value = m.contact || "";
+
+      // Remove from list and let user re-add with edits
+      data.members = data.members.filter(x => x.id !== id);
+      saveData(data);
+      renderMemberList();
+    }
+
+    function deleteMember(id) {
+      if (!confirm("このメンバーを削除しますか？")) return;
+      const data = loadData();
+      data.members = data.members.filter(m => m.id !== id);
+      saveData(data);
+      renderMemberList();
+    }
+
+    // ===== Handover Tab =====
+    function populateHandoverSelects() {
+      const data = loadData();
+      const patients = SharedPatientStore.getAll();
+
+      // Patient select
+      const hoPatient = document.getElementById("hoPatient");
+      hoPatient.innerHTML = '<option value="">-- 患者を選択 --</option>';
+      patients.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.name + " (" + p.age + "歳)";
+        hoPatient.appendChild(opt);
+      });
+
+      // From/To selects
+      ["hoFrom", "hoTo"].forEach(selId => {
+        const sel = document.getElementById(selId);
+        sel.innerHTML = '<option value="">-- メンバーを選択 --</option>';
+        data.members.forEach(m => {
+          const opt = document.createElement("option");
+          opt.value = m.id;
+          opt.textContent = roleLabel(m.role) + ": " + m.name;
+          sel.appendChild(opt);
+        });
+      });
+
+      // Filter select
+      const filter = document.getElementById("hoFilterPatient");
+      const currentFilter = filter.value;
+      filter.innerHTML = '<option value="">-- すべての患者 --</option>';
+      patients.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.name + " (" + p.age + "歳)";
+        filter.appendChild(opt);
+      });
+      if (currentFilter) filter.value = currentFilter;
+    }
+
+    function addHandover() {
+      const patientId = document.getElementById("hoPatient").value;
+      const from = document.getElementById("hoFrom").value;
+      const to = document.getElementById("hoTo").value;
+      const content = document.getElementById("hoContent").value.trim();
+
+      if (!patientId || !from || !to || !content) {
+        alert("患者・送信者・受信者・内容をすべて入力してください");
+        return;
+      }
+
+      const data = loadData();
+      data.handovers.push({
+        id: "h_" + Date.now(),
+        patientId,
+        from,
+        to,
+        date: new Date().toISOString(),
+        content
+      });
+      saveData(data);
+      renderHandovers();
+      document.getElementById("hoContent").value = "";
+    }
+
+    function renderHandovers() {
+      const data = loadData();
+      const filterPatientId = document.getElementById("hoFilterPatient").value;
+      const container = document.getElementById("handoverList");
+
+      let handovers = [...data.handovers];
+      if (filterPatientId) {
+        handovers = handovers.filter(h => h.patientId === filterPatientId);
+      }
+      handovers.sort((a, b) => b.date.localeCompare(a.date));
+
+      if (handovers.length === 0) {
+        container.innerHTML = '<div class="empty-state">引継ぎメモがありません</div>';
+        return;
+      }
+
+      const patients = SharedPatientStore.getAll();
+      const patientMap = {};
+      patients.forEach(p => patientMap[p.id] = p);
+
+      const memberMap = {};
+      data.members.forEach(m => memberMap[m.id] = m);
+
+      container.innerHTML = handovers.map(h => {
+        const patient = patientMap[h.patientId];
+        const fromMember = memberMap[h.from];
+        const toMember = memberMap[h.to];
+        const dateStr = formatDatetime(h.date);
+        return `
+          <div class="timeline-item">
+            <div class="timeline-meta">
+              <strong>${dateStr}</strong>
+              ${patient ? ` ・ ${escapeHtml(patient.name)}` : ""}
+              <span class="timeline-arrow"> ・ ${fromMember ? escapeHtml(fromMember.name) : "?"} → ${toMember ? escapeHtml(toMember.name) : "?"}</span>
+            </div>
+            <div class="timeline-content">${escapeHtml(h.content)}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // ===== Export Tab =====
+    function populateSharePatientSelect() {
+      const patients = SharedPatientStore.getAll();
+      const sel = document.getElementById("sharePatient");
+      sel.innerHTML = '<option value="">-- 患者を選択 --</option>';
+      patients.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.name + " (" + p.age + "歳)";
+        sel.appendChild(opt);
+      });
+    }
+
+    function exportJSON() {
+      const data = loadData();
+      const patients = SharedPatientStore.getAll();
+      const exportObj = { patients, ...data, exportedAt: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "homecare-team-" + new Date().toISOString().split("T")[0] + ".json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    let importedData = null;
+
+    function previewImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          importedData = JSON.parse(e.target.result);
+          const preview = document.getElementById("importPreview");
+          preview.style.display = "block";
+          preview.textContent =
+            "患者数: " + (importedData.patients ? importedData.patients.length : 0) + "\n" +
+            "メンバー数: " + (importedData.members ? importedData.members.length : 0) + "\n" +
+            "引継ぎ数: " + (importedData.handovers ? importedData.handovers.length : 0) + "\n" +
+            "エクスポート日時: " + (importedData.exportedAt || "不明");
+        } catch (err) {
+          alert("JSONの解析に失敗しました: " + err.message);
+          importedData = null;
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function importJSON() {
+      if (!importedData) { alert("ファイルを選択してください"); return; }
+      if (!confirm("データをインポートします。既存データにマージされます。続行しますか？")) return;
+
+      // Import patients
+      if (Array.isArray(importedData.patients)) {
+        importedData.patients.forEach(p => SharedPatientStore.upsert(p));
+      }
+
+      // Import team data
+      const current = loadData();
+      if (Array.isArray(importedData.members)) {
+        importedData.members.forEach(m => {
+          if (!current.members.find(x => x.id === m.id)) {
+            current.members.push(m);
+          }
+        });
+      }
+      if (importedData.patientNotes) {
+        Object.keys(importedData.patientNotes).forEach(pid => {
+          if (!current.patientNotes[pid]) {
+            current.patientNotes[pid] = importedData.patientNotes[pid];
+          }
+        });
+      }
+      if (Array.isArray(importedData.handovers)) {
+        importedData.handovers.forEach(h => {
+          if (!current.handovers.find(x => x.id === h.id)) {
+            current.handovers.push(h);
+          }
+        });
+      }
+
+      saveData(current);
+      renderMemberList();
+      initPatientSelector();
+
+      document.getElementById("importPreview").style.display = "none";
+      document.getElementById("importFile").value = "";
+      importedData = null;
+      alert("インポートが完了しました");
+    }
+
+    function generateShareText() {
+      const patientId = document.getElementById("sharePatient").value;
+      const textarea = document.getElementById("shareText");
+      if (!patientId) { textarea.value = ""; return; }
+
+      const patient = SharedPatientStore.getById(patientId);
+      if (!patient) { textarea.value = ""; return; }
+
+      const data = loadData();
+      const notes = data.patientNotes[patientId] || {};
+      const drugs = notes.drugs || [];
+      const patientNotes = notes.notes || "なし";
+      const visits = (notes.visits || []).sort((a, b) => b.date.localeCompare(a.date));
+
+      const today = new Date();
+      const dateStr = today.getFullYear() + "年" + (today.getMonth() + 1) + "月" + today.getDate() + "日";
+
+      // Find doctor
+      const doctor = data.members.find(m => m.role === "doctor");
+
+      // Members
+      const memberLines = data.members.map(m =>
+        "・" + roleLabel(m.role) + ": " + m.name + (m.org ? "（" + m.org + "）" : "") + (m.contact ? " " + m.contact : "")
+      ).join("\n");
+
+      // Recent handovers (last 3)
+      const memberMap = {};
+      data.members.forEach(m => memberMap[m.id] = m);
+      const recentHandovers = data.handovers
+        .filter(h => h.patientId === patientId)
+        .sort((a, b) => b.date.localeCompare(a.date))
+        .slice(0, 3);
+
+      const handoverLines = recentHandovers.length > 0
+        ? recentHandovers.map(h => {
+          const fromM = memberMap[h.from];
+          const toM = memberMap[h.to];
+          return "・" + formatDate(h.date) + " " +
+            (fromM ? fromM.name : "?") + "→" + (toM ? toM.name : "?") + ": " + h.content;
+        }).join("\n")
+        : "なし";
+
+      const text = `【在宅ケアチーム共有情報】
+生成日: ${dateStr}
+
+■ 患者: ${patient.name}（${patient.age}歳/${patient.gender || "不明"}/${patient.careLevel || "不明"}）
+■ 主治医: ${doctor ? doctor.name + "（" + (doctor.org || "") + "）" : "未登録"}
+■ アレルギー・注意事項: ${patientNotes}
+■ 主要処方薬:
+${drugs.length > 0 ? drugs.map(d => "・" + d).join("\n") : "・未登録"}
+
+■ チームメンバー
+${memberLines || "未登録"}
+
+■ 直近の連絡事項
+${handoverLines}`;
+
+      textarea.value = text;
+    }
+
+    function copyShareText() {
+      const textarea = document.getElementById("shareText");
+      if (!textarea.value) { alert("先に患者を選択してテキストを生成してください"); return; }
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        showSaveIndicator();
+        document.getElementById("saveIndicator").textContent = "コピーしました";
+        setTimeout(() => {
+          document.getElementById("saveIndicator").textContent = "保存しました";
+        }, 2000);
+      }).catch(() => {
+        textarea.select();
+        document.execCommand("copy");
+      });
+    }
+
+    // ===== Utility =====
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatDatetime(isoStr) {
+      if (!isoStr) return "";
+      const d = new Date(isoStr);
+      return d.getFullYear() + "/" +
+        String(d.getMonth() + 1).padStart(2, "0") + "/" +
+        String(d.getDate()).padStart(2, "0") + " " +
+        String(d.getHours()).padStart(2, "0") + ":" +
+        String(d.getMinutes()).padStart(2, "0");
+    }
+
+    function formatDate(isoStr) {
+      if (!isoStr) return "";
+      const d = new Date(isoStr);
+      return d.getFullYear() + "/" +
+        String(d.getMonth() + 1).padStart(2, "0") + "/" +
+        String(d.getDate()).padStart(2, "0");
+    }
+
+    // ===== Init =====
+    function init() {
+      initPatientSelector();
+      renderMemberList();
+    }
+
+    init();
+  </script>
+</body>
+</html>
