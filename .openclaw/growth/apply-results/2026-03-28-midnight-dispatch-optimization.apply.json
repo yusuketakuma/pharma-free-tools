@@ -1,0 +1,36 @@
+{
+  "apply_id": "2026-03-28-midnight-dispatch-optimization-apply",
+  "proposal_id": "2026-03-28-midnight-dispatch-optimization",
+  "applied_at": "2026-03-29T14:42:48+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/approved/2026-03-28-midnight-dispatch-optimization.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-midnight-dispatch-optimization.review.json",
+  "apply_mode": "assisted",
+  "status": "manual_required",
+  "requested_paths": [
+    ".openclaw/growth/cron-wording/midnight-dispatch-pattern.md",
+    ".openclaw/growth/runbooks/midnight-dispatch-optimization.md"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [],
+  "manual_paths": [
+    ".openclaw/growth/cron-wording/midnight-dispatch-pattern.md",
+    ".openclaw/growth/runbooks/midnight-dispatch-optimization.md"
+  ],
+  "apply_plan": [
+    {
+      "path": ".openclaw/growth/cron-wording/midnight-dispatch-pattern.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/growth/runbooks/midnight-dispatch-optimization.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

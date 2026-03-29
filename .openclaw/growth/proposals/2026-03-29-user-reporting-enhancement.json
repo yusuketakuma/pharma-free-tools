@@ -1,0 +1,106 @@
+{
+  "proposal_id": "2026-03-29-user-reporting-enhancement",
+  "created_at": "2026-03-28",
+  "phase": "propose",
+  "status": "APPROVED",
+  "title": "User Reporting System Enhancement Proposal",
+  "summary": "Implement a comprehensive user reporting system based on user feedback gathered today, ensuring timely progress updates, transparent communication, and proactive reporting to build user trust and reduce communication gaps.",
+  "observations": [
+    "User feedback: 'Reported that I would report, but didn't report' - communication gaps exist",
+    "Missing intermediate reporting: Current system lacks progress updates for long-running tasks",
+    "Reactive rather than proactive: Reporting only occurs after user inquiry",
+    "No status visibility: Users cannot easily check task progress without asking",
+    "Trust impact: Broken reporting promises damage user confidence in the system"
+  ],
+  "proposed_changes": [
+    "Implement structured reporting workflows for different task types",
+    "Add proactive reporting mechanisms with automatic progress updates",
+    "Build user-facing status dashboards for task progress viewing",
+    "Enhance accountability systems with 'report or escalate' protocols"
+  ],
+  "affected_paths": [
+    "/Users/yusuke/.openclaw/workspace/SOUL.md",
+    "/Users/yusuke/.openclaw/workspace/AGENTS.md",
+    "OpenClaw reporting workflows",
+    "User communication protocols",
+    "Task execution systems",
+    "Status monitoring infrastructure"
+  ],
+  "evidence": [
+    "Direct user feedback indicates broken reporting promises",
+    "Current system lacks visibility into long-running task progress",
+    "No proactive communication when tasks are delayed",
+    "User trust can be rebuilt through consistent, timely reporting",
+    "Existing completion reporting system (`completion-latest.md`) can be extended"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run apply_growth_proposal.py to generate an apply plan and ledger update.",
+  "boundary_impact": {
+    "ceo_board": "low",
+    "board_execution": "low",
+    "trust_boundary": "medium",
+    "approval_boundary": "low"
+  },
+  "blast_radius": {
+    "users": "medium",
+    "agents": "low",
+    "production": "low"
+  },
+  "reversibility": {
+    "level": "high",
+    "rollback_path": "Reporting system changes can be disabled through configuration; no permanent data loss expected"
+  },
+  "priority": "high",
+  "novelty": {
+    "level": "medium",
+    "description": "Enhanced reporting infrastructure with proactive communication"
+  },
+  "cycle_id": "2026-03-29-user-reporting-enhancement",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-28T15:42:05+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-28T15:42:05+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-28T15:42:05+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T02:40:24+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T02:40:24+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T02:40:24+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "ユーザーレポートシステムの改善は、ユートラスを高め、コミュニケーションギャップを解消するための重要な改善。docs/reporting system の変更でリスクが低く、reversible。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      "AGENTS.md",
+      "OpenClaw reporting workflows",
+      "SOUL.md",
+      "Status monitoring infrastructure",
+      "Task execution systems",
+      "User communication protocols"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T02:40:24+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-29-user-reporting-enhancement.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-29-user-reporting-enhancement.apply.json"
+}

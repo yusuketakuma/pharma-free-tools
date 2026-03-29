@@ -1,0 +1,57 @@
+{
+  "source": {"type": "cron", "name": "autonomy-loop-health-review"},
+  "title": "heartbeat governance snapshot shows board_touch_high and exploration_drift on repeated stale-backlog follow-up",
+  "summary": "24h snapshot shows 2 heartbeat runs, candidate_rate 0.5, candidate_to_board_touch_ratio 2.0, board_touch_high warning, and exploration_drift_risk=true while board_overload/scout_saturation/duplicate_spike remain false.",
+  "root_issue": "Routine heartbeat cycles are still producing board touches without a signal-only digest baseline, so the monitor is oscillating on the same stale backlog follow-up instead of staying delta-only.",
+  "desired_change": "Tighten the anomaly-delta monitor contract: keep healthy cycles as digest signal_only, and emit agenda_candidate only when a new metric delta or threshold breach appears.",
+  "requested_action": {"type": "tune", "target": "heartbeat anomaly-delta monitor contract"},
+  "change_scope": {
+    "domains": ["monitoring", "policy"],
+    "repos": ["openclaw-core"],
+    "agents": ["ceo-tama", "supervisor-core", "board-operator"],
+    "layers": ["board", "execution"]
+  },
+  "why_now": "The current snapshot shows board_touch_high and exploration_drift on a tiny 2-run window; repeating the same Board touch would add noise without new evidence.",
+  "expected_benefit": "Reduce board noise, preserve signal-only digest behavior, and make repeated health checks easier to interpret.",
+  "possible_harm": "If tuned too aggressively, a genuine recurring anomaly could be delayed; keep the threshold change reversible and observation-only.",
+  "boundary_impact": {
+    "ceo_board": "low",
+    "board_execution": "low",
+    "trust_boundary": "none",
+    "approval_boundary": "none"
+  },
+  "reversibility": {
+    "level": "high",
+    "rollback_path": "Restore the previous monitor threshold / emission rule; no runtime directive required."
+  },
+  "blast_radius": {
+    "users": "none",
+    "agents": "low",
+    "production": "none"
+  },
+  "novelty": {"level": "medium"},
+  "evidence": {
+    "metrics": [
+      "heartbeat_run_count=2",
+      "candidate_rate=0.5",
+      "board_origin_candidate_count=1",
+      "candidate_to_case_ratio=3.0",
+      "candidate_to_board_touch_ratio=2.0",
+      "deep_review_rate=0.0",
+      "board_overload_risk=false",
+      "scout_saturation_risk=false",
+      "duplicate_spike_risk=false",
+      "exploration_drift_risk=true"
+    ],
+    "signals": ["board_touch_high", "exploration_drift_risk"],
+    "refs": [
+      "reports/cron/board-agenda-assembly-20260326-0435.md",
+      ".openclaw/runtime/board/decision-ledger.jsonl",
+      ".openclaw/runtime/metrics/latest-metrics.json"
+    ]
+  },
+  "recommendation": {
+    "proposed_lane": "review",
+    "proposed_disposition": "investigate"
+  }
+}

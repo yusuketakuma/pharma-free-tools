@@ -1,0 +1,87 @@
+# approval-policy.yaml
+# OpenClaw control plane 承認ポリシー
+# protectedPath — このファイル自体の変更にも manual approval 必須
+
+# 承認が必要な操作
+approvalRequired:
+  # --- protected paths (変更時に必ず人間承認) ---
+  protectedPaths:
+    - path: "config/approval-policy.yaml"
+      reason: "承認ポリシー自体の変更"
+      approver: owner
+
+    - path: "config/routing-policy.yaml"
+      reason: "ルーティング規約の変更"
+      approver: owner
+
+    - path: "org/organization.md"
+      reason: "組織構成の変更"
+      approver: owner
+
+    - path: "openclaw.json"
+      reason: "実行基盤設定の変更"
+      approver: owner
+
+    - path: "projects/*/CLAUDE.md"
+      reason: "プロジェクト実行規約の変更"
+      approver: owner
+
+    - path: "schemas/*.json"
+      reason: "契約スキーマの変更"
+      approver: owner
+
+  # --- 操作タイプ別の承認 ---
+  operations:
+    - type: refactor
+      scope: ">5 files"
+      reason: "広範囲リファクタリングは影響確認が必要"
+      approver: owner
+
+    - type: implement
+      scope: "new-feature"
+      reason: "新機能はproduct/CEO判断を経る"
+      approver: ceo-tama
+
+    - type: deploy
+      reason: "デプロイは常に人間承認"
+      approver: owner
+
+    - type: delete
+      scope: "any"
+      reason: "ファイル削除は復元コストが高い"
+      approver: owner
+
+    - type: push
+      reason: "リモートpushは常に人間承認"
+      approver: owner
+
+# 自動承認（人間承認不要）
+autoApproved:
+  - type: report
+    reason: "部門レポート作成は自動"
+
+  - type: investigate
+    reason: "調査は読み取り専用"
+
+  - type: test
+    scope: "existing-tests"
+    reason: "既存テスト実行は安全"
+
+  - type: review
+    reason: "コードレビューは読み取り専用"
+
+# growth loop制御
+growthLoop:
+  observe: auto       # 観測は自動
+  propose: auto       # 提案は自動
+  apply: manual       # 適用は人間承認後のみ
+
+# 承認フロー
+workflow:
+  defaultApprover: owner
+  ownerTelegramId: "5385492291"
+  notifyOn:
+    - approval-needed
+    - approval-timeout
+  timeoutHours: 24
+  onTimeout: hold  # タイムアウト時はholdして待つ（自動承認しない）

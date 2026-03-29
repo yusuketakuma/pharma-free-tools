@@ -1,0 +1,30 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-test-auth",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "dispatch_id": "dispatch-test-auth",
+  "message": "queue rebalanced: auth recovered; ready to resume",
+  "task_id": "test-auth-218c0563",
+  "state": "READY_FOR_EXECUTION",
+  "updated_at": "2026-03-22T16:44:24+09:00",
+  "history": [
+    {
+      "state": "AUTH_REQUIRED",
+      "at": "2026-03-22T16:44:23+09:00",
+      "route_decision_id": "route-test-auth",
+      "dispatch_id": "dispatch-test-auth",
+      "message": "seeded"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:44:24+09:00",
+      "route_decision_id": "route-test-auth",
+      "dispatch_id": "dispatch-test-auth",
+      "message": "queue rebalanced: auth recovered; ready to resume"
+    }
+  ],
+  "approval_id": null
+}

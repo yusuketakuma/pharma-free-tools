@@ -1,0 +1,74 @@
+{
+  "proposal_id": "autonomy-improvement-metrics-system-2026-03-30",
+  "summary": "autonomy-kpi-outcome-reviewで明らかになった**指標体系のギャップ**を埋め、**proposal→実装→定着率**の測定と**自律改善の質的評価**を実現する。既存の実行回数ベース評価ではなく、成果物の質と継続性に焦点を当てた測定フレームワークを構築し、自律改善のROIを明確にする。",
+  "observations": [
+    "現行の問題：実行回数だけでは前進判定できず、PoC化・実装着手・利用価値に寄せた指標が弱い",
+    "主要なギャップ：conversion trackingの不在、owner/due/success criteria付与率の低さ、baseline/smoke遵守率の実測不足、PoC化率の計測不足、前回提案の実装確認率の低さ"
+  ],
+  "proposed_changes": [
+    "3段階conversion trackingシステム",
+    "Project-Specific KPI Dashboard",
+    "自律改善品質評価フレームワーク",
+    "自動化測定システム"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/autonomy-improvement-metrics-system.md",
+    ".openclaw/growth/config/autonomy-kpi-dashboard.json",
+    ".openclaw/growth/cron-wording/weekly-metrics-collation.md",
+    ".openclaw/growth/prompts/metrics-analyst.md",
+    ".openclaw/workspace/.openclaw/runtime/metrics/conversion-tracking.js",
+    ".openclaw/workspace/.openclaw/runtime/metrics/quality-assessment.js",
+    ".openclaw/workspace/.openclaw/runtime/metrics/adoption-monitor.js",
+    ".openclaw/workspace/.openclaw/runtime/dashboards/autonomy-kpi-dashboard/"
+  ],
+  "evidence": [
+    "autonomy-kpi-outcome-review-20260326-0430.md",
+    "agent-lesson-capture-20260326-0615.md",
+    "agent-performance-learning-synthesis-2026-03-28.md",
+    "heartbeat-governance-report-snapshot-anomaly-delta-spec-v0.2.md"
+  ],
+  "requires_manual_approval": false,
+  "status": "APPROVED",
+  "phase": "propose",
+  "created_at": "2026-03-30T00:00:00Z",
+  "cycle_id": "autonomy-improvement-metrics-system-2026-03-30",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T03:42:01+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T03:42:01+09:00",
+      "note": "review started by self-improvement-proposal-review"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T03:42:01+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T03:42:01+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "self-improvement-proposal-review",
+    "reason": "metrics system improvement with high impact and reversible changes, improves autonomy ROI tracking",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/growth/config/autonomy-kpi-dashboard.json",
+      ".openclaw/growth/cron-wording/weekly-metrics-collation.md",
+      ".openclaw/growth/prompts/metrics-analyst.md",
+      ".openclaw/growth/runbooks/autonomy-improvement-metrics-system.md",
+      ".openclaw/workspace/.openclaw/runtime/dashboards/autonomy-kpi-dashboard/",
+      ".openclaw/workspace/.openclaw/runtime/metrics/adoption-monitor.js",
+      ".openclaw/workspace/.openclaw/runtime/metrics/conversion-tracking.js",
+      ".openclaw/workspace/.openclaw/runtime/metrics/quality-assessment.js"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T03:42:01+09:00"
+  },
+  "next_step": "Run apply_growth_proposal.py to generate an apply plan and ledger update.",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/autonomy-improvement-metrics-system-2026-03-30.review.json"
+}

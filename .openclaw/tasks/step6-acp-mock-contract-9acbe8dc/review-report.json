@@ -1,0 +1,9 @@
+{
+  "task_id": "step6-acp-mock-contract-9acbe8dc",
+  "verdict": "blocked",
+  "summary": "Execution result schema validation failed.",
+  "issues": [
+    "execution-result.summary: expected string"
+  ],
+  "publish_recommendation": "hold"
+}

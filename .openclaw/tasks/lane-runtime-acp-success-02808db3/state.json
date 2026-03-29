@@ -1,0 +1,35 @@
+{
+  "message": "execution succeeded; entering review",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "lane-runtime-acp-success-02808db3",
+  "state": "REVIEWING",
+  "updated_at": "2026-03-22T16:50:07+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:50:07+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:50:07+09:00",
+      "route_decision_id": "route-bad60c42c008",
+      "dispatch_id": "dispatch-lane-runtime-acp-success-02808db3",
+      "message": "route decision stored"
+    },
+    {
+      "state": "REVIEWING",
+      "at": "2026-03-22T16:50:07+09:00",
+      "route_decision_id": "route-bad60c42c008",
+      "dispatch_id": "dispatch-lane-runtime-acp-success-02808db3",
+      "message": "execution succeeded; entering review"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-bad60c42c008",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-lane-runtime-acp-success-02808db3"
+}

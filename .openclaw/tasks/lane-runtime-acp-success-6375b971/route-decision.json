@@ -1,0 +1,15 @@
+{
+  "task_id": "lane-runtime-acp-success-6375b971",
+  "route_decision_id": "route-ce0c6c4c45ba",
+  "decision": "claude-code",
+  "score": 0.85,
+  "reasons": [
+    "task appears multi-step or implementation-heavy",
+    "requested_route=claude-code"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ]
+}

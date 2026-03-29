@@ -1,0 +1,42 @@
+{
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "metric",
+  "domain": "reporting",
+  "summary": "board_cycle_slot_id 20260327-0835 stayed fresh and ready across agenda seed, claude-code precheck, and premeeting brief; no stale-input fallback was needed.",
+  "severity": "low",
+  "evidence": {
+    "metrics": [
+      {
+        "board_cycle_slot_id": "20260327-0835"
+      },
+      {
+        "input_gate": "ready"
+      },
+      {
+        "freshness": "ready"
+      }
+    ],
+    "refs": [
+      "reports/board/agenda-seed-latest.md",
+      "reports/board/claude-code-precheck-latest.md",
+      "reports/board/board-premeeting-brief-latest.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "board-agenda-assembly",
+      "board-premeeting-brief",
+      "claude-code-precheck"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board"
+    ]
+  },
+  "candidate_hint": false
+}

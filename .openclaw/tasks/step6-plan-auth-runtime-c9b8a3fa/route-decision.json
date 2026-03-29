@@ -1,0 +1,16 @@
+{
+  "task_id": "step6-plan-auth-runtime-c9b8a3fa",
+  "route_decision_id": "route-766d3cfe2c03",
+  "decision": "claude-code",
+  "score": 0.85,
+  "reasons": [
+    "task appears multi-step or implementation-heavy",
+    "requested_route=claude-code"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/task_runtime.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ]
+}

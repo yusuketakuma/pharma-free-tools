@@ -1,0 +1,25 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "suggestion",
+  "domain": "monitoring",
+  "summary": "cross-agent leverage continues to favor reusable judgment packs / verification templates / wording compression over agent expansion or model scale-up.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "recent growth work points to template reuse over headcount expansion",
+      "workspace improvement loop now emphasizes implementation confirmation",
+      "pharma-free-tools and sidebiz remain strong reuse targets"
+    ],
+    "refs": [
+      "reports/cron/agent-workforce-expansion-review-20260327-0645.md",
+      "reports/cron/proactive-idle-work-discovery-20260327-0820.md",
+      "reports/growth/self-improvement-verification-latest.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["supervisor-core", "doc-editor", "board-visionary"],
+    "repos": ["openclaw-core"],
+    "layers": ["board", "execution"]
+  },
+  "candidate_hint": false
+}

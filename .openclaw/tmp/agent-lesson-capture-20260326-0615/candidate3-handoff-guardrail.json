@@ -1,0 +1,85 @@
+{
+  "proposal_id": "proposal-20260325211500-handoff-guardrail",
+  "created_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "title": "Require exact-target preflight plus owner/due/success criteria before light-edit or scout handoff escalation",
+  "summary": "軽微修正と scout / PoC の引き渡しを、対象確認と owner/due/success criteria が揃うまで上げない。",
+  "requested_action": {
+    "type": "tune",
+    "target": "light-edit / scout handoff guardrail"
+  },
+  "change_scope": {
+    "domains": [
+      "routing",
+      "prompt",
+      "policy"
+    ],
+    "repos": [
+      "openclaw-core",
+      "pharma-free-tools",
+      "sidebiz"
+    ],
+    "agents": [
+      "ceo-tama",
+      "research-analyst",
+      "doc-editor",
+      "opportunity-scout"
+    ],
+    "layers": [
+      "board",
+      "execution",
+      "user-facing"
+    ]
+  },
+  "why_now": "exact target mismatch と PoC handoff stall が別々の報告で再発しており、前段のガードが不足している。",
+  "expected_benefit": "retry cost を下げ、曖昧な handoff を減らし、次アクションを実行可能にする。",
+  "possible_harm": "小さな作業でも前段確認が増え、速度が少し落ちる。",
+  "boundary_impact": {
+    "ceo_board": "low",
+    "board_execution": "medium",
+    "trust_boundary": "low",
+    "approval_boundary": "low"
+  },
+  "reversibility": {
+    "level": "high",
+    "rollback_path": "preflight を外し、従来の軽い handoff に戻す。"
+  },
+  "blast_radius": {
+    "users": "low",
+    "agents": "medium",
+    "production": "low"
+  },
+  "novelty": {
+    "level": "medium"
+  },
+  "evidence": {
+    "metrics": [
+      "pharma-free-tools の軽微修正で exact target mismatch が発生",
+      "sidebiz / research-analyst で owner/due/success criteria の欠落が繰り返し指摘"
+    ],
+    "signals": [
+      "signal-20260325211500-exact-target",
+      "signal-20260325211500-handoff-guardrail"
+    ],
+    "refs": [
+      "reports/cron/agent-lesson-capture-20260325-0615.md",
+      "reports/cron/agent-performance-optimization-review-20260325-0715.md",
+      "reports/cron/autonomy-kpi-outcome-review-20260326-0430.md",
+      "reports/cron/domain-specialization-growth-review-20260325-0700.md"
+    ]
+  },
+  "root_issue": "light edits and scout handoffs are still missing a mandatory preflight gate",
+  "desired_change": "targets, owners, due dates, and success criteria should be confirmed before escalation",
+  "mandatory_deep_flags": [],
+  "risk_hints": [
+    "preflight overhead",
+    "handoff ambiguity"
+  ],
+  "recommendation": {
+    "proposed_lane": "review",
+    "proposed_disposition": "adopt"
+  }
+}

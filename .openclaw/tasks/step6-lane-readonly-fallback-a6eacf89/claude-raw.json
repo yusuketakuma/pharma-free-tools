@@ -1,0 +1,7 @@
+{
+  "kind": "mock",
+  "mock_mode": "acp_pre_session_failure",
+  "task_id": "step6-lane-readonly-fallback-a6eacf89",
+  "dispatch_id": "dispatch-readonly-fallback",
+  "settings_path": "/Users/yusuke/.openclaw/workspace/.openclaw/tasks/step6-lane-readonly-fallback-a6eacf89/claude-settings.json"
+}

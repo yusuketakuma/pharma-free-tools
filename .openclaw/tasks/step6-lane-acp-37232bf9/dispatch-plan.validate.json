@@ -1,0 +1,74 @@
+{
+  "task_id": "step6-lane-acp-37232bf9",
+  "dispatch_id": "dispatch-fde250524e3e",
+  "execution_mode": "claude_code",
+  "selected_provider": "claude_code",
+  "selected_executor": "claude-code",
+  "assignment_contract": {
+    "lead_role": "engineering",
+    "advisory_subroles": [],
+    "active_subroles": [],
+    "mandatory_review_roles": []
+  },
+  "provider_assignments": {
+    "lead": {
+      "role": "engineering",
+      "provider": "claude_code",
+      "executor": "claude-code"
+    },
+    "subroles": []
+  },
+  "scores": {
+    "capability_fit": 1.0,
+    "provider_preference_fit": 0.7,
+    "historical_success": 0.82,
+    "latency_fit": 0.7,
+    "limit_pressure": 0.1,
+    "cost_pressure": 0.1,
+    "queue_penalty": 0.2,
+    "risk_penalty": 0.05,
+    "total": 2.77
+  },
+  "reasons": [
+    "重いコードタスク + Claude healthy のため claude_code"
+  ],
+  "capacity_snapshot_ref": ".openclaw/tasks/step6-lane-acp-37232bf9/capacity-snapshot.json",
+  "publish_policy": {
+    "auto_publish_allowed": true,
+    "block_on_degraded_success": false,
+    "protected_paths": []
+  },
+  "captured_at": "2026-03-22T13:02:00+09:00",
+  "auth_blocked": false,
+  "pre_auth_openclaw_phase": false,
+  "primary_mode": "acp",
+  "selected_lane": "acp",
+  "selection_reasons": [
+    "primary_mode=acp",
+    "selected acp because acp_healthy=true"
+  ],
+  "fallback_chain": [
+    "acp",
+    "cli",
+    "cli_backend_safety_net"
+  ],
+  "lane_health_snapshot": {
+    "auth_ok": true,
+    "acp_healthy": true,
+    "cli_healthy": true,
+    "cli_backend_healthy": true,
+    "acp_last_success_at": "2026-03-22T16:43:45+09:00",
+    "cli_last_success_at": "2026-03-22T16:43:41+09:00",
+    "acp_consecutive_failures": 0,
+    "cli_consecutive_failures": 1,
+    "retry_after_sec": 0.0,
+    "hard_blocked": false,
+    "probe_fresh": true,
+    "probe_path": ".openclaw/runtime/health/lane-health.json",
+    "lane_last_error": {},
+    "lane_latency_ms": {},
+    "lane_transport": {},
+    "captured_at": "2026-03-22T16:41:02+09:00"
+  },
+  "task_type": "write"
+}

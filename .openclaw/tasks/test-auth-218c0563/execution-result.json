@@ -1,0 +1,18 @@
+{
+  "task_id": "test-auth-218c0563",
+  "status": "runtime_error",
+  "executor": "claude-code",
+  "summary": "auth required",
+  "changed_files": [],
+  "verification_results": [
+    "acp_auth_preflight"
+  ],
+  "remaining_risks": [],
+  "exit_code": 30,
+  "started_at": "2026-03-22T13:00:00+09:00",
+  "finished_at": "2026-03-22T13:00:01+09:00",
+  "dispatch_id": "dispatch-test-auth",
+  "_meta": {
+    "result_code": "AUTH_REQUIRED"
+  }
+}

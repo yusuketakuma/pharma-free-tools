@@ -1,0 +1,11 @@
+{
+  "task_id": "step6-lane-capacity-de48fac0",
+  "provider": "openclaw",
+  "primary_mode": "acp",
+  "selected_lane": "none",
+  "fallback_chain": [],
+  "selection_reasons": [],
+  "lane_health_snapshot": {},
+  "captured_at": "2026-03-22T13:02:00+09:00",
+  "version": 1
+}

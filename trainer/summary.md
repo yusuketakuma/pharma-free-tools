@@ -49,3 +49,13 @@
 2. 次回巡回: coding 4時間閾値チェック
 3. 08:00以降: 社長への定例報告（MCS最終日フォロー含む）
 4. homecare: 三環系ALERT対応の進展確認
+
+
+---
+
+## 2026-03-27 03:00 JST（OpenClaw Core / learning review）
+
+- report-learning-review の最新テーマは、`metric-claim-verification-checklist.md` による completion claim の証跡化。
+- review / apply / manual_required / pending_artifact / effect-confirmed を分けて扱い、applied = verified としない。
+- queue テレメトリは観測で止めず、繰り返す prefix は Queue Triage Analyst runbook に渡す。
+- 以前の `trainer/` 教訓は歴史として残しつつ、現在の正本は project docs と reports 側に寄せる。

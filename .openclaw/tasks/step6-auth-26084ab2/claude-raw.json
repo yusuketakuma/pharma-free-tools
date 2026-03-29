@@ -1,0 +1,50 @@
+{
+  "adapter": "openclaw-acp",
+  "lane": "acp",
+  "dispatch_id": "dispatch-auth",
+  "dispatch_attempt_id": "dispatch-auth_attempt_01",
+  "captured_at": "2026-03-22T16:21:25+09:00",
+  "request": {
+    "task_id": "step6-auth-26084ab2",
+    "task_summary": "Implement queue rebalance fixture",
+    "target_paths": [
+      ".openclaw/scripts/execute_task.py",
+      ".openclaw/scripts/rebalance_queue.py"
+    ],
+    "task_type": "write"
+  },
+  "transport": {
+    "provider": "claude_code",
+    "lane": "acp",
+    "execution_mode": "cli",
+    "bin": "claude",
+    "bin_source": "yaml",
+    "bin_resolved": "/Users/yusuke/.local/bin/claude",
+    "available": true,
+    "command_preview": [
+      "claude",
+      "acp",
+      "connect",
+      "--stdio"
+    ]
+  },
+  "auth": {
+    "status_path": "/Users/yusuke/.openclaw/workspace/.openclaw/tasks/step6-auth-26084ab2/auth-status.json",
+    "logged_in": false
+  },
+  "session": {
+    "mode": "preflight_mock",
+    "started": true
+  },
+  "result_preview": {
+    "status": "success",
+    "summary": "ACP adapter completed successfully",
+    "meta": {
+      "lane": "acp",
+      "partial_execution": false,
+      "side_effects_possible": false,
+      "publishable": true,
+      "session_mode": "preflight_mock"
+    }
+  }
+}

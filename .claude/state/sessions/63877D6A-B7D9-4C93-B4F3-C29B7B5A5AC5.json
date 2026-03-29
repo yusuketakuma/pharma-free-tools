@@ -1,0 +1,38 @@
+{
+  "session_id": "63877D6A-B7D9-4C93-B4F3-C29B7B5A5AC5",
+  "parent_session_id": null,
+  "state": "stopped",
+  "state_version": 1,
+  "started_at": "2026-03-22T07:40:34Z",
+  "updated_at": "2026-03-22T07:40:52Z",
+  "resume_token": "36C9896E-339F-41A8-9FFB-33FFBEC44E44",
+  "event_seq": 12,
+  "last_event_id": "event-000012",
+  "fork_count": 0,
+  "orchestration": {
+    "max_state_retries": 3,
+    "retry_backoff_seconds": 10
+  },
+  "cwd": "/Users/yusuke/.openclaw/workspace",
+  "project_name": "workspace",
+  "prompt_seq": 9,
+  "git": {
+    "branch": "main",
+    "uncommitted_changes": 116,
+    "last_commit": "c74d61e5"
+  },
+  "plans": {
+    "exists": false,
+    "last_modified": 0,
+    "wip_tasks": 0,
+    "todo_tasks": 0,
+    "pending_tasks": 0,
+    "completed_tasks": 0
+  },
+  "changes_this_session": [],
+  "intent": "literal",
+  "resumed_at": "2026-03-22T07:40:50Z",
+  "ended_at": "2026-03-22T07:40:52Z",
+  "duration_minutes": 540,
+  "memory_logged": true
+}

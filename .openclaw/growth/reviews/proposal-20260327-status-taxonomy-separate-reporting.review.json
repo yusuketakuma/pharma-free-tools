@@ -1,0 +1,23 @@
+{
+  "review_id": "proposal-20260327-status-taxonomy-separate-reporting-review",
+  "proposal_id": "proposal-20260327-status-taxonomy-separate-reporting",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-status-taxonomy-separate-reporting.json",
+  "reviewed_at": "2026-03-27T06:40:28+09:00",
+  "decision": "approve",
+  "reviewer": "ceo-tama",
+  "reason": "Board 2026-03-27 06:27 JST で approve 候補。report templates / docs / cron wording に限定された低リスク変更で、状態 taxonomy の分離は reversible かつ authority / routing / trust boundary に触れないため approve.",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+    "projects/openclaw-core/docs/board-runtime-status-taxonomy.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+    "reports/board/agenda-seed-latest.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

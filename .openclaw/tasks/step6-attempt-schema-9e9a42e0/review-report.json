@@ -1,0 +1,11 @@
+{
+  "task_id": "step6-attempt-schema-9e9a42e0",
+  "verdict": "pass",
+  "summary": "Execution result passed review and may be published.",
+  "issues": [],
+  "publish_recommendation": "publish",
+  "publishable": true,
+  "requires_manual_review": false,
+  "result_classification": "strict_success",
+  "fallback_used": false
+}

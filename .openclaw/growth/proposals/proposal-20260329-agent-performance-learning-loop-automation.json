@@ -1,0 +1,58 @@
+{
+  "proposal_id": "proposal-20260329-agent-performance-learning-loop-automation",
+  "created_at": "2026-03-29T01:27:00+09:00",
+  "phase": "synthesis",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "agent-performance-optimization-review",
+    "agent-lesson-capture",
+    "autonomy-loop-health-review"
+  ],
+  "summary": "agent performance evaluation, lesson capture, and autonomy loop health monitoringを統合し、評価結果から直接学びを抽出・適用する自動化closed loopを構築するパフォーマンス学習ループの提案。",
+  "selected_proposals": [
+    {
+      "proposal_id": "proposal-20260329-performance-learning-loop-automation",
+      "title": "Automated Performance-to-Learning Loop Integration for Agent Self-Improvement",
+      "summary": "パフォーマンス評価スコアカードと教訓キャプチャを統合し、スコア低下時に自動で改善分析と提案を行うclosed loopを構築。経済性評価と過去成功パターンの自動提案で、ROIベースのagentチューニングを実現する。",
+      "observations": [
+        "現行では performance optimization review と lesson capture が別々に実行され、評価結果が次の改善サイクルに直接反映されない",
+        "パフォーマンススコア低下の根本原因が教訓キャプチャとして記録されるが、それが次のチューニングに自動で連動しない",
+        "経済性分析（token消費量/コスト対効果）がパフォーマンス評価に組み込まれておらず、ROIベースの最適化が不足",
+        "heartbeat metricsとagent performanceの相関から、特定の指標低下が根本原因となるパターンが可視化可能",
+        "autonomy loop health reviewでは、learning loopの不完全性がsystem-levelの安定性に影響することが示唆されている"
+      ],
+      "proposed_changes": [
+        "パフォーマンス評価スコアカードと教訓キャプチャを1つの実行サイクルに統合",
+        "スコア低下時に自動で教訓分析ルーチンを起動し、改善案を生成",
+        "agent performance optimization reviewにtoken消費量・コスト対効果指標を追加",
+        "各agentのperformanceスコアと経済性を組み合わせた包括評価指標を導入",
+        "評価結果と教訓の関連性を可視化し、改善効果の追跡を可能にする",
+        "低コスト・高性能なagentチューニング優先度を自動で計算",
+        "performance → lesson → tuning → verificationの流れを自動化closed loopに構築"
+      ],
+      "affected_paths": [
+        ".openclaw/growth/runbooks/agent-performance-learning-synthesis.md",
+        ".openclaw/growth/prompts/agent-performance-review-with-lesson-integration.md",
+        ".openclaw/growth/config/performance-economics-metrics.json",
+        ".openclaw/growth/cron-wording/agent-performance-improvement-cycle.md",
+        ".openclaw/org/roles/performance-benchmarker.md",
+        ".openclaw/workspace/.openclaw/runtime/metrics/",
+        ".openclaw/growth/runbooks/autonomy-loop-health-monitoring.md"
+      ],
+      "evidence": [
+        "agent-performance-optimization-review: 現行のパフォーマンスレビュープロセス",
+        "agent-lesson-capture: 課題と改善点の記録プロセス",
+        "heartbeat runtime metrics: agent performanceとtoken消費の相関関係",
+        "autonomy-loop-health-review: system-level健康診断での学習ループ不完全性の指摘"
+      ],
+      "requires_manual_approval": false,
+      "next_step": "1. agent performance evaluationのschemaに経済性指標を追加 2. lesson captureとperformance reviewの統合フローを設計 3. 改善提案自動生成のprototypeを開発 4. 統合された評価サイクルの2週間間での実験的実装"
+    }
+  ],
+  "proposal_count": 1,
+  "requires_manual_approval": false,
+  "next_step": "Board cycleで統合されたperformance learning loopの提案を審査し、実装計画に反映させる"
+}

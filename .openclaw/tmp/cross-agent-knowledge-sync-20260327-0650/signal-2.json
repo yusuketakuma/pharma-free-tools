@@ -1,0 +1,25 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "lesson",
+  "domain": "policy",
+  "summary": "stale backlog triage / safe-close / reopen / escalate / record contract has stabilized around owner / next_action / success_criteria, with review_after and linked_evidence now treated as part of the close-path proof rather than free-form extras.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "owner / next_action / success_criteria keep reappearing as fixed points",
+      "review_after and linked_evidence are treated as proof-path support",
+      "no new escalation shape was introduced in this cycle"
+    ],
+    "refs": [
+      "reports/board/board-agenda-assembly-20260327-0035.md",
+      "reports/board/board-postmeeting-agent-dispatch-20260327-0435.md",
+      "reports/cron/workspace-report-learning-review-20260327-0300.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["supervisor-core", "board-auditor", "board-operator", "doc-editor"],
+    "repos": ["openclaw-core"],
+    "layers": ["board", "execution"]
+  },
+  "candidate_hint": false
+}

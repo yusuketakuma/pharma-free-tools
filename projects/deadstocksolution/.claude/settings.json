@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "projectId": "deadstocksolution",
+  "controlPlane": "OpenClaw",
+  "executionPlane": "Claude Code",
+
+  "transport": {
+    "primary": "acp",
+    "secondary": "cli-headless",
+    "fallback": "cli-backend"
+  },
+
+  "prompt": {
+    "mode": "append",
+    "safetyViaPrompt": false,
+    "safetyVia": ["hooks", "permissions", "allow-deny", "protected-paths"]
+  },
+
+  "schema": {
+    "executionRequest": "../../schemas/execution-request.json",
+    "executionResult": "../../schemas/execution-result.json"
+  },
+
+  "agents": {
+    "codingOnly": true,
+    "active": [
+      "engineering/backend-architect",
+      "engineering/frontend-developer",
+      "engineering/devops-automator",
+      "engineering/rapid-prototyper",
+      "testing/api-tester",
+      "testing/performance-benchmarker",
+      "testing/test-results-analyzer",
+      "testing/workflow-optimizer",
+      "docs/docs-integrator",
+      "operations/infrastructure-maintainer"
+    ],
+    "maxConcurrent": 3,
+    "activationPolicy": "on-demand",
+    "neverAlwaysOn": ["product-manager", "designer", "ops-manager"]
+  },
+
+  "permissions": {
+    "allow": [
+      "file-read",
+      "file-write",
+      "shell:npm *",
+      "shell:npx vitest *",
+      "shell:npx drizzle-kit *",
+      "shell:npx tsc *",
+      "shell:npx eslint *",
+      "shell:git status",
+      "shell:git diff *",
+      "shell:git log *",
+      "shell:git add *",
+      "shell:git commit *"
+    ],
+    "deny": [
+      "shell:git push *",
+      "shell:git reset --hard *",
+      "shell:git checkout -- *",
+      "shell:rm -rf *",
+      "shell:curl * --data *",
+      "shell:vercel deploy *"
+    ],
+    "approvalRequired": [
+      "shell:git push",
+      "shell:vercel *",
+      "file-write:../../config/*",
+      "file-write:../../schemas/*",
+      "file-write:../../org/*"
+    ]
+  },
+
+  "hooks": {
+    "preExecution": {
+      "validateSchema": true,
+      "checkApproval": true,
+      "checkCapacity": true
+    },
+    "postExecution": {
+      "validateResultSchema": true,
+      "storeOutput": true,
+      "reportMetrics": true
+    }
+  },
+
+  "auth": {
+    "preferred": "api_key",
+    "setupTokenAs": "compatibility",
+    "failClosed": true
+  }
+}

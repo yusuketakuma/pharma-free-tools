@@ -1,0 +1,26 @@
+{
+  "review_id": "proposal-20260326-anomaly-delta-monitor-contract-review",
+  "proposal_id": "proposal-20260326-anomaly-delta-monitor-contract",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260326-anomaly-delta-monitor-contract.json",
+  "reviewed_at": "2026-03-26T22:40:33+09:00",
+  "decision": "approve",
+  "reviewer": "ceo-tama",
+  "reason": "Board approve candidate。定常時の board / heartbeat / scorecard を signal-only に寄せる文言更新で、docs / reports / runbook / cron wording の低リスク範囲に収まるため。",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+    "projects/openclaw-core/docs/board-heartbeat-scorecard-signal-only.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-scorecard-review-20260326-0600.md",
+    "reports/cron/autonomy-loop-health-review-20260325-0500.md"
+  ],
+  "blocked_paths": [
+    ".openclaw/runtime/board/agenda-candidates.jsonl"
+  ],
+  "status_before": "APPLIED",
+  "status_after": "APPROVED",
+  "notes": [
+    "Board 裁定で approve 候補。runtime の候補キューは本 review の低リスク scope から除外し、docs / reports / runbook / cron wording に限定して assisted apply 前提で進める."
+  ]
+}

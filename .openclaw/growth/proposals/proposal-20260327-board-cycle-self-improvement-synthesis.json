@@ -1,0 +1,88 @@
+{
+  "proposal_id": "proposal-20260327-board-cycle-self-improvement-synthesis",
+  "created_at": "2026-03-27T16:27:00+09:00",
+  "phase": "synthesis",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "autonomy-loop-health-review",
+    "agent-scorecard-review",
+    "agent-lesson-capture",
+    "agent-staffing-and-prompt-tuning",
+    "agent-performance-optimization-review",
+    "agent-workforce-expansion-review",
+    "board / heartbeat runtime recent report"
+  ],
+  "summary": "直近の low-risk reporting / prompt / runbook 系は既に applied に収束しているため、新規乱立は避ける。今回の Board サイクルへ渡す未解消論点は、supervisor-core の scope 縮小と exact-target preflight の分離を manual review に残す 1 件だけ。",
+  "selected_proposals": [
+    {
+      "proposal_id": "proposal-20260326-supervisor-boundary-preflight",
+      "title": "Shrink supervisor-core triage scope and require exact-target preflight before light-edit / scout handoffs",
+      "summary": "supervisor-core の観測・triage・品質レビュー同居を縮め、dominant-prefix triage は専任経路へ寄せる。あわせて軽微修正と scout / PoC handoff に exact target / owner / due / success criteria を必須化するが、routing root / trust boundary を触る部分は manual review に分離する。",
+      "observations": [
+        "agent-performance-optimization-review / agent-workforce-expansion-review の流れでは、最も効く改善は新規採用より役割の広さを縮めることに収束している。",
+        "agent-lesson-capture では、exact target mismatch と owner / due / success criteria の欠落が handoff の retry cost を押し上げると繰り返し示されている。",
+        "board review では、この proposal は方向性は妥当だが routing root / trust boundary / protected path と low-risk 文言変更が混在しているため revise 扱いになっている。",
+        "stale backlog / status taxonomy / proof-path / prompt narrowing の low-risk proposal はすでに applied 済みで、今回残るのは supervisor boundary の未解消部だけである。"
+      ],
+      "proposed_changes": [
+        "supervisor-core の runbook を、観測集約と escalation に寄せて triage の主経路から外す文言に整理する。",
+        "dominant-prefix triage を Queue Triage Analyst の既定経路に固定する案は、routing root 変更として separate manual review に切り出す。",
+        "light-edit / scout / PoC handoff の前に exact target / owner / due / success criteria を 1 行で必須確認する low-risk wording を docs / runbook / cron wording に入れる。",
+        "この proposal では auth / trust boundary / protected path の変更を行わず、boundary 変更は別提案に分離する。"
+      ],
+      "affected_paths": [
+        "projects/openclaw-core/docs/supervisor-core-runbook.md",
+        "projects/openclaw-core/docs/handoff-preflight.md",
+        "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+        "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+        "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+        "reports/cron/agent-workforce-expansion-review-20260326-0645.md",
+        "reports/cron/agent-lesson-capture-20260326-0615.md"
+      ],
+      "evidence": [
+        "agent-performance-optimization-review 20260326-0715: role scope should be narrowed; supervisor-core is absorbing too much triage work",
+        "agent-workforce-expansion-review 20260326-0645: no new staffing needed; fix role width and repetition first",
+        "agent-lesson-capture 20260326-0615: exact target mismatch and missing owner/due/success criteria increase retry cost",
+        "board review note: revise because routing root / trust boundary / protected path were mixed with low-risk wording changes"
+      ],
+      "requires_manual_approval": true,
+      "next_step": "Split the low-risk docs/runbook wording from the routing-root / trust-boundary change, then resubmit the wording-only slice if needed."
+    }
+  ],
+  "excluded_proposals": [
+    {
+      "proposal_id": "proposal-20260327-status-taxonomy-separate-reporting",
+      "reason": "already APPLIED; do not reopen the status-taxonomy contract this cycle."
+    },
+    {
+      "proposal_id": "proposal-20260327-stale-backlog-triage-contract",
+      "reason": "already APPLIED; stale-backlog triage contract is baseline now."
+    },
+    {
+      "proposal_id": "proposal-20260327-handoff-preflight-guardrail",
+      "reason": "already APPLIED; handoff preflight wording is now part of the steady-state baseline."
+    },
+    {
+      "proposal_id": "proposal-20260327-narrow-role-prompt-templates",
+      "reason": "already APPLIED; lightweight operator prompt narrowing is baseline, not new Board work."
+    },
+    {
+      "proposal_id": "proposal-20260327-close-record-proof-path",
+      "reason": "already APPLIED; proof-path and completion-state separation were carried forward earlier in the day."
+    },
+    {
+      "proposal_id": "proposal-20260327-bundle-manifest-dryrun-sync",
+      "reason": "already APPROVED / in progress; live-reflection bundle handling is not a new proposal for this cycle."
+    },
+    {
+      "proposal_id": "proposal-20260326-anomaly-delta-monitor-contract",
+      "reason": "already APPLIED; signal-only monitor contract is baseline now."
+    }
+  ],
+  "proposal_count": 1,
+  "requires_manual_approval": true,
+  "next_step": "Board review は supervisor-core scope の manual review と low-risk wording の分離に限定し、routing root / trust boundary の変更は別提案へ切り出す。"
+}

@@ -1,0 +1,42 @@
+Task ID: step6-lane-readonly-fallback-dbacd92d
+Dispatch ID: dispatch-readonly-fallback
+Execution mode: cli
+
+You must return structured output that matches the provided JSON schema exactly.
+Do not wrap the response in markdown fences.
+
+Task Summary:
+Review runtime behavior in read-only mode
+
+Constraints:
+- read-only
+
+Target Paths:
+- .openclaw/scripts/dispatch_task.py
+
+Verification Commands:
+- (none)
+
+Review Focus:
+- correctness
+
+Context Pack:
+# Context Pack: step6-lane-readonly-fallback-dbacd92d
+
+- task: Review runtime behavior in read-only mode
+- route: claude-code
+- route_decision_id: route-594da91d086f
+- approval_required: false
+- protected_paths: (none)
+
+## Constraints
+- read-only
+
+## Target Paths
+- .openclaw/scripts/dispatch_task.py
+
+## Verification Commands
+- (manual review only)
+
+## Review Focus
+- correctness

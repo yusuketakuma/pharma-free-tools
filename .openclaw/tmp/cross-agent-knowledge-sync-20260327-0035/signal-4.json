@@ -1,0 +1,26 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "risk_hint",
+  "domain": "reporting",
+  "summary": "review-approved / apply-blocked / live-receipt / artifact freshness still need to stay separate statuses; completion is still split across board and execution boundaries.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "review=approved",
+      "apply=blocked",
+      "exec live receipt unresolved",
+      "artifact freshness is OK but not equivalent to completion"
+    ],
+    "refs": [
+      "reports/cron/board-postmeeting-agent-dispatch-20260326-2245.md",
+      "reports/cron/cross-agent-knowledge-sync-20260326-1852.md",
+      "reports/board/board-premeeting-brief-20260327-0035.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["supervisor-core", "board-operator", "board-auditor"],
+    "repos": ["openclaw-core"],
+    "layers": ["board", "execution", "infra"]
+  },
+  "candidate_hint": false
+}

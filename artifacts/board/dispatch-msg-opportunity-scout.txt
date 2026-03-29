@@ -1,0 +1,8 @@
+OpenClaw 最終裁定（decision-ledger / board postmeeting 2026-03-26 10:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: investigate。新規論点は増やさず、churn を下げる候補だけ監視する。
+
+依頼:
+- 新規論点が本当に必要かだけを再判定
+- 既存 stale-queue / ledger-bridge の焼き直しは除外
+- backlog churn を減らす差分候補のみ拾う

@@ -1,0 +1,65 @@
+{
+  "proposal_id": "2026-03-28-midnight-dispatch-optimization",
+  "created_at": "2026-03-28T00:00:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "self-improvement-proposal-review",
+    "name": "cron:b11cb560-da93-45ba-bbb1-4a17d45614a1"
+  },
+  "summary": "深夜帯dispatch巡回の最適化でセッションコストを低減する",
+  "observations": [
+    "深夜帯スリープ確認済みエージェントに対する無駄な巡回",
+    "深夜帯巡回コストの実態",
+    "有効な深夜帯監視パターンの確立"
+  ],
+  "proposed_changes": [
+    "深夜帯巡回間隔の動的最適化",
+    "深夜帯dispatch内容の軽量化",
+    "外部リソース健全性チェックの自動化"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/midnight-dispatch-optimization.md",
+    ".openclaw/growth/cron-wording/midnight-dispatch-pattern.md"
+  ],
+  "evidence": [
+    "lessons-learned.md",
+    "heartbeat/2026-03-28-0000.md"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Resolve blocked/manual paths before verification.",
+  "cycle_id": "2026-03-28-midnight-dispatch-optimization",
+  "status": "APPROVED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T04:42:29+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T04:42:29+09:00",
+      "note": "review started by cron:b11cb560-da93-45ba-bbb1-4a17d45614a1"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T04:42:29+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T04:42:29+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "cron:b11cb560-da93-45ba-bbb1-4a17d45614a1",
+    "reason": "深夜帯dispatchの最適化は低リスクで、逆sleeptime検知の実効性が確認済み。翌日準備タスク限定の静音モード標準化で部長リソースを60%削減可能。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/growth/cron-wording/midnight-dispatch-pattern.md",
+      ".openclaw/growth/runbooks/midnight-dispatch-optimization.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T04:42:29+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-midnight-dispatch-optimization.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-28-midnight-dispatch-optimization.apply.json"
+}

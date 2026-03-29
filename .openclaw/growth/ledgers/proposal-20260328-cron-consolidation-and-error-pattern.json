@@ -1,0 +1,82 @@
+{
+  "cycle_id": "proposal-20260328-cron-consolidation-and-error-pattern",
+  "created_at": "2026-03-28T10:30:00+09:00",
+  "updated_at": "2026-03-29T15:43:06+09:00",
+  "proposal_id": "proposal-20260328-cron-consolidation-and-error-pattern",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260328-cron-consolidation-and-error-pattern.json",
+  "proposal_status": "APPROVED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-cron-consolidation-and-error-pattern.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Board裁定通りだがジョブ統合はboundary変更にあたりmanual apply必須。cronジョブの重複・過密実行整理はリソース最適化に直結。edit/rate limit errorパターン改善は再発防止に有効。",
+    "apply_mode": "manual",
+    "reviewed_at": "2026-03-28T23:40:43+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-28T16:41:23+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-cron-consolidation-and-error-pattern.review.json"
+    },
+    {
+      "at": "2026-03-28T21:41:07+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-cron-consolidation-and-error-pattern.review.json"
+    },
+    {
+      "at": "2026-03-28T22:41:27+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-cron-consolidation-and-error-pattern.review.json"
+    },
+    {
+      "at": "2026-03-28T23:40:43+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-cron-consolidation-and-error-pattern.review.json"
+    },
+    {
+      "at": "2026-03-29T02:42:52+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260328-cron-consolidation-and-error-pattern.apply.json"
+    },
+    {
+      "at": "2026-03-29T15:43:06+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260328-cron-consolidation-and-error-pattern.apply.json"
+    }
+  ],
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260328-cron-consolidation-and-error-pattern.apply.json",
+  "last_apply": {
+    "status": "manual_required",
+    "apply_mode": "manual",
+    "applied_paths": [],
+    "blocked_paths": [],
+    "manual_paths": [
+      ".openclaw/runbook/cron-consolidation-plan.md (新規作成)",
+      ".openclaw/runbook/edit-safety-rules.md (新規作成)",
+      "cron: agent-lesson-capture (統合候補)",
+      "cron: agent-performance-optimization-review (統合候補)",
+      "cron: agent-scorecard-review (統合候補)",
+      "cron: agent-staffing-and-prompt-tuning (統合候補)",
+      "cron: agent-workforce-expansion-review (統合候補)",
+      "cron: autonomy-loop-health-review (統合候補)",
+      "cron: board-agenda-seed-normalize (削除/統合候補)",
+      "cron: board-premeeting-brief-normalize (統合先候補)",
+      "cron: pharma-free-tools-theme-extraction (edit safety fix)",
+      "cron: workspace-tmp-and-artifact-cleanup-review (error handling fix)"
+    ],
+    "applied_at": "2026-03-29T15:43:06+09:00"
+  }
+}

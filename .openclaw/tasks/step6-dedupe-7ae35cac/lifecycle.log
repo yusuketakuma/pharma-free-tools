@@ -1,0 +1,1 @@
+{"at": "2026-03-22T16:51:05+09:00", "state": "AUTH_REQUIRED", "message": "seeded AUTH_REQUIRED", "details": {"route": "claude-code", "route_decision_id": "route-dedupe", "approval": {"required": false, "approved": true}, "approval_id": null, "dispatch_id": "dispatch-dedupe", "protected_paths": [], "message": "seeded AUTH_REQUIRED"}}

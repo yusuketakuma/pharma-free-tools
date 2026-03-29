@@ -1,0 +1,13 @@
+{
+  "task_id": "step6-acp-mock-contract-3a5ca29e",
+  "verdict": "blocked",
+  "summary": "Execution did not complete successfully.",
+  "issues": [
+    "execution status=timeout"
+  ],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": true,
+  "result_classification": "execution_failure",
+  "fallback_used": false
+}

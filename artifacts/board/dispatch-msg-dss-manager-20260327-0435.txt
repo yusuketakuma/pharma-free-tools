@@ -1,0 +1,9 @@
+OpenClaw 最終裁定（board postmeeting 2026-03-27 04:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: stale backlog triage / safe-close / reopen / escalate / record contract を固定し、triage と security/boundary review を分離する。
+
+依頼:
+- 新規拡張は凍結し、現行DDS運用を維持する
+- triage 結果確定まで監視を継続する
+- execute/route の変更は行わない
+- 自己改善 proposal を直接適用しない

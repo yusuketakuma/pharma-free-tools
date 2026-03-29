@@ -1,0 +1,26 @@
+version: 2
+project_id: deadstocksolution
+display_name: DeadStockSolution
+name: deadstocksolution
+status: maintenance
+ownership: project
+summary: 薬局向けデッドストック管理システム。薬局間の在庫マッチングと薬価基準データ連携。
+root_path: projects/deadstocksolution
+source_repo: /Users/yusuke/.openclaw/workspace/DeadStockSolution
+code_paths:
+  - projects/deadstocksolution/src
+  - projects/deadstocksolution/tests
+doc_paths:
+  - projects/deadstocksolution/docs
+  - projects/deadstocksolution/CLAUDE.md
+  - projects/deadstocksolution/.claude/README.md
+ops_paths:
+  - projects/deadstocksolution/ops
+backlog_paths:
+  - projects/deadstocksolution/backlog
+protected_paths:
+  - projects/deadstocksolution/project.yaml
+  - projects/deadstocksolution/ops/RUNBOOK.md
+default_route: openclaw
+heavy_route: claude_code
+status_file: projects/deadstocksolution/docs/status.md

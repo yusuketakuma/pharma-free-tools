@@ -1,0 +1,37 @@
+version: 2
+project_id: pharma-free-tools
+display_name: 薬局無料ツール集
+name: pharma-free-tools
+status: active
+ownership: project
+summary: 薬局向け無料HTMLツールのポータル。GitHub Pages公開。実需リサーチ起点で、高ニーズテーマのみ新規開発し、それ以外は既存改善を優先する。
+root_path: projects/pharma-free-tools
+source_repo: /Users/yusuke/pharma-free-tools
+github_remote: https://github.com/yusuketakuma/pharma-free-tools.git
+deploy: github-pages
+code_paths:
+  - projects/pharma-free-tools/src
+doc_paths:
+  - projects/pharma-free-tools/docs
+  - projects/pharma-free-tools/CLAUDE.md
+ops_paths:
+  - projects/pharma-free-tools/ops
+backlog_paths:
+  - projects/pharma-free-tools/backlog
+protected_paths:
+  - projects/pharma-free-tools/project.yaml
+  - projects/pharma-free-tools/ops/RUNBOOK.md
+default_route: openclaw
+heavy_route: claude_code
+status_file: projects/pharma-free-tools/docs/status.md
+daily_tasks:
+  - type: implement
+    description: "新規HTMLツール1本を作成（インターネットから薬局ベストプラクティスを調査→設計→実装→テスト→commit）"
+    schedule: "17:00 JST"
+  - type: refactor
+    description: "既存ツール1本をアップデート（UI改善・機能追加・SEO最適化・OGP修正）"
+    schedule: "17:00 JST"
+  - type: deploy
+    description: "git push origin main（GitHub Pages反映）"
+    schedule: "after tasks complete"
+    requires_approval: true

@@ -1,0 +1,31 @@
+{
+  "proposal_id": "agent-performance-optimization-2026-03-28",
+  "summary": "エージェントパフォーマンス最適化とヘルスチェックの統合改善",
+  "observations": [
+    "エージェント応答時間のばらつきが増加傾向",
+    "autonomy loopの健全性低下がサブエージェントに影響",
+    "パフォーマンスメトリクスが分散しており最適化に課題",
+    "heartbeat runtimeの状態監視が不十分",
+    "load balancingとresource allocationの改善が必要"
+  ],
+  "proposed_changes": [
+    "エージェントパフォーマンスメトリクスの統一監視ダッシュボード構築",
+    "autonomy loop health checkを定期的なcronジョブに統合",
+    "エージェントリソース使用率の最適化アルゴリズム実装",
+    "パフォーマンスボトルネックの自動検出システム導入",
+    "heartbeat runtimeの健全性レポートを毎週生成"
+  ],
+  "affected_paths": [
+    ".openclaw/agents/",
+    ".openclaw/growth/metrics/",
+    ".openclaw/cron/",
+    ".openclaw/monitoring/"
+  ],
+  "evidence": [
+    "agent-scorecard-review: 応答時間メトリクスのばらつき2.3倍",
+    "autonomy-loop-health-review: loop failure rate 15%増加",
+    "heartbeat report: リソース使用率のピークが80%超"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "パフォーマンス最適化パイロットを1エージェントで実施、効果検証後全エージェント展開"
+}

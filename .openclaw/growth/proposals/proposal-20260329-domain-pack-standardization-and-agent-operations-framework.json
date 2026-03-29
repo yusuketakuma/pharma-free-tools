@@ -1,0 +1,65 @@
+{
+  "proposal_id": "proposal-20260329-domain-pack-standardization-and-agent-operations-framework",
+  "created_at": "2026-03-29T06:27:00+09:00",
+  "phase": "synthesis",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "agent-lesson-capture",
+    "autonomy-loop-health-review",
+    "agent-performance-optimization-review"
+  ],
+  "summary": "lessons-learned-integration.mdで体系化されたdomain-pack標準化とエージェント運用フレームワークを実装し、status.md未作成問題や着手速度の格差といった具体的問題パターンを根本解決する提案。",
+  "selected_proposals": [
+    {
+      "proposal_id": "proposal-20260329-domain-pack-standardization-and-agent-operations-framework",
+      "title": "Domain-Pack標準化とエージェント運用フレームワークの統合実装",
+      "summary": "ドメイン特化エージェントの標準化フレームワークと、エージェント運用の具体的問題パターンへの対策を統合実装。lessons-learnedで体系化された知見を運用に落とし込み、rework削減と着手速度向上を目指す。",
+      "observations": [
+        "dss-manager、pharma-free-tools、sidebiz/polymarketでdomain-packの標準化が急務",
+        "status.md未作成問題（39回連続）や着手速度の格差（homecare 12分 vs sidebiz 47分）などがreworkの主要因",
+        "エージェント運用には「詳細版→運用版→印刷版」の3段階凝縮のような成功パターンがあるが、標準化されていない",
+        "波及チェック漏れや分析→実行の不足といった問題パターンが繰り返し発生",
+        "深夜帯dispatch設計が最適化されておらず、非効率なタスク実行が続いている",
+        "品質検証の自律化が進まず、報告値の信頼性問題が解決できていない"
+      ],
+      "proposed_changes": [
+        "domain-packの標準構成を実装：verification commands、known failures、fix patterns、decision axes、procedure templates、escalation boundaries",
+        "dss-manager用domain-packを最優先で作成：repo状態確認、不具合再現、影響範囲切り分け、既知障害との照合、リリース前検証",
+        "pharma-free-tools用domain-packを次に作成：薬局業務フローに沿った確認手順、用語辞書、リスク評価基準",
+        "エージェント運用フレームワークの標準化：着手速度改善パターンの横展開、status.md作成の自動チェック、波及チェックの習慣化",
+        "深夜帯dispatch設計の最適化：翌朝準備向け軽量タスクテンプレート、巡回間隔延長（30分→60分）",
+        "品質検証の自律化：定量的分析プロセスの自動化、完了証跡の徹底、metric-claim-verification-checklistの適用",
+        "「詳細版→運用版→印刷版」の3段階凝縮パターンを標準テンプレート化",
+        "エージェントごとの着手速度格差を解消するための分析→推奨→実装の全ループ一サイクル化"
+      ],
+      "affected_paths": [
+        ".openclaw/growth/domain-packs/dss-manager/",
+        ".openclaw/growth/domain-packs/pharma-free-tools/",
+        ".openclaw/growth/domain-packs/sidebiz/",
+        ".openclaw/growth/runbooks/agent-operations-standards.md",
+        ".openclaw/growth/prompts/domain-pack-implementation-guide.md",
+        ".openclaw/growth/cron-wording/midnight-dispatch-optimization.md",
+        ".openclaw/growth/quality-metrics/verification-checklist.md",
+        ".openclaw/docs/lessons-learned-integration.md",
+        ".openclaw/workspace/docs/AGENTS.md"
+      ],
+      "evidence": [
+        "lessons-learned-integration.md: domain-pack標準化の具体的な構成要素と優先順位が明確",
+        "status.md未作成問題：39回連続で未作成、全タスクブロックが必要な深刻な問題",
+        "着手速度格差：homecare 12分で3タスク完了 vs sidebiz 47分で0タスク着手",
+        "波及チェック漏れ：ポータル追加時にヘッダー数値を同時更新しなかった",
+        "分析→実行不足：CSV検証で問題指摘だが具体的対応案まで踏み込まなかった",
+        "深夜帯非効率：翌朝不要な重量タスクが深夜に実行されている",
+        "品質検証問題：報告値の信頼性問題が構造的に解決できていない"
+      ],
+      "requires_manual_approval": false,
+      "next_step": "1. dss-manager用domain-packの初版作成 2. エージェント運用フレームワークの標準化ガイドライン作成 3. 深夜帯dispatch設計の最適化テンプレ作成 4. 品質検証の自律化プロセスの実装"
+    }
+  ],
+  "proposal_count": 1,
+  "requires_manual_approval": false,
+  "next_step": "Board cycleでdomain-pack標準化とエージェント運用フレームワークの提案を審査し、運用効率化とrework削減を計画に反映させる"
+}

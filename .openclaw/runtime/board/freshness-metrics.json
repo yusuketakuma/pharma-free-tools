@@ -1,0 +1,117 @@
+{
+  "$schema": "board-freshness-metrics",
+  "metrics_version": "1.0.0",
+  "created_at": "2026-03-29T15:47:00+09:00",
+  "proposal_id": "proposal-2026-03-29-board-artifact-freshness-governance",
+
+  "summary": {
+    "current_slot": null,
+    "last_validated_at": null,
+    "total_artifacts_checked": 0,
+    "total_violations": 0,
+    "block_count": 0,
+    "warn_count": 0,
+    "reject_count": 0,
+    "published_count": 0,
+    "stale_artifact_count": 0,
+    "overall_freshness_score": null,
+    "slot_alignment_rate": null
+  },
+
+  "per_artifact_metrics": {
+    "agenda-seed": {
+      "artifact_type": "agenda-seed",
+      "slot_id": null,
+      "generated_at": null,
+      "freshness_score": null,
+      "validation_result": null,
+      "violation_count": 0,
+      "last_validated_at": null,
+      "consecutive_stale_count": 0,
+      "time_to_fresh_ms": null,
+      "recent_violations": []
+    },
+    "premeeting-brief": {
+      "artifact_type": "premeeting-brief",
+      "slot_id": null,
+      "generated_at": null,
+      "freshness_score": null,
+      "validation_result": null,
+      "violation_count": 0,
+      "last_validated_at": null,
+      "consecutive_stale_count": 0,
+      "time_to_fresh_ms": null,
+      "recent_violations": []
+    },
+    "claude-code-precheck": {
+      "artifact_type": "claude-code-precheck",
+      "slot_id": null,
+      "generated_at": null,
+      "freshness_score": null,
+      "validation_result": null,
+      "violation_count": 0,
+      "last_validated_at": null,
+      "consecutive_stale_count": 0,
+      "time_to_fresh_ms": null,
+      "recent_violations": []
+    },
+    "dispatch-result": {
+      "artifact_type": "dispatch-result",
+      "slot_id": null,
+      "generated_at": null,
+      "freshness_score": null,
+      "validation_result": null,
+      "violation_count": 0,
+      "last_validated_at": null,
+      "consecutive_stale_count": 0,
+      "time_to_fresh_ms": null,
+      "recent_violations": []
+    },
+    "postmeeting-memo": {
+      "artifact_type": "postmeeting-memo",
+      "slot_id": null,
+      "generated_at": null,
+      "freshness_score": null,
+      "validation_result": null,
+      "violation_count": 0,
+      "last_validated_at": null,
+      "consecutive_stale_count": 0,
+      "time_to_fresh_ms": null,
+      "recent_violations": []
+    },
+    "board-input-brief": {
+      "artifact_type": "board-input-brief",
+      "slot_id": null,
+      "generated_at": null,
+      "freshness_score": null,
+      "validation_result": null,
+      "violation_count": 0,
+      "last_validated_at": null,
+      "consecutive_stale_count": 0,
+      "time_to_fresh_ms": null,
+      "recent_violations": []
+    },
+    "board-ops-brief": {
+      "artifact_type": "board-ops-brief",
+      "slot_id": null,
+      "generated_at": null,
+      "freshness_score": null,
+      "validation_result": null,
+      "violation_count": 0,
+      "last_validated_at": null,
+      "consecutive_stale_count": 0,
+      "time_to_fresh_ms": null,
+      "recent_violations": []
+    }
+  },
+
+  "alert_status": {
+    "freshness_score_warning_triggered": false,
+    "block_rate_critical_triggered": false,
+    "stale_count_warning_triggered": false,
+    "slot_alignment_rate_critical_triggered": false,
+    "last_alert_at": null
+  },
+
+  "validation_history": []
+}

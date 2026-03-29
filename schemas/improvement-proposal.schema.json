@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/improvement-proposal.schema.json",
+  "title": "ImprovementProposal",
+  "description": "A proposal to improve the openclaw or claude_code system, generated from one or more improvement signals.",
+  "type": "object",
+  "required": ["proposal_id", "target_plane", "proposal_type", "summary", "risk_level", "version"],
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "description": "Unique identifier for this proposal."
+    },
+    "target_plane": {
+      "type": "string",
+      "enum": ["openclaw", "claude_code"],
+      "description": "The system plane this proposal targets."
+    },
+    "proposal_type": {
+      "type": "string",
+      "description": "Category or type of the proposed improvement."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Human-readable summary of what this proposal intends to change or improve."
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"],
+      "description": "Assessed risk level of applying this proposal."
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version of this proposal document."
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Optional identifier of the project this proposal is scoped to."
+    },
+    "evidence_signal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional list of signal_id values that provide evidence for this proposal."
+    },
+    "autonomous_action_allowed": {
+      "type": "boolean",
+      "description": "Whether this proposal may be applied autonomously without human approval."
+    },
+    "requires_manual_approval": {
+      "type": "boolean",
+      "description": "Whether this proposal requires explicit manual approval before being applied."
+    },
+    "proposed_changes": {
+      "type": "array",
+      "description": "Optional list of file-level changes this proposal intends to make.",
+      "items": {
+        "type": "object",
+        "required": ["path", "action"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "File path affected by this change."
+          },
+          "action": {
+            "type": "string",
+            "description": "The action to be taken on this file (e.g., create, modify, delete)."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "expected_benefit": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional list of expected benefits if this proposal is applied."
+    },
+    "priority_score": {
+      "type": "number",
+      "description": "Optional numeric priority score for ranking proposals."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "degraded"],
+      "description": "Optional confidence level in this proposal's analysis and recommendations."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_review",
+        "approved",
+        "rejected",
+        "applied",
+        "verified",
+        "rolled_back",
+        "blocked"
+      ],
+      "description": "Current lifecycle status of this proposal."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,20 @@
+{
+  "task_id": "step6-invalid-artifact-97632e89",
+  "active": false,
+  "queue_reason": null,
+  "last_queue_reason": "waiting_auth",
+  "state": "REVIEW_FAILED",
+  "route": "claude-code",
+  "route_decision_id": "route-invalid",
+  "approval_id": null,
+  "dispatch_id": "dispatch-invalid",
+  "queued_at": "2026-03-22T16:52:32+09:00",
+  "released_at": "2026-03-22T16:52:35+09:00",
+  "last_rebalanced_at": null,
+  "resume_target_state": null,
+  "resume_eligible": false,
+  "resume_blockers": [],
+  "updated_at": "2026-03-22T16:52:35+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/step6-invalid-artifact-97632e89/queue-status.json"
+}

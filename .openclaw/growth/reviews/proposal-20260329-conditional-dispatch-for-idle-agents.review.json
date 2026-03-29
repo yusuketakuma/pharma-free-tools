@@ -1,0 +1,12 @@
+{
+  "proposal_id": "proposal-20260329-conditional-dispatch-for-idle-agents",
+  "reviewed_at": "2026-03-29T08:46:00+09:00",
+  "reviewer": "subagent:adjust-empty-running-roles",
+  "decision": "approve",
+  "apply_mode": "assisted",
+  "reason": "低リスク変更（cron prompt wordingのみ）。auth/routing/trust boundaryに触れない。即時適用可能。",
+  "changes_applied": [
+    "board-postmeeting-agent-dispatchのpromptに条件付きdispatchルールを追加",
+    "receipt-delivery-reconcilerのDIFFERENTIAL_INSTRUCTIONS.mdを条件付き運用に更新"
+  ]
+}

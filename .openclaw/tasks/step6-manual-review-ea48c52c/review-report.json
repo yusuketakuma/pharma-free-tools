@@ -1,0 +1,13 @@
+{
+  "task_id": "step6-manual-review-ea48c52c",
+  "verdict": "pass",
+  "summary": "Manual review resolved; result may be published.",
+  "issues": [
+    "manual review resolved"
+  ],
+  "publish_recommendation": "publish",
+  "publishable": true,
+  "requires_manual_review": false,
+  "result_classification": "degraded_success_write",
+  "fallback_used": true
+}

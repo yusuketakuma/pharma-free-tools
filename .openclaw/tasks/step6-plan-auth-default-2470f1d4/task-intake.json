@@ -1,0 +1,38 @@
+{
+  "task_id": "step6-plan-auth-default-2470f1d4",
+  "task_summary": "Implement adapter change",
+  "requested_paths": [
+    ".openclaw/scripts/task_runtime.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "required_capabilities": [
+    "backend",
+    "python",
+    "runtime",
+    "workflow-automation"
+  ],
+  "desired_outputs": [
+    "script"
+  ],
+  "departments_involved": [
+    "engineering",
+    "studio-operations",
+    "testing"
+  ],
+  "risk_level": "low",
+  "risk_reasons": [
+    "no high-risk signals detected"
+  ],
+  "complexity": "medium",
+  "protected_paths": [],
+  "signals": {
+    "requested_actions": [
+      "edit"
+    ],
+    "verification_commands": [
+      "python3 -m unittest"
+    ],
+    "constraints": []
+  },
+  "requested_route": "claude-code"
+}

@@ -1,0 +1,75 @@
+{
+  "proposal_id": "GP-2026-03-29-agent-efficiency-optimization-01",
+  "title": "空回りエージェント効率化提案",
+  "description": "空回り状態のエージェントを特定し、効率的なリソース配分を実現するための監視と調整仕組みを構築",
+  "created_at": "2026-03-29T05:00:00+09:00",
+  "created_by": "autonomy-loop-health-review", 
+  "status": "INBOX",
+  "phase": "propose",
+  "requires_manual_approval": false,
+  "affected_paths": [
+    ".openclaw/growth/runbooks/agent-efficiency-monitoring.md",
+    ".openclaw/growth/cron-wording/agent-resource-optimization.md",
+    ".openclaw/config/agents/board-operator/BOOT.md",
+    ".openclaw/config/agents/board-auditor/BOOT.md"
+  ],
+  "evidence": [
+    {
+      "type": "runtime",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md",
+      "content": "空回りエージェント調整が残存課題として特定"
+    },
+    {
+      "type": "report",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md",
+      "content": "receipt-delivery-reconciler(13.5時間待機), queue-backlog-triage-clerk(diminishing_returns)など"
+    },
+    {
+      "type": "artifact",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md",
+      "content": "空回りエージェントの問題が継続している状態が確認"
+    }
+  ],
+  "problem_statement": "Boardディスパッチレポートによると、空回り状態のエージェントが存在し（receipt-delivery-reconcilerが13.5時間待機、queue-backlog-triage-clerkがdiminishing_returns状態）、リソースの非効率な利用が続いている。",
+  "proposed_changes": [
+    {
+      "change": "エージェント効率監視runbookの作成",
+      "description": "エージェントの空回り状態を検知し、リソース利用効率を可視化する仕組み",
+      "files": [
+        ".openclaw/growth/runbooks/agent-efficiency-monitoring.md"
+      ]
+    },
+    {
+      "change": "リソース最適化cronの設定",
+      "description": "board-operatorに定期的なエージェント状態監視とリソース調整ジョブを追加",
+      "files": [
+        ".openclaw/growth/cron-wording/agent-resource-optimization.md",
+        ".openclaw/config/agents/board-operator/BOOT.md"
+      ]
+    },
+    {
+      "change": "エージェントリソースポリシーの標準化",
+      "description": "各エージェントの待機時間、タイムアウト、リソース割り当て基準を標準化",
+      "files": [
+        ".openclaw/config/agents/board-auditor/BOOT.md"
+      ]
+    }
+  ],
+  "expected_benefits": [
+    "リソース利用効率の向上",
+    "不要な待機時間の削減",
+    "システム全体のパフォーマンス改善",
+    "運用コストの最適化"
+  ],
+  "risk_assessment": {
+    "risk_level": "low",
+    "risk_factors": [],
+    "mitigation_measures": [
+      "監視機能を先行して実装",
+      "調整は段階的に実施",
+      "影響範囲を限定した変更に留める"
+    ]
+  },
+  "next_step": "safe low-risk review candidate",
+  "proposer_impact": "medium"
+}

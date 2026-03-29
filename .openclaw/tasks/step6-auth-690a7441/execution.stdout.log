@@ -1,0 +1,35 @@
+[openclaw-acp] lane=acp dispatch_attempt=dispatch-auth_attempt_01
+[openclaw-acp] bin=claude source=yaml resolved=/Users/yusuke/.local/bin/claude
+[openclaw-acp] native_acp_available=false
+[openclaw-acp] native_acp_reason=claude CLI does not expose a native acp subcommand in this environment
+[openclaw-acp] transport_kind=claude_print_json_compat
+[openclaw-acp] invoking compat transport: claude -p --output-format json --permission-mode bypassPermissions --model sonnet --json-schema {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClaudeStructuredOutput",
+  "type": "object",
+  "required": [
+    "result",
+    "changed_files",
+    "verification_results",
+    "remaining_risks"
+  ],
+  "properties": {
+    "summary": {"type": "string"},
+    "result": {"type": "string"},
+    "changed_files": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "verification_results": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "remaining_risks": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}
+ <rendered-prompt>
+

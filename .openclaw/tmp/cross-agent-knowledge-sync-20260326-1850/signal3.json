@@ -1,0 +1,37 @@
+{
+  "signal_id": "signal-20260326-1852-03",
+  "occurred_at": "2026-03-26T18:52:51+09:00",
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "lesson",
+  "domain": "reporting",
+  "summary": "board cycle freshness held: the 20260326-1035 artifacts aligned, and the stale brief was regenerated instead of letting the older freshness note leak through.",
+  "severity": "low",
+  "evidence": {
+    "metrics": [
+      "slot match: 3/3",
+      "stale brief regeneration: done"
+    ],
+    "refs": [
+      "reports/cron/board-agenda-assembly-20260326-1035.md",
+      "reports/cron/board-dispatch-verification-20260326-1035-final.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "board-chairs",
+      "board-operator",
+      "board-auditor"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "infra"
+    ]
+  },
+  "candidate_hint": false
+}

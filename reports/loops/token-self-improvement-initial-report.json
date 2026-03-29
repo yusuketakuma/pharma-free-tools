@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-03-28T16:55:03.636Z",
+  "system": "token-management",
+  "version": "2.0",
+  "selfImprovement": {
+    "status": "initialized",
+    "enabled": true,
+    "weeklyReview": {
+      "schedule": "毎週日曜 10:00 JST",
+      "nextReview": "2026-04-05T01:00:00.000Z",
+      "enabled": true
+    },
+    "improvementRules": [
+      {
+        "id": "mode-switch-hysteresis",
+        "condition": "モード切り替えが1日に3回以上",
+        "action": "ヒステリシス追加",
+        "risk": "low"
+      },
+      {
+        "id": "emergency-stop-adjustment",
+        "condition": "緊急停止が1週間に2回以上",
+        "action": "停止ライン引き下げ",
+        "risk": "low"
+      },
+      {
+        "id": "high-efficiency-optimization",
+        "condition": "連続3日間通常モードで安定",
+        "action": "高効率モード閾値緩和",
+        "risk": "low"
+      },
+      {
+        "id": "energy-saving-adjustment",
+        "condition": "月間予算が50%超過",
+        "action": "省エネモード閾値引き上げ",
+        "risk": "low"
+      }
+    ],
+    "metrics": {
+      "averageConsumptionRate": null,
+      "modeSwitchesPerDay": 0,
+      "emergencyStopsPerWeek": 0,
+      "normalModeStableDays": 0,
+      "monthlyUsagePercent": 0
+    }
+  },
+  "integration": {
+    "systemState": "integrated",
+    "cronSchedule": "configured",
+    "reportPath": "/Users/yusuke/.openclaw/workspace/reports/loops"
+  }
+}

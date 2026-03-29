@@ -1,0 +1,38 @@
+{
+  "signal_id": "signal-20260326-1852-01",
+  "occurred_at": "2026-03-26T18:52:51+09:00",
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "lesson",
+  "domain": "execution",
+  "summary": "board-postmeeting dispatch was sent and accepted on the Board side end-to-end; exec-side live receipt is still unresolved and remains pending_artifact.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "board send: success",
+      "board accept: success",
+      "exec live receipt: unresolved"
+    ],
+    "refs": [
+      "reports/cron/board-postmeeting-agent-dispatch-20260326-1845.md",
+      "reports/cron/board-dispatch-verification-20260326-1035-final.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "board-postmeeting-agent-dispatch",
+      "board-auditor",
+      "board-operator"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": true
+}

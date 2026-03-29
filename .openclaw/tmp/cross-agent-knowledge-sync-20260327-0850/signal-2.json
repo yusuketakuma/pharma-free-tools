@@ -1,0 +1,38 @@
+{
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "lesson",
+  "domain": "policy",
+  "summary": "stale backlog triage has stabilized around owner / next_action / success_criteria, with review_after and linked_evidence now treated as part of the close-path proof.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "owner / next_action / success_criteria are fixed points",
+      "review_after and linked_evidence now attach to the proof-path",
+      "no new escalation shape appeared this cycle"
+    ],
+    "refs": [
+      "reports/cron/board-agenda-assembly-20260327-0635.md",
+      "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+      "reports/cron/workspace-report-learning-review-20260327-0300.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "supervisor-core",
+      "board-auditor",
+      "doc-editor",
+      "board-operator"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": false
+}

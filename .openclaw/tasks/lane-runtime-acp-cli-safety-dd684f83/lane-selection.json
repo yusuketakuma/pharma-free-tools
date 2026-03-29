@@ -1,0 +1,24 @@
+{
+  "task_id": "lane-runtime-acp-cli-safety-dd684f83",
+  "provider": "claude_code",
+  "primary_mode": "acp",
+  "selected_lane": "cli",
+  "fallback_chain": [
+    "acp",
+    "cli",
+    "cli_backend_safety_net"
+  ],
+  "selection_reasons": [
+    "test fixture",
+    "auto fallback acp->cli: pre-execution failure: session_start"
+  ],
+  "lane_health_snapshot": {
+    "auth_ok": true,
+    "acp_healthy": true,
+    "cli_healthy": true,
+    "cli_backend_healthy": true,
+    "captured_at": "2026-03-22T13:00:00+09:00"
+  },
+  "captured_at": "2026-03-22T13:00:00+09:00",
+  "version": 1
+}

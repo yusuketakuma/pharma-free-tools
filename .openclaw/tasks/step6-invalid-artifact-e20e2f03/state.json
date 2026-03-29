@@ -1,0 +1,31 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-invalid",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "approval_id": null,
+  "dispatch_id": "dispatch-invalid",
+  "protected_paths": [],
+  "message": "invalid queue artifact: /Users/yusuke/.openclaw/workspace/.openclaw/runtime/queue/waiting_auth/step6-invalid-artifact-e20e2f03.json: runtime-queue-entry: invalid json in /Users/yusuke/.openclaw/workspace/.openclaw/runtime/queue/waiting_auth/step6-invalid-artifact-e20e2f03.json",
+  "task_id": "step6-invalid-artifact-e20e2f03",
+  "state": "REVIEW_FAILED",
+  "updated_at": "2026-03-22T16:57:22+09:00",
+  "history": [
+    {
+      "state": "AUTH_REQUIRED",
+      "at": "2026-03-22T16:57:19+09:00",
+      "route_decision_id": "route-invalid",
+      "dispatch_id": "dispatch-invalid",
+      "message": "seeded AUTH_REQUIRED"
+    },
+    {
+      "state": "REVIEW_FAILED",
+      "at": "2026-03-22T16:57:22+09:00",
+      "route_decision_id": "route-invalid",
+      "dispatch_id": "dispatch-invalid",
+      "message": "invalid queue artifact: /Users/yusuke/.openclaw/workspace/.openclaw/runtime/queue/waiting_auth/step6-invalid-artifact-e20e2f03.json: runtime-queue-entry: invalid json in /Users/yusuke/.openclaw/workspace/.openclaw/runtime/queue/waiting_auth/step6-invalid-artifact-e20e2f03.json"
+    }
+  ]
+}

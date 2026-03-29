@@ -1,0 +1,11 @@
+{
+  "task_id": "step6-manual-review-b65b45a5",
+  "verdict": "blocked",
+  "summary": "fixture review",
+  "issues": [],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": true,
+  "result_classification": "degraded_success_write",
+  "fallback_used": true
+}

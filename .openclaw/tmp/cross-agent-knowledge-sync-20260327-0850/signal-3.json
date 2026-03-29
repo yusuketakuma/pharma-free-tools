@@ -1,0 +1,39 @@
+{
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "lesson",
+  "domain": "routing",
+  "summary": "triage and security audit / boundary review remain intentionally separated, and the audit order continues to be Gateway/public-surface before host-hardening.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "triage-first",
+      "audit-later",
+      "Gateway/public-surface -> host-hardening",
+      "boundary review after triage is fixed"
+    ],
+    "refs": [
+      "reports/board/board-premeeting-brief-latest.md",
+      "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "ceo-tama",
+      "board-auditor",
+      "supervisor-core",
+      "doc-editor"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution",
+      "infra"
+    ]
+  },
+  "candidate_hint": false
+}

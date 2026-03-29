@@ -1,0 +1,25 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "metric",
+  "domain": "reporting",
+  "summary": "20260327-0035 board cycle is fresh/ready and slot-aligned across seed, precheck, and premeeting brief; no stale-input fallback was needed.",
+  "severity": "low",
+  "evidence": {
+    "metrics": [
+      {"board_cycle_slot_id": "20260327-0035"},
+      {"input_gate": "ready"},
+      {"freshness_check": "OK"}
+    ],
+    "refs": [
+      "reports/board/board-agenda-assembly-20260327-0035.md",
+      "reports/board/board-premeeting-brief-20260327-0035.md",
+      "reports/board/claude-code-precheck-20260327-0035.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["board-agenda-assembly", "board-premeeting-brief", "claude-code-precheck", "board-operator"],
+    "repos": ["openclaw-core"],
+    "layers": ["board"]
+  },
+  "candidate_hint": false
+}

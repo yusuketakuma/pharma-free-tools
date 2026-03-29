@@ -1,0 +1,45 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-no-redispatch",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "approval_id": null,
+  "dispatch_id": "dispatch-no-redispatch",
+  "protected_paths": [],
+  "message": "execution succeeded; entering review",
+  "task_id": "step6-resume-no-redispatch-be18154a",
+  "state": "REVIEWING",
+  "updated_at": "2026-03-22T16:55:16+09:00",
+  "history": [
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:55:09+09:00",
+      "route_decision_id": "route-no-redispatch",
+      "dispatch_id": "dispatch-no-redispatch",
+      "message": "seeded READY_FOR_EXECUTION"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:55:12+09:00",
+      "route_decision_id": "route-no-redispatch",
+      "dispatch_id": "dispatch-no-redispatch",
+      "message": "execution request saved lane=acp attempt=dispatch-no-redispatch_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:55:12+09:00",
+      "route_decision_id": "route-no-redispatch",
+      "dispatch_id": "dispatch-no-redispatch",
+      "message": "executor started lane=acp attempt=dispatch-no-redispatch_attempt_01"
+    },
+    {
+      "state": "REVIEWING",
+      "at": "2026-03-22T16:55:16+09:00",
+      "route_decision_id": "route-no-redispatch",
+      "dispatch_id": "dispatch-no-redispatch",
+      "message": "execution succeeded; entering review"
+    }
+  ]
+}

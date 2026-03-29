@@ -1,0 +1,25 @@
+version: 2
+project_id: openclaw-core
+display_name: OpenClaw Core
+name: openclaw-core
+status: bootstrap
+ownership: project
+summary: OpenClaw orchestration / Claude Code hybrid execution core
+root_path: projects/openclaw-core
+code_paths:
+  - projects/openclaw-core/src
+  - projects/openclaw-core/tests
+doc_paths:
+  - projects/openclaw-core/docs
+  - projects/openclaw-core/CLAUDE.md
+  - projects/openclaw-core/.claude/README.md
+ops_paths:
+  - projects/openclaw-core/ops
+backlog_paths:
+  - projects/openclaw-core/backlog
+protected_paths:
+  - projects/openclaw-core/project.yaml
+  - projects/openclaw-core/ops/RUNBOOK.md
+default_route: openclaw
+heavy_route: claude_code
+status_file: projects/openclaw-core/docs/status.md

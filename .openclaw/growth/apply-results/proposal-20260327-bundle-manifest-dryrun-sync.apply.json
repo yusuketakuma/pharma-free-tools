@@ -1,11 +1,11 @@
 {
   "apply_id": "proposal-20260327-bundle-manifest-dryrun-sync-apply",
   "proposal_id": "proposal-20260327-bundle-manifest-dryrun-sync",
-  "applied_at": "2026-03-27T18:43:00+09:00",
+  "applied_at": "2026-03-28T20:43:07+09:00",
   "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-bundle-manifest-dryrun-sync.json",
   "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-bundle-manifest-dryrun-sync.review.json",
   "apply_mode": "assisted",
-  "status": "applied",
+  "status": "manual_required",
   "requested_paths": [
     "reports/board-runtime-implementation-plan-2026-03-25.md",
     "reports/board/board-premeeting-brief-20260326-0925.md",
@@ -14,7 +14,9 @@
     "reports/cron/proactive-idle-work-discovery-20260326-1420.md",
     "reports/openclaw-live-runtime-reflection-audit-2026-03-25.md"
   ],
-  "applied_paths": [
+  "applied_paths": [],
+  "blocked_paths": [],
+  "manual_paths": [
     "reports/board-runtime-implementation-plan-2026-03-25.md",
     "reports/board/board-premeeting-brief-20260326-0925.md",
     "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md",
@@ -22,8 +24,6 @@
     "reports/cron/proactive-idle-work-discovery-20260326-1420.md",
     "reports/openclaw-live-runtime-reflection-audit-2026-03-25.md"
   ],
-  "blocked_paths": [],
-  "manual_paths": [],
   "apply_plan": [
     {
       "path": "reports/board-runtime-implementation-plan-2026-03-25.md",
@@ -57,9 +57,8 @@
     }
   ],
   "proposal_status_before": "APPROVED",
-  "proposal_status_after": "APPLIED",
+  "proposal_status_after": "APPROVED",
   "notes": [
-    "manual execution completed for all report-side paths",
-    "bundle manifest / dry-run / smoke wording is now reflected in the requested reports"
+    "remaining allowed paths require manual execution outside this automation step"
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "review_id": "proposal-20260327-narrow-role-prompt-templates-review",
+  "proposal_id": "proposal-20260327-narrow-role-prompt-templates",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-narrow-role-prompt-templates.json",
+  "reviewed_at": "2026-03-27T10:41:24+09:00",
+  "decision": "approve",
+  "reviewer": "ceo-tama",
+  "reason": "Board 2026-03-27 synthesis selected this as an approve candidate. Low-risk docs/prompts/runbook wording only: the change narrows lightweight operator prompt templates, keeps scope on remit/anti-scope and wording compression, and does not touch auth / trust boundary / routing root / protected paths. Specifics: proposal_id=proposal-20260327-narrow-role-prompt-templates; summary='Narrow prompt templates for lightweight operators to reduce role drift and redundant wording'; proposed_changes focus on 1-line remit+anti-scope, <=5-line outputs, and fixed role scopes; affected_paths are docs/runbooks only under projects/openclaw-core/docs plus two cron reports; reason is reversible and board-approved as low-risk, so approve with assisted apply.",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "projects/openclaw-core/docs/doc-editor-runbook.md",
+    "projects/openclaw-core/docs/dss-manager-runbook.md",
+    "projects/openclaw-core/docs/github-operator-runbook.md",
+    "projects/openclaw-core/docs/ops-automator-runbook.md",
+    "projects/openclaw-core/docs/role-prompt-templates.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-staffing-and-prompt-tuning-board-20260326-0630.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

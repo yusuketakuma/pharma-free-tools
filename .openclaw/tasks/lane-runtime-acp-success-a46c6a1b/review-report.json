@@ -1,0 +1,11 @@
+{
+  "task_id": "lane-runtime-acp-success-a46c6a1b",
+  "verdict": "pass",
+  "summary": "Execution result passed review and may be published.",
+  "issues": [],
+  "publish_recommendation": "publish",
+  "publishable": true,
+  "requires_manual_review": false,
+  "result_classification": "strict_success",
+  "fallback_used": false
+}

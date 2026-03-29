@@ -1,0 +1,73 @@
+{
+  "apply_id": "proposal-20260327-status-taxonomy-separate-reporting-apply",
+  "proposal_id": "proposal-20260327-status-taxonomy-separate-reporting",
+  "applied_at": "2026-03-27T06:42:41+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-status-taxonomy-separate-reporting.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-status-taxonomy-separate-reporting.review.json",
+  "apply_mode": "assisted",
+  "status": "applied",
+  "requested_paths": [
+    "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+    "projects/openclaw-core/docs/board-runtime-status-taxonomy.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+    "reports/board/agenda-seed-latest.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+  ],
+  "applied_paths": [
+    "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+    "projects/openclaw-core/docs/board-runtime-status-taxonomy.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md"
+  ],
+  "blocked_paths": [],
+  "manual_paths": [
+    "reports/board/agenda-seed-latest.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+  ],
+  "apply_plan": [
+    {
+      "path": "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/board-runtime-status-taxonomy.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "reports/board/agenda-seed-latest.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/board/board-premeeting-brief-latest.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPLIED",
+  "notes": [
+    "assisted apply generated a safe apply plan; target files were not mutated automatically",
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

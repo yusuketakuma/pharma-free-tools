@@ -1,0 +1,57 @@
+{
+  "apply_id": "GP-2026-03-29-heartbeat-board-bridge-automation-01-apply",
+  "proposal_id": "GP-2026-03-29-heartbeat-board-bridge-automation-01",
+  "applied_at": "2026-03-29T14:42:54+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/approved/2026-03-29-heartbeat-board-bridge-automation-01.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/GP-2026-03-29-heartbeat-board-bridge-automation-01.review.json",
+  "apply_mode": "assisted",
+  "status": "manual_required",
+  "requested_paths": [
+    ".openclaw/growth/cron-wording/board-outcome-bridge-pattern.md",
+    ".openclaw/growth/runbooks/heartbeat-board-bridge-automation.md",
+    ".openclaw/memory/recall-policies.md",
+    ".openclaw/reports/board/board-agenda-template.json",
+    ".openclaw/runtime/heartbeat/heartbeat-results.jsonl"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [],
+  "manual_paths": [
+    ".openclaw/growth/cron-wording/board-outcome-bridge-pattern.md",
+    ".openclaw/growth/runbooks/heartbeat-board-bridge-automation.md",
+    ".openclaw/memory/recall-policies.md",
+    ".openclaw/reports/board/board-agenda-template.json",
+    ".openclaw/runtime/heartbeat/heartbeat-results.jsonl"
+  ],
+  "apply_plan": [
+    {
+      "path": ".openclaw/growth/cron-wording/board-outcome-bridge-pattern.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/growth/runbooks/heartbeat-board-bridge-automation.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/memory/recall-policies.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/reports/board/board-agenda-template.json",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/runtime/heartbeat/heartbeat-results.jsonl",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "proposal_id": "token-management-system-operational-optimization-2026-03-29",
+  "summary": "agent-staffing-and-prompt-tuning と token 経済性分析を統合し、**コスト効率とパフォーマンスの最適バランス**を提供する動的トークン管理システムを提案。各 agent の token 消費パターンをモニタリングし、リアルタイムチューニングで経済性と効果性を両立させる。",
+  "observations": [
+    "現行のトークン管理が静的で、agent ごとの特性や workload 変化に対応できない",
+    "prompt tuning が token 経済性を考慮せず、性能重視の結果過剰な消費が発生",
+    "token 消費量 vs output quality の trade-off が定量化されていない",
+    "agent ごとの token efficiency に格差があり、ボトルネック agent が全体のコストを圧迫",
+    "経済性指標が board レポートに含まれず、ROI ベースの改善判断材料不足"
+  ],
+  "proposed_changes": [
+    "動的トークン配分フレームワーク",
+    "経済性駆動型 prompt tuning",
+    "トークン使用の透視化と可視化",
+    "Board レポート統合"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/token-management-optimization.md",
+    ".openclaw/growth/config/token-efficiency-metrics.json",
+    ".openclaw/growth/prompts/prompt-tuning-with-economy.md",
+    ".openclaw/growth/cron-wording/token-usage-monitoring.md",
+    ".openclaw/workspace/.openclaw/runtime/metrics/",
+    ".openclaw/workspace/.openclaw/runtime/board/",
+    ".openclaw/growth/prompts/agent-staffing-economy-analysis.md"
+  ],
+  "evidence": [
+    "agent-staffing-and-prompt-tuning",
+    "heartbeat-state.json",
+    "agent-performance-learning-synthesis",
+    "board-governance.md",
+    "heartbeat-governance.json"
+  ],
+  "requires_manual_approval": false,
+  "status": "INBOX",
+  "phase": "propose",
+  "created_at": "2026-03-29T00:00:00Z",
+  "cycle_id": "token-management-system-operational-optimization-2026-03-29",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T03:42:05+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T03:42:05+09:00",
+      "note": "review started by self-improvement-proposal-review"
+    },
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T03:42:05+09:00",
+      "note": "decision=revise"
+    }
+  ],
+  "reviewed_at": "2026-03-29T03:42:05+09:00",
+  "review": {
+    "decision": "revise",
+    "reviewer": "self-improvement-proposal-review",
+    "reason": "token management system affects core runtime behavior, needs more evidence on performance vs cost trade-offs",
+    "apply_mode": "manual",
+    "approved_paths": [],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T03:42:05+09:00"
+  },
+  "next_step": "Revise the proposal and resubmit it to the inbox.",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/token-management-system-operational-optimization-2026-03-29.review.json"
+}

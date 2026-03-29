@@ -1,0 +1,15 @@
+{
+  "task_id": "lane-runtime-acp-cli-safety-7e273f5d",
+  "route_decision_id": "route-43e3f1298986",
+  "decision": "claude-code",
+  "score": 0.85,
+  "reasons": [
+    "task appears multi-step or implementation-heavy",
+    "requested_route=claude-code"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ]
+}

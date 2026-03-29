@@ -1,0 +1,26 @@
+{
+  "task_id": "step6-lane-readonly-fallback-bc8ebc0a",
+  "status": "runtime_error",
+  "executor": "claude-code",
+  "summary": "ACP session failed before execution started",
+  "changed_files": [],
+  "verification_results": [
+    "acp_session_start"
+  ],
+  "remaining_risks": [
+    "ACP unavailable"
+  ],
+  "exit_code": 30,
+  "started_at": "2026-03-22T16:19:26+09:00",
+  "finished_at": "2026-03-22T16:19:26+09:00",
+  "dispatch_id": "dispatch-readonly-fallback",
+  "raw_response_path": ".openclaw/tasks/step6-lane-readonly-fallback-bc8ebc0a/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-lane-readonly-fallback-bc8ebc0a/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "failure_stage": "session_start",
+    "partial_execution": false,
+    "side_effects_possible": false,
+    "publishable": false
+  }
+}

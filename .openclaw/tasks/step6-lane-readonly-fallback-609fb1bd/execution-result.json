@@ -1,0 +1,24 @@
+{
+  "task_id": "step6-lane-readonly-fallback-609fb1bd",
+  "status": "success",
+  "executor": "claude-code",
+  "summary": "mock execution: success",
+  "changed_files": [
+    ".openclaw/scripts/dispatch_task.py"
+  ],
+  "verification_results": [
+    "mock verification"
+  ],
+  "remaining_risks": [
+    "mock path"
+  ],
+  "exit_code": 0,
+  "started_at": "2026-03-22T16:46:02+09:00",
+  "finished_at": "2026-03-22T16:46:04+09:00",
+  "dispatch_id": "dispatch-readonly-fallback",
+  "raw_response_path": "/Users/yusuke/.openclaw/workspace/.openclaw/tasks/step6-lane-readonly-fallback-609fb1bd/claude-raw.json",
+  "rendered_prompt_path": "/Users/yusuke/.openclaw/workspace/.openclaw/tasks/step6-lane-readonly-fallback-609fb1bd/rendered-prompt.txt",
+  "_meta": {
+    "mode": "mock"
+  }
+}

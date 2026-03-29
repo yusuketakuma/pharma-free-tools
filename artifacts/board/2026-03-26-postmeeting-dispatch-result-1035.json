@@ -1,0 +1,43 @@
+{
+  "source": "cron:32ba03a1-c935-486d-8946-873b4235557e board-postmeeting-agent-dispatch",
+  "board_cycle_slot_id": "20260326-1035",
+  "board_decision_ref": "decision-ledger latest 2026-03-26 08:41 JST",
+  "final_decision": "investigate",
+  "summary": "Board 系は live subagent で配信・受理・成果物確認まで完了。実行系は安全な一時ファイルで配信し、live 受理未達のため pending_artifact 扱い。",
+  "board_dispatch": [
+    {"agent": "ceo-tama", "status": "done", "delivery": "sessions_spawn subagent run", "sessionKey": "agent:ceo-tama:subagent:90f82ddd-bbbd-48f6-a26c-d44a267af75f", "runId": "b020bb37-969e-4de3-8706-9fdf497e298e"},
+    {"agent": "supervisor-core", "status": "done", "delivery": "sessions_spawn subagent run", "sessionKey": "agent:supervisor-core:subagent:7df8b48e-60f9-4f4d-9141-7a6747687eb0", "runId": "7c4aa590-5782-470a-a0e5-36dee33e866f"},
+    {"agent": "board-operator", "status": "done", "delivery": "sessions_spawn subagent run", "sessionKey": "agent:board-operator:subagent:f0da0141-7b98-4c11-b718-9334fbafa58f", "runId": "55718170-e296-41a4-9c2d-748a24aeb36b"},
+    {"agent": "board-auditor", "status": "done", "delivery": "sessions_spawn subagent run", "sessionKey": "agent:board-auditor:subagent:81941201-4f58-4cfa-9d86-e6d587f34578", "runId": "7b630739-044f-4579-8338-cf6b81fadb2e"},
+    {"agent": "board-user-advocate", "status": "done", "delivery": "sessions_spawn subagent run", "sessionKey": "agent:board-user-advocate:subagent:fe57b97c-b080-4a32-b072-5318a26cf837", "runId": "6d43419d-387b-4f86-bde2-851d45530eb0"},
+    {"agent": "board-visionary", "status": "done", "delivery": "sessions_spawn subagent run", "sessionKey": "agent:board-visionary:subagent:2c8fecb6-7010-40ef-8f0d-1d5ade823a69", "runId": "fa7e6d09-cdaa-443a-86da-5e9f540c04cf"}
+  ],
+  "exec_dispatch": [
+    {"agent": "research-analyst", "status": "not_live_spawned", "delivery": "safe temporary file", "artifact": "artifacts/board/dispatch-msg-research-analyst.txt", "reason": "ACP runtime backend not configured; live acp spawn unavailable"},
+    {"agent": "github-operator", "status": "not_live_spawned", "delivery": "safe temporary file", "artifact": "artifacts/board/dispatch-msg-github-operator.txt", "reason": "safe temporary file mode only"},
+    {"agent": "ops-automator", "status": "not_live_spawned", "delivery": "safe temporary file", "artifact": "artifacts/board/dispatch-msg-ops-automator.txt", "reason": "safe temporary file mode only"},
+    {"agent": "doc-editor", "status": "not_live_spawned", "delivery": "safe temporary file", "artifact": "artifacts/board/dispatch-msg-doc-editor.txt", "reason": "ACP runtime backend is not configured"},
+    {"agent": "dss-manager", "status": "not_live_spawned", "delivery": "safe temporary file", "artifact": "artifacts/board/dispatch-msg-dss-manager.txt", "reason": "safe temporary file mode only"},
+    {"agent": "opportunity-scout", "status": "not_live_spawned", "delivery": "safe temporary file", "artifact": "artifacts/board/dispatch-msg-opportunity-scout.txt", "reason": "safe temporary file mode only"}
+  ],
+  "stages": {
+    "send_success": ["ceo-tama", "supervisor-core", "board-operator", "board-auditor", "board-user-advocate", "board-visionary", "research-analyst", "github-operator", "ops-automator", "doc-editor", "dss-manager", "opportunity-scout"],
+    "accept_success": ["ceo-tama", "supervisor-core", "board-operator", "board-auditor", "board-user-advocate", "board-visionary"],
+    "artifact_confirmed": ["ceo-tama", "supervisor-core", "board-operator", "board-auditor", "board-user-advocate", "board-visionary"]
+  },
+  "unreceived": ["research-analyst", "github-operator", "ops-automator", "doc-editor", "dss-manager", "opportunity-scout"],
+  "unconfirmed": ["research-analyst", "github-operator", "ops-automator", "doc-editor", "dss-manager", "opportunity-scout"],
+  "failure_reasons": [
+    "Exec roles were intentionally routed to safe temporary files; live receive path not used.",
+    "ACP runtime backend unavailable for live exec spawn.",
+    "subagent allowlist excludes exec roles."
+  ],
+  "retry_targets": ["research-analyst", "github-operator", "ops-automator", "doc-editor", "dss-manager", "opportunity-scout"],
+  "next_actions": [
+    "Review supervisor-core runbook initial draft.",
+    "Fold doc-editor wording back into operational text.",
+    "Collect board-auditor sequencing for security / boundary / DDS.",
+    "Re-verify exec live receive path only after ACP backend recovery.",
+    "Keep internal-only handling; no external notification."
+  ]
+}

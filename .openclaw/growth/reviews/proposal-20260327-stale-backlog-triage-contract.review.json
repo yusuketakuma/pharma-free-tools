@@ -1,0 +1,22 @@
+{
+  "review_id": "proposal-20260327-stale-backlog-triage-contract-review",
+  "proposal_id": "proposal-20260327-stale-backlog-triage-contract",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-stale-backlog-triage-contract.json",
+  "reviewed_at": "2026-03-27T06:40:25+09:00",
+  "decision": "approve",
+  "reviewer": "ceo-tama",
+  "reason": "Board 2026-03-27 06:27 JST で approve 候補。docs/runbook/cron wording に限定された低リスク変更で、stale backlog triage の contract 化は reversible かつ protected path / auth / routing root / trust boundary に触れないため approve.",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    "projects/openclaw-core/docs/backlog-triage-runbook.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+    "projects/openclaw-core/docs/stale-backlog-policy.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

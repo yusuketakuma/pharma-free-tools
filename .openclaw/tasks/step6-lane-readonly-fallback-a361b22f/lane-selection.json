@@ -1,0 +1,8 @@
+{
+  "selected_lane": "cli",
+  "selection_reasons": [
+    "test fixture",
+    "auto fallback acp->cli: pre-execution failure: session_start"
+  ],
+  "captured_at": "2026-03-22T13:00:00+09:00"
+}

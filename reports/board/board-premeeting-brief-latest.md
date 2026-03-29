@@ -1,11 +1,59 @@
 # Board premeeting brief latest
 
-- board_cycle_slot_id: `20260327-1835`
-- checked_at: 2026-03-27 18:33 JST
-- source_artifact: board-input-brief-latest.md
+- board_cycle_slot_id: `20260328-0235`
+- checked_at: 2026-03-29 17:44 JST
+- source_artifact: board-premeeting-brief-20260328-0235.md
 
-- input_gate: `ready`
-- freshness: `agenda-seed-latest` と `claude-code-precheck-latest` の両方が今回の HH:35 slot に一致し、generated_at も近時のため stale ではない
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- input_gate: `degraded`
+- freshness: `agenda-seed-latest` と `claude-code-precheck-latest` の両方が今回の HH:35 slot に一致せず、generated_at も近時のため stale ではないが、input_gateはdegraded
 
 ## 状態レーン（誤読防止）
 - review_status: Board が論点としてどう裁いたか
@@ -15,23 +63,23 @@
 - `done` は effect-confirmed と同義にせず、review / apply / live receipt / freshness を混ぜない
 
 ## Board へ上げる候補（最大6件）
-1. **backlog triage の標準化を最優先で承認**
-   - `waiting_auth` / `waiting_manual_review` の滞留が支配的なので、個別処理より triage ルール固定を先に進める
+1. **seed運用を正本化して再現性を上げる**  
+   - 要点: Board入力を seed artifact ベースに統一し、seed→審議→再レビューを標準手順化する。
 
-2. **safe-close / reopen / escalate の1ページ運用基準を確定**
-   - owner / next action / success criteria を1行で固定し、判断コストと再発を減らす
+2. **論点を絞って重複を先に統合する**  
+   - 要点: 1スロットあたりの論点上限と統合基準を固定し、会議時間の浪費を抑える。
 
-3. **新規拡張は一旦凍結し、運用品質の回復を先行**
-   - いまは機能追加より滞留解消と運用安定化が優先
+3. **成長仮説と機会候補の優先順位を決める**  
+   - 要点: 並走を減らし、最有力仮説/機会へ集中する判断を行う。
 
-4. **Gateway 公開面・通信経路・ホスト防御の独立監査を別議題で付議**
-   - 重要だが triage 論点と混ぜず、境界防御として切り出す
+4. **ゆうすけの負担を減らす境界を決める**  
+   - 要点: 人手確認が必要な箇所だけを明確化し、判断負荷を下げる。
 
-5. **監視指標を reopen 率・滞留中央値・7日超滞留件数に絞る**
-   - 自動 drain ではなく、悪化検知を最小コストで回す
+5. **自動運転の監視と失敗復旧を強化する**  
+   - 要点: cron・通知・定期ジョブのヘルスチェック基準を標準化する。
 
-6. **長期資源配分は今回は切り出し、次回以降に回す**
-   - まず運用回復、その後に集中投資 / 維持 / 撤退の整理へ進む
+6. **決定を実装へ速く落とし込む**  
+   - 要点: Board決定を Issue 化・担当化まで最短で接続する。
 
 ## 一言での Board 向け要約
-- 今日は「新規施策」ではなく、**滞留解消・triage ルール固定・境界防御の切り分け** を決める会議に寄せるのが妥当
+- 今回は seed 整合性問題が起因で input_gate が degraded。**seed運用正本化・論点絞り込み・負担軽減境界の確立** を優先扱い。

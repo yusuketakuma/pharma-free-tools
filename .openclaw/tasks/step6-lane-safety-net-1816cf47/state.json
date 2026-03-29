@@ -1,0 +1,49 @@
+{
+  "message": "execution succeeded; entering review",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "step6-lane-safety-net-1816cf47",
+  "state": "REVIEWING",
+  "updated_at": "2026-03-22T16:54:26+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:54:22+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:54:22+09:00",
+      "route_decision_id": "route-7f24b6354609",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "route decision stored"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:54:22+09:00",
+      "route_decision_id": "route-7f24b6354609",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "execution request saved lane=cli attempt=dispatch-safety-net_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:54:22+09:00",
+      "route_decision_id": "route-7f24b6354609",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "executor started lane=cli attempt=dispatch-safety-net_attempt_01"
+    },
+    {
+      "state": "REVIEWING",
+      "at": "2026-03-22T16:54:26+09:00",
+      "route_decision_id": "route-7f24b6354609",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "execution succeeded; entering review"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-7f24b6354609",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-safety-net"
+}

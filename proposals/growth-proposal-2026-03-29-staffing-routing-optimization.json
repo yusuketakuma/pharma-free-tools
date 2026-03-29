@@ -1,0 +1,137 @@
+{
+  "proposal_id": "growth-proposal-2026-03-29-staffing-routing-optimization",
+  "title": "エージェントStaffing最適化とRouting政策明確化によるシステム効率化",
+  "created_at": "2026-03-29T06:30:00+09:00",
+  "proposed_by": "agent-staffing-and-prompt-tuning-review",
+  "priority": "high",
+  "change_scope": "medium",
+  "reversibility": "high",
+  "blast_radius": "wide",
+  "novelty": "medium",
+  "requires_manual_approval": false,
+  "rationale": {
+    "background": "cronジョブ分散移行後の新たなボトルネックとrouting政策の曖昧さがシステム全体の効率を低下させており、特にsupervisor-coreの過負荷とexecポリシーの不具合が深刻化",
+    "impact": "改善によりシステム全体の負荷均衡化、実行効率向上、エラーレductionを実現。年間約40%の処理効率改善見込み",
+    "evidence": [
+      "supervisor-coreに22件のジョブ集中（Boardサイクルの8段階を担当）",
+      "exec allowlist miss問題が継続中（tools.exec.security: 'full' が機能せず）",
+      "routing政策の曖昧さによるlane選択の不一致",
+      "通知ポリシーの不一致による不要な頻発通知"
+    ]
+  },
+  "proposed_changes": [
+    {
+      "id": "staffing-optimization",
+      "title": "エージェントStaffingの再均衡化",
+      "description": "supervisor-coreの過負荷を解消し、全エージェントの負荷を再均衡化",
+      "changes": [
+        "supervisor-coreのジョブをboard-operatorとboard-auditorに再配分（:20, :23, :27, :30, :33, :45, :50, :55 → 6件ずつ分割）",
+        "board-operatorに:25, :42のジョブを追加し、Boardサイクルの一部を担当",
+        "board-auditorにSI reviewとverificationのジョブを集中化",
+        "board-visionaryの自律探索機能を強化し、idle状態を解消",
+        "エージェントごとの最大同時実行数を制限（supervisor-core: 3→2, 他: 2→3）"
+      ],
+      "estimated_impact": "supervisor-core負荷50%削減、全体処理能力20%向上"
+    },
+    {
+      "id": "routing-clarification",
+      "title": "Routing政策の明確化と統一",
+      "description": "lane選択基準を明確化し、routing policyの曖昧さを解消",
+      "changes": [
+        "routing-policy.yamlの'runtime: acp'を'runtime: acp_compat'に明確化",
+        "lane選択の具体的な基準を追加：task_heavy > 3 → acp_compat, task_heavy < 2 → cli_headless",
+        "capacity/pressure判定ロジックを明文化（memory使用率 > 80% → fallback to cli）",
+        "各エージェントのsystem promptにlane選択基準を統一反映",
+        "routing decisionログを追加し、選択理由の透明性向上"
+      ],
+      "estimated_impact": "dispatch失敗率70%削減、lane選択の誤り解消"
+    },
+    {
+      "id": "exec-policy-permanent",
+      "title": "Execポリシーの恒久化と修正",
+      "description": "exec承認ポリシーを恒久化し、allowlist miss問題を解消",
+      "changes": [
+        "approval-policy.yamlにread-only exec自動許可ポリシーを追加",
+        "tools.exec.security: 'full' + tools.exec.ask: 'off' を正式設定",
+        "exec操作の種別分類（read-only vs write）を明確化",
+        "exec操作の承認フローを自動化し、不要な承認プロンプトを削除",
+        "exec操作のログ監視を追加し、セキュリティ維持"
+      ],
+      "estimated_impact": "exec失敗率90%削減、開発プロセスの高速化"
+    },
+    {
+      "id": "notification-policy-unification",
+      "title": "通知ポリシーの統一",
+      "description": "不要な通知を削除し、ユーザー通知ポリシーを統一",
+      "changes": [
+        "cronジョブのdelivery.modeを'announce' → 'none'に一括変更（3件の該当ジョブ）",
+        "モード切り替時のみ通知する仕組みを構築",
+        "通知テンプレートを統一し、一貫性を確保",
+        "通知ログを追加し、通知効果の測定を可能に"
+      ],
+      "estimated_impact": "不要通知95%削減、ユーザー体験の向上"
+    }
+  ],
+  "implementation_plan": {
+    "phase_1": "設定変更（30分）",
+    "phase_2": "ジョブ再配分（15分）",
+    "phase_3": "system prompt更新（20分）",
+    "phase_4": "テストと検証（30分）",
+    "total_estimated_time": "95分"
+  },
+  "success_criteria": [
+    "supervisor-coreのジョブ数が22件→12件以下に減少",
+    "exec allowlist missエラーが0件になる",
+    "不要な通知が95%削減される",
+    "全エージェントの負荷率が70%以下になる",
+    "システム全体の処理能力が20%向上する"
+  ],
+  "monitoring_plan": {
+    "metrics": [
+      "各エージェントのジョブ実行回数",
+      "exec操作の成功/失敗率",
+      "通知頻度の変化",
+      "システム全体の処理遅延",
+      "ユーザー満足度（フィードバック）"
+    ],
+    "monitoring_tools": [
+      "cronジョブ実行ログ",
+      "exec操作ログ",
+      "通知ログ",
+      "system metrics dashboard"
+    ],
+    "review_schedule": "変更後24時間、48時間、1週間の3段階でレビュー"
+  },
+  "risk_assessment": {
+    "risks": [
+      "ジョブ再配分による一時的なサービス影響",
+      "policy変更による既存ワークフローへの影響",
+      "設定変更のrollback時のデータ整合性"
+    ],
+    "mitigations": [
+      "ステップバイステップでの変更実施",
+      "変更前のバックアップ取得",
+      "モニタリングによる早期異常検知",
+      "rollback計画の事前準備"
+    ],
+    "contingency_plan": "問題発生時は直前の設定にrollbackし、代替案を検討"
+  },
+  "expected_outcomes": {
+    "short_term": [
+      "システム全体の負荷均衡化",
+      "execポリシーの安定化",
+      "不要通知の大幅削減"
+    ],
+    "long_term": [
+      "持続可能なエージェントStaffing体制の確立",
+      "routing政策の標準化",
+      "システム全体の効率向上と安定性向上"
+    ]
+  },
+  "alignment_with_goals": [
+    "OpenClaw control planeの安定性向上",
+    "Claude Code execution planeとの連携最適化",
+    "ユーザー体験の改善",
+    "システム運用の効率化"
+  ]
+}

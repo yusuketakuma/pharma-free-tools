@@ -1,0 +1,30 @@
+{
+  "proposal_id": "2026-03-28-growth-input-index-and-readpath",
+  "summary": "Self-improvement / Board synthesis 系ジョブが承認付き exec の入力探索に依存しており、approval-timeout で繰り返し停止している。growth 配下の proposals / reports / review 系を read だけで辿れるよう、軽量 index / manifest と標準 read path を追加する。",
+  "observations": [
+    "今回の proposal synthesis ジョブでは、既存 proposal 一覧と review/report 候補の探索がすべて approval-timeout で失敗した。",
+    "失敗原因は検索クエリの不備ではなく、承認フローが成立する前に exec が期限切れになる運用上のボトルネックだった。",
+    "この状態では『既存 proposal と重複しない』『似た提案を統合する』というジョブの本質条件を安定して満たせない。",
+    "growth 系の synthesis は directory discovery よりも、定型の入力一覧・インデックスを読む形のほうが durable で低リスクである。"
+  ],
+  "proposed_changes": [
+    "`.openclaw/growth/INDEX.md` または `.openclaw/growth/index.json` を追加し、proposals / reports / board / heartbeat の主要ファイルパスを集約する。",
+    "新規 review/report/proposal を生成するジョブ側で、生成時に index を1回更新する運用に寄せる。",
+    "self-improvement proposal synthesis ジョブは、最初に index を read し、必要ファイルのみ read で本文確認する標準手順へ切り替える。",
+    "index が欠損している場合だけ manual follow-up に倒し、承認付き exec 探索を通常経路にしない。"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/INDEX.md",
+    ".openclaw/growth/index.json",
+    ".openclaw/growth/proposals/",
+    ".openclaw/growth/reports/",
+    ".openclaw/growth/runbooks/"
+  ],
+  "evidence": [
+    "Session history shows repeated approval-timeout on `find .openclaw/growth/proposals -maxdepth 1 -type f | sort`.",
+    "Session history shows repeated approval-timeout on broad discovery commands such as `find .openclaw -maxdepth 4 ... | sort` and `pwd && find .openclaw -maxdepth 4 ... | grep -E '(.openclaw/growth/proposals/|report|review|lesson|scorecard|staffing|performance|heartbeat|board)'`.",
+    "The current job repeatedly concluded that synthesis could not safely proceed because existing proposals and source reports were not discoverable in time."
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Board で low-risk proposal として承認後、growth index schema を1つ決め、次の report/proposal writer ジョブから index 更新を標準化する。"
+}

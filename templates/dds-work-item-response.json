@@ -1,0 +1,12 @@
+{
+  "status": "completed | blocked | failed | no_action",
+  "summary": "short japanese summary",
+  "question": "blocked のときだけ",
+  "pr": {
+    "branchName": "optional",
+    "prUrl": "optional",
+    "prNumber": 123,
+    "summary": "optional"
+  },
+  "nextAction": "optional"
+}

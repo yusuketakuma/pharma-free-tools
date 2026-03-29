@@ -1,0 +1,20 @@
+{
+  "task_id": "step6-auth-3e1f688b",
+  "active": false,
+  "queue_reason": null,
+  "last_queue_reason": "waiting_auth",
+  "state": "REVIEWING",
+  "route": "claude-code",
+  "route_decision_id": "route-auth",
+  "approval_id": null,
+  "dispatch_id": "dispatch-auth",
+  "queued_at": "2026-03-22T16:41:45+09:00",
+  "released_at": "2026-03-22T16:41:49+09:00",
+  "last_rebalanced_at": "2026-03-22T16:41:46+09:00",
+  "resume_target_state": null,
+  "resume_eligible": false,
+  "resume_blockers": [],
+  "updated_at": "2026-03-22T16:41:49+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/step6-auth-3e1f688b/queue-status.json"
+}

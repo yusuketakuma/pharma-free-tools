@@ -1,0 +1,7 @@
+{
+  "kind": "mock",
+  "mock_mode": "success",
+  "task_id": "step6-lane-safety-net-b0dec98b",
+  "dispatch_id": "dispatch-safety-net",
+  "settings_path": "/Users/yusuke/.openclaw/workspace/.openclaw/tasks/step6-lane-safety-net-b0dec98b/claude-settings.json"
+}

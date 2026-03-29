@@ -1,0 +1,51 @@
+{
+  "cronJobId": "ca473033-038e-45d0-bdc5-6e54d644c16f",
+  "timestamp": "2026-03-29 06:00 JST",
+  "reviewType": "agent-scorecard-review",
+  "status": "completed",
+  "conclusion": "scorecardの異常は検知されず、growth proposalは生成されませんでした",
+  "anomalies_detected": false,
+  "specific_findings": {
+    "duplicate_rate_increase": {
+      "status": "not_detected",
+      "reason": "重複率の監測データが見つからず、評価不能",
+      "confidence": "low"
+    },
+    "board_touch_excessive": {
+      "status": "not_detected", 
+      "reason": "board touch頻度の定量データが見つからず、評価不能",
+      "confidence": "low"
+    },
+    "dispatch_success_rate_decrease": {
+      "status": "partial_data",
+      "reason": "最新のdispatchデータは正常（最終decision: adopted）",
+      "details": "2026-03-26のdispatchではboard-auditorが正常完了",
+      "confidence": "medium"
+    },
+    "stale_artifact_increase": {
+      "status": "not_detected",
+      "reason": "stale artifactの定量データが見つからず、評価不能", 
+      "confidence": "low"
+    },
+    "verification_weakness": {
+      "status": "not_detected",
+      "reason": "verificationプロセスの具体的な評価データが見つからず、評価不能",
+      "confidence": "low"
+    }
+  },
+  "data_sources_reviewed": [
+    "dashboard-data.json",
+    "artifacts/board/2026-03-26-postmeeting-dispatch-result-1435.json",
+    "artifacts/board/2026-03-26-postmeeting-dispatch-manifest.json"
+  ],
+  "growth_proposal_generated": false,
+  "proposal_id": null,
+  "next_actions": [
+    "scorecard監測データの定期的な保存機構を構築",
+    "重複率、board touch頻度、stale artifact数、verification強さの定量評価基準を定義",
+    "scorecard異常検知ルールの改善"
+  ],
+  "review_artifacts": [
+    "/Users/yusuke/.openclaw/workspace/.openclaw/cron/agent-scorecard-review-2026-03-29-0600.json"
+  ]
+}

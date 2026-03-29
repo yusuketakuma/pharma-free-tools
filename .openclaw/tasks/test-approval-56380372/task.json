@@ -1,0 +1,11 @@
+{
+  "task_id": "test-approval-56380372",
+  "task": "test",
+  "requested_paths": [],
+  "constraints": [],
+  "verification_commands": [],
+  "review_focus": [],
+  "requested_actions": [],
+  "requested_route": "claude-code",
+  "mock_mode": "success"
+}

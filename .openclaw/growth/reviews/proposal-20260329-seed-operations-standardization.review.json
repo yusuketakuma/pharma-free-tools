@@ -1,0 +1,24 @@
+{
+  "review_id": "proposal-20260329-seed-operations-standardization-review",
+  "proposal_id": "proposal-20260329-seed-operations-standardization",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260329-seed-operations-standardization.json",
+  "reviewed_at": "2026-03-29T14:40:44+09:00",
+  "decision": "approve",
+  "reviewer": "board-auditor",
+  "reason": "Low-risk proposal: standardizes board input pipeline to use seed artifacts as primary source. No protected path changes. Fully reversible. Addresses real operational pain points.",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    ".openclaw/runtime/board/agenda-seed-generator.md",
+    "projects/openclaw-core/docs/board-cycle-procedure.md",
+    "projects/openclaw-core/docs/board-input-pipeline.md",
+    "projects/openclaw-core/docs/board-seed-operations-standard.md",
+    "reports/board/agenda-seed-latest.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "APPROVED",
+  "status_after": "APPROVED",
+  "notes": []
+}

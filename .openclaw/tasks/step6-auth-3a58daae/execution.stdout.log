@@ -1,0 +1,4 @@
+[openclaw-acp] lane=acp dispatch_attempt=dispatch-auth_attempt_01
+[openclaw-acp] bin=claude source=yaml resolved=/Users/yusuke/.local/bin/claude
+[openclaw-acp] native_acp_available=false
+[openclaw-acp] native_acp_reason=claude CLI does not expose a native acp subcommand in this environment

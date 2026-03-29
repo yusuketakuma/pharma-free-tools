@@ -1,0 +1,9 @@
+OpenClaw 最終裁定（board postmeeting 2026-03-27 04:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: stale backlog triage / safe-close / reopen / escalate / record contract を固定し、triage と security/boundary review を分離する。
+
+依頼:
+- backlog triage dominant-prefix checklist を runbook/policy として 1行ずつ固定する
+- owner / next action / success criteria を prefix ごとに明示する
+- routing root / trust boundary / protected path には触れない
+- 自己改善 proposal を直接適用しない

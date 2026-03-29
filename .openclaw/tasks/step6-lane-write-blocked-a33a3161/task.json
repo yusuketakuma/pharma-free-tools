@@ -1,0 +1,18 @@
+{
+  "task_id": "step6-lane-write-blocked-a33a3161",
+  "task": "Implement runtime change",
+  "requested_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ],
+  "constraints": [],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "requested_actions": [
+    "edit"
+  ],
+  "requested_route": "claude-code",
+  "mock_mode": "acp_partial_write_failure",
+  "created_at": "2026-03-22T16:56:01+09:00"
+}

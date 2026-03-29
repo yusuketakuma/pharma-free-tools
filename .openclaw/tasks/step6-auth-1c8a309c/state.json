@@ -1,0 +1,52 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-auth",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "approval_id": null,
+  "dispatch_id": "dispatch-auth",
+  "protected_paths": [],
+  "message": "execution succeeded; entering review",
+  "task_id": "step6-auth-1c8a309c",
+  "state": "REVIEWING",
+  "updated_at": "2026-03-22T16:54:11+09:00",
+  "history": [
+    {
+      "state": "AUTH_REQUIRED",
+      "at": "2026-03-22T16:54:01+09:00",
+      "route_decision_id": "route-auth",
+      "dispatch_id": "dispatch-auth",
+      "message": "seeded AUTH_REQUIRED"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:54:03+09:00",
+      "route_decision_id": "route-auth",
+      "dispatch_id": "dispatch-auth",
+      "message": "queue rebalanced: auth recovered; ready to resume"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:54:09+09:00",
+      "route_decision_id": "route-auth",
+      "dispatch_id": "dispatch-auth",
+      "message": "execution request saved lane=acp attempt=dispatch-auth_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:54:09+09:00",
+      "route_decision_id": "route-auth",
+      "dispatch_id": "dispatch-auth",
+      "message": "executor started lane=acp attempt=dispatch-auth_attempt_01"
+    },
+    {
+      "state": "REVIEWING",
+      "at": "2026-03-22T16:54:11+09:00",
+      "route_decision_id": "route-auth",
+      "dispatch_id": "dispatch-auth",
+      "message": "execution succeeded; entering review"
+    }
+  ]
+}

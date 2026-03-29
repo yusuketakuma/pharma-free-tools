@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "openclaw://schemas/execution-request.json",
+  "title": "OpenClaw Execution Request",
+  "description": "OpenClaw control plane → Claude Code execution plane への実行依頼契約",
+  "type": "object",
+  "required": ["requestId", "type", "task", "routing"],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "一意の実行要求ID"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["implement", "fix", "review", "test", "refactor", "investigate"],
+      "description": "実行タイプ"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["critical", "high", "normal", "low"],
+      "default": "normal"
+    },
+    "task": {
+      "type": "object",
+      "required": ["summary", "scope"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "実行内容の要約"
+        },
+        "detail": {
+          "type": "string",
+          "description": "詳細な指示（appendSystemPromptとして渡される）"
+        },
+        "scope": {
+          "type": "object",
+          "required": ["projectId"],
+          "properties": {
+            "projectId": {
+              "type": "string",
+              "description": "対象プロジェクトID（projects/配下のディレクトリ名）"
+            },
+            "files": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "対象ファイルパス（省略時はプロジェクト全体）"
+            },
+            "branch": {
+              "type": "string",
+              "description": "作業ブランチ"
+            }
+          }
+        },
+        "acceptanceCriteria": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "完了条件のリスト"
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "required": ["assignee", "runtime"],
+      "properties": {
+        "assignee": {
+          "type": "string",
+          "description": "担当エージェントID（engineering, testing等）"
+        },
+        "runtime": {
+          "type": "string",
+          "enum": ["acp_compat", "cli", "cli_backend_safety_net"],
+          "default": "acp_compat"
+        },
+        "subagents": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "必要なClaude Code subagent IDs"
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "timeoutMinutes": {
+          "type": "integer",
+          "default": 30,
+          "maximum": 120
+        },
+        "maxTokenBudget": {
+          "type": "integer",
+          "description": "トークン上限"
+        },
+        "noDestructive": {
+          "type": "boolean",
+          "default": true,
+          "description": "破壊的操作禁止フラグ"
+        },
+        "noPush": {
+          "type": "boolean",
+          "default": true,
+          "description": "リモートpush禁止フラグ"
+        },
+        "approvalRequired": {
+          "type": "boolean",
+          "default": false,
+          "description": "完了前にCEO承認が必要"
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "parentRequestId": {
+          "type": "string",
+          "description": "親リクエストID（再実行/分割時）"
+        },
+        "departmentReport": {
+          "type": "string",
+          "description": "部門レポートからの引用（必要な背景情報）"
+        },
+        "relatedIssues": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "関連issue/PR番号"
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "createdBy": {
+      "type": "string",
+      "description": "起案元エージェントID"
+    }
+  },
+  "additionalProperties": false
+}

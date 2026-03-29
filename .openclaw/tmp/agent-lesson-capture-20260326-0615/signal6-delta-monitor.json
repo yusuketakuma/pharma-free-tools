@@ -1,0 +1,38 @@
+{
+  "signal_id": "signal-20260325211500-delta-monitor",
+  "occurred_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "category": "lesson",
+  "domain": "reporting",
+  "summary": "board / heartbeat / scorecard は steady-state では signal-only に寄せ、candidate は anomaly delta のときだけ出すのがよい。",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "agent-scorecard-review 20260326-0600 は新規 delta なし",
+      "loop health は重複はあるが安定稼働"
+    ],
+    "refs": [
+      "reports/cron/agent-scorecard-review-20260326-0600.md",
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+      "reports/cron/workspace-report-learning-review-20260326-0300.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "agent-scorecard-review",
+      "autonomy-loop-health-review",
+      "board-agenda-assembly"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": true
+}

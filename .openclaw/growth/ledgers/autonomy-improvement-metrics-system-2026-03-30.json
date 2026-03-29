@@ -1,0 +1,25 @@
+{
+  "cycle_id": "autonomy-improvement-metrics-system-2026-03-30",
+  "created_at": "2026-03-30T00:00:00Z",
+  "updated_at": "2026-03-29T03:42:01+09:00",
+  "proposal_id": "autonomy-improvement-metrics-system-2026-03-30",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/autonomy-improvement-metrics-system-2026-03-30.json",
+  "proposal_status": "APPROVED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/autonomy-improvement-metrics-system-2026-03-30.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "self-improvement-proposal-review",
+    "reason": "metrics system improvement with high impact and reversible changes, improves autonomy ROI tracking",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-29T03:42:01+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-29T03:42:01+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/autonomy-improvement-metrics-system-2026-03-30.review.json"
+    }
+  ]
+}

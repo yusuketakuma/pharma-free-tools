@@ -1,0 +1,49 @@
+{
+  "message": "Claude auth required before execution can continue",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "step6-lane-readonly-fallback-c6c4df4a",
+  "state": "AUTH_REQUIRED",
+  "updated_at": "2026-03-22T16:21:04+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:21:04+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:21:04+09:00",
+      "route_decision_id": "route-ab64522d7b23",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "route decision stored"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:21:04+09:00",
+      "route_decision_id": "route-ab64522d7b23",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "execution request saved lane=acp attempt=dispatch-readonly-fallback_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:21:04+09:00",
+      "route_decision_id": "route-ab64522d7b23",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "executor started lane=acp attempt=dispatch-readonly-fallback_attempt_01"
+    },
+    {
+      "state": "AUTH_REQUIRED",
+      "at": "2026-03-22T16:21:04+09:00",
+      "route_decision_id": "route-ab64522d7b23",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "Claude auth required before execution can continue"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-ab64522d7b23",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-readonly-fallback"
+}

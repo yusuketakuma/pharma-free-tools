@@ -1,0 +1,23 @@
+{
+  "review_id": "proposal-20260327-close-record-proof-path-review",
+  "proposal_id": "proposal-20260327-close-record-proof-path",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-close-record-proof-path.json",
+  "reviewed_at": "2026-03-27T12:41:02+09:00",
+  "decision": "approve",
+  "reviewer": "ceo-tama",
+  "reason": "Board approve candidate。close-record / proof-path の文言整備に限る低リスク提案で、docs / reports / runbook / cron wording の範囲に収まり、protected path / auth / routing root / trust boundary を触らないため。",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "projects/openclaw-core/docs/stale-queue-safe-close-reopen-policy.md",
+    "reports/cron/board-auditor-safe-close-reopen-audit-20260326-0844.md",
+    "reports/cron/board-dispatch-verification-20260326-1035-final.md",
+    "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+    "reports/cron/cross-agent-knowledge-sync-20260327-0435.md",
+    "reports/cron/workspace-report-learning-review-20260327-0300.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

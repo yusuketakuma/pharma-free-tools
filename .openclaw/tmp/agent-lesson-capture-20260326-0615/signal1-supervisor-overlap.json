@@ -1,0 +1,38 @@
+{
+  "signal_id": "signal-20260325211500-supervisor-overlap",
+  "occurred_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "category": "lesson",
+  "domain": "routing",
+  "summary": "Supervisor系は観測・triage・品質レビューを同居させると重複しやすく、dominant-prefix triage を専任経路に切る必要がある。",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "21件中20件成功でも報告重複が残る",
+      "複数の監督系レポートが同じ論点に収束"
+    ],
+    "refs": [
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+      "reports/cron/agent-performance-optimization-review-20260325-0715.md",
+      "reports/cron/agent-workforce-expansion-review-20260325-0645.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "supervisor-core",
+      "queue-triage-analyst",
+      "ceo-tama"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": true
+}

@@ -1,0 +1,62 @@
+{
+  "proposal_id": "proposal-20260329-agent-staffing-prompt-tuning-consolidation",
+  "created_at": "2026-03-29T01:27:00+09:00",
+  "phase": "synthesis",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "agent-staffing-and-prompt-tuning",
+    "agent-scorecard-review",
+    "agent-workforce-expansion-review"
+  ],
+  "summary": "agent staffing judgment, prompt tuning guidance, and workforce expansion evaluationを統合し、staffing/prompt/routingのワンサイクル化で運用効率を向上させる提案。",
+  "selected_proposals": [
+    {
+      "proposal_id": "proposal-20260329-staffing-prompt-tuning-consolidation",
+      "title": "Consolidated Staffing, Prompt Tuning, and Routing Judgment Workflow",
+      "summary": "dispatch前のstaffing判断、prompt調整、routing選択を1つのcanoncial wordingルールへ集約し、OpenClaw-only/Claude/ACPの境界を明確化。workforce expansionは既存構成最適化後に検討するsafeなアプローチ。",
+      "observations": [
+        "現状の運用文書では、staffing/prompt/routing/dispatchの判断材料が複数ファイルに重複して存在し、意味は近いが表現が少しずつ異なる",
+        "軽微な依頼でも「OpenClaw-onlyで処理すべきか」「Claude/ACPに送るべきか」「task-dispatch skillを使うべきか」のwording判定がぶれやすい",
+        "staffingとperformanceのレビューが別々だと、「誰をどう置くか」と「どう改善したか」の因果が見えづらい",
+        "workforce expansionは慎重に扱うべきで、まずは既存構成の最優化とprompt tuningを優先するのが安全",
+        "agent-scorecard-reviewでは、role boundaryの曖昧さと過剰staffingがreworkの要因となっている",
+        "既存の提案から、乱立しやすいのは似た提案がstaffing/performance/workforceで分かれてしまうケース"
+      ],
+      "proposed_changes": [
+        "dispatch前判定に使う短いcanonical wordingを追加",
+        "staffing/prompt/routingの判断を1つのconsolidated workflowへ集約",
+        "既定staffingはsingle lead、advisoryは観点補助のみ、active subrolesは成果物が複数ある時だけ、swarmは高リスク横断taskに限定",
+        "「OpenClawはcontrol plane/Claude Codeはexecution plane」をrouting判定の正本表現として固定",
+        "「どの条件でskill/task-dispatchを使うか」と「どの条件でACP harnessを使うか」を1箇所に短く並置",
+        "staffingの判断基準を「負荷」「遅延」「再作業率」「レビュー失敗率」に寄せる",
+        "prompt tuningはrole固有の微調整に限定し、authority/routing/trust boundaryには踏み込まない",
+        "workforce expansion reviewは、既存改善で足りない場合のみ次段として残す"
+      ],
+      "affected_paths": [
+        ".openclaw/growth/runbooks/agent-staffing-review.md",
+        ".openclaw/growth/runbooks/agent-performance-optimization.md",
+        ".openclaw/growth/prompts/agent-staffing-and-prompt-tuning.md",
+        ".openclaw/growth/prompts/agent-performance-optimization-review.md",
+        ".openclaw/growth/cron-wording/agent-staffing-performance-cycle.md",
+        ".openclaw/docs/AGENTS.md",
+        ".openclaw/docs/TOOLS.md",
+        ".openclaw/workspace/AGENTS.md"
+      ],
+      "evidence": [
+        "agent-staffing-and-prompt-tuning: staffing/prompt/routingのwordingの曖昧さがdispatch failureの要因",
+        "agent-scorecard-review: role boundaryの曖昧さと過剰staffingがreworkの要因",
+        "agent-workforce-expansion-review: 新規採用より既存構成最適化を優先",
+        "agent-staffing-performance-synthesis: staffingとperformanceの因果関係の見えづらさ",
+        "artifacts/growth-proposals/2026-03-28-agent-staffing-prompt-tuning-routing-wording.md: 具体的なcanonical wording提案"
+      ],
+      "requires_manual_approval": false,
+      "next_step": "1. dispatch前canonical wordingを1箇所に追加 2. AGENTS/TOOLS/skill descriptionsの重複表現を意味変更なしでwordingのみ寄せる 3. 次回以降、dispatch failureを見たら「分類語彙の不一致」をfirst checkにする"
+    }
+  ],
+  "proposal_count": 1,
+  "requires_manual_approval": false,
+  "next_step": "Board cycleでconsolidated staffing/prompt/runing workflowの提案を審査し、運用効率化を計画に反映させる"
+}

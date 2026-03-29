@@ -9,6 +9,11 @@
       "noop_streak": 0,
       "duplicate_streak": 0,
       "cooldown_until": null
+    },
+    "ceo-tama": {
+      "noop_streak": 0,
+      "duplicate_streak": 1,
+      "cooldown_until": null
     }
   }
 }

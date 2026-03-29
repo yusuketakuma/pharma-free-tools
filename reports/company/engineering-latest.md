@@ -1,0 +1,51 @@
+# engineering latest report
+
+**更新時刻**: 2026-03-22 12:15 JST
+
+---
+
+## status: done
+
+## scope checked
+- git status（18 modified, 61+ untracked files）
+- cron job list（新8部門ジョブ + 旧30m系ジョブ状態）
+- reports/company/ ディレクトリ構造
+- CURRENT_STATUS.md
+- sidebiz/work-log.md（最近の作業履歴）
+- ceo-tama-latest.md（CEO集約結果）
+
+---
+
+## top findings
+
+1. **✅ 旧30m系ジョブ停止完了** - homecare-30m-*, sidebiz-30m-*, trainer-30m-* が全て `enabled: false` に設定済み。新組織移行完了。
+2. **📊 新8部門ジョブ安定稼働** - 全ジョブ consecutiveErrors: 0。engineering/product/marketing/design/project-management/studio-operations/testing/CEO 全て正常。
+3. **🔧 未コミット変更多数** - 18 modified + 61+ untracked files。主な変更: sidebiz/free-tool-portal/（AIプロンプト30本化、SEO改善）、org/（新組織定義）、reports/company/（部門レポート）。
+4. **📈 AIプロンプトLP拡張完了** - 15本→30本に拡張（薬歴記載効率化・監査対策・新人教育カテゴリ追加）。SEO改善10件完了。
+5. **🔒 Brave API制限継続** - 4月初旬復旧見込。リサーチ系は web_fetch 代替運用中。
+
+---
+
+## next actions
+
+| 優先度 | アクション | 担当role | 期限 |
+|--------|-----------|----------|------|
+| P2 | 未コミット変更の整理・コミット（org/, reports/, sidebiz/） | devops-automator | 随時 |
+| P3 | interaction-data.js の検証テスト検討 | backend-architect | 低優先 |
+| P3 | .openclaw/ 実行基盤ドキュメントの整備確認 | devops-automator | 随時 |
+
+---
+
+## blockers / dependencies
+
+- **Brave Search API**: 月次上限到達中（4月初旬復旧）。リサーチ系は代替手段で運用継続。
+- **未コミット多数**: 自動コミットは危険。整理してからコミット推奨。
+- **ユーザー依存タスク**: 経過措置患者抽出（MCS操作）、販売プラットフォーム開設、X API取得は engineering 範囲外。
+
+---
+
+## CEO handoff
+
+技術基盤は安定。旧30m系ジョブ停止完了、新組織8部門ジョブ全て正常稼働。
+未コミット変更多数（18+61ファイル）。整理後のコミット推奨。
+ブロッカーなし。Brave API制限は4月初旬復旧予定で代替運用中。

@@ -1,0 +1,33 @@
+[
+  {
+    "candidate_id": "candidate-crossagent-001",
+    "timestamp": "2026-03-29T08:50:00+09:00",
+    "title": "Heartbeat Report Compact Failure Rollup",
+    "summary": "Add one-line failed-lane summary to heartbeat-facing health output to improve operational visibility",
+    "root_issue": "heartbeat reports lack compact failure rollup",
+    "desired_change": "add one-line failed-lane summary to heartbeat-facing health output",
+    "requested_action": "Implement compact failure rollup in heartbeat health output",
+    "change_scope": "heartbeat monitoring infrastructure",
+    "boundary_impact": "low",
+    "reversibility": "high",
+    "blast_radius": "medium",
+    "novelty": "medium",
+    "evidence": {
+      "source_roles": ["board-operator", "ops-automator"],
+      "duplicate_detection": "12-hour suppression active",
+      "heartbeat_analysis": "failure detection scattered across log reading",
+      "operational_impact": "operators spend excessive time parsing heartbeat failures"
+    },
+    "recommendation": {
+      "proposed_lane": "acp_compat",
+      "implementation_priority": "high",
+      "estimated_effort": "medium",
+      "success_criteria": "heartbeat failures visible in one-line summary"
+    },
+    "trigger_reason": "cross-agent knowledge sync revealed duplicate heartbeat failure detection patterns",
+    "domain_scope": ["monitoring", "reporting"],
+    "cross_agent_involvement": true,
+    "conflict_status": "no_conflict",
+    "precedent_gap": "heartbeat visibility depends on log reading instead of direct display"
+  }
+]

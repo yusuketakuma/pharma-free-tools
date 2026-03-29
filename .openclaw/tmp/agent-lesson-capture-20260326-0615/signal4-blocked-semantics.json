@@ -1,0 +1,35 @@
+{
+  "signal_id": "signal-20260325211500-blocked-semantics",
+  "occurred_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "category": "lesson",
+  "domain": "execution",
+  "summary": "blocked は failure ではなく user input waiting なので、completed / blocked / failed を分けて扱う。",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "DDS E2E で completed / blocked / failed / PR 報告の経路分岐が確認できた"
+    ],
+    "refs": [
+      "reports/cron/agent-lesson-capture-20260325-0615.md",
+      "reports/cron/agent-performance-optimization-review-20260325-0715.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "dss-manager",
+      "ops-automator"
+    ],
+    "repos": [
+      "DDS-agents"
+    ],
+    "layers": [
+      "execution",
+      "infra"
+    ]
+  },
+  "candidate_hint": false
+}

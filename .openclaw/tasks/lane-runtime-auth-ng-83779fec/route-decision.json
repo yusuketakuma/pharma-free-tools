@@ -1,0 +1,15 @@
+{
+  "task_id": "lane-runtime-auth-ng-83779fec",
+  "route_decision_id": "route-188f1ce2a0fc",
+  "decision": "claude-code",
+  "score": 0.85,
+  "reasons": [
+    "task appears multi-step or implementation-heavy",
+    "requested_route=claude-code"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ]
+}

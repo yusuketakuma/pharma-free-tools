@@ -1,0 +1,62 @@
+version: 5
+mode: cli
+primary_mode: acp
+secondary_mode: cli
+backend_safety_net: cli
+bin: claude
+model: sonnet
+permission_mode_default: default
+permission_mode_execute: bypassPermissions
+timeout_sec: 900
+max_turns: 12
+max_budget_usd: 5.0
+use_json_schema: true
+save_raw_response: true
+settings_strategy: ephemeral_file
+use_bare_for_low_risk: false
+allow_result_json_fallback: true
+fallback_accept_root_json_string: true
+fallback_accept_single_fenced_json: true
+fallback_accept_free_text_json: false
+retry_on_json_schema_cold_start: 1
+auto_publish_requires_strict_output_for_write_tasks: true
+durable_state_owner: openclaw
+transient_execution_owner: claude_code
+prompt_policy:
+  system_prompt_mode: append
+  do_not_use_prompt_as_primary_safety_control: true
+  enforce_with:
+    - hooks
+    - permissions
+    - allow_deny
+    - protected_paths
+    - approval_policy
+auth:
+  mode: auto
+  required: true
+  fail_closed: true
+  persist_artifacts: true
+  allow_login_hint: true
+  primary_method: claude_subscription
+  allowed_methods:
+    - claude_subscription
+  setup_token_positioning: disabled_for_this_workspace
+  preferred_setting_sources: "user,project,local"
+  use_ephemeral_settings: true
+trust_boundary:
+  gateway_boundary_rule: one_gateway_one_boundary
+  mixed_trust_requires:
+    - gateway_separation
+    - credential_separation
+    - os_user_separation
+    - host_separation
+  prefer_process_boundary_before_native_plugin: true
+capacity_dispatch:
+  acp_primary_when_healthy: true
+  cli_secondary_when_acp_unhealthy: true
+  consider_openai_project_rate_limits: true
+  consider_claude_telemetry_and_spend: true
+manual_approval_fixed_for_guardrails: true
+restrict_tools:
+  - Bash
+  - WebFetch

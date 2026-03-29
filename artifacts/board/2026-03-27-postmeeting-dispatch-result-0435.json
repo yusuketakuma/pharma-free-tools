@@ -1,0 +1,177 @@
+{
+  "source": "cron:32ba03a1-c935-486d-8946-873b4235557e board-postmeeting-agent-dispatch",
+  "board_cycle_slot_id": "20260327-0435",
+  "board_decision_ref": "board-premeeting-brief latest 2026-03-27 04:35 JST",
+  "final_decision": "stale-backlog-triage / boundary-separation / status-taxonomy mixed adoption",
+  "summary": "Board 系は live subagent で配信・受理・成果物確認まで完了。Exec 系は safe temporary file 配信で送信成功したが live 受理は未達。自己改善 proposal は review/apply に2件、revise/manual approval required に1件を引き渡した。",
+  "board_dispatch": [
+    {
+      "agent": "ceo-tama",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:ceo-tama:subagent:8068612d-0471-4eee-ad68-62540058242a",
+      "runId": "ddcca1ba-7aac-49dd-9bbd-8714c505a0ae",
+      "artifact": "artifacts/board/2026-03-27-ceo-tama-postmeeting-0435.md"
+    },
+    {
+      "agent": "supervisor-core",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:supervisor-core:subagent:c9046dc9-6a80-4795-98e3-490d4ed8993d",
+      "runId": "a3369149-0e39-4fa9-9638-3e0209abefca",
+      "artifact": "artifacts/board/2026-03-27-supervisor-core-postmeeting-0435.md"
+    },
+    {
+      "agent": "board-operator",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-operator:subagent:92939428-7fd7-4f43-a665-f5cbd1185329",
+      "runId": "dc427d3a-16fd-4071-bbc6-ea27bb8ffd16",
+      "artifact": "artifacts/board/2026-03-27-board-operator-postmeeting-0435.md"
+    },
+    {
+      "agent": "board-auditor",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-auditor:subagent:4085db46-85e4-43c9-aeda-87a4cb32f800",
+      "runId": "60422699-cdbf-44cd-8215-bc6975274be2",
+      "artifact": "artifacts/board/2026-03-27-board-auditor-postmeeting-0435.md"
+    },
+    {
+      "agent": "board-user-advocate",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-user-advocate:subagent:7009b876-a1dd-4502-b568-c9c6cd5670d5",
+      "runId": "8dcd1740-03ea-40f6-b14c-2d2c19907571",
+      "artifact": "artifacts/board/2026-03-27-board-user-advocate-postmeeting-0435.md"
+    },
+    {
+      "agent": "board-visionary",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-visionary:subagent:5e47a440-3130-4355-9478-b6ea77a580c5",
+      "runId": "c90317e2-9bf1-499a-93b2-1f787a940cc3",
+      "artifact": "artifacts/board/2026-03-27-board-visionary-postmeeting-0435.md"
+    }
+  ],
+  "exec_dispatch": [
+    {
+      "agent": "research-analyst",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-research-analyst-20260327-0435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "github-operator",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-github-operator-20260327-0435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "ops-automator",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-ops-automator-20260327-0435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "doc-editor",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-doc-editor-20260327-0435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "dss-manager",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-dss-manager-20260327-0435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "opportunity-scout",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-opportunity-scout-20260327-0435.txt",
+      "reason": "no live receive path used"
+    }
+  ],
+  "stages": {
+    "send_success": [
+      "ceo-tama",
+      "supervisor-core",
+      "board-operator",
+      "board-auditor",
+      "board-user-advocate",
+      "board-visionary",
+      "research-analyst",
+      "github-operator",
+      "ops-automator",
+      "doc-editor",
+      "dss-manager",
+      "opportunity-scout"
+    ],
+    "accept_success": [
+      "ceo-tama",
+      "supervisor-core",
+      "board-operator",
+      "board-auditor",
+      "board-user-advocate",
+      "board-visionary"
+    ],
+    "artifact_confirmed": [
+      "ceo-tama",
+      "supervisor-core",
+      "board-operator",
+      "board-auditor",
+      "board-user-advocate",
+      "board-visionary"
+    ]
+  },
+  "unreceived": [
+    "research-analyst",
+    "github-operator",
+    "ops-automator",
+    "doc-editor",
+    "dss-manager",
+    "opportunity-scout"
+  ],
+  "unconfirmed": [
+    "research-analyst",
+    "github-operator",
+    "ops-automator",
+    "doc-editor",
+    "dss-manager",
+    "opportunity-scout"
+  ],
+  "failure_reasons": [
+    "Exec roles were intentionally routed to safe temporary files; live receive path not used.",
+    "`proposal-20260326-supervisor-boundary-preflight` remained revise/manual approval required and was not directly applied."
+  ],
+  "self_improvement_proposal_handoff": {
+    "review_apply": [
+      "proposal-20260327-stale-backlog-triage-contract",
+      "proposal-20260327-status-taxonomy-separate-reporting"
+    ],
+    "revise_manual_approval_required": [
+      "proposal-20260326-supervisor-boundary-preflight"
+    ]
+  },
+  "retry_targets": [
+    "research-analyst",
+    "github-operator",
+    "ops-automator",
+    "doc-editor",
+    "dss-manager",
+    "opportunity-scout"
+  ],
+  "next_actions": [
+    "Pass proposal-20260327-stale-backlog-triage-contract and proposal-20260327-status-taxonomy-separate-reporting to review/apply.",
+    "Keep proposal-20260326-supervisor-boundary-preflight in revise/manual approval required until split and resubmitted.",
+    "Verify exec artifacts in the next verification pass only; no live acceptance expected for safe-file delivery.",
+    "Keep board-side work limited to backlog triage, boundary separation, and status taxonomy.",
+    "Keep internal-only handling; no external notification."
+  ]
+}

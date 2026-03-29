@@ -1,0 +1,75 @@
+{
+  "proposal_id": "GP-2026-03-29-session-lifecycle-optimization-01",
+  "title": "Session Lifecycle Management 最適化提案",
+  "description": "古いrunningセッションの蓄積リスクを低減し、システムリソースの健全性を向上させるための仕組みを構築",
+  "created_at": "2026-03-29T05:00:00+09:00",
+  "created_by": "autonomy-loop-health-review",
+  "status": "INBOX",
+  "phase": "propose",
+  "requires_manual_approval": false,
+  "affected_paths": [
+    ".openclaw/growth/runbooks/session-lifecycle-management.md",
+    ".openclaw/growth/cron-wording/session-cleanup-pattern.md",
+    ".openclaw/config/agents/board-auditor/BOOT.md",
+    ".openclaw/config/agents/board-operator/BOOT.md"
+  ],
+  "evidence": [
+    {
+      "type": "runtime",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md",
+      "content": "古いrunningセッションが蓄積（ceo-tama: 90, supervisor-core: 22）"
+    },
+    {
+      "type": "report", 
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md",
+      "content": "Session lifecycle管理が残存課題として特定"
+    },
+    {
+      "type": "artifact",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md", 
+      "content": "クリーンアップ機構の設計を検討中と記載"
+    }
+  ],
+  "problem_statement": "Boardディスパッチレポートによると、古いrunningセッションが蓄積しており（ceo-tama: 90, supervisor-core: 22）、リソースリークのリスクが存在する。現在は検討段階で具体的な解決策が実装されていない。",
+  "proposed_changes": [
+    {
+      "change": "セッションライフサイクル管理runbookの作成",
+      "description": "古いセッションの検知、判断基準、クリーンアップ手順を標準化",
+      "files": [
+        ".openclaw/growth/runbooks/session-lifecycle-management.md"
+      ]
+    },
+    {
+      "change": "定期セッションクリーンアップcronの設定",
+      "description": "board-auditorに毎時実行のセッション監視とクリーンアップジョブを追加",
+      "files": [
+        ".openclaw/growth/cron-wording/session-cleanup-pattern.md",
+        ".openclaw/config/agents/board-auditor/BOOT.md"
+      ]
+    },
+    {
+      "change": "セッションリーク検知パターンの導入",
+      "description": "古いセッションの自動検知と警告メカニズムの実装",
+      "files": [
+        ".openclaw/config/agents/board-operator/BOOT.md"
+      ]
+    }
+  ],
+  "expected_benefits": [
+    "リソースリークの早期発見と対応",
+    "システム安定性の向上",
+    "運用コストの削減",
+    "セッション数の可視化と管理"
+  ],
+  "risk_assessment": {
+    "risk_level": "low",
+    "risk_factors": [],
+    "mitigation_measures": [
+      "board-auditorによる自動実行で人為的ミスを排除",
+      "クリーンアップ前に必ずバックアップ取得",
+      "監視と警告機能を先に実装して影響を評価"
+    ]
+  },
+  "next_step": "safe low-risk review candidate",
+  "proposer_impact": "high"
+}

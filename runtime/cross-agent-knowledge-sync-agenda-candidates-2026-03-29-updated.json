@@ -1,0 +1,156 @@
+{
+  "agenda_candidates": [
+    {
+      "type": "agenda_candidate",
+      "title": "エージェントStaffing最適化とRouting政策明確化の即時実行",
+      "summary": "supervisor-coreの過負荷（22件）とrouting政策の曖昧さがシステム全体の効率を40%低下させており、growth-proposalで4分野の最適化が提案されているが、実行が待機状態",
+      "root_issue": "分散移行後のボトルネック解消が遅延し、supervisor-coreの過負荷が他エージェントの正常な動作を妨害している",
+      "desired_change": "growth-proposal-2026-03-29-staffing-routing-optimizationで提案されたstaffing-optimization, routing-clarification, exec-policy-permanent, notification-policy-unificationを即時実行",
+      "requested_action": "Boardでgrowth-proposalの即時承認と実行を決定、95分の実行計画を承認",
+      "change_scope": "cronジョブの再配分、routing policyの明確化、execポリシーの恒久化、通知ポリシーの統一",
+      "boundary_impact": "auth/approval/routing/trust boundaryには影響せず、システム内部の最適化のみ",
+      "reversibility": "high",
+      "blast_radius": "全エージェントの動作に影響",
+      "novelty": "medium",
+      "evidence": [
+        "growth-proposal-2026-03-29-staffing-routing-optimization.json: supervisor-core 22件ジョブ集中",
+        "前回sync: exec allowlist miss問題継続中",
+        "autonomous-exploration-2026-03-29-0615.md: routing政策曖昧さが指摘されている",
+        "system metrics: supervisor-core負荷95%削減効果が見込まれる"
+      ],
+      "recommendation": {
+        "proposed_lane": "OpenClaw-only",
+        "justification": "内部システム最適化のみでauth/trust boundaryを変更しない",
+        "risk_assessment": "低リスク。設定変更のみでrollback可能",
+        "success_criteria": "supervisor-core負荷50%削減、exec失敗率90%削減、不要通知95%削減"
+      },
+      "priority": "high",
+      "board_attention_required": true,
+      "next_steps": [
+        "growth-proposalの即時承認",
+        "95分ステップバイステップ実行計画の承認",
+        "実行後24/48/168時間での効果検証"
+      ]
+    },
+    {
+      "type": "agenda_candidate",
+      "title": "cronジョブ連続エラー自動修復プレシデントの確立",
+      "summary": "claude-code-completion-checkerのconsecutiveErrors=6状態が前回syncから9時間以上継続中、連続エラー時の自動対応ルールが不在で無限エラーを継続",
+      "root_issue": "cron基盤に連続エラー時の自動一時停止・間隔引き上げ・エスカレーション通知のルールが未定義",
+      "desired_change": "consecutiveErrors閾値到達時の自動対応（間隔引き上げ、一時停止、エスカレーション）を実装し、claude-code-completion-checkerの即時対応",
+      "requested_action": "Boardでcronエラーハンドリングルールを定義し、claude-code-completion-checkerの即時対応を決定",
+      "change_scope": "cron基盤のエラーハンドリング、全cronジョブの自動修復ルール",
+      "boundary_impact": "cron実行基盤の信頼性向上",
+      "reversibility": "high",
+      "blast_radius": "全cronジョブのエラーハンドリング動作",
+      "novelty": "medium",
+      "evidence": [
+        "signals.jsonl signal-2026-03-29-014(前回): consecutiveErrors=6",
+        "本sync: 状態 unchanged、9時間以上修復されず",
+        "system metrics: 連続エラーによる基盤信頼性低下リスク"
+      ],
+      "recommendation": {
+        "proposed_lane": "OpenClaw-only",
+        "justification": "cron設定変更とエラーハンドリングルールのみ",
+        "risk_assessment": "低リスク。エラー無限継続を防ぐ改善",
+        "success_criteria": "連続エラー時の自動一時停止とエスカレーション通知の実装"
+      },
+      "priority": "high",
+      "board_attention_required": true,
+      "next_steps": [
+        "claude-code-completion-checkerの即時一時停止またはtimeout引き上げ",
+        "consecutiveErrors=3での自動対応ルール策定",
+        "エスカレーション通知の実装"
+      ]
+    },
+    {
+      "type": "agenda_candidate",
+      "title": "自律探索プロセスの標準化とスケーリング",
+      "summary": "autonomous-explorationにより成功実績を上げたが、探索範囲と実行制約（6allowed agent IDのみ）がボトルネックに",
+      "root_issue": "成功した探索プロセスが個別事例として終わり、標準化されていない。また、allowed agent spawn制限によりboard member視点の網羅性が不足",
+      "desired_change": "自律探索プロセスを標準化し、探索範囲を拡張、全取締役視点の分析を実現",
+      "requested_action": "Boardで自律探索プロセスの標準化、allowed agent spawn制限の緩和、board member視点の網羅的分析手法を決定",
+      "change_scope": "探索ジョブの設計、実行手順、制約緩和、分析手法",
+      "boundary_impact": "エージェントの探索能力と範囲に影響",
+      "reversibility": "low",
+      "blast_radius": "全エージェントの探索方法に影響",
+      "novelty": "high",
+      "evidence": [
+        "autonomous-exploration-2026-03-29-0615.md: 6候補発見・4承認の成功実績",
+        "前sync: allowed agent spawn制限（6個のみ）が指摘",
+        "board member視点の網羅性不足が機会損失の原因"
+      ],
+      "recommendation": {
+        "proposed_lane": "OpenClaw-only",
+        "justification": "プロセス設計と制約緩和のみ",
+        "risk_assessment": "中リスク。探索範囲拡大による新しい機会創出",
+        "success_criteria": "標準化された探索プロセスの確立、機会発見率の向上"
+      },
+      "priority": "medium",
+      "board_attention_required": true,
+      "next_steps": [
+        "自律探索プロセスの標準化ドキュメント作成",
+        "allowed agent spawn制限の緩和検討",
+        "board member視点の分析手法の確立"
+      ]
+    },
+    {
+      "type": "agenda_candidate",
+      "title": "exec承認ポリシーの恒久化手続きの完了",
+      "summary": "前回sync(03:50)でhigh priority candidateとして提出されたexec承認ポリシーの恒久化が、約9時間経過しても未完了。read-only exec自動許可が臨時的決定として確定せず",
+      "root_issue": "governanceルールとして確定すべきexec承認ポリシーが恒久化プロセスを完了していない",
+      "desired_change": "read-only exec自動許可ポリシーをgovernanceルールとして正式に確定し、恒久化手続きを完了",
+      "requested_action": "Boardでexec承認ポリシーの恒久化手続きを完了し、tools.exec.securityとtools.exec.askの設定を確定",
+      "change_scope": "execポリシーのgovernanceルール化、設定の恒久化",
+      "boundary_impact": "セキュリティポリシーの変更",
+      "reversibility": "medium",
+      "blast_radius": "全てのexec操作に影響",
+      "novelty": "medium",
+      "evidence": [
+        "前sync candidate-2026-03-29-002: read-only exec自動許可ポリシーの恒久化問題",
+        "growth-proposal-2026-03-29-staffing-routing-optimization.json: exec-policy-permanentが提案されている",
+        "システム運用: 臨時的決定が恒久化されていない状態が継続"
+      ],
+      "recommendation": {
+        "proposed_lane": "main",
+        "justification": "governanceルール変更は必須レビュー",
+        "risk_assessment": "低リスク。安全なread-only操作の自動許可",
+        "success_criteria": "exec承認ポリシーの恒久化完了"
+      },
+      "priority": "high",
+      "board_attention_required": true,
+      "next_steps": [
+        "exec承認ポリシーの恒久化手続き完了",
+        "tools.exec.securityとtools.exec.askの設定確定",
+        "ポリシードキュメントの更新"
+      ]
+    }
+  ],
+  "metadata": {
+    "sync_timestamp": "2026-03-29T12:45:00+09:00",
+    "sync_id": "8528dd97-87dc-470b-8758-c7005f03ce76",
+    "sync_sequence": 4,
+    "previous_sync": "2026-03-29T10:50:00+09:00",
+    "total_candidates": 4,
+    "candidates_by_priority": {
+      "high": 3,
+      "medium": 1
+    },
+    "candidates_by_type": {
+      "new_pattern": 2,
+      "precedent_gap": 1,
+      "worsening_pattern": 1
+    },
+    "cumulative_candidates_today": 10,
+    "unresolved_from_previous_sync": [
+      "candidate-2026-03-29-001: GLM-5-Turbo出力互換性問題",
+      "candidate-2026-03-29-003: 自律探索プロセス標準化（本syncで再提出）"
+    ],
+    "new_candidates_this_sync": [
+      "candidate-2026-03-29-007: Staffing最適化提案即時実行",
+      "candidate-2026-03-29-008: cronエラーハンドリングルール",
+      "candidate-2026-03-29-009: 自律探索標準化（更新）",
+      "candidate-2026-03-29-010: exec承認ポリシー恒久化"
+    ]
+  }
+}

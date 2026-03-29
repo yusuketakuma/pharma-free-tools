@@ -1,0 +1,23 @@
+{
+  "review_id": "project-priority-management-framework-2026-03-30-review",
+  "proposal_id": "project-priority-management-framework-2026-03-30",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/project-priority-management-framework-2026-03-30.json",
+  "reviewed_at": "2026-03-29T03:42:03+09:00",
+  "decision": "approve",
+  "reviewer": "self-improvement-proposal-review",
+  "reason": "priority management framework enhances Top3 project execution clarity with low risk and reversible changes",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    ".openclaw/growth/config/priority-evaluation-metrics.json",
+    ".openclaw/growth/cron-wording/monthly-project-priority-review.md",
+    ".openclaw/growth/prompts/roadmap-coordinator.md",
+    ".openclaw/growth/runbooks/project-priority-management-framework.md",
+    ".openclaw/workspace/projects/careroute-rx/roadmap/priority-tracing.md",
+    ".openclaw/workspace/projects/openclaw-core/roadmap/priority-tracing.md",
+    ".openclaw/workspace/projects/pharma-free-tools/roadmap/priority-tracing.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

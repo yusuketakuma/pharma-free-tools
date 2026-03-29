@@ -1,0 +1,52 @@
+{"type":"session.start","ts":"2026-03-22T07:40:13Z","state":"initialized","data":{"cc_session_id":"c5ea1320-259f-47da-b769-2ed16d64c2a4"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-22T07:40:13Z","state":"initialized"}
+{"id":"event-000002","type":"tool.bash","ts":"2026-03-22T07:40:14Z","state":"initialized","data":{"command":"sleep 30 && cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/fb22d14f-0f5b-4665-898f-fac9a25c22d3/tasks/b8l46fxr8.output 2>/dev/null || echo "Not ready yet""}}
+{"id":"event-000003","type":"tool.bash","ts":"2026-03-22T07:40:14Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -30"}}
+{"id":"event-000003","type":"tool.bash","ts":"2026-03-22T07:40:14Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -50"}}
+{"id":"event-000004","type":"tool.bash","ts":"2026-03-22T07:40:14Z","state":"initialized","data":{"command":"cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/f8a08c73-71cc-40cc-ba56-1e60d018f078/tasks/b9f85jms1.output 2>/dev/null | tail -40"}}
+{"id":"event-000005","type":"tool.bash","ts":"2026-03-22T07:40:14Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -30"}}
+{"id":"event-000006","type":"tool.bash","ts":"2026-03-22T07:40:16Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -30"}}
+{"id":"event-000007","type":"session.resume","ts":"2026-03-22T07:40:15Z","state":"initialized"}
+{"id":"event-000008","type":"session.resume","ts":"2026-03-22T07:40:15Z","state":"initialized"}
+{"id":"event-000009","type":"session.resume","ts":"2026-03-22T07:40:16Z","state":"initialized"}
+{"id":"event-000010","type":"tool.bash","ts":"2026-03-22T07:40:18Z","state":"initialized","data":{"command":"timeout 30 python3 -m pytest .openclaw/tests/test_queue_rebalance.py -x --tb=short -q 2>&1 | head -50 || true"}}
+{"id":"event-000011","type":"tool.bash","ts":"2026-03-22T07:40:18Z","state":"initialized","data":{"command":"cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/b4ad9f32-f638-4f7b-83de-a2f0bd4c99bc/tasks/b9hp0k0dl.output 2>/dev/null || sleep 5 && cat /private/tmp/claude-501/-Users-yusuke--openclaw-"}}
+{"id":"event-000012","type":"tool.bash","ts":"2026-03-22T07:40:19Z","state":"initialized","data":{"command":"python3 -c "import sys; sys.path.insert(0, '.openclaw/scripts'); from task_runtime import ROOT" 2>&1"}}
+{"id":"event-000013","type":"session.resume","ts":"2026-03-22T07:40:18Z","state":"initialized"}
+{"id":"event-000014","type":"tool.bash","ts":"2026-03-22T07:40:19Z","state":"initialized","data":{"command":"sleep 30 && cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/e5bad6ec-e6f3-43c9-9b28-d395d4b1b570/tasks/bc3rrplfk.output 2>&1 | tail -60"}}
+{"id":"event-000015","type":"tool.bash","ts":"2026-03-22T07:40:21Z","state":"initialized","data":{"command":"ls .openclaw/tasks/ | head -5 && cat .openclaw/tests/test_queue_rebalance.py | wc -l"}}
+{"id":"event-000016","type":"session.resume","ts":"2026-03-22T07:40:20Z","state":"initialized"}
+{"id":"event-000017","type":"tool.bash","ts":"2026-03-22T07:40:22Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_queue_rebalance.py' 2>&1 | head -80"}}
+{"id":"event-000018","type":"tool.bash","ts":"2026-03-22T07:40:22Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -30"}}
+{"id":"event-000019","type":"tool.bash","ts":"2026-03-22T07:40:22Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -40"}}
+{"id":"event-000020","type":"tool.bash","ts":"2026-03-22T07:40:23Z","state":"initialized","data":{"command":"python3 -c "
+import sys
+sys.path.insert(0, '.openclaw/scripts')
+import task_runtime
+print('ok')
+" 2>&1"}}
+{"id":"event-000021","type":"session.stop","ts":"2026-03-22T07:40:25Z","state":"stopped"}
+{"id":"event-000001","type":"session.start","ts":"2026-03-22T07:40:25Z","state":"initialized"}
+{"id":"event-000002","type":"tool.bash","ts":"2026-03-22T07:40:26Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -30"}}
+{"id":"event-000003","type":"session.resume","ts":"2026-03-22T07:40:26Z","state":"initialized"}
+{"id":"event-000004","type":"tool.bash","ts":"2026-03-22T07:40:29Z","state":"initialized","data":{"command":"cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/b6c7b759-d8d1-40d5-8d94-5fc60fd3fa6b/tasks/b88ect1me.output"}}
+{"id":"event-000005","type":"tool.bash","ts":"2026-03-22T07:40:29Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' -v 2>&1 | tail -50"}}
+{"id":"event-000006","type":"tool.bash","ts":"2026-03-22T07:40:31Z","state":"initialized","data":{"command":"cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/5bc0f9ea-2f1f-4583-97e5-615262edeae6/tasks/bwebv1mcq.output 2>/dev/null | tail -40"}}
+{"id":"event-000007","type":"session.resume","ts":"2026-03-22T07:40:31Z","state":"initialized"}
+{"id":"event-000008","type":"tool.bash","ts":"2026-03-22T07:40:32Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | head -80"}}
+{"id":"event-000009","type":"session.stop","ts":"2026-03-22T07:40:34Z","state":"stopped"}
+{"id":"event-000010","type":"session.resume","ts":"2026-03-22T07:40:33Z","state":"initialized"}
+{"id":"event-000011","type":"tool.bash","ts":"2026-03-22T07:40:34Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -40"}}
+{"id":"event-000012","type":"tool.bash","ts":"2026-03-22T07:40:35Z","state":"initialized","data":{"command":"cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/2175c3b4-7d09-46ed-8997-6368a628fb2e/tasks/bbalyypvi.output 2>/dev/null | tail -50"}}
+{"id":"event-000001","type":"session.start","ts":"2026-03-22T07:40:34Z","state":"initialized"}
+{"id":"event-000002","type":"session.resume","ts":"2026-03-22T07:40:37Z","state":"initialized"}
+{"id":"event-000003","type":"session.resume","ts":"2026-03-22T07:40:39Z","state":"initialized"}
+{"id":"event-000004","type":"session.resume","ts":"2026-03-22T07:40:41Z","state":"initialized"}
+{"id":"event-000005","type":"session.resume","ts":"2026-03-22T07:40:44Z","state":"initialized"}
+{"id":"event-000006","type":"session.resume","ts":"2026-03-22T07:40:45Z","state":"initialized"}
+{"id":"event-000007","type":"session.resume","ts":"2026-03-22T07:40:48Z","state":"initialized"}
+{"id":"event-000008","type":"tool.bash","ts":"2026-03-22T07:40:49Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -40"}}
+{"id":"event-000009","type":"tool.bash","ts":"2026-03-22T07:40:49Z","state":"initialized","data":{"command":"python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' 2>&1 | tail -30"}}
+{"id":"event-000010","type":"session.resume","ts":"2026-03-22T07:40:49Z","state":"initialized"}
+{"id":"event-000011","type":"session.resume","ts":"2026-03-22T07:40:50Z","state":"initialized"}
+{"id":"event-000012","type":"session.stop","ts":"2026-03-22T07:40:52Z","state":"stopped"}

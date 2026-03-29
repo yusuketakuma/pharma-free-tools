@@ -1,0 +1,17 @@
+{
+  "model": "sonnet",
+  "permission_mode_default": "default",
+  "permission_mode_execute": "bypassPermissions",
+  "timeout_sec": 900,
+  "max_turns": 12,
+  "max_budget_usd": 5.0,
+  "use_json_schema": true,
+  "structured_output_schema_path": "/Users/yusuke/.openclaw/workspace/.openclaw/schemas/claude-structured-output.schema.json",
+  "output_format": "json",
+  "settings_strategy": "ephemeral_file",
+  "use_bare_for_low_risk": false,
+  "restrict_tools": [
+    "Bash",
+    "WebFetch"
+  ]
+}

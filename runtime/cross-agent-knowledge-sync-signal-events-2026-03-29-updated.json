@@ -1,0 +1,93 @@
+{
+  "signal_events": [
+    {
+      "type": "signal_event",
+      "category": "success",
+      "summary": "トークン管理システム提案の自動承認完了",
+      "source_agents": ["board-visionary", "board-auditor"],
+      "impact_level": "medium",
+      "details": {
+        "timestamp": "2026-03-29T06:25:00+09:00",
+        "activity": "autonomous-explorationにより発見した2件のトークン管理提案（implementation, tuning）がBoard審議を経て自動承認",
+        "outcome": "提案statusがproposed→approvedに変更、auth/approval/routing boundaryには影響せず安全",
+        "next_actions": "board-auditor/self-improvement-safe-applyジョブによる実際のファイル変更実行"
+      }
+    },
+    {
+      "type": "signal_event", 
+      "category": "next_change",
+      "summary": "エージェントStaffing最適化提案の提出",
+      "source_agents": ["agent-staffing-and-prompt-tuning-review"],
+      "impact_level": "high",
+      "details": {
+        "timestamp": "2026-03-29T06:30:00+09:00",
+        "activity": "supervisor-core過負荷（22件）とrouting政策曖昧さを解消するgrowth-proposlaが提出",
+        "scope": "staffing-optimization + routing-clarification + exec-policy-permanent + notification-policy-unification",
+        "estimated_impact": "supervisor-core負荷50%削減、exec失敗率90%削減、不要通知95%削減"
+      }
+    },
+    {
+      "type": "signal_event",
+      "category": "lesson",
+      "summary": "receipt-delivery-reconciler空回り問題の自然解決確認",
+      "source_agents": ["board-visionary"],
+      "impact_level": "low",
+      "details": {
+        "timestamp": "2026-03-29T06:15:00+09:00",
+        "issue": "13.5時間空回りしていたreceipt-delivery-reconcilerが自律探索発見後自然終了",
+        "lesson": "空回り問題はセッション寿命管理の問題であり、介入が必要かの判断基準が重要",
+        "preventive_measures": "session survival monitoringシステムの必要性が確認された"
+      }
+    },
+    {
+      "type": "signal_event",
+      "category": "failure",
+      "summary": "claude-code-completion-checker連続エラー継続",
+      "source_agents": ["system-monitor"],
+      "impact_level": "medium",
+      "details": {
+        "timestamp": "2026-03-29T12:45:00+09:00",
+        "issue": "consecutiveErrors=6で継続タイムアウト、前回syncから約9時間経過しても状態unchanged",
+        "impact": "cron jobの連続失敗による基盤信頼性の低下リスク",
+        "action_needed": "連続エラー時の自動対応ルールの即時実装必要"
+      }
+    },
+    {
+      "type": "signal_event",
+      "category": "success",
+      "summary": "自律探索プロセスの実績蓄積",
+      "source_agents": ["board-visionary"],
+      "impact_level": "medium",
+      "details": {
+        "timestamp": "2026-03-29T06:25:00+09:00",
+        "achievement": "自律探索により6件の候補を発見・Board審議・4件承認・1件自動着手完了",
+        "metrics": "候補発見率、Board承認率、自動着手成功率の実績データが蓄積",
+        "standardization_needs": "成功した探索プロセスの標準化と教育資産化が要望される"
+      }
+    }
+  ],
+  "metadata": {
+    "sync_timestamp": "2026-03-29T12:45:00+09:00",
+    "sync_id": "8528dd97-87dc-470b-8758-c7005f03ce76",
+    "sync_sequence": 4,
+    "previous_sync": "2026-03-29T10:50:00+09:00",
+    "total_signals": 5,
+    "signals_by_priority": {
+      "high": 1,
+      "medium": 3,
+      "low": 1
+    },
+    "signals_by_category": {
+      "success": 2,
+      "failure": 1,
+      "lesson": 1,
+      "next_change": 1
+    },
+    "scan_coverage": {
+      "new_reports_analyzed": 2,
+      "new_proposals_analyzed": 1,
+      "active_sessions_monitored": 1,
+      "system_issues_identified": 1
+    }
+  }
+}

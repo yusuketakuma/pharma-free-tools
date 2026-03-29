@@ -1,0 +1,39 @@
+{
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "dependency",
+  "domain": "reporting",
+  "summary": "board-side dispatch is complete, but exec-side live receipt is still unresolved; proof-path and state separation keep completion claims from collapsing into a single done state.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "board send/accept/confirm = complete",
+      "exec live receive = not observed",
+      "apply / review / manual_required / effect-confirmed remain distinct"
+    ],
+    "refs": [
+      "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+      "reports/cron/workspace-report-learning-review-20260327-0300.md",
+      "reports/cron/cross-agent-knowledge-sync-20260327-0035.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "board-operator",
+      "board-auditor",
+      "supervisor-core",
+      "ops-automator"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution",
+      "infra"
+    ]
+  },
+  "candidate_hint": false
+}

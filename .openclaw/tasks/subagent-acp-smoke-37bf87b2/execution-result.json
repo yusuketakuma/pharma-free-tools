@@ -1,0 +1,86 @@
+{
+  "task_id": "subagent-acp-smoke-37bf87b2",
+  "status": "success",
+  "executor": "claude-code",
+  "summary": "Smoke test passed. Read-only review of run_claude_acp.py confirms the ACP adapter script is correct and well-structured: it validates requests, performs auth preflight, selects transport (native acp or compat json mode), invokes Claude, normalizes output to the structured contract, and writes execution-result.json. No file changes made.",
+  "changed_files": [
+    ".openclaw/scripts/run_claude_acp.py"
+  ],
+  "verification_results": [
+    "read-only review completed",
+    "no file changes made",
+    "schema validated"
+  ],
+  "remaining_risks": [],
+  "exit_code": 0,
+  "started_at": "2026-03-22T16:41:45+09:00",
+  "finished_at": "2026-03-22T16:41:45+09:00",
+  "dispatch_id": "dispatch-smoke",
+  "raw_response_path": ".openclaw/tasks/subagent-acp-smoke-37bf87b2/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/subagent-acp-smoke-37bf87b2/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "transport_kind": "claude_print_json_compat",
+    "native_acp_available": false,
+    "session_id": "1980be95-e264-4dbc-ab72-0c673d8db582",
+    "normalization_source": "result_json_fallback",
+    "fallback_used": true,
+    "retry_count": 0,
+    "raw_sha256": "4cb58f26cdc071b3c33aee5b82de8a5153d686c83603f4db1970ef01fa42f489",
+    "publishable": true,
+    "degraded_contract": "structured_output missing; decoded JSON string from result",
+    "modelUsage": {
+      "claude-sonnet-4-6": {
+        "inputTokens": 4,
+        "outputTokens": 439,
+        "cacheReadInputTokens": 56291,
+        "cacheCreationInputTokens": 34316,
+        "webSearchRequests": 0,
+        "costUSD": 0.1521693,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000
+      }
+    },
+    "total_cost_usd": 0.1521693,
+    "duration_ms": 17714,
+    "duration_api_ms": 15663,
+    "num_turns": 3,
+    "stop_reason": "end_turn",
+    "permission_denials": [],
+    "is_error": false,
+    "cli_version": "2.1.81",
+    "init": {
+      "session_id": "1980be95-e264-4dbc-ab72-0c673d8db582",
+      "model": "claude-sonnet-4-6",
+      "permissionMode": "bypassPermissions",
+      "tools": [
+        "Task",
+        "TaskOutput",
+        "Bash",
+        "Glob",
+        "Grep",
+        "ExitPlanMode",
+        "Read",
+        "Edit",
+        "Write",
+        "NotebookEdit",
+        "WebFetch",
+        "TodoWrite",
+        "WebSearch",
+        "TaskStop",
+        "AskUserQuestion",
+        "Skill",
+        "EnterPlanMode",
+        "EnterWorktree",
+        "ExitWorktree",
+        "CronCreate",
+        "CronDelete",
+        "CronList",
+        "ToolSearch",
+        "mcp__plugin_context7_context7__resolve-library-id",
+        "mcp__plugin_context7_context7__query-docs"
+      ],
+      "claude_code_version": "2.1.81"
+    }
+  }
+}

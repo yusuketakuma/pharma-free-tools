@@ -1,0 +1,18 @@
+{
+  "review_id": "GP-2026-03-28-midnight-dispatch-optimization-01-review",
+  "proposal_id": "GP-2026-03-28-midnight-dispatch-optimization-01",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/2026-03-28-midnight-dispatch-optimization.json",
+  "reviewed_at": "2026-03-29T04:42:01+09:00",
+  "decision": "approve",
+  "reviewer": "cron:b11cb560-da93-45ba-bbb1-4a17d45614a1",
+  "reason": "深夜帯dispatchの最適化は低リスクで、逆sleeptime検知の実効性が確認済み。翌日準備タスク限定の静音モード標準化で部長リソースを60%削減可能。",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    ".openclaw/growth/cron-wording/midnight-dispatch-pattern.md",
+    ".openclaw/growth/runbooks/midnight-dispatch-optimization.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

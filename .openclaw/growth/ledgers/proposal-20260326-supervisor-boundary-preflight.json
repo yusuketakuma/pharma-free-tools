@@ -1,0 +1,46 @@
+{
+  "cycle_id": "proposal-20260326-supervisor-boundary-preflight",
+  "created_at": "2026-03-26T20:14:00+09:00",
+  "updated_at": "2026-03-27T18:40:37+09:00",
+  "proposal_id": "proposal-20260326-supervisor-boundary-preflight",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260326-supervisor-boundary-preflight.json",
+  "proposal_status": "INBOX",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-supervisor-boundary-preflight.review.json",
+  "last_review": {
+    "decision": "revise",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 synthesis では approve 候補に入っていない。proposal_id=proposal-20260326-supervisor-boundary-preflight。summary: supervisor-core の scope 縮小と exact-target preflight は妥当だが、proposed_changes に ① supervisor-core runbook の観測/triage 分離、② dominant-prefix triage の既定経路固定、③ light-edit/scout/PoC handoff 前の exact target / owner / due / success criteria 必須化が混在している。affected_paths: projects/openclaw-core/docs/supervisor-core-runbook.md, projects/openclaw-core/docs/queue-dominant-prefix-triage.md, projects/openclaw-core/docs/handoff-preflight.md, projects/openclaw-core/docs/agent-staffing-guidelines.md, および関連 cron reports。reason: 低リスクな docs/runbook wording は有効だが、routing root / trust boundary / protected path に触れる境界変更と、低リスク文言変更が同一 proposal に混在しているため、Board ルールに従い wording 部分を切り出して再提出し、境界変更は manual review に分離すべき。",
+    "apply_mode": "manual",
+    "reviewed_at": "2026-03-27T18:40:37+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-27T00:41:30+09:00",
+      "type": "review",
+      "decision": "revise",
+      "status": "INBOX",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-supervisor-boundary-preflight.review.json"
+    },
+    {
+      "at": "2026-03-27T14:40:45+09:00",
+      "type": "review",
+      "decision": "revise",
+      "status": "INBOX",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-supervisor-boundary-preflight.review.json"
+    },
+    {
+      "at": "2026-03-27T16:40:50+09:00",
+      "type": "review",
+      "decision": "revise",
+      "status": "INBOX",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-supervisor-boundary-preflight.review.json"
+    },
+    {
+      "at": "2026-03-27T18:40:37+09:00",
+      "type": "review",
+      "decision": "revise",
+      "status": "INBOX",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-supervisor-boundary-preflight.review.json"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+version: 2
+policy: approval_required_for_protected_paths
+manual_approval_fixed: true
+manual_approval_scope:
+  - growth_loop_changes
+  - org_docs
+  - execution_policy_changes
+protected_paths:
+  - pattern: ".git/**"
+    reason: git internals
+  - pattern: ".openclaw/config/**"
+    reason: execution system policy
+  - pattern: "CURRENT_STATUS.md"
+    reason: status source of truth
+  - pattern: "RUNBOOK*"
+    reason: operational runbook
+  - pattern: "org/**"
+    reason: organization source of truth
+  - pattern: ".openclaw/growth/**"
+    reason: growth loop requires manual approval
+  - pattern: "projects/**/project.yaml"
+    reason: portfolio registration
+  - pattern: "**/*secret*"
+    reason: sensitive material
+  - pattern: "**/*token*"
+    reason: sensitive material
+  - pattern: "**/*.pem"
+    reason: credentials
+  - pattern: "**/*.key"
+    reason: credentials
+high_risk_actions:
+  - delete
+  - rename
+  - chmod
+  - external_publish
+  - deploy
+  - growth_apply
+approval_rules:
+  require_explicit_review: true
+  require_user_or_controller_approval: true
+  downgrade_allowed_for_read_only: true

@@ -1,0 +1,9 @@
+OpenClaw 最終裁定（board postmeeting 2026-03-27 14:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: backlog triage の標準化、safe-close / reopen / escalate の 1 ページ固定、新規拡張の凍結、security audit の別議題化、監視指標の絞り込み。
+
+依頼:
+- 現行 DSS は維持し、triage 結果が出るまで read-only で待機する
+- 新規拡張はしない
+- もし実装/検証/リファクタが必要なら Claude Code execution plane（acp_compat 優先）へ回す
+- 通常業務継続: 既存の queue / DSS 監視を保つ

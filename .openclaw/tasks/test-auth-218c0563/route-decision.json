@@ -1,0 +1,12 @@
+{
+  "task_id": "test-auth-218c0563",
+  "route_decision_id": "route-test-auth",
+  "decision": "claude-code",
+  "score": 0.9,
+  "reasons": [
+    "test"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": []
+}

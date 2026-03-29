@@ -1,0 +1,75 @@
+{
+  "jobs": [
+    {
+      "name": "cross-agent-knowledge-sync",
+      "pattern": "cross-agent-knowledge-sync-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 2,
+      "deadline_critical": false
+    },
+    {
+      "name": "proactive-idle-work-discovery",
+      "pattern": "proactive-idle-work-discovery-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 4,
+      "deadline_critical": false
+    },
+    {
+      "name": "workspace-project-priority-review",
+      "pattern": "workspace-project-priority-review-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 24,
+      "deadline_critical": false
+    },
+    {
+      "name": "workspace-report-learning-review",
+      "pattern": "workspace-report-learning-review-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 24,
+      "deadline_critical": false
+    },
+    {
+      "name": "domain-specialization-growth-review",
+      "pattern": "domain-specialization-growth-review-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 24,
+      "deadline_critical": false
+    },
+    {
+      "name": "autonomy-kpi-outcome-review",
+      "pattern": "autonomy-kpi-outcome-review-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 24,
+      "deadline_critical": true
+    },
+    {
+      "name": "sidebiz-project-scout",
+      "pattern": "sidebiz-project-scout-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 24,
+      "deadline_critical": false
+    },
+    {
+      "name": "project-kpi-registry-maintenance",
+      "pattern": "project-kpi-registry-maintenance-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 24,
+      "deadline_critical": false
+    },
+    {
+      "name": "ceo-tama-report",
+      "pattern": "ceo-tama-latest.md",
+      "directory": "reports/company",
+      "cadence_hours": 24,
+      "deadline_critical": true
+    },
+    {
+      "name": "board-agenda-assembly",
+      "pattern": "board-agenda-assembly-*.md",
+      "directory": "reports/cron",
+      "cadence_hours": 6,
+      "deadline_critical": true
+    }
+  ],
+  "dedupe_window_hours": 6
+}

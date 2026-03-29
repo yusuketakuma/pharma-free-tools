@@ -1,0 +1,26 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "lesson",
+  "domain": "policy",
+  "summary": "stale backlog triage / safe-close / reopen / escalate / record contract is still the steady-state frame; owner / next_action / success_criteria keep reappearing as the fixed fields.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "board agenda continues to compress around the same queue closure contract",
+      "owner / next_action / success_criteria remain the recurring fixed points",
+      "new escalation shape was not introduced in this cycle"
+    ],
+    "refs": [
+      "reports/board/board-agenda-assembly-20260327-0035.md",
+      "reports/board/board-premeeting-brief-20260327-0035.md",
+      "reports/board/claude-code-precheck-20260327-0035.md",
+      "reports/cron/supervisor-core-runbook-review-20260326.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["supervisor-core", "board-auditor", "board-operator", "doc-editor"],
+    "repos": ["openclaw-core"],
+    "layers": ["board", "execution"]
+  },
+  "candidate_hint": false
+}

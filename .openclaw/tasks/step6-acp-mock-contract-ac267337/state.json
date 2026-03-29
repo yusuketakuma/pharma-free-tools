@@ -1,0 +1,45 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-acp-mock",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "approval_id": null,
+  "dispatch_id": "dispatch-acp-mock",
+  "protected_paths": [],
+  "message": "automatic fallback blocked: write task fallback is disabled by policy",
+  "task_id": "step6-acp-mock-contract-ac267337",
+  "state": "WAITING_MANUAL_REVIEW",
+  "updated_at": "2026-03-22T16:51:08+09:00",
+  "history": [
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:36:07+09:00",
+      "route_decision_id": "route-acp-mock",
+      "dispatch_id": "dispatch-acp-mock",
+      "message": "seeded READY_FOR_EXECUTION"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:36:07+09:00",
+      "route_decision_id": "route-acp-mock",
+      "dispatch_id": "dispatch-acp-mock",
+      "message": "execution request saved lane=acp attempt=dispatch-acp-mock_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:36:07+09:00",
+      "route_decision_id": "route-acp-mock",
+      "dispatch_id": "dispatch-acp-mock",
+      "message": "executor started lane=acp attempt=dispatch-acp-mock_attempt_01"
+    },
+    {
+      "state": "WAITING_MANUAL_REVIEW",
+      "at": "2026-03-22T16:51:08+09:00",
+      "route_decision_id": "route-acp-mock",
+      "dispatch_id": "dispatch-acp-mock",
+      "message": "automatic fallback blocked: write task fallback is disabled by policy"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "message": "automatic fallback blocked: write task may have side effects",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "step6-lane-write-blocked-f8347a9f",
+  "state": "WAITING_MANUAL_REVIEW",
+  "updated_at": "2026-03-22T16:45:33+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:45:32+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:45:32+09:00",
+      "route_decision_id": "route-8319a71c698b",
+      "dispatch_id": "dispatch-write-blocked",
+      "message": "route decision stored"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:45:32+09:00",
+      "route_decision_id": "route-8319a71c698b",
+      "dispatch_id": "dispatch-write-blocked",
+      "message": "execution request saved lane=acp attempt=dispatch-write-blocked_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:45:32+09:00",
+      "route_decision_id": "route-8319a71c698b",
+      "dispatch_id": "dispatch-write-blocked",
+      "message": "executor started lane=acp attempt=dispatch-write-blocked_attempt_01"
+    },
+    {
+      "state": "WAITING_MANUAL_REVIEW",
+      "at": "2026-03-22T16:45:33+09:00",
+      "route_decision_id": "route-8319a71c698b",
+      "dispatch_id": "dispatch-write-blocked",
+      "message": "automatic fallback blocked: write task may have side effects"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-8319a71c698b",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-write-blocked"
+}

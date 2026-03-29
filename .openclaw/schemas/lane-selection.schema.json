@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LaneSelection",
+  "type": "object",
+  "required": [
+    "task_id",
+    "provider",
+    "primary_mode",
+    "selected_lane",
+    "fallback_chain",
+    "selection_reasons",
+    "lane_health_snapshot",
+    "captured_at",
+    "version"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "primary_mode": {
+      "type": "string",
+      "enum": [
+        "acp",
+        "cli"
+      ]
+    },
+    "selected_lane": {
+      "type": "string",
+      "enum": [
+        "acp",
+        "cli",
+        "cli_backend_safety_net",
+        "none"
+      ]
+    },
+    "fallback_chain": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "selection_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lane_health_snapshot": {
+      "type": "object"
+    },
+    "captured_at": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": true
+}

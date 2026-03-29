@@ -1,0 +1,24 @@
+{
+  "task_id": "lane-runtime-partial-write-d82af3c7",
+  "active": true,
+  "queue_reason": "waiting_manual_review",
+  "last_queue_reason": "waiting_manual_review",
+  "state": "WAITING_MANUAL_REVIEW",
+  "route": "claude-code",
+  "route_decision_id": "route-a39f2253a47f",
+  "approval_id": null,
+  "dispatch_id": "dispatch-lane-runtime-partial-write-d82af3c7",
+  "queued_at": "2026-03-22T16:54:03+09:00",
+  "released_at": null,
+  "last_rebalanced_at": null,
+  "resume_target_state": "REVIEWING",
+  "resume_eligible": false,
+  "resume_blockers": [
+    "manual_review_pending",
+    "publish_blocked_until_manual_review"
+  ],
+  "updated_at": "2026-03-22T16:54:03+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/lane-runtime-partial-write-d82af3c7/queue-status.json",
+  "runtime_queue_path": ".openclaw/runtime/queue/waiting_manual_review/lane-runtime-partial-write-d82af3c7.json"
+}

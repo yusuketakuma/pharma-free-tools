@@ -1,0 +1,34 @@
+{
+  "job": "self-improvement-safe-apply",
+  "run_at": "2026-03-28T06:42:00+09:00",
+  "mode": "assisted_apply_plan",
+  "status": "blocked",
+  "summary": {
+    "applied": 0,
+    "blocked": 1,
+    "manual_required": 1,
+    "selected_proposals": []
+  },
+  "apply_result": {
+    "proposal_ids": [],
+    "notes": [
+      "No proposal was applied or planned in this run.",
+      "Reason: enumerating APPROVED proposals and locating apply_growth_proposal.py required exec approval in this environment.",
+      "This cron run is non-interactive, so it fail-closed and recorded a blocked result.",
+      "Actual mutation was not performed; assisted apply plan generation was also not possible without the required discovery step."
+    ]
+  },
+  "constraints": {
+    "max_proposals_per_run": 2,
+    "preferred_scope": ["docs", "reports", "prompts", "runbook", "cron wording"],
+    "excluded_scope": ["protected path", "auth", "approval", "routing root", "trust boundary"]
+  },
+  "next_action": {
+    "type": "manual_retrigger_after_approval",
+    "details": [
+      "Approve read-only exec for proposal discovery and script location.",
+      "Retrigger the safe-apply job.",
+      "Then generate assisted apply plans for up to 2 APPROVED low-risk proposals only."
+    ]
+  }
+}

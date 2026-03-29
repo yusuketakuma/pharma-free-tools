@@ -1,0 +1,35 @@
+{
+  "message": "executor finished with status=runtime_error",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "lane-runtime-acp-cli-safety-7d75c81b",
+  "state": "EXECUTION_FAILED",
+  "updated_at": "2026-03-22T16:41:05+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:41:05+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:41:05+09:00",
+      "route_decision_id": "route-50516eb352a3",
+      "dispatch_id": "dispatch-lane-runtime-acp-cli-safety-7d75c81b",
+      "message": "route decision stored"
+    },
+    {
+      "state": "EXECUTION_FAILED",
+      "at": "2026-03-22T16:41:05+09:00",
+      "route_decision_id": "route-50516eb352a3",
+      "dispatch_id": "dispatch-lane-runtime-acp-cli-safety-7d75c81b",
+      "message": "executor finished with status=runtime_error"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-50516eb352a3",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-lane-runtime-acp-cli-safety-7d75c81b"
+}

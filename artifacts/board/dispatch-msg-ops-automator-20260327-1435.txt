@@ -1,0 +1,9 @@
+OpenClaw 最終裁定（board postmeeting 2026-03-27 14:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: backlog triage の標準化、safe-close / reopen / escalate の 1 ページ固定、新規拡張の凍結、security audit の別議題化、監視指標の絞り込み。
+
+依頼:
+- reopen 率・滞留中央値・7日超滞留件数のみを read-only で監視する
+- auto drain / auto mutate はしない
+- 悪化兆候が出たら注記だけ行う
+- 通常業務継続: 監視は継続しつつ、閾値と傾向の観測に留める

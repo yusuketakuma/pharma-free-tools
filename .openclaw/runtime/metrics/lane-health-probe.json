@@ -1,0 +1,38 @@
+{
+  "probed_at": "2026-03-26T08:37:49+09:00",
+  "system_healthy": true,
+  "auth_ok": true,
+  "primary_mode": "acp",
+  "recommended_lane": "acp",
+  "degraded_lanes": [
+    "cli_backend_safety_net"
+  ],
+  "lane_health_snapshot_ref": ".openclaw/runtime/health/lane-health.json",
+  "lanes": {
+    "acp": {
+      "healthy": true,
+      "transport_kind": "claude_print_json_compat",
+      "consecutive_failures": 0,
+      "last_success_at": "2026-03-22T17:23:33+09:00",
+      "last_error": null
+    },
+    "cli": {
+      "healthy": true,
+      "transport_kind": "cli_json",
+      "consecutive_failures": 0,
+      "last_success_at": "2026-03-22T17:23:22+09:00",
+      "last_error": null
+    },
+    "cli_backend_safety_net": {
+      "healthy": false,
+      "transport_kind": "cli_bare_json",
+      "consecutive_failures": 0,
+      "last_success_at": "2026-03-22T17:23:22+09:00",
+      "last_error": "probe exited 1"
+    }
+  },
+  "capacity": {
+    "retry_after_sec": 0.0,
+    "hard_blocked": false
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "signal_events": [
+    {
+      "id": "signal-2026-03-29-008",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "engineering_success",
+      "source": "cross-agent-knowledge-sync",
+      "title": "DeadStockSolution dependabotバッチ処理完結",
+      "content": "TZ修正PR#35をマージし、 dependabot PR #31(jsdom 29)/#32(react-query 5.95)/#33(react-hooks 7.0)を一括マージ完了。PR#30(@eslint/js 10)は全CI失敗のためcloseし別枠移行。GitHub全10リポジトリにtopics設定も完了し検索露出を改善",
+      "priority": "high",
+      "impact": "engineering",
+      "evidence": [
+        "github-ops-latest.md: PR#35マージ、dependabot PR 3件一括マージ",
+        "github-ops-latest.md: 全10リポジトリtopics設定完了（pharma-free-tools, DeadStockSolution, careviax等）"
+      ],
+      "next_actions": ["eslint 10移行ブランチの別枠調査", "CI runner billing確認"],
+      "board_notification": false
+    },
+    {
+      "id": "signal-2026-03-29-009",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "business_progress",
+      "source": "cross-agent-knowledge-sync",
+      "title": "収益化本部が27時間停滞を打破し3チャネル戦略を確立",
+      "content": "offer-strategyがクラウドワークス候補2件を特定し登録キット完成、monetization-analysisが収益性定量分析とLancers/Coconala多角化分析を完了。note販売パス（薬剤師のためのPython入門）も開拓。3プラットフォーム同時登録戦略が固まったが、ゆうすけのアカウント登録待ちで実行停止",
+      "priority": "high",
+      "impact": "business",
+      "evidence": [
+        "monetization-latest.md: status stalled、3プラットフォーム同時登録戦略確定",
+        "offer-strategy-latest.md: 登録キット crowdworks-setup-kit.md 完成",
+        "monetization-analysis-latest.md: Lancers募集期間1-5日、単価5-30万。即時登録が機会損失防止の鍵"
+      ],
+      "next_actions": ["ゆうすけの3プラットフォーム同時登録（所要1時間）", "候補2(RPA)期限4/3の対応"],
+      "board_notification": false
+    },
+    {
+      "id": "signal-2026-03-29-010",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "process_improvement",
+      "source": "cross-agent-knowledge-sync",
+      "title": "loop寿命管理runbook案の作成とreports/クリーンアップ完了",
+      "content": "ops担当が空転30h超の6担当を対象にloop-lifecycle-runbook-draft.mdを作成。reports/のarchiveも進行し87件→45件（-48%）に削減。セッション監査で190セッション/53MBを確認、supervisor-coreの異常セッション生成を特定",
+      "priority": "medium",
+      "impact": "operational",
+      "evidence": [
+        "ops-latest.md: archive完了、reports/ 87→45件",
+        "ops-latest.md: セッション監査190sessions/53MB、supervisor-core異常パターン特定"
+      ],
+      "next_actions": ["runbook適用のBoard裁定", "board/ディレクトリ143件の整理"],
+      "board_notification": false
+    },
+    {
+      "id": "signal-2026-03-29-011",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "governance",
+      "source": "cross-agent-knowledge-sync",
+      "title": "mail-clerk/schedule-clerk空転の根本原因特定",
+      "content": "ops担当がmail-clerk 33h stuckの根本原因を切り分け。メールアクセス経路（IMAP/Gmail API/転送）が一切未設定で、heartbeatがプロンプト回転のみ実行していた。schedule-clerkも同構造（テンプレート整備済みだがデータ未着）。両者ともheartbeat停止または168h化が推奨されている",
+      "priority": "medium",
+      "impact": "operational",
+      "evidence": [
+        "ops-latest.md: mail-clerk根本原因=アクセス経路未設定",
+        "product-ops-latest.md: mail/schedule heartbeat停止/168h化をBoard裁定依頼"
+      ],
+      "next_actions": ["Board裁定によるheartbeat間隔変更", "アクセス経路設定時の再開手順整備"],
+      "board_notification": false
+    },
+    {
+      "id": "signal-2026-03-29-012",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "documentation",
+      "source": "cross-agent-knowledge-sync",
+      "title": "EXECUTION_SAMPLES.mdの実務具体化が進行",
+      "content": "docs担当がEXECUTION_SAMPLES.mdのCase 2（認証調査→DeadStockSolution auth.ts対象）とCase 3（E2Eテスト→matching-service系テスト対象）を抽象的記述から実際のファイルパス付き具体例に更新。AGENTS.mdへの新体制3文書参照も追加済み",
+      "priority": "low",
+      "impact": "documentation",
+      "evidence": [
+        "docs-latest.md: Case 2/3具体化完了、AGENTS.md参照追加"
+      ],
+      "next_actions": ["Case 4の具体化", "EXECUTION_POLICYとの整合性確認"],
+      "board_notification": false
+    },
+    {
+      "id": "signal-2026-03-29-013",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "governance_input",
+      "source": "cross-agent-knowledge-sync",
+      "title": "Board議題seed生成（receipt-delivery-reconciler / virtual-team-architect）",
+      "content": "board_cycle_slot_id:20260329-1020向けに2件の議題seedが提出された。receipt-delivery-reconcilerは受領〜配送間ステータス不整合の自動検知仕組みを、virtual-team-architectはClaude Code実行成果物の品質ゲート整備をそれぞれ提案",
+      "priority": "low",
+      "impact": "governance",
+      "evidence": [
+        "receipt-delivery-reconciler session d1e62a58: ステータス不整合自動検知提案",
+        "virtual-team-architect session 56a0aa11: Claude Code artifact品質ゲート提案"
+      ],
+      "next_actions": ["他エージェントのseed収集", "議題統合・優先順位付け"],
+      "board_notification": false
+    },
+    {
+      "id": "signal-2026-03-29-014",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "infrastructure",
+      "source": "cross-agent-knowledge-sync",
+      "title": "Claude Code completion checker連続タイムアウト継続中",
+      "content": "前回sync時から改善されず。claude-code-completion-checkerがconsecutiveErrors=6で継続エラー。timeout 60s vs schedule every 180sで競合している可能性あり",
+      "priority": "low",
+      "impact": "operational",
+      "evidence": [
+        "signals.jsonl 前回sync: cron job 498652a3, lastRunStatus=error, consecutiveErrors=6"
+      ],
+      "next_actions": ["timeout値の引き上げ検討", "実行間隔の調整"],
+      "board_notification": false
+    }
+  ],
+  "metadata": {
+    "sync_timestamp": "2026-03-29T10:50:00+09:00",
+    "sync_id": "8528dd97-87dc-470b-8758-c7005f03ce76",
+    "sync_sequence": 3,
+    "previous_sync": "2026-03-29T01:50:00+09:00",
+    "total_signals": 7,
+    "signals_by_priority": {
+      "high": 2,
+      "medium": 2,
+      "low": 3
+    },
+    "signals_by_type": {
+      "engineering_success": 1,
+      "business_progress": 1,
+      "process_improvement": 1,
+      "governance": 1,
+      "documentation": 1,
+      "governance_input": 1,
+      "infrastructure": 1
+    },
+    "scan_coverage": {
+      "agents_with_recent_sessions": 25,
+      "total_sessions_scanned": 227,
+      "reports_scanned": 14,
+      "artifacts_found": 5
+    }
+  }
+}

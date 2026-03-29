@@ -1,0 +1,31 @@
+{
+  "task_id": "step6-lane-write-blocked-53f466b8",
+  "status": "runtime_error",
+  "executor": "claude-code",
+  "summary": "ACP failed after partial write execution",
+  "changed_files": [
+    ".openclaw/scripts/dispatch_task.py"
+  ],
+  "verification_results": [
+    "acp_session_start",
+    "acp_execution_started"
+  ],
+  "remaining_risks": [
+    "Partial execution may have side effects"
+  ],
+  "exit_code": 30,
+  "started_at": "2026-03-22T16:54:01+09:00",
+  "finished_at": "2026-03-22T16:54:01+09:00",
+  "dispatch_id": "dispatch-write-blocked",
+  "raw_response_path": ".openclaw/tasks/step6-lane-write-blocked-53f466b8/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-lane-write-blocked-53f466b8/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "failure_stage": "execution",
+    "partial_execution": true,
+    "side_effects_possible": true,
+    "publishable": false,
+    "transport_kind": "claude_print_json_compat",
+    "native_acp_available": false
+  }
+}

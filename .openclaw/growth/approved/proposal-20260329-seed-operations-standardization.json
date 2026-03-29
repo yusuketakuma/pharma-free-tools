@@ -1,0 +1,124 @@
+{
+  "proposal_id": "proposal-20260329-seed-operations-standardization",
+  "created_at": "2026-03-29T05:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "board-premeeting-brief-latest",
+    "board-agenda-seed-latest",
+    "agent-lesson-capture",
+    "agent-performance-optimization-review",
+    "board / heartbeat runtime recent report"
+  ],
+  "title": "Standardize seed-based board input to improve reproducibility and reduce input gate variations",
+  "summary": "boardの入力をseed artifactベースに正本化し、seed→審議→再レビューの標準手順を確立することで、input_gateのdegraded状態を減らし、再現性と運用安定性を向上させる。",
+  "observations": [
+    "board-premeeting-brief-latest.md では、seed artifactとclaude-code-precheckの両方がboard slotに一致せず、input_gateがdegradedとなっている状態が指摘されている。",
+    "board-agenda-seed-latest.md では、seed運用の正本化がboard候補1位として挙げられている。",
+    "agent-lesson-capture 20260326-0615.md では、同じ論点の再掲がコスト増加の原因とされている。",
+    "agent-performance-optimization-review 20260326-0715.md では、履歴不足のまま規則を増やす傾向がある問題が指摘されている。",
+    "現状のboard入力は複数の異なるソースから集約されており、整合性を取る手間がかかっている。",
+    "seed artifactの活用は、既にagenda-candidates.jsonlで部分的に導入されているが、全般的なinput pipelineの標準化が必要。"
+  ],
+  "proposed_changes": [
+    "board input の主要ソースをseed artifact（agenda-seed-latest.mdなど）に統一し、他ソースは補足情報のみとする。",
+    "seed artifactの生成スケジュールを固定し、board slot HH:35の15分前に生成完了するフローを確立する。",
+    "board cycle開始時のinput_gateチェックを自動化し、seed artifactが正常なら他ソースの不整合を許容する。",
+    "seed artifactのバージョン管理と変更ログを導入し、差分追跡を容易にする。",
+    "seed artifactのformatを標準化し、board候補の優先順位付与と簡潔な背景説明を固定テンプレートにする。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/board-seed-operations-standard.md",
+    "projects/openclaw-core/docs/board-input-pipeline.md",
+    "projects/openclaw-core/docs/board-cycle-procedure.md",
+    ".openclaw/runtime/board/agenda-seed-generator.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/board/agenda-seed-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+  ],
+  "evidence": [
+    "board-premeeting-brief-latest.md: input_gateがdegradedでseed artifactとclaude-code-precheckの両方がslotに一致せず",
+    "board-agenda-seed-latest.md: seed運用の正本化がboard候補1位",
+    "agent-lesson-capture-20260326-0615.md: 同じ論点の再掲がコスト増加の原因",
+    "agent-performance-optimization-review-20260326-0715.md: 履歴不足のまま規則を増やす傾向",
+    "current-runtime: agenda-candidates.jsonlでseed artifactの部分的導入が既存",
+    "input-gate-issues: 複数ソースからのinput集約による不整合問題"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run apply_growth_proposal.py to generate an apply plan and ledger update.",
+  "cycle_id": "proposal-20260329-seed-operations-standardization",
+  "status": "APPROVED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T05:27:00+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T13:41:00+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T13:41:00+09:00",
+      "note": "decision=approve (low-risk docs/pipeline standardization, assisted mode)"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T14:40:44+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T14:40:44+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T14:40:44+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Low-risk proposal: standardizes board input pipeline to use seed artifacts as primary source. No protected path changes. Fully reversible. Addresses real operational pain points.",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/runtime/board/agenda-seed-generator.md",
+      "projects/openclaw-core/docs/board-cycle-procedure.md",
+      "projects/openclaw-core/docs/board-input-pipeline.md",
+      "projects/openclaw-core/docs/board-seed-operations-standard.md",
+      "reports/board/agenda-seed-latest.md",
+      "reports/board/board-premeeting-brief-latest.md",
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T14:40:44+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260329-seed-operations-standardization.review.json",
+  "expected_benefit": [
+    "input_gate degraded状態の大幅削減",
+    "board meetingの準備時間短縮",
+    "input sourceの整合性向上",
+    "再現性のあるboard運用",
+    "board候補の優先順位付けの安定化"
+  ],
+  "priority_score": 0.78,
+  "confidence": "medium",
+  "guardrails": [
+    "seed artifactは現行のagenda-seed-latest.md formatを基本とし、大幅な変更は避ける",
+    "claude-code-precheckはseed artifactの補足情報として活用を継続",
+    "board cycle自体の変更は行わず、入力フローのみを標準化",
+    "protected path / auth / trust boundary / routing root は変更しない"
+  ],
+  "apply_reversibility": {
+    "reversible": true,
+    "rollback_path": "projects/openclaw-core/docs/board-cycle-procedure.md",
+    "fallback_mechanism": "現行の多ソースinput pipelineに戻すことが可能",
+    "risk_level": "low"
+  }
+}

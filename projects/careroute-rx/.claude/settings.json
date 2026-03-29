@@ -1,0 +1,91 @@
+{
+  "version": 2,
+  "projectId": "careroute-rx",
+  "controlPlane": "OpenClaw",
+  "executionPlane": "Claude Code",
+
+  "transport": {
+    "primary": "acp_compat",
+    "secondary": "cli",
+    "fallback": "cli_backend_safety_net"
+  },
+
+  "prompt": {
+    "mode": "append",
+    "safetyViaPrompt": false,
+    "safetyVia": ["hooks", "permissions", "allow-deny", "protected-paths"]
+  },
+
+  "schema": {
+    "executionRequest": "../../schemas/execution-request.json",
+    "executionResult": "../../schemas/execution-result.json"
+  },
+
+  "sourceRepo": "/Users/yusuke/careroute-rx",
+
+  "agents": {
+    "codingOnly": true,
+    "active": [
+      "engineering/backend-architect",
+      "engineering/frontend-developer",
+      "engineering/devops-automator",
+      "engineering/rapid-prototyper",
+      "testing/api-tester",
+      "testing/performance-benchmarker",
+      "testing/test-results-analyzer",
+      "testing/workflow-optimizer",
+      "docs/docs-integrator",
+      "operations/infrastructure-maintainer"
+    ],
+    "activationPolicy": "on-demand",
+    "maxConcurrent": 3,
+    "neverAlwaysOn": ["product-manager", "designer", "ops-manager"]
+  },
+
+  "permissions": {
+    "allow": [
+      "file-read",
+      "file-write",
+      "shell:pnpm *",
+      "shell:npx vitest *",
+      "shell:npx tsc *",
+      "shell:git status",
+      "shell:git diff *",
+      "shell:git log *",
+      "shell:git add *",
+      "shell:git commit *"
+    ],
+    "deny": [
+      "shell:git push *",
+      "shell:git reset --hard *",
+      "shell:git checkout -- *",
+      "shell:rm -rf *",
+      "shell:wrangler deploy *"
+    ],
+    "approvalRequired": [
+      "shell:git push",
+      "shell:wrangler *",
+      "file-write:../../config/*",
+      "file-write:../../schemas/*",
+      "file-write:../../org/*"
+    ]
+  },
+
+  "hooks": {
+    "preExecution": {
+      "validateSchema": true,
+      "checkApproval": true,
+      "checkCapacity": true
+    },
+    "postExecution": {
+      "validateResultSchema": true,
+      "storeOutput": true,
+      "reportMetrics": true
+    }
+  },
+
+  "auth": {
+    "preferred": "subscription",
+    "failClosed": true
+  }
+}

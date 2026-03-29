@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DispatchPlan",
+  "type": "object",
+  "required": [
+    "task_id",
+    "dispatch_id",
+    "execution_mode",
+    "selected_provider",
+    "selected_executor",
+    "scores",
+    "assignment_contract",
+    "provider_assignments",
+    "reasons",
+    "capacity_snapshot_ref",
+    "publish_policy",
+    "captured_at"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "dispatch_id": {"type": "string"},
+    "execution_mode": {
+      "type": "string",
+      "enum": ["openclaw", "claude_code", "split", "plan_only", "queued"]
+    },
+    "selected_provider": {"type": "string"},
+    "selected_executor": {"type": "string"},
+    "assignment_contract": {
+      "type": "object",
+      "required": ["lead_role", "advisory_subroles", "active_subroles", "mandatory_review_roles"],
+      "properties": {
+        "lead_role": {"type": "string"},
+        "advisory_subroles": {"type": "array", "items": {"type": "string"}},
+        "active_subroles": {"type": "array", "items": {"type": "string"}},
+        "mandatory_review_roles": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "provider_assignments": {
+      "type": "object",
+      "required": ["lead", "subroles"],
+      "properties": {
+        "lead": {"type": "object"},
+        "subroles": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": true
+    },
+    "scores": {
+      "type": "object",
+      "required": [
+        "capability_fit",
+        "provider_preference_fit",
+        "historical_success",
+        "latency_fit",
+        "limit_pressure",
+        "cost_pressure",
+        "queue_penalty",
+        "risk_penalty",
+        "total"
+      ],
+      "properties": {
+        "capability_fit": {"type": "number"},
+        "provider_preference_fit": {"type": "number"},
+        "historical_success": {"type": "number"},
+        "latency_fit": {"type": "number"},
+        "limit_pressure": {"type": "number"},
+        "cost_pressure": {"type": "number"},
+        "queue_penalty": {"type": "number"},
+        "risk_penalty": {"type": "number"},
+        "total": {"type": "number"}
+      },
+      "additionalProperties": true
+    },
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "capacity_snapshot_ref": {"type": "string"},
+    "publish_policy": {"type": "object"},
+    "queue_reason": {"type": "string"},
+    "captured_at": {"type": "string"}
+  },
+  "additionalProperties": true
+}

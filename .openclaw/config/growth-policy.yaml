@@ -1,0 +1,34 @@
+version: 1
+mode: proposal_review_apply_assisted
+auto_apply: false
+manual_approval_required: true
+proposal_status_default: INBOX
+max_observations_per_cycle: 10
+sources:
+  - CURRENT_STATUS.md
+  - .openclaw/config/project-manifest.yaml
+  - .openclaw/README.md
+proposal_state_machine:
+  - INBOX
+  - UNDER_REVIEW
+  - APPROVED
+  - REJECTED
+  - APPLIED
+  - VERIFIED
+auto_apply_blocked:
+  - ".openclaw/config/approval-policy.yaml"
+  - ".openclaw/config/routing-policy.yaml"
+  - ".openclaw/config/claude-code.yaml"
+  - ".openclaw/scripts/run_claude_code.sh"
+  - "org/**"
+assisted_apply_only:
+  - ".openclaw/shared/**"
+  - ".openclaw/workflows/**"
+  - "projects/*/docs/**"
+  - "projects/*/learn/**"
+guardrails:
+  - ".openclaw/config/approval-policy.yaml"
+  - ".openclaw/config/routing-policy.yaml"
+  - ".openclaw/config/claude-code.yaml"
+  - ".openclaw/scripts/run_claude_code.sh"
+  - "org/**"

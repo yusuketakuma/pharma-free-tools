@@ -1,0 +1,62 @@
+{
+  "task_id": "step6-lane-safety-net-8d1be326",
+  "dispatch_id": "dispatch-safety-net",
+  "execution_mode": "claude_code",
+  "selected_provider": "claude_code",
+  "selected_executor": "claude-code",
+  "assignment_contract": {
+    "lead_role": "engineering",
+    "advisory_subroles": [],
+    "active_subroles": [],
+    "mandatory_review_roles": []
+  },
+  "provider_assignments": {
+    "lead": {
+      "role": "engineering",
+      "provider": "claude_code",
+      "executor": "claude-code"
+    },
+    "subroles": []
+  },
+  "scores": {
+    "capability_fit": 0.9,
+    "provider_preference_fit": 0.8,
+    "historical_success": 0.8,
+    "latency_fit": 0.7,
+    "limit_pressure": 0.1,
+    "cost_pressure": 0.1,
+    "queue_penalty": 0.2,
+    "risk_penalty": 0.05,
+    "total": 2.75
+  },
+  "reasons": [
+    "test fixture"
+  ],
+  "capacity_snapshot_ref": ".openclaw/tasks/step6-lane-safety-net-8d1be326/capacity-snapshot.json",
+  "publish_policy": {
+    "auto_publish_allowed": true,
+    "block_on_degraded_success": false,
+    "protected_paths": []
+  },
+  "captured_at": "2026-03-22T13:00:00+09:00",
+  "auth_blocked": false,
+  "pre_auth_openclaw_phase": false,
+  "primary_mode": "acp",
+  "selected_lane": "cli_backend_safety_net",
+  "selection_reasons": [
+    "test fixture",
+    "auto fallback cli->cli_backend_safety_net: read-only or plan-only task"
+  ],
+  "fallback_chain": [
+    "cli",
+    "cli_backend_safety_net"
+  ],
+  "lane_health_snapshot": {
+    "auth_ok": true,
+    "acp_healthy": true,
+    "cli_healthy": true,
+    "cli_backend_healthy": true,
+    "captured_at": "2026-03-22T13:00:00+09:00"
+  },
+  "task_type": "write"
+}

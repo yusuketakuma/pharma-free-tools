@@ -1,0 +1,23 @@
+{
+  "review_id": "agent-prompt-consistency-automation-2026-03-29-review",
+  "proposal_id": "agent-prompt-consistency-automation-2026-03-29",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/2026-03-29-agent-prompt-consistency-automation.json",
+  "reviewed_at": "2026-03-29T09:41:41+09:00",
+  "decision": "approve",
+  "reviewer": "board-auditor",
+  "reason": "Agent prompt consistency automation standardizes agent behavior through unified prompt templates. Low risk, reversible changes focused on operational consistency and efficiency.",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    ".openclaw/governance/agent-role-mapping.json",
+    ".openclaw/growth/config/prompt-boundary-decision-tree.json",
+    ".openclaw/growth/cron-wording/prompt-change-governance.md",
+    ".openclaw/growth/prompts/safety-guardrails.md",
+    ".openclaw/growth/prompts/standardized-components/",
+    ".openclaw/growth/runbooks/prompt-consistency-automation.md",
+    ".openclaw/workspace/.openclaw/runtime/prompt-validation/"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

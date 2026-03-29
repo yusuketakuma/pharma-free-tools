@@ -1,0 +1,27 @@
+{
+  "task_id": "step6-acp-mock-contract-7cbf024c",
+  "status": "success",
+  "executor": "claude-code",
+  "summary": "ACP preflight mock completed successfully",
+  "changed_files": [
+    ".openclaw/scripts/execute_task.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "verification_results": [
+    "python3 -m unittest discover -s .openclaw/tests -p 'test_*.py'"
+  ],
+  "remaining_risks": [],
+  "exit_code": 0,
+  "started_at": "2026-03-22T16:41:25+09:00",
+  "finished_at": "2026-03-22T16:41:27+09:00",
+  "dispatch_id": "dispatch-acp-mock",
+  "raw_response_path": ".openclaw/tasks/step6-acp-mock-contract-7cbf024c/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-acp-mock-contract-7cbf024c/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "session_mode": "preflight_mock",
+    "transport_kind": "claude_print_json_compat",
+    "native_acp_available": false,
+    "publishable": true
+  }
+}

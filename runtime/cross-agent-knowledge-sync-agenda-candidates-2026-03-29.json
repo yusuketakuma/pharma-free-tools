@@ -1,0 +1,129 @@
+{
+  "agenda_candidates": [
+    {
+      "id": "candidate-2026-03-29-004",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "worsening_pattern",
+      "title": "空回りループ慢性化の悪化 — 前回syncから解消されず、むしろ延長",
+      "summary": "前回sync(01:50)で7担当の空回り(10-28h)をagenda_candidateとして提出したが、Board裁定が行われず、現在6担当が30-34hの空回り状態に悪化。runbook案も作成済みだが承認待ちのまま。同じ議題が2回連続で提出される異常状態",
+      "root_issue": "agenda_candidateの提出→Board審議→裁定のパイプラインが機能していない。candidateは生成されるがBoard会議での取り上げと意思決定が行われない",
+      "desired_change": "candidate提出からBoard裁定までのSLAを設け、一定期間未裁決のcandidateは自動エスカレーションされる仕組みを導入",
+      "requested_action": "Boardで即時裁定：(1)receipt/backlogのサイクル停止確定 (2)mail/scheduleのheartbeat停止または168h化 (3)loop-lifecycle-runbookの承認",
+      "change_scope": "6担当のcron heartbeat設定、loop report state遷移ルール、Board governanceプロセス",
+      "boundary_impact": "運用自動化の精度に影響。ユーザー体験やauthには影響しない",
+      "reversibility": "high",
+      "blast_radius": "6担当のcron実行頻度に影響",
+      "novelty": "low",
+      "evidence": [
+        "signals.jsonl candidate-2026-03-29-005(前回): 7担当10-28h空回り",
+        "receipt-latest.md: pending 34h+、停止推奨",
+        "backlog-latest.md: idle 23h+、停止推奨",
+        "mail-latest.md: stuck、アクセス経路未設定",
+        "schedule-latest.md: blocked 32h+",
+        "ops-latest.md: loop-lifecycle-runbook-draft.md作成済み",
+        "product-ops-latest.md: Board裁定待ち状態 unchanged"
+      ],
+      "recommendation": {
+        "proposed_lane": "OpenClaw-only",
+        "justification": "cron間隔変更とloop state管理のみ。auth/trust boundaryには触れない",
+        "risk_assessment": "低リスク。空回り停止によるコスト削減効果が確実",
+        "success_criteria": "空回り担当のheartbeat停止、実務継続担当の健全性維持"
+      },
+      "priority": "high",
+      "board_attention_required": true,
+      "next_steps": [
+        "receipt/backlog/mail/scheduleのheartbeat停止を即時実施",
+        "loop-lifecycle-runbookを承認し適用",
+        "未裁決candidateの自動エスカレーションSLAを定義"
+      ]
+    },
+    {
+      "id": "candidate-2026-03-29-005",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "new_pattern",
+      "title": "エージェント戦略策定能力と実行権限の構造的ギャップ",
+      "summary": "収益化本部が27時間の停滞を自律打破し、3チャネル戦略・登録キット・収益性分析・note販売パスまで完成させたが、全てゆうすけのアカウント登録という単一アクションで停止。戦略は高度化するが実行ハードルが人間依存で、自律化の限界が露呈している",
+      "root_issue": "外部サービス（クラウドワークス/Lancers/Coconala）へのアカウント登録・Stripe設定など、認証・金融・ID管理を伴う操作はエージェントに委任できない。しかし戦略的判断はエージェントが先行するため、実行不能な戦略が蓄積する構造",
+      "desired_change": "人間依存の実行アクションを明示的に分離し、エージェントは「準備完了」までを自律で完結→人間に最小アクションを要求→完了後に自律再開、というハンドオフプロトコルを標準化する",
+      "requested_action": "Boardで人間依存アクションのハンドオフプロトコルを設計し、戦略策定エージェントと実行担当（人間）間のインターフェースを定義",
+      "change_scope": "収益化本部を含む全実行型エージェントのタスク完了定義、ユーザー通知フォーマット",
+      "boundary_impact": "エージェントの自律範囲とユーザーへの要求フォーマットに影響",
+      "reversibility": "high",
+      "blast_radius": "実行型エージェントのタスクフロー設計",
+      "novelty": "high",
+      "evidence": [
+        "monetization-latest.md: status stalled、3チャネル戦略完成済みだが全てアカウント登録待ち",
+        "offer-strategy-latest.md: crowdworks-setup-kit.md完成、コピペで30分完了可能な状態",
+        "monetization-analysis-latest.md: Lancers募集期間1-5日で機会損失リスク確定",
+        "product-ops-latest.md: 同構造でgithub-opsもゆうすけ承認待ち（PRマージ等）"
+      ],
+      "recommendation": {
+        "proposed_lane": "OpenClaw-only",
+        "justification": "プロトコル設計と通知フォーマットの定義のみ。外部サービス操作は含まない",
+        "risk_assessment": "低リスク。ユーザー体験の改善に直結",
+        "success_criteria": "人間依存アクションの特定→最小アクション要求→完了確認→自律再開のサイクルが確立"
+      },
+      "priority": "medium",
+      "board_attention_required": true,
+      "next_steps": [
+        "人間依存アクションのカタログ作成（アカウント登録、承認操作、Stripe設定等）",
+        "ハンドオフ通知フォーマットの設計",
+        "完了確認後の自律再開トリガー定義"
+      ]
+    },
+    {
+      "id": "candidate-2026-03-29-006",
+      "timestamp": "2026-03-29T10:50:00+09:00",
+      "type": "precedent_gap",
+      "title": "cronジョブ連続エラーの自動修復プレシデント不在",
+      "summary": "claude-code-completion-checkerがconsecutiveErrors=6で連続タイムアウト中。前回sync(01:50)でsignalとして記録したが修復アクションが取られず、7時間以上経過しても状態 unchanged。cronジョブの連続失敗時の自動対応ルールが不在",
+      "root_issue": "cronジョブが連続エラーになった場合の自動一時停止・間隔引き上げ・通知エスカレーションのルールが未定義。手動介入待ちのまま無限にエラーを継続する構造",
+      "desired_change": "consecutiveErrors閾値到達時の自動対応（間隔引き上げ、一時停止、エスカレーション通知）をcron基盤に実装",
+      "requested_action": "Boardでcronジョブの連続エラー対応ルールを定義し、claude-code-completion-checkerの即時対応（timeout引き上げまたは一時停止）を決定",
+      "change_scope": "cron基盤のエラーハンドリング、全cronジョブの自動修復ルール",
+      "boundary_impact": "cron実行基盤の信頼性に影響",
+      "reversibility": "high",
+      "blast_radius": "全cronジョブのエラーハンドリング動作",
+      "novelty": "medium",
+      "evidence": [
+        "signals.jsonl signal-2026-03-29-012(前回): consecutiveErrors=6、lastRunStatus=error",
+        "本sync: 状態 unchanged、7時間以上修復されず"
+      ],
+      "recommendation": {
+        "proposed_lane": "OpenClaw-only",
+        "justification": "cron設定変更とエラーハンドリングルールの定義のみ",
+        "risk_assessment": "低リスク。エラーの無限継続を防ぐ改善",
+        "success_criteria": "連続エラー時の自動一時停止、エスカレーション通知の実装"
+      },
+      "priority": "medium",
+      "board_attention_required": true,
+      "next_steps": [
+        "claude-code-completion-checkerの即時一時停止またはtimeout引き上げ",
+        "consecutiveErrors閾値（例: 3回）での自動対応ルール策定",
+        "エスカレーション通知の実装"
+      ]
+    }
+  ],
+  "metadata": {
+    "sync_timestamp": "2026-03-29T10:50:00+09:00",
+    "sync_id": "8528dd97-87dc-470b-8758-c7005f03ce76",
+    "sync_sequence": 3,
+    "previous_sync": "2026-03-29T01:50:00+09:00",
+    "total_candidates": 3,
+    "candidates_by_priority": {
+      "high": 1,
+      "medium": 2
+    },
+    "candidates_by_type": {
+      "worsening_pattern": 1,
+      "new_pattern": 1,
+      "precedent_gap": 1
+    },
+    "cumulative_candidates_today": 6,
+    "unresolved_from_previous_sync": [
+      "candidate-2026-03-29-001: GLM-5-Turbo出力互換性 (high)",
+      "candidate-2026-03-29-002: read-only exec自動許可恒久化 (high)",
+      "candidate-2026-03-29-003: 自律探索プロセス標準化 (medium)"
+    ]
+  }
+}

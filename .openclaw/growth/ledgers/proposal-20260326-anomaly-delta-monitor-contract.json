@@ -1,0 +1,63 @@
+{
+  "cycle_id": "proposal-20260326-anomaly-delta-monitor-contract",
+  "created_at": "2026-03-26T20:14:00+09:00",
+  "updated_at": "2026-03-26T22:42:41+09:00",
+  "proposal_id": "proposal-20260326-anomaly-delta-monitor-contract",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260326-anomaly-delta-monitor-contract.json",
+  "proposal_status": "APPLIED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-anomaly-delta-monitor-contract.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board approve candidate。定常時の board / heartbeat / scorecard を signal-only に寄せる文言更新で、docs / reports / runbook / cron wording の低リスク範囲に収まるため。",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-26T22:40:33+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-26T20:41:41+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-anomaly-delta-monitor-contract.review.json"
+    },
+    {
+      "at": "2026-03-26T20:42:48+09:00",
+      "type": "apply",
+      "status": "applied",
+      "proposal_status": "APPLIED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260326-anomaly-delta-monitor-contract.apply.json"
+    },
+    {
+      "at": "2026-03-26T22:40:33+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-anomaly-delta-monitor-contract.review.json"
+    },
+    {
+      "at": "2026-03-26T22:42:41+09:00",
+      "type": "apply",
+      "status": "applied",
+      "proposal_status": "APPLIED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260326-anomaly-delta-monitor-contract.apply.json"
+    }
+  ],
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260326-anomaly-delta-monitor-contract.apply.json",
+  "last_apply": {
+    "status": "applied",
+    "apply_mode": "assisted",
+    "applied_paths": [
+      "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+      "projects/openclaw-core/docs/board-heartbeat-scorecard-signal-only.md",
+      "projects/openclaw-core/docs/heartbeat-reporting-runbook.md"
+    ],
+    "blocked_paths": [],
+    "manual_paths": [
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/agent-scorecard-review-20260326-0600.md",
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md"
+    ],
+    "applied_at": "2026-03-26T22:42:41+09:00"
+  }
+}

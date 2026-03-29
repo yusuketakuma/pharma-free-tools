@@ -1,0 +1,26 @@
+version: 2
+project_id: careroute-rx
+display_name: CareRoute-RX
+name: careroute-rx
+status: active
+ownership: project
+summary: 薬局業務支援SaaS。処方管理・在庫・患者コミュニケーション・PHI保護を統合提供する。
+root_path: projects/careroute-rx
+source_repo: /Users/yusuke/careroute-rx
+code_paths:
+  - projects/careroute-rx/src
+  - projects/careroute-rx/tests
+doc_paths:
+  - projects/careroute-rx/docs
+  - projects/careroute-rx/CLAUDE.md
+  - projects/careroute-rx/.claude/README.md
+ops_paths:
+  - projects/careroute-rx/ops
+backlog_paths:
+  - projects/careroute-rx/backlog
+protected_paths:
+  - projects/careroute-rx/project.yaml
+  - projects/careroute-rx/ops/RUNBOOK.md
+default_route: openclaw
+heavy_route: claude_code
+status_file: projects/careroute-rx/docs/status.md

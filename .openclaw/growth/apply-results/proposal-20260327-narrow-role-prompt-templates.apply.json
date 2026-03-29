@@ -1,0 +1,80 @@
+{
+  "apply_id": "proposal-20260327-narrow-role-prompt-templates-apply",
+  "proposal_id": "proposal-20260327-narrow-role-prompt-templates",
+  "applied_at": "2026-03-27T10:42:40+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-narrow-role-prompt-templates.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-narrow-role-prompt-templates.review.json",
+  "apply_mode": "assisted",
+  "status": "applied",
+  "requested_paths": [
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "projects/openclaw-core/docs/doc-editor-runbook.md",
+    "projects/openclaw-core/docs/dss-manager-runbook.md",
+    "projects/openclaw-core/docs/github-operator-runbook.md",
+    "projects/openclaw-core/docs/ops-automator-runbook.md",
+    "projects/openclaw-core/docs/role-prompt-templates.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-staffing-and-prompt-tuning-board-20260326-0630.md"
+  ],
+  "applied_paths": [
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "projects/openclaw-core/docs/doc-editor-runbook.md",
+    "projects/openclaw-core/docs/dss-manager-runbook.md",
+    "projects/openclaw-core/docs/github-operator-runbook.md",
+    "projects/openclaw-core/docs/ops-automator-runbook.md",
+    "projects/openclaw-core/docs/role-prompt-templates.md"
+  ],
+  "blocked_paths": [],
+  "manual_paths": [
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-staffing-and-prompt-tuning-board-20260326-0630.md"
+  ],
+  "apply_plan": [
+    {
+      "path": "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/doc-editor-runbook.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/dss-manager-runbook.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/github-operator-runbook.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/ops-automator-runbook.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/role-prompt-templates.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/agent-staffing-and-prompt-tuning-board-20260326-0630.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPLIED",
+  "notes": [
+    "assisted apply generated a safe apply plan; target files were not mutated automatically",
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

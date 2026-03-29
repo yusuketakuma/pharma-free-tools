@@ -1,0 +1,13 @@
+{
+  "task_id": "lane-runtime-acp-cli-safety-c1be217d",
+  "verdict": "blocked",
+  "summary": "Execution did not complete successfully.",
+  "issues": [
+    "execution status=runtime_error"
+  ],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": true,
+  "result_classification": "execution_failure",
+  "fallback_used": false
+}

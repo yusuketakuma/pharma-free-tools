@@ -1,0 +1,51 @@
+{
+  "source": "cron:32ba03a1-c935-486d-8946-873b4235557e board-postmeeting-agent-dispatch",
+  "board_cycle_slot_id": "20260326-1435",
+  "board_decision_ref": "decision-ledger latest 2026-03-26 14:35 JST",
+  "final_decision": "adopted",
+  "summary": "Board-auditor was delivered via live subagent and accepted/confirmed. Exec roles were delivered via safe temporary file and remain pending live acceptance.",
+  "board_dispatch": [
+    {
+      "agent": "board-auditor",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-auditor:subagent:55f253aa-f5cc-4532-973b-a08410468332",
+      "runId": "6cc4a646-e9f1-470b-acce-53a2ce33f1a0",
+      "artifact": "artifacts/board/2026-03-26-board-auditor-postmeeting-1435.md"
+    }
+  ],
+  "exec_dispatch": [
+    {
+      "agent": "doc-editor",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-doc-editor-20260326-1435.txt",
+      "reason": "safe temporary file mode only; live receive path not used"
+    },
+    {
+      "agent": "ops-automator",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-ops-automator-20260326-1435.txt",
+      "reason": "safe temporary file mode only; live receive path not used"
+    }
+  ],
+  "stages": {
+    "send_success": ["board-auditor", "doc-editor", "ops-automator"],
+    "accept_success": ["board-auditor"],
+    "artifact_confirmed": ["board-auditor"]
+  },
+  "unreceived": ["doc-editor", "ops-automator"],
+  "unconfirmed": ["doc-editor", "ops-automator"],
+  "failure_reasons": [
+    "Exec roles were intentionally routed to safe temporary files; live receive path not used.",
+    "Board-auditor completed live subagent accept/confirm and therefore is not a retry target."
+  ],
+  "retry_targets": ["doc-editor", "ops-automator"],
+  "next_actions": [
+    "Fold doc-editor wording back into the operational runbook.",
+    "Keep ops-automator read-only and monitor reopen rate / stale backlog count / 7day stale count.",
+    "Use the board-auditor artifact to seed the next security audit handoff.",
+    "Keep internal-only handling; no external notification."
+  ]
+}

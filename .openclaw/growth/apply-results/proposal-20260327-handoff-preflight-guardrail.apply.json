@@ -1,0 +1,59 @@
+{
+  "apply_id": "proposal-20260327-handoff-preflight-guardrail-apply",
+  "proposal_id": "proposal-20260327-handoff-preflight-guardrail",
+  "applied_at": "2026-03-27T02:42:27+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-handoff-preflight-guardrail.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-handoff-preflight-guardrail.review.json",
+  "apply_mode": "assisted",
+  "status": "applied",
+  "requested_paths": [
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "projects/openclaw-core/docs/handoff-preflight.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md"
+  ],
+  "applied_paths": [
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "projects/openclaw-core/docs/handoff-preflight.md"
+  ],
+  "blocked_paths": [],
+  "manual_paths": [
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md"
+  ],
+  "apply_plan": [
+    {
+      "path": "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/handoff-preflight.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPLIED",
+  "notes": [
+    "assisted apply generated a safe apply plan; target files were not mutated automatically",
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "signal_id": "signal-20260326-1852-04",
+  "occurred_at": "2026-03-26T18:52:51+09:00",
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "lesson",
+  "domain": "policy",
+  "summary": "triage-first / owner-fixed / freeze-third and safe-close / reopen handling are converging, but close-record minimum fields are still not equally fixed across the runbooks.",
+  "severity": "low",
+  "evidence": {
+    "metrics": [
+      "policy convergence: yes",
+      "close-record field lock: partial"
+    ],
+    "refs": [
+      "reports/cron/board-postmeeting-agent-dispatch-20260326-1845.md",
+      "docs/runbooks/queue-waiting-state-runbook.md",
+      "reports/cron/board-auditor-safe-close-reopen-audit-20260326-0844.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "supervisor-core",
+      "board-auditor",
+      "board-operator"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": false
+}

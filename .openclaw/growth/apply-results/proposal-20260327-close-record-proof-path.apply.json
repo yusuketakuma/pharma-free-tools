@@ -1,0 +1,73 @@
+{
+  "apply_id": "proposal-20260327-close-record-proof-path-apply",
+  "proposal_id": "proposal-20260327-close-record-proof-path",
+  "applied_at": "2026-03-27T12:42:37+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-close-record-proof-path.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-close-record-proof-path.review.json",
+  "apply_mode": "assisted",
+  "status": "applied",
+  "requested_paths": [
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "projects/openclaw-core/docs/stale-queue-safe-close-reopen-policy.md",
+    "reports/cron/board-auditor-safe-close-reopen-audit-20260326-0844.md",
+    "reports/cron/board-dispatch-verification-20260326-1035-final.md",
+    "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+    "reports/cron/cross-agent-knowledge-sync-20260327-0435.md",
+    "reports/cron/workspace-report-learning-review-20260327-0300.md"
+  ],
+  "applied_paths": [
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "projects/openclaw-core/docs/stale-queue-safe-close-reopen-policy.md"
+  ],
+  "blocked_paths": [],
+  "manual_paths": [
+    "reports/cron/board-auditor-safe-close-reopen-audit-20260326-0844.md",
+    "reports/cron/board-dispatch-verification-20260326-1035-final.md",
+    "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+    "reports/cron/cross-agent-knowledge-sync-20260327-0435.md",
+    "reports/cron/workspace-report-learning-review-20260327-0300.md"
+  ],
+  "apply_plan": [
+    {
+      "path": "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/openclaw-core/docs/stale-queue-safe-close-reopen-policy.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "reports/cron/board-auditor-safe-close-reopen-audit-20260326-0844.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/board-dispatch-verification-20260326-1035-final.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/cross-agent-knowledge-sync-20260327-0435.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/cron/workspace-report-learning-review-20260327-0300.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPLIED",
+  "notes": [
+    "assisted apply generated a safe apply plan; target files were not mutated automatically",
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

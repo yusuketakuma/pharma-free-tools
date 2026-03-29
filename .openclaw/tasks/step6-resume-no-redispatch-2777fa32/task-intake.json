@@ -1,0 +1,40 @@
+{
+  "task_id": "step6-resume-no-redispatch-2777fa32",
+  "task_summary": "Implement queue rebalance fixture",
+  "requested_paths": [
+    ".openclaw/scripts/execute_task.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "required_capabilities": [
+    "backend",
+    "python",
+    "runtime",
+    "workflow-automation"
+  ],
+  "desired_outputs": [
+    "script"
+  ],
+  "departments_involved": [
+    "engineering",
+    "studio-operations",
+    "testing"
+  ],
+  "risk_level": "low",
+  "risk_reasons": [
+    "no high-risk signals detected"
+  ],
+  "complexity": "medium",
+  "protected_paths": [],
+  "signals": {
+    "requested_actions": [
+      "edit"
+    ],
+    "verification_commands": [
+      "python3 -m unittest discover -s .openclaw/tests -p 'test_*.py'"
+    ],
+    "constraints": [
+      "preserve route decision"
+    ]
+  },
+  "requested_route": "claude-code"
+}

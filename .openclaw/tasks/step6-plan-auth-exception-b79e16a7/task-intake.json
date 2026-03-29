@@ -1,0 +1,44 @@
+{
+  "task_id": "step6-plan-auth-exception-b79e16a7",
+  "task_summary": "Implement adapter change and prepare docs draft",
+  "requested_paths": [
+    ".openclaw/scripts/task_runtime.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "required_capabilities": [
+    "backend",
+    "copy",
+    "docs",
+    "python",
+    "runtime",
+    "workflow-automation"
+  ],
+  "desired_outputs": [
+    "doc",
+    "script"
+  ],
+  "departments_involved": [
+    "engineering",
+    "marketing",
+    "studio-operations",
+    "testing"
+  ],
+  "risk_level": "low",
+  "risk_reasons": [
+    "no high-risk signals detected"
+  ],
+  "complexity": "high",
+  "protected_paths": [],
+  "signals": {
+    "requested_actions": [
+      "edit"
+    ],
+    "verification_commands": [
+      "python3 -m unittest"
+    ],
+    "constraints": [
+      "prepare context pack and docs draft before Claude resumes"
+    ]
+  },
+  "requested_route": "claude-code"
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "growth-proposal",
+  "proposal_id": "gp-2026-03-28-autonomy-observability-manifest",
+  "title": "Add read-only observability manifest for autonomy health-review cron",
+  "status": "INBOX",
+  "phase": "propose",
+  "created_at": "2026-03-28T05:00:00+09:00",
+  "created_by": "autonomy-loop-health-review",
+  "summary": "Non-interactive cron health reviews currently have weak visibility into workspace-local observability artifacts because directory listing requires exec approval and read cannot enumerate directories. Add a small read-only manifest/report path so cron jobs can inspect recent anomalies/deltas without elevated or interactive listing.",
+  "problem": "The autonomy health-review job could not enumerate `.openclaw` artifact paths in a non-interactive run. `exec` required manual approval for directory listing on gateway, while `read` on directories returned EISDIR. This leaves the job able to inspect only already-known file paths, reducing anomaly/delta detection quality and making recurring issue detection weaker than intended.",
+  "why_now": "This is a durable workflow gap for autonomous monitoring: if artifact discovery is blocked, future health reviews will continue to under-observe the system and miss proposal-worthy recurrences.",
+  "proposal": {
+    "kind": "low-risk-workflow",
+    "changes": [
+      "Create a stable machine-readable manifest or latest-report file under workspace-local `.openclaw/` that summarizes recent autonomy health signals, anomaly counts, and artifact pointers.",
+      "Adjust the health-review cron wording/runbook to consult the manifest first, then read only explicitly listed files.",
+      "Keep the manifest read-only from the cron's perspective; generation can happen in the producing workflow or report writer."
+    ]
+  },
+  "requires_manual_approval": false,
+  "affected_paths": [
+    ".openclaw/growth/proposals/2026-03-28-autonomy-observability-manifest.json",
+    ".openclaw/reports/autonomy-health/latest.json",
+    ".openclaw/runbooks/autonomy-health-review.md",
+    ".openclaw/cron/autonomy-loop-health-review.prompt.md"
+  ],
+  "constraints": [
+    "Do not change protected paths.",
+    "Do not alter auth, approval, routing root, trust boundary, or authority rules.",
+    "Prefer additive documentation/reporting over behavioral changes."
+  ],
+  "evidence": [
+    {
+      "type": "runtime",
+      "source": "agent:ceo-tama:cron:9401e810-60c9-4002-9f14-c192a917b85b",
+      "detail": "Gateway exec for `pwd && ls -la && ... find .openclaw ...` returned approval-pending in a non-interactive cron context, blocking artifact discovery."
+    },
+    {
+      "type": "artifact",
+      "source": "/Users/yusuke/.openclaw/agents/ceo-tama/sessions/24db4a39-8ea7-4106-a11a-7ec3d84a636d.jsonl",
+      "detail": "Transcript records both the approval-pending exec result and the EISDIR error when attempting `read` on `.openclaw` as a directory."
+    },
+    {
+      "type": "report",
+      "source": "memory_search",
+      "detail": "Search for prior autonomy-loop anomalies/proposals returned no indexed memory hits, increasing reliance on direct artifact discovery."
+    }
+  ],
+  "expected_benefit": [
+    "Health-review cron can perform deterministic, non-interactive anomaly scanning.",
+    "Recurring issue detection becomes more reliable.",
+    "Proposal generation can be evidence-based without needing directory exec approvals."
+  ],
+  "risk": "Low. Additive observability/runbook improvement only.",
+  "next_step": "safe low-risk review candidate"
+}

@@ -1,0 +1,3 @@
+{"type":"session.start","ts":"2026-03-22T08:13:40Z","state":"initialized","data":{"cc_session_id":"99cf9250-8c87-4e7d-9061-38a74941e30a"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-22T08:13:40Z","state":"initialized"}
+{"id":"event-000002","type":"session.stop","ts":"2026-03-22T08:13:49Z","state":"stopped"}

@@ -1,0 +1,14 @@
+{
+  "task_id": "test-approval-56380372",
+  "route_decision_id": "route-test",
+  "decision": "claude-code",
+  "score": 0.9,
+  "reasons": [
+    "test"
+  ],
+  "approval_required": true,
+  "protected_paths": [
+    "org/policy.md"
+  ],
+  "affected_paths": []
+}

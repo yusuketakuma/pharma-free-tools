@@ -1,0 +1,10 @@
+{
+  "healthy": true,
+  "remaining_requests_ratio": 0.7,
+  "remaining_tokens_ratio": 0.7,
+  "usage_pressure": 0.3,
+  "cost_pressure": 0.1,
+  "hard_blocked": false,
+  "captured_at": "2026-03-22T17:14:16+09:00",
+  "source": "derived_env_or_cache"
+}

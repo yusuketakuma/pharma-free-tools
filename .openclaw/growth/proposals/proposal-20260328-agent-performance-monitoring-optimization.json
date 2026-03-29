@@ -1,0 +1,40 @@
+{
+  "proposal_id": "proposal-20260328-agent-performance-monitoring-optimization",
+  "created_at": "2026-03-28T23:27:00+09:00",
+  "phase": "synthesis",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "summary": "既存のagent-performance-optimization提案に基づき、実際の性能データに基づいた監視体制と最適化サイクルを構築する。agent performance monitoringの実装後、収束したパフォーマンスデータに基づいた具体的な改善案を提案する。",
+  "observations": [
+    "2026-03-agent-performance-optimization-proposal.mdの提案は実装済みだが、実際の性能監視データに基づいた最適化が未実施",
+    "agent-lesson-captureで繰り返し指摘されるexact target mismatchがretry costを押し上げている",
+    "agent performanceのバラつきがsystem-wide efficiencyに影響している",
+    "performance metricsの収集と分析が断片的で、系統的な最適化が困難",
+    "light-edit / scout handoffのpreflight実装後、実際の改善効果を測定・分析する体制が必要"
+  ],
+  "proposed_changes": [
+    "agent performanceデータの収集・分析を自動化するperformance monitoring dashboardの実装",
+    "exact target mismatchなどのretry cost要因の特定と、根本原因解消のための改善策",
+    "light-edit / scout handoffのpreflight効果測定と、効果の薄いケースの再設計",
+    "agent performanceの異常検知と自動的最適化提案メカニズム",
+    "performanceデータに基づいたagent staffingとrole boundaryの最適化提案"
+  ],
+  "affected_paths": [
+    ".openclaw/config/agent-performance-monitoring.json",
+    ".openclaw/scripts/agent_performance_analyzer.py",
+    ".openclaw/schemas/agent-performance-metrics.schema.json",
+    ".openclaw/docs/agent-performance-dash.md",
+    ".openclaw/runbooks/agent-performance-optimization-runbook.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md"
+  ],
+  "evidence": [
+    "2026-03-agent-performance-optimization-proposal.md: performance monitoringの基盤構築済み",
+    "agent-lesson-capture-20260326-0615.md: exact target mismatchとowner/due/success criteria不足がretry costを押し上げる",
+    "dashboard-latest.md: 自己改善状態ではblocked 2件、rejected 2件があり、performance関連の改善が必要",
+    "agent-staffing-expansion-2026-03-28.json: performance optimizationがstaffingより効果的であることが示唆"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "agent performance monitoring dashboardの実装と、既存preflight機構の効果測定分析"
+}

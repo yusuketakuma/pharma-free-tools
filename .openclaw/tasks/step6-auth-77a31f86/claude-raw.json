@@ -1,0 +1,31 @@
+{
+  "adapter": "openclaw-acp",
+  "lane": "acp",
+  "dispatch_id": "dispatch-auth",
+  "dispatch_attempt_id": "dispatch-auth_attempt_01",
+  "captured_at": "2026-03-22T15:55:33+09:00",
+  "request": {
+    "task_id": "step6-auth-77a31f86",
+    "task_summary": "Implement queue rebalance fixture",
+    "target_paths": [
+      ".openclaw/scripts/execute_task.py",
+      ".openclaw/scripts/rebalance_queue.py"
+    ],
+    "task_type": "write"
+  },
+  "session": {
+    "mode": "mock",
+    "started": true
+  },
+  "result_preview": {
+    "status": "success",
+    "summary": "ACP adapter completed successfully",
+    "meta": {
+      "lane": "acp",
+      "session_mode": "mock",
+      "partial_execution": false,
+      "side_effects_possible": false,
+      "publishable": true
+    }
+  }
+}

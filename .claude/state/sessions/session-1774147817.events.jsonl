@@ -1,0 +1,4 @@
+{"type":"session.start","ts":"2026-03-22T02:50:17Z","state":"initialized","data":{"cc_session_id":"50e54166-c945-4e0f-a994-48b086d6e37f"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-22T02:50:17Z","state":"initialized"}
+{"id":"event-000002","type":"tool.bash","ts":"2026-03-22T02:50:24Z","state":"initialized","data":{"command":"test -f /Users/yusuke/.openclaw/workspace/.openclaw/README.md && echo "EXISTS" || echo "NOT_FOUND""}}
+{"id":"event-000003","type":"session.stop","ts":"2026-03-22T02:50:43Z","state":"stopped"}

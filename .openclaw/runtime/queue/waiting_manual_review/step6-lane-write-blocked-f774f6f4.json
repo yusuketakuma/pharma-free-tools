@@ -1,0 +1,24 @@
+{
+  "task_id": "step6-lane-write-blocked-f774f6f4",
+  "active": true,
+  "queue_reason": "waiting_manual_review",
+  "last_queue_reason": "waiting_manual_review",
+  "state": "WAITING_MANUAL_REVIEW",
+  "route": "claude-code",
+  "route_decision_id": "route-04b520f84ae8",
+  "approval_id": null,
+  "dispatch_id": "dispatch-write-blocked",
+  "queued_at": "2026-03-22T16:48:01+09:00",
+  "released_at": null,
+  "last_rebalanced_at": null,
+  "resume_target_state": "REVIEWING",
+  "resume_eligible": false,
+  "resume_blockers": [
+    "manual_review_pending",
+    "publish_blocked_until_manual_review"
+  ],
+  "updated_at": "2026-03-22T16:48:01+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/step6-lane-write-blocked-f774f6f4/queue-status.json",
+  "runtime_queue_path": ".openclaw/runtime/queue/waiting_manual_review/step6-lane-write-blocked-f774f6f4.json"
+}

@@ -1,0 +1,28 @@
+{
+  "review_id": "proposal-20260328-cron-consolidation-and-error-pattern-review",
+  "proposal_id": "proposal-20260328-cron-consolidation-and-error-pattern",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260328-cron-consolidation-and-error-pattern.json",
+  "reviewed_at": "2026-03-28T23:40:43+09:00",
+  "decision": "approve",
+  "reviewer": "board-auditor",
+  "reason": "Board裁定通りだがジョブ統合はboundary変更にあたりmanual apply必須。cronジョブの重複・過密実行整理はリソース最適化に直結。edit/rate limit errorパターン改善は再発防止に有効。",
+  "apply_mode": "manual",
+  "approved_paths": [
+    ".openclaw/runbook/cron-consolidation-plan.md (新規作成)",
+    ".openclaw/runbook/edit-safety-rules.md (新規作成)",
+    "cron: agent-lesson-capture (統合候補)",
+    "cron: agent-performance-optimization-review (統合候補)",
+    "cron: agent-scorecard-review (統合候補)",
+    "cron: agent-staffing-and-prompt-tuning (統合候補)",
+    "cron: agent-workforce-expansion-review (統合候補)",
+    "cron: autonomy-loop-health-review (統合候補)",
+    "cron: board-agenda-seed-normalize (削除/統合候補)",
+    "cron: board-premeeting-brief-normalize (統合先候補)",
+    "cron: pharma-free-tools-theme-extraction (edit safety fix)",
+    "cron: workspace-tmp-and-artifact-cleanup-review (error handling fix)"
+  ],
+  "blocked_paths": [],
+  "status_before": "APPROVED",
+  "status_after": "APPROVED",
+  "notes": []
+}

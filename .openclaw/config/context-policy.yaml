@@ -1,0 +1,28 @@
+version: 1
+context:
+  max_default_chars: 12000
+  summary_budget_chars: 2500
+  required_sections:
+    - task
+    - goal
+    - constraints
+    - relevant_files
+    - prior_decisions
+    - verification_commands
+  preferred_order:
+    - executive_summary
+    - required_context
+    - changed_files
+    - acceptance_criteria
+    - risks
+  exclude_globs:
+    - ".git/**"
+    - "node_modules/**"
+    - "**/*.png"
+    - "**/*.jpg"
+    - "**/*.webp"
+    - "logs/**"
+  compacting_rules:
+    keep_head_chars: 1200
+    keep_tail_chars: 800
+    insert_notice: "[context compacted by OpenClaw]"

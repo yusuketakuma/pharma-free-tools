@@ -1,0 +1,90 @@
+{
+  "proposal_id": "proposal-20260328-cron-consolidation-and-error-pattern",
+  "status": "APPROVED",
+  "phase": "propose",
+  "created_at": "2026-03-28T10:30:00+09:00",
+  "created_by": "self-improvement-proposal-synthesis",
+  "summary": "40件の cron ジョブの重複・過密実行を整理し、error パターン（edit failure / rate limit）の再発防止ルールを runbook に固定する",
+  "observations": [
+    "cron ジョブ総数 40件、board cycle だけで 1時間に8ジョブが :20〜:55 に密集実行されている",
+    "autonomy-loop-health-review / agent-scorecard-review / agent-lesson-capture / agent-staffing-and-prompt-tuning / agent-performance-optimization-review / agent-workforce-expansion-review の6ジョブが 05:00〜07:15 に連続実行され、全てが独立して growth proposal を生成可能 — 実質的な提案乱立リスク",
+    "pharma-free-tools-theme-extraction が consecutiveErrors=2 で edit failure により停止中",
+    "workspace-tmp-and-artifact-cleanup-review / supervisor-governance-rules-review / autonomy-job-tuning-review も error 履歴あり",
+    "supervisor-noise-and-overhead-review (月1, 00:40) の指摘に反し、ジョブ数は増加傾向",
+    "同じ観測対象（anomaly / scorecard / lesson / staffing / performance / workforce）を6つの独立ジョブで別々に見ており、統合提案 synthesis のために更に1ジョブ(self-improvement-proposal-synthesis)が必要な構造になっている"
+  ],
+  "proposed_changes": [
+    "board cycle 密集ジョブの統合検討: agenda-seed-normalize + board-premeeting-brief-normalize を1ジョブに統合し、:23 と :33 の2回実行を :33 の1回に集約",
+    "6件の morning observation ジョブ (05:00〜07:15) を1〜2件に統合: anomaly + delta + scorecard + lesson + staffing + performance + workforce の観測を単一ジョブで実行し、最大2件の proposal を生成する構造にする",
+    "edit failure の再発防止: edit ツール使用時の exact-match 前提を見直し、read→write パターンをデフォルト化するルールを runbook に追加",
+    "rate limit error 時の自動リトライ抑制: consecutiveErrors >= 2 のジョブは自動再有効化せず、manual confirm を必須とする",
+    "cron ジョブの total count 上限を設定し、新規追加時の trade-off 判定を必須にする"
+  ],
+  "affected_paths": [
+    ".openclaw/runbook/cron-consolidation-plan.md (新規作成)",
+    ".openclaw/runbook/edit-safety-rules.md (新規作成)",
+    "cron: board-agenda-seed-normalize (削除/統合候補)",
+    "cron: board-premeeting-brief-normalize (統合先候補)",
+    "cron: autonomy-loop-health-review (統合候補)",
+    "cron: agent-scorecard-review (統合候補)",
+    "cron: agent-lesson-capture (統合候補)",
+    "cron: agent-staffing-and-prompt-tuning (統合候補)",
+    "cron: agent-performance-optimization-review (統合候補)",
+    "cron: agent-workforce-expansion-review (統合候補)",
+    "cron: pharma-free-tools-theme-extraction (edit safety fix)",
+    "cron: workspace-tmp-and-artifact-cleanup-review (error handling fix)"
+  ],
+  "evidence": [
+    "cron list: total=40, board cycle (:20-:55) に8ジョブ密集",
+    "cron list: morning observation (:00-:15 every hour 05:00-07:15) に6ジョブ連続",
+    "cron list: pharma-free-tools-theme-extraction consecutiveErrors=2, lastError='Edit: status.md failed'",
+    "cron list: workspace-tmp-and-artifact-cleanup-review consecutiveErrors=1, lastError='rate_limit'",
+    "cron list: supervisor-governance-rules-review consecutiveErrors=1, lastError='rate_limit'",
+    "cron list: autonomy-job-tuning-review consecutiveErrors=1, lastError='Cron failed'"
+  ],
+  "requires_manual_approval": true,
+  "next_step": "Run apply_growth_proposal.py to generate an apply plan and ledger update.",
+  "cycle_id": "proposal-20260328-cron-consolidation-and-error-pattern",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-28T16:41:23+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-28T16:41:23+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-28T16:41:23+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-28T16:41:23+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Board裁定でapprove候補：cronジョブの重複・過密実行整理はリソース最適化に直結。しかしジョブ統合はboundary変更にあたり、manual review必須。errorパターン改善は再発防止に有効。",
+    "apply_mode": "manual",
+    "approved_paths": [
+      ".openclaw/runbook/cron-consolidation-plan.md (新規作成)",
+      ".openclaw/runbook/edit-safety-rules.md (新規作成)",
+      "cron: agent-lesson-capture (統合候補)",
+      "cron: agent-performance-optimization-review (統合候補)",
+      "cron: agent-scorecard-review (統合候補)",
+      "cron: agent-staffing-and-prompt-tuning (統合候補)",
+      "cron: agent-workforce-expansion-review (統合候補)",
+      "cron: autonomy-loop-health-review (統合候補)",
+      "cron: board-agenda-seed-normalize (削除/統合候補)",
+      "cron: board-premeeting-brief-normalize (統合先候補)",
+      "cron: pharma-free-tools-theme-extraction (edit safety fix)",
+      "cron: workspace-tmp-and-artifact-cleanup-review (error handling fix)"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-28T16:41:23+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-cron-consolidation-and-error-pattern.review.json"
+}

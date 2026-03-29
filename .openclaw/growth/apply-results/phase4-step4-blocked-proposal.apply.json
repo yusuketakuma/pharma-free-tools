@@ -1,0 +1,36 @@
+{
+  "apply_id": "phase4-step4-blocked-proposal-apply",
+  "proposal_id": "phase4-step4-blocked-proposal",
+  "applied_at": "2026-03-27T04:42:56+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/phase4-step4-blocked-proposal.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/phase4-step4-blocked-proposal.review.json",
+  "apply_mode": "assisted",
+  "status": "blocked",
+  "requested_paths": [
+    ".openclaw/config/approval-policy.yaml",
+    "org/organization.md"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [
+    ".openclaw/config/approval-policy.yaml",
+    "org/organization.md"
+  ],
+  "manual_paths": [],
+  "apply_plan": [
+    {
+      "path": ".openclaw/config/approval-policy.yaml",
+      "disposition": "blocked",
+      "reason": "guardrail_blocked"
+    },
+    {
+      "path": "org/organization.md",
+      "disposition": "blocked",
+      "reason": "guardrail_blocked"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "guardrail-blocked paths were not auto-applied"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "task_id": "step6-acp-mock-contract-ed01ac48",
+  "verdict": "blocked",
+  "summary": "Fallback-normalized write result requires manual review before publish.",
+  "issues": [
+    "fallback normalization used for write task; manual review required before publish"
+  ],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": true,
+  "result_classification": "degraded_success_write",
+  "fallback_used": true
+}

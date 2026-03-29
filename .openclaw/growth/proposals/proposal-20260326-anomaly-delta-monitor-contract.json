@@ -1,0 +1,119 @@
+{
+  "proposal_id": "proposal-20260326-anomaly-delta-monitor-contract",
+  "created_at": "2026-03-26T20:14:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "autonomy-loop-health-review",
+    "agent-scorecard-review",
+    "agent-lesson-capture",
+    "board / heartbeat runtime recent report"
+  ],
+  "title": "Keep routine board / heartbeat / scorecard signal-only unless an anomaly delta appears",
+  "summary": "定常監視が Board 候補を増やしすぎないよう、scorecard / heartbeat / board の平常時は signal-only に固定し、candidate は新しい anomaly delta か threshold breach があるときだけ出す。",
+  "observations": [
+    "agent-scorecard-review 2026-03-26 06:00 JST は新規 anomaly なしで signal-only 判定だった。",
+    "autonomy-loop-health-review の 2-run window では candidate_rate=0.5 と board_touch_high / exploration_drift が出ており、同じ stale-backlog follow-up を反復していた。",
+    "agent-lesson-capture 2026-03-26 06:15 JST では 'board / heartbeat / scorecard は steady-state では signal-only' に収束している。",
+    "board / heartbeat runtime の recent report でも、通常時は candidate を増やさない方が Board noise を抑えられる流れが確認できる。",
+    "既存の重複論点は、追加候補を増やすより signal-only contract の明文化で吸収できる。"
+  ],
+  "proposed_changes": [
+    "定常の board / heartbeat / scorecard 出力を signal-only に固定する文言を、関連 runbook / cron wording / report template に入れる。",
+    "agenda_candidate の昇格条件を '新しい metric delta / threshold breach / precedent gap' に限定する。",
+    "同じ論点の再掲は runtime では signal として残し、Board 候補にはしない。",
+    "閾値は reversible に保ち、強すぎる抑制で遅い drift を見落とさないようにする。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+    "projects/openclaw-core/docs/board-heartbeat-scorecard-signal-only.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+    ".openclaw/runtime/board/agenda-candidates.jsonl",
+    "reports/cron/agent-scorecard-review-20260326-0600.md",
+    "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md"
+  ],
+  "evidence": [
+    "agent-scorecard-review 20260326-0600: hard threshold breach=none, significant delta=none, agenda_candidate=0",
+    "autonomy-loop-health-review: heartbeat_run_count=2, candidate_rate=0.5, candidate_to_board_touch_ratio=2.0",
+    "board_touch_high=true",
+    "exploration_drift_risk=true",
+    "deep_review_rate=0.0",
+    "signal-20260325211500-delta-monitor",
+    "board_touch_high",
+    "exploration_drift_risk",
+    "reports/cron/agent-scorecard-review-20260326-0600.md",
+    "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    ".openclaw/runtime/board/autonomy-loop-health-review-candidate.json",
+    ".openclaw/runtime/heartbeat/heartbeat-results.jsonl"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run verification before moving to VERIFIED.",
+  "cycle_id": "proposal-20260326-anomaly-delta-monitor-contract",
+  "status": "APPLIED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-26T20:41:41+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-26T20:41:41+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-26T20:41:41+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "APPLIED",
+      "at": "2026-03-26T20:42:48+09:00",
+      "note": "assisted apply plan generated"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-26T22:40:33+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-26T22:40:33+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "APPLIED",
+      "at": "2026-03-26T22:42:41+09:00",
+      "note": "assisted apply plan generated"
+    }
+  ],
+  "reviewed_at": "2026-03-26T22:40:33+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board approve candidate。定常時の board / heartbeat / scorecard を signal-only に寄せる文言更新で、docs / reports / runbook / cron wording の低リスク範囲に収まるため。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+      "projects/openclaw-core/docs/board-heartbeat-scorecard-signal-only.md",
+      "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/agent-scorecard-review-20260326-0600.md",
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md"
+    ],
+    "blocked_paths": [
+      ".openclaw/runtime/board/agenda-candidates.jsonl"
+    ],
+    "notes": [
+      "Board 裁定で approve 候補。runtime の候補キューは本 review の低リスク scope から除外し、docs / reports / runbook / cron wording に限定して assisted apply 前提で進める."
+    ],
+    "reviewed_at": "2026-03-26T22:40:33+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-anomaly-delta-monitor-contract.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260326-anomaly-delta-monitor-contract.apply.json"
+}

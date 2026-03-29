@@ -1,0 +1,9 @@
+{
+  "adapter": "openclaw-acp",
+  "transport_kind": "claude_print_json_compat",
+  "status": "timeout",
+  "timeout_sec": 900,
+  "stdout": "",
+  "stderr": "",
+  "captured_at": "2026-03-22T16:53:45+09:00"
+}

@@ -1,0 +1,34 @@
+{
+  "task_id": "t",
+  "task_summary": "read only inspect",
+  "requested_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ],
+  "required_capabilities": [
+    "python",
+    "runtime",
+    "workflow-automation"
+  ],
+  "desired_outputs": [
+    "script"
+  ],
+  "departments_involved": [
+    "engineering",
+    "studio-operations",
+    "testing"
+  ],
+  "risk_level": "low",
+  "risk_reasons": [
+    "no high-risk signals detected"
+  ],
+  "complexity": "low",
+  "protected_paths": [],
+  "signals": {
+    "requested_actions": [],
+    "verification_commands": [],
+    "constraints": [
+      "read-only"
+    ]
+  },
+  "requested_route": "claude-code"
+}

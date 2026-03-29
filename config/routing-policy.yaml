@@ -1,0 +1,100 @@
+# routing-policy.yaml
+# OpenClaw control plane ルーティングポリシー
+# protectedPath — 変更には manual approval 必須
+
+defaults:
+  runtime: acp
+  fallback: cli-headless
+  maxConcurrentExecutions: 3
+  promptPolicy: append  # system promptは置換ではなく追記
+
+# タスクタイプ → 担当エージェントのルーティングルール
+routes:
+  # --- execution plane (Claude Code委譲) ---
+  implement:
+    assignee: engineering
+    runtime: acp
+    subagents: [backend-architect, frontend-developer]
+    constraints:
+      noPush: true
+      noDestructive: true
+      timeoutMinutes: 30
+
+  fix:
+    assignee: engineering
+    runtime: acp
+    subagents: [backend-architect]
+    constraints:
+      noPush: true
+      timeoutMinutes: 20
+
+  refactor:
+    assignee: engineering
+    runtime: acp
+    subagents: [backend-architect]
+    constraints:
+      noPush: true
+      approvalRequired: true
+      timeoutMinutes: 30
+
+  test:
+    assignee: testing
+    runtime: acp
+    subagents: [api-tester, performance-benchmarker]
+    constraints:
+      noPush: true
+      noDestructive: true
+      timeoutMinutes: 20
+
+  review:
+    assignee: testing
+    runtime: cli-headless
+    constraints:
+      noPush: true
+      noDestructive: true
+      timeoutMinutes: 15
+
+  investigate:
+    assignee: engineering
+    runtime: cli-headless
+    constraints:
+      noPush: true
+      noDestructive: true
+      timeoutMinutes: 15
+
+  # --- control plane (OpenClaw内で処理) ---
+  report:
+    assignee: "{departmentId}"
+    runtime: internal
+    constraints:
+      timeoutMinutes: 10
+
+  prioritize:
+    assignee: project-management
+    runtime: internal
+
+  announce:
+    assignee: ceo-tama
+    runtime: internal
+
+# 容量制御
+capacity:
+  openai:
+    checkRateLimits: true
+    preferModel: gpt-5.4
+    economyModel: gpt-5.4-mini
+    switchToEconomyWhen:
+      rateLimitHeadroom: "<20%"
+      taskPriority: low
+
+  claudeCode:
+    checkTelemetry: true
+    maxConcurrentSubagents: 3
+    spendLimitPerDay: null  # 後で設定
+
+# 緊急時ルーティング
+escalation:
+  alertSources: [studio-operations, testing]
+  alertHandler: project-management
+  finalEscalation: ceo-tama
+  notifyChannel: telegram

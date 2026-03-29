@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "roles": {
+    "frontend-developer": {
+      "department": "engineering",
+      "capabilities": ["frontend", "ui-implementation", "component-refactor", "doc-editing"],
+      "preferred_outputs": ["ui", "web-app", "component", "doc"],
+      "owns_paths": ["projects/**/frontend/**", "projects/**/web/**", "apps/**/src/**", ".openclaw/README.md"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["ui-designer", "api-tester"]
+    },
+    "backend-architect": {
+      "department": "engineering",
+      "capabilities": ["backend", "api", "schema", "database", "python", "architecture"],
+      "preferred_outputs": ["service", "api", "schema", "script"],
+      "owns_paths": ["projects/**/backend/**", "projects/**/api/**", ".openclaw/scripts/**", ".openclaw/schemas/**"],
+      "default_provider_preference": ["claude-code", "openclaw"],
+      "review_roles": ["api-tester", "performance-benchmarker"]
+    },
+    "ai-engineer": {
+      "department": "engineering",
+      "capabilities": ["ai", "prompting", "workflow-automation", "python", "evaluation"],
+      "preferred_outputs": ["agent-workflow", "prompt", "script"],
+      "owns_paths": [".openclaw/**", "org/prompts/**"],
+      "default_provider_preference": ["claude-code", "openclaw"],
+      "review_roles": ["workflow-optimizer", "test-results-analyzer"]
+    },
+    "devops-automator": {
+      "department": "engineering",
+      "capabilities": ["ops", "infra", "ci", "automation", "deployment"],
+      "preferred_outputs": ["infra", "pipeline", "script"],
+      "owns_paths": [".github/workflows/**", "infra/**", ".openclaw/config/**"],
+      "default_provider_preference": ["claude-code", "openclaw"],
+      "review_roles": ["infrastructure-maintainer", "performance-benchmarker"]
+    },
+    "rapid-prototyper": {
+      "department": "engineering",
+      "capabilities": ["prototype", "glue-code", "spike", "multi-file-change"],
+      "preferred_outputs": ["prototype", "script", "demo"],
+      "owns_paths": ["sandbox/**", "projects/**/experiments/**"],
+      "default_provider_preference": ["claude-code", "openclaw"],
+      "review_roles": ["project-shipper", "api-tester"]
+    },
+    "sprint-prioritizer": {
+      "department": "product",
+      "capabilities": ["scoping", "prioritization", "requirements", "task-structuring"],
+      "preferred_outputs": ["plan", "spec", "task-brief"],
+      "owns_paths": ["docs/**", "specs/**", "CURRENT_STATUS.md"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["project-shipper", "feedback-synthesizer"]
+    },
+    "trend-researcher": {
+      "department": "product",
+      "capabilities": ["research", "discovery", "market-input", "requirements"],
+      "preferred_outputs": ["research-note", "brief", "doc"],
+      "owns_paths": ["research/**", "docs/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["feedback-synthesizer", "content-creator"]
+    },
+    "feedback-synthesizer": {
+      "department": "product",
+      "capabilities": ["analysis", "feedback", "triage", "requirements"],
+      "preferred_outputs": ["summary", "brief", "decision-log"],
+      "owns_paths": ["docs/**", "reports/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["sprint-prioritizer", "project-shipper"]
+    },
+    "ui-designer": {
+      "department": "design",
+      "capabilities": ["ui", "visual-design", "interaction", "design-review"],
+      "preferred_outputs": ["ui", "mock", "design-spec"],
+      "owns_paths": ["design/**", "projects/**/frontend/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["ux-researcher", "brand-guardian"]
+    },
+    "ux-researcher": {
+      "department": "design",
+      "capabilities": ["ux", "usability", "flows", "requirements"],
+      "preferred_outputs": ["ux-review", "flow", "design-spec"],
+      "owns_paths": ["design/**", "docs/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["ui-designer", "feedback-synthesizer"]
+    },
+    "brand-guardian": {
+      "department": "design",
+      "capabilities": ["branding", "copy-review", "tone", "docs"],
+      "preferred_outputs": ["copy", "doc", "brand-review"],
+      "owns_paths": ["docs/**", "marketing/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["content-creator", "ui-designer"]
+    },
+    "project-shipper": {
+      "department": "project-management",
+      "capabilities": ["delivery", "coordination", "cross-functional", "release"],
+      "preferred_outputs": ["plan", "handoff", "release-note"],
+      "owns_paths": ["CURRENT_STATUS.md", "docs/**", "reports/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["experiment-tracker", "workflow-optimizer"]
+    },
+    "experiment-tracker": {
+      "department": "project-management",
+      "capabilities": ["tracking", "validation", "decision-log", "coordination"],
+      "preferred_outputs": ["report", "log", "plan"],
+      "owns_paths": ["reports/**", "docs/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["project-shipper", "analytics-reporter"]
+    },
+    "infrastructure-maintainer": {
+      "department": "studio-operations",
+      "capabilities": ["infra", "ops", "runtime", "security", "config"],
+      "preferred_outputs": ["runbook", "config", "infra"],
+      "owns_paths": [".openclaw/config/**", ".openclaw/runtime/**", "infra/**"],
+      "default_provider_preference": ["claude-code", "openclaw"],
+      "review_roles": ["devops-automator", "legal-compliance-checker"]
+    },
+    "legal-compliance-checker": {
+      "department": "studio-operations",
+      "capabilities": ["compliance", "policy", "risk", "approval"],
+      "preferred_outputs": ["risk-note", "policy", "review"],
+      "owns_paths": ["org/**", ".openclaw/config/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["project-shipper", "infrastructure-maintainer"]
+    },
+    "analytics-reporter": {
+      "department": "studio-operations",
+      "capabilities": ["metrics", "analysis", "reporting", "quality-signals"],
+      "preferred_outputs": ["report", "dashboard", "summary"],
+      "owns_paths": ["reports/**", "analytics/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["experiment-tracker", "test-results-analyzer"]
+    },
+    "content-creator": {
+      "department": "marketing",
+      "capabilities": ["docs", "copy", "launch-content", "messaging"],
+      "preferred_outputs": ["doc", "copy", "announcement"],
+      "owns_paths": ["docs/**", "marketing/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["brand-guardian", "growth-hacker"]
+    },
+    "growth-hacker": {
+      "department": "marketing",
+      "capabilities": ["growth", "experiments", "distribution", "messaging"],
+      "preferred_outputs": ["experiment", "plan", "copy"],
+      "owns_paths": ["marketing/**", "growth/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["analytics-reporter", "content-creator"]
+    },
+    "api-tester": {
+      "department": "testing",
+      "capabilities": ["api-testing", "qa", "verification", "regression"],
+      "preferred_outputs": ["test", "qa-report", "checklist"],
+      "owns_paths": ["tests/**", "projects/**/api/**", ".openclaw/schemas/**"],
+      "default_provider_preference": ["claude-code", "openclaw"],
+      "review_roles": ["test-results-analyzer", "backend-architect"]
+    },
+    "workflow-optimizer": {
+      "department": "testing",
+      "capabilities": ["workflow", "process-review", "automation-review", "qa"],
+      "preferred_outputs": ["review", "workflow", "checklist"],
+      "owns_paths": [".openclaw/**", "docs/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["project-shipper", "ai-engineer"]
+    },
+    "performance-benchmarker": {
+      "department": "testing",
+      "capabilities": ["performance", "benchmark", "scale", "runtime"],
+      "preferred_outputs": ["benchmark", "report", "qa-report"],
+      "owns_paths": ["benchmarks/**", "infra/**", ".openclaw/scripts/**"],
+      "default_provider_preference": ["claude-code", "openclaw"],
+      "review_roles": ["backend-architect", "infrastructure-maintainer"]
+    },
+    "test-results-analyzer": {
+      "department": "testing",
+      "capabilities": ["qa", "analysis", "review", "risk-assessment"],
+      "preferred_outputs": ["qa-report", "review", "summary"],
+      "owns_paths": ["tests/**", "reports/**"],
+      "default_provider_preference": ["openclaw", "claude-code"],
+      "review_roles": ["api-tester", "analytics-reporter"]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-capacity",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "approval_id": null,
+  "dispatch_id": "dispatch-capacity",
+  "protected_paths": [],
+  "message": "queue rebalanced: provider capacity recovered; ready to resume",
+  "task_id": "step6-capacity-4b5aa387",
+  "state": "READY_FOR_EXECUTION",
+  "updated_at": "2026-03-22T16:54:14+09:00",
+  "history": [
+    {
+      "state": "WAITING_CAPACITY",
+      "at": "2026-03-22T16:54:12+09:00",
+      "route_decision_id": "route-capacity",
+      "dispatch_id": "dispatch-capacity",
+      "message": "seeded WAITING_CAPACITY"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:54:14+09:00",
+      "route_decision_id": "route-capacity",
+      "dispatch_id": "dispatch-capacity",
+      "message": "queue rebalanced: provider capacity recovered; ready to resume"
+    }
+  ]
+}

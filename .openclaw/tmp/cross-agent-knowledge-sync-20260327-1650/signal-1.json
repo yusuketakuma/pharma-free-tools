@@ -1,0 +1,26 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "metric",
+  "domain": "reporting",
+  "summary": "board_cycle_slot_id 20260327-1435 stayed fresh and ready across board postmeeting, agenda assembly, and premeeting brief; no stale-input fallback was needed in this sync.",
+  "severity": "low",
+  "evidence": {
+    "metrics": [
+      {"board_cycle_slot_id": "20260327-1435"},
+      {"input_gate": "ready"},
+      {"freshness": "ready"}
+    ],
+    "refs": [
+      "reports/board/board-postmeeting-agent-dispatch-20260327-1435.md",
+      "reports/cron/board-agenda-assembly-20260327-0635.md",
+      "reports/board/board-premeeting-brief-20260327-0635.md",
+      "reports/growth/self-improvement-verification-latest.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["board-agenda-assembly", "board-premeeting-brief", "board-operator"],
+    "repos": ["openclaw-core"],
+    "layers": ["board"]
+  },
+  "candidate_hint": false
+}

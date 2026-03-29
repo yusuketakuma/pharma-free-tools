@@ -1,0 +1,177 @@
+{
+  "$schema": "board-freshness-contract",
+  "contract_version": "1.0.0",
+  "created_at": "2026-03-29T15:47:00+09:00",
+  "proposal_id": "proposal-2026-03-29-board-artifact-freshness-governance",
+
+  "global_defaults": {
+    "slot_format": "YYYYMMDD-HHMM",
+    "slot_interval_ms": 3600000,
+    "default_max_age_ms": 3600000,
+    "freshness_score_min": 0.1,
+    "slot_alignment": "strict",
+    "timezone": "Asia/Tokyo"
+  },
+
+  "artifact_types": {
+    "agenda-seed": {
+      "max_age_ms": 3600000,
+      "slot_alignment": "strict",
+      "allow_retroactive": false,
+      "required_fields": ["board_cycle_slot_id", "generated_at", "candidate_count"],
+      "validation_failure_handling": {
+        "slot_mismatch": "block",
+        "max_age_exceeded": "block",
+        "missing_fields": "reject",
+        "freshness_below_threshold": "block"
+      },
+      "dependencies": [],
+      "regeneration": {
+        "auto": true,
+        "max_retries_per_slot": 2,
+        "retry_delay_ms": 300000
+      }
+    },
+    "premeeting-brief": {
+      "max_age_ms": 3600000,
+      "slot_alignment": "strict",
+      "allow_retroactive": false,
+      "required_fields": ["board_cycle_slot_id", "generated_at", "referenced_agenda_seed_slot"],
+      "validation_failure_handling": {
+        "slot_mismatch": "block",
+        "max_age_exceeded": "block",
+        "missing_fields": "reject",
+        "freshness_below_threshold": "block",
+        "dependency_stale": "block"
+      },
+      "dependencies": ["agenda-seed"],
+      "regeneration": {
+        "auto": true,
+        "max_retries_per_slot": 2,
+        "retry_delay_ms": 300000
+      }
+    },
+    "claude-code-precheck": {
+      "max_age_ms": 3600000,
+      "slot_alignment": "strict",
+      "allow_retroactive": true,
+      "required_fields": ["board_cycle_slot_id", "generated_at", "input_gate"],
+      "validation_failure_handling": {
+        "slot_mismatch": "warn",
+        "max_age_exceeded": "warn",
+        "missing_fields": "reject",
+        "freshness_below_threshold": "warn",
+        "input_gate_invalid": "warn"
+      },
+      "dependencies": ["agenda-seed", "premeeting-brief"],
+      "regeneration": {
+        "auto": false,
+        "max_retries_per_slot": 1,
+        "retry_delay_ms": 600000
+      }
+    },
+    "dispatch-result": {
+      "max_age_ms": 5400000,
+      "slot_alignment": "strict",
+      "allow_retroactive": false,
+      "required_fields": ["board_cycle_slot_id", "generated_at", "dispatch_status"],
+      "validation_failure_handling": {
+        "slot_mismatch": "block",
+        "max_age_exceeded": "block",
+        "missing_fields": "reject",
+        "freshness_below_threshold": "block",
+        "dependency_stale": "block"
+      },
+      "dependencies": ["premeeting-brief"],
+      "regeneration": {
+        "auto": false,
+        "max_retries_per_slot": 1,
+        "retry_delay_ms": 600000
+      }
+    },
+    "postmeeting-memo": {
+      "max_age_ms": 7200000,
+      "slot_alignment": "strict",
+      "allow_retroactive": true,
+      "required_fields": ["board_cycle_slot_id", "generated_at", "memo_type"],
+      "validation_failure_handling": {
+        "slot_mismatch": "warn",
+        "max_age_exceeded": "warn",
+        "missing_fields": "reject",
+        "freshness_below_threshold": "warn",
+        "dependency_missing": "warn"
+      },
+      "dependencies": ["dispatch-result"],
+      "regeneration": {
+        "auto": false,
+        "max_retries_per_slot": 1,
+        "retry_delay_ms": 0
+      }
+    },
+    "board-input-brief": {
+      "max_age_ms": 3600000,
+      "slot_alignment": "strict",
+      "allow_retroactive": false,
+      "required_fields": ["board_cycle_slot_id", "generated_at", "input_gate"],
+      "validation_failure_handling": {
+        "slot_mismatch": "block",
+        "max_age_exceeded": "block",
+        "missing_fields": "reject",
+        "freshness_below_threshold": "block"
+      },
+      "dependencies": ["agenda-seed"],
+      "regeneration": {
+        "auto": true,
+        "max_retries_per_slot": 2,
+        "retry_delay_ms": 300000
+      }
+    },
+    "board-ops-brief": {
+      "max_age_ms": 3600000,
+      "slot_alignment": "strict",
+      "allow_retroactive": false,
+      "required_fields": ["board_cycle_slot_id", "generated_at"],
+      "validation_failure_handling": {
+        "slot_mismatch": "block",
+        "max_age_exceeded": "block",
+        "missing_fields": "reject",
+        "freshness_below_threshold": "block"
+      },
+      "dependencies": [],
+      "regeneration": {
+        "auto": true,
+        "max_retries_per_slot": 2,
+        "retry_delay_ms": 300000
+      }
+    }
+  },
+
+  "validation_failure_actions": {
+    "block": {
+      "description": "publish を完全に拒否する",
+      "requires_escalation": false,
+      "auto_recovery": true,
+      "recovery_action": "regenerate"
+    },
+    "reject": {
+      "description": "artifact を破棄し、再生成を要求する",
+      "requires_escalation": false,
+      "auto_recovery": true,
+      "recovery_action": "regenerate"
+    },
+    "warn": {
+      "description": "警告を記録して publish を継続する",
+      "requires_escalation": false,
+      "auto_recovery": false,
+      "recovery_action": "none"
+    }
+  },
+
+  "alert_thresholds": {
+    "freshness_score_warning": 0.3,
+    "block_rate_critical": 0.2,
+    "block_rate_critical_window": 3,
+    "stale_count_warning": 5,
+    "slot_alignment_rate_critical": 0.5
+  }
+}

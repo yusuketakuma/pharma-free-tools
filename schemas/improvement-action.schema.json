@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/improvement-action.schema.json",
+  "title": "ImprovementAction",
+  "description": "A record of the concrete action taken to apply an approved improvement proposal, including verification outcomes.",
+  "type": "object",
+  "required": ["proposal_id", "action_id", "status", "version"],
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "description": "Identifier of the proposal this action applies."
+    },
+    "action_id": {
+      "type": "string",
+      "description": "Unique identifier for this action record."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "applied", "verified", "failed", "rolled_back"],
+      "description": "Current status of this action."
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version of this action document."
+    },
+    "worktree_path": {
+      "type": "string",
+      "description": "Optional filesystem path to the worktree used for applying this action."
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional list of file paths that were modified by this action."
+    },
+    "verification_commands": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional list of commands run to verify the action was applied correctly."
+    },
+    "verification_results": {
+      "type": "array",
+      "description": "Optional list of outcomes for each verification command.",
+      "items": {
+        "type": "object",
+        "required": ["command", "status"],
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "The verification command that was executed."
+          },
+          "status": {
+            "type": "string",
+            "description": "The outcome status of the command (e.g., pass, fail)."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "regression_detected": {
+      "type": "boolean",
+      "description": "Whether a regression was detected during verification."
+    },
+    "applied_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the action was applied."
+    },
+    "verified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the action was verified."
+    },
+    "rollback_reason": {
+      "type": "string",
+      "description": "Optional explanation of why this action was rolled back, if applicable."
+    }
+  },
+  "additionalProperties": false
+}

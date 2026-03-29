@@ -1,0 +1,16 @@
+{
+  "task_id": "step6-approval-f30a3a0c",
+  "route_decision_id": "route-approval",
+  "decision": "claude-code",
+  "score": 0.91,
+  "reasons": [
+    "test fixture"
+  ],
+  "approval_required": true,
+  "protected_paths": [
+    "org/policy.md"
+  ],
+  "affected_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ]
+}

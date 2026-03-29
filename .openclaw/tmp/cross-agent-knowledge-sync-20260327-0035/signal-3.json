@@ -1,0 +1,26 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "lesson",
+  "domain": "routing",
+  "summary": "triage and security audit / boundary review remain intentionally separated; the current cycle repeats that separation without scope drift.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "triage-first",
+      "audit-later",
+      "boundary review after triage is fixed",
+      "no mixed lane in the current board pack"
+    ],
+    "refs": [
+      "reports/board/board-premeeting-brief-20260327-0035.md",
+      "reports/board/board-agenda-assembly-20260327-0035.md",
+      "artifacts/board/2026-03-26-ceo-board-note-security-audit-separation.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["ceo-tama", "board-auditor", "doc-editor", "supervisor-core"],
+    "repos": ["openclaw-core"],
+    "layers": ["board", "execution"]
+  },
+  "candidate_hint": false
+}

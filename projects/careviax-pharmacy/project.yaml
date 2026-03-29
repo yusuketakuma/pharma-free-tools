@@ -1,0 +1,25 @@
+version: 2
+project_id: careviax-pharmacy
+display_name: CareViaX Pharmacy
+name: careviax-pharmacy
+status: bootstrap
+ownership: project
+summary: CareViaX pharmacy operations and workflow support project
+root_path: projects/careviax-pharmacy
+code_paths:
+  - projects/careviax-pharmacy/src
+  - projects/careviax-pharmacy/tests
+doc_paths:
+  - projects/careviax-pharmacy/docs
+  - projects/careviax-pharmacy/CLAUDE.md
+  - projects/careviax-pharmacy/.claude/README.md
+ops_paths:
+  - projects/careviax-pharmacy/ops
+backlog_paths:
+  - projects/careviax-pharmacy/backlog
+protected_paths:
+  - projects/careviax-pharmacy/project.yaml
+  - projects/careviax-pharmacy/ops/RUNBOOK.md
+default_route: openclaw
+heavy_route: claude_code
+status_file: projects/careviax-pharmacy/docs/status.md

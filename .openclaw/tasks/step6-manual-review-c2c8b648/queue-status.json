@@ -1,0 +1,20 @@
+{
+  "task_id": "step6-manual-review-c2c8b648",
+  "active": false,
+  "queue_reason": null,
+  "last_queue_reason": "waiting_manual_review",
+  "state": "REVIEWING",
+  "route": "claude-code",
+  "route_decision_id": "route-manual",
+  "approval_id": null,
+  "dispatch_id": "dispatch-manual",
+  "queued_at": "2026-03-22T17:23:37+09:00",
+  "released_at": "2026-03-22T17:23:38+09:00",
+  "last_rebalanced_at": "2026-03-22T17:23:38+09:00",
+  "resume_target_state": null,
+  "resume_eligible": false,
+  "resume_blockers": [],
+  "updated_at": "2026-03-22T17:23:38+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/step6-manual-review-c2c8b648/queue-status.json"
+}

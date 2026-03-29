@@ -1,0 +1,8 @@
+OpenClaw 最終裁定（decision-ledger / board postmeeting 2026-03-26 10:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: investigate。DSS は今回も待機。
+
+依頼:
+- backlog triage の運用結果を受領するまで待機
+- DSS 固有の新規着手はしない
+- 影響確認は triage 結果の後に再評価

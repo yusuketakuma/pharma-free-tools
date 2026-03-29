@@ -1,0 +1,8 @@
+OpenClaw 最終裁定（decision-ledger / board postmeeting 2026-03-26 14:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: adopted。監視は read-only に固定し、自動 drain はしない。
+
+依頼:
+- reopen 率、滞留中央値、7日超滞留件数のみを監視する
+- mutation / 自動修正には踏み込まない
+- backlog 増加や scope 拡大が見えたら注記する

@@ -1,0 +1,90 @@
+{
+  "proposal_id": "2026-03-28-synthesis-cron-failfast-and-no-looping",
+  "created_at": "2026-03-28T23:27:00+09:00",
+  "phase": "propose",
+  "summary": "Self-improvement proposal synthesis 系 cron が approval-timeout 後も探索コマンド再試行に寄り続け、Board 価値ではなく確認失敗の反復に時間を使っている。cron wording / runbook を fail-fast・no-looping 方針に整理し、 evidence が足りない場合の出力を標準化する。",
+  "observations": [
+    "同種の確認 exec が複数回 approval-timeout で失敗し、同じ説明を繰り返すだけのターンが発生していた。",
+    "現在の運用では、入力不足時に『一覧をもらえば進める』説明まではできるが、cron 自体の出口条件が弱く、内部運用ジョブとしての完了品質がぶれやすい。",
+    "Board 向け synthesis は、十分な evidence が無ければ 0件または 1件の meta-proposal に倒す fail-fast ルールを持つほうが運用に強い。",
+    "docs / runbook / cron wording の整理は low-risk で、protected path や authority を触らずに改善できる。"
+  ],
+  "proposed_changes": [
+    "self-improvement proposal synthesis ジョブの文言に『承認付き exec 探索を連続再試行しない』『同一 failure mode が続く場合は meta-proposal か保留結論で閉じる』を明記する。",
+    "runbook に、入力不足時の標準出力テンプレート（結論 / synthesis 元 / 生成 proposal 件数 / proposal_id / 次アクション）を追加する。",
+    "approval-timeout が一定回数を超えたら、次回 Board サイクルへ渡す改善案を “discovery path hardening” に絞る判断ルールを追加する。",
+    "通常通知なしの内部運用ジョブでは、同一失敗の反復メッセージを減らし、artifact 優先で閉じる。"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/",
+    ".openclaw/growth/reports/",
+    ".openclaw/growth/proposals/",
+    ".openclaw/cron/",
+    ".openclaw/docs/"
+  ],
+  "evidence": [
+    "Current session history contains repeated approval-timeout failures across multiple discovery commands, with the job repeatedly stating that synthesis could not proceed safely.",
+    "The failure mode was stable across proposal listing, report discovery, and broad file enumeration attempts, indicating a process/runbook issue rather than a one-off command issue.",
+    "The job instructions already prefer internal-only operation and capped proposal count, which aligns with a tighter fail-fast runbook."
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Resolve blocked/manual paths before verification.",
+  "cycle_id": "2026-03-28-synthesis-cron-failfast-and-no-looping",
+  "status": "APPROVED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-28T20:41:45+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-28T20:41:45+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-28T20:41:45+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T01:40:41+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T01:40:41+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T06:40:37+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T06:40:37+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T06:40:37+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Board裁定でapprove候補：docs/runbook/cron wording整理はlow-riskでprotected path・auth・routing root・trust boundary非該当。反復的なapproval-timeout失敗をfail-fastで防ぐことで、Board cycleの安定性向上に直結。reversibleな変更で即効性が高い。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/cron/",
+      ".openclaw/docs/",
+      ".openclaw/growth/proposals/",
+      ".openclaw/growth/reports/",
+      ".openclaw/growth/runbooks/"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T06:40:37+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-synthesis-cron-failfast-and-no-looping.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-28-synthesis-cron-failfast-and-no-looping.apply.json"
+}

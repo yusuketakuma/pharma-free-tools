@@ -1,0 +1,31 @@
+{
+  "task_id": "subagent-acp-smoke-37bf87b2",
+  "request_version": 2,
+  "executor": "claude-code",
+  "execution_mode": "cli",
+  "task_summary": "Return a tiny structured success result for adapter smoke test without changing files.",
+  "constraints": [
+    "read-only",
+    "no file changes"
+  ],
+  "target_paths": [
+    ".openclaw/scripts/run_claude_acp.py"
+  ],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "approval": {
+    "required": false,
+    "protected_paths": []
+  },
+  "route_decision_id": "route-smoke",
+  "dispatch_id": "dispatch-smoke",
+  "context_pack_path": ".openclaw/tasks/subagent-acp-smoke-37bf87b2/context-pack.md",
+  "rendered_prompt_path": ".openclaw/tasks/subagent-acp-smoke-37bf87b2/rendered-prompt.txt",
+  "raw_response_path": ".openclaw/tasks/subagent-acp-smoke-37bf87b2/claude-raw.json",
+  "auth_artifacts": {
+    "auth_status_path": ".openclaw/tasks/subagent-acp-smoke-37bf87b2/auth-status.json",
+    "auth_log_path": ".openclaw/tasks/subagent-acp-smoke-37bf87b2/auth-preflight.log"
+  }
+}

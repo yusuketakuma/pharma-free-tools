@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExecutionRequest",
+  "type": "object",
+  "required": [
+    "task_id",
+    "request_version",
+    "executor",
+    "task_summary",
+    "constraints",
+    "target_paths",
+    "verification_commands",
+    "review_focus"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "request_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "executor": {
+      "type": "string",
+      "enum": [
+        "claude-code"
+      ]
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": [
+        "mock",
+        "cli",
+        "sdk"
+      ]
+    },
+    "task_summary": {
+      "type": "string"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "target_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification_commands": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "review_focus": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approval": {
+      "type": "object"
+    },
+    "route_decision_id": {
+      "type": "string"
+    },
+    "dispatch_id": {
+      "type": "string"
+    },
+    "context_pack_path": {
+      "type": "string"
+    },
+    "rendered_prompt_path": {
+      "type": "string"
+    },
+    "raw_response_path": {
+      "type": "string"
+    },
+    "mock_mode": {
+      "type": "string"
+    },
+    "auth_artifacts": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

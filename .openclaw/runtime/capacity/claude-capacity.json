@@ -1,0 +1,43 @@
+{
+  "healthy": true,
+  "acp_healthy": true,
+  "cli_healthy": true,
+  "cli_backend_healthy": false,
+  "auth_ok": true,
+  "rpm_pressure": 0.2,
+  "itpm_pressure": 0.2,
+  "otpm_pressure": 0.2,
+  "spend_pressure": 0.2,
+  "retry_after_sec": 0.0,
+  "hard_blocked": false,
+  "captured_at": "2026-03-22T17:22:34+09:00",
+  "source": "runtime_auth_and_probe",
+  "auth_source": {
+    "auth_ok": true,
+    "last_error": null,
+    "details": {
+      "command": [
+        "claude",
+        "auth",
+        "status",
+        "--json"
+      ],
+      "exit_code": 0,
+      "parsed": {
+        "loggedIn": true,
+        "authMethod": "claude.ai",
+        "apiProvider": "firstParty",
+        "email": "takuma.yusuke@gmail.com",
+        "orgId": "dcff0cb3-a167-4dce-b3f6-76e8aa8374b9",
+        "orgName": "takuma.yusuke@gmail.com's Organization",
+        "subscriptionType": "max"
+      },
+      "stderr": "",
+      "normalized_auth_method": "claude_subscription",
+      "allowed_auth_methods": [
+        "claude_subscription"
+      ]
+    }
+  },
+  "cli_backend_gap": "--bare requires API key auth and does not use claude.ai subscription auth"
+}

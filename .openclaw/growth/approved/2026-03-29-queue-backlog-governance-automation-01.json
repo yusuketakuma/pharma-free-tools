@@ -1,0 +1,86 @@
+{
+  "proposal_id": "GP-2026-03-29-queue-backlog-governance-automation-01",
+  "status": "APPROVED",
+  "phase": "propose",
+  "summary": "stale queue backlogのtriage条件自動化で、Boardの再審コストを削減する",
+  "observations": [
+    "stale queue backlogのsafe-close/reopen/escalate条件が複数のagenda/report/memoryに散在している",
+    "直近のBoard反復でも、この論点は継続的に再掲されている",
+    "既存heartbeatの点検手順より、backlog triage境界条件の圧縮が再利用価値が高い",
+    "manualなqueue管理がBoardの判断疲れと重複議論を招いている",
+    "heartbeat/runtime側での自律的なbacklog管理が有効な機会"
+  ],
+  "proposed_changes": [
+    "stale queue backlog triageを1枚のrunbookに圧縮",
+    "safe-close/reopen/escalate条件の自動化ルールを実装",
+    "heartbeat/report/ledgerに残す最小指標の定義",
+    "manual review境界の明確化",
+    "queue governanceとheartbeat monitoringの統合"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/queue-backlog-governance-automation.md",
+    ".openclaw/growth/cron-wording/queue-triage-pattern.md",
+    ".openclaw/runtime/heartbeat/heartbeat-results.jsonl",
+    ".openclaw/reports/board/board-agenda-template.json",
+    ".openclaw/growth/ledgers/queue-triage-ledger.json"
+  ],
+  "evidence": [
+    "artifacts/board/2026-03-26-heartbeat-runbook-consolidation-candidate.md - backlog条件散在の認識",
+    "self-improvement-proposal-review-report-2026-03-29.md - 重複議論の継続",
+    "heartbeat governance実装済み - 基盤は整備されている",
+    "board precedent registry entries: 0 - 再審コストの蓄積不足",
+    "stale queue reconciliation candidate - 既存議論の存在"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Resolve blocked/manual paths before verification.",
+  "board_decision": null,
+  "created_at": "2026-03-29T23:27:00Z",
+  "updated_at": "2026-03-29T23:27:00Z",
+  "cycle_id": "GP-2026-03-29-queue-backlog-governance-automation-01",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T08:40:36+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T08:40:36+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T08:40:36+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T12:41:07+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T12:41:07+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T12:41:07+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Board裁定によるapprove候補。docs/runbook/cron-wordingの低リスク変更でreversible。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/growth/cron-wording/queue-triage-pattern.md",
+      ".openclaw/growth/ledgers/queue-triage-ledger.json",
+      ".openclaw/growth/runbooks/queue-backlog-governance-automation.md",
+      ".openclaw/reports/board/board-agenda-template.json",
+      ".openclaw/runtime/heartbeat/heartbeat-results.jsonl"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T12:41:07+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/GP-2026-03-29-queue-backlog-governance-automation-01.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/GP-2026-03-29-queue-backlog-governance-automation-01.apply.json"
+}

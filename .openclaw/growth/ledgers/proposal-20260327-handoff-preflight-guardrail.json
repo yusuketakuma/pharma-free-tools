@@ -1,0 +1,48 @@
+{
+  "cycle_id": "proposal-20260327-handoff-preflight-guardrail",
+  "created_at": "2026-03-27T02:27:00+09:00",
+  "updated_at": "2026-03-27T02:42:27+09:00",
+  "proposal_id": "proposal-20260327-handoff-preflight-guardrail",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-handoff-preflight-guardrail.json",
+  "proposal_status": "APPLIED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-handoff-preflight-guardrail.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 02:35 JST で approve 候補。exact-target / owner / due / success criteria の preflight は docs/runbook/cron wording に限定された低リスク変更で、routing root / auth / trust boundary を変更しないため approve。",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-27T02:41:02+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-27T02:41:02+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-handoff-preflight-guardrail.review.json"
+    },
+    {
+      "at": "2026-03-27T02:42:27+09:00",
+      "type": "apply",
+      "status": "applied",
+      "proposal_status": "APPLIED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-handoff-preflight-guardrail.apply.json"
+    }
+  ],
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-handoff-preflight-guardrail.apply.json",
+  "last_apply": {
+    "status": "applied",
+    "apply_mode": "assisted",
+    "applied_paths": [
+      "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+      "projects/openclaw-core/docs/handoff-preflight.md"
+    ],
+    "blocked_paths": [],
+    "manual_paths": [
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+      "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md"
+    ],
+    "applied_at": "2026-03-27T02:42:27+09:00"
+  }
+}

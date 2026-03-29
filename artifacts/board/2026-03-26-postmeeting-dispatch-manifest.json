@@ -1,0 +1,21 @@
+{
+  "source": "decision-ledger + board postmeeting summary 2026-03-26",
+  "created_at": "2026-03-26T08:22:00+09:00",
+  "policy": {
+    "no_changes": ["auth", "trust boundary", "routing", "approval", "Telegram 根幹"]
+  },
+  "agents": [
+    {"id": "ceo-tama", "type": "board", "status": "継続", "message": "継続。board方針を維持し、例外/差分/precedent gap だけを上げる。supervisor-core の runbook 初稿を確認。auth/trust boundary/routing/approval/Telegram 根幹は触らない。"},
+    {"id": "supervisor-core", "type": "board", "status": "新規着手", "message": "新規着手。waiting_auth / waiting_manual_review の safe-close / reopen / escalate を1ページ runbook に。owner / due / evidence / stop条件を明記し、dominant-prefix triage を分離。"},
+    {"id": "board-visionary", "type": "board", "status": "監視", "message": "監視。precedent gap と contract reuse だけ見て、boundary変更案は出さない。"},
+    {"id": "board-user-advocate", "type": "board", "status": "監視", "message": "監視。ユーザーが迷わない1行ルールか確認し、手順増加があれば簡素化へ戻す。"},
+    {"id": "board-operator", "type": "board", "status": "継続", "message": "継続。triage policy を最小運用手順に落とし、queue反映可否を確認。"},
+    {"id": "board-auditor", "type": "board", "status": "監視", "message": "監視。safe-close 後の silent failure と reopen 条件の曖昧さを点検。"},
+    {"id": "research-analyst", "type": "exec", "status": "調査", "message": "調査。waiting_auth / waiting_manual_review の dominant prefix, 滞留時間, reopen パターンを evidence-only で1ページに。焼き直しなら止める。"},
+    {"id": "github-operator", "type": "exec", "status": "待機", "message": "待機。repo変更はしない。runbook/policy確定後のみ着手。"},
+    {"id": "ops-automator", "type": "exec", "status": "継続", "message": "継続。監視のみ。自動 drain はしない。reopen 率と滞留悪化だけ追う。"},
+    {"id": "doc-editor", "type": "exec", "status": "新規着手", "message": "新規着手。safe-close / reopen / escalate / owner / due / evidence を1ページに圧縮。"},
+    {"id": "dss-manager", "type": "exec", "status": "待機", "message": "待機。DSS固有の新規着手はしない。今回は backlog triage の運用結果待ち。"},
+    {"id": "opportunity-scout", "type": "exec", "status": "監視", "message": "監視。backlog churn を減らす新規論点だけ拾う。既存 stale-queue / ledger-bridge の焼き直しは除外。"}
+  ]
+}

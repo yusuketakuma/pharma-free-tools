@@ -1,0 +1,95 @@
+{
+  "proposal_id": "proposal-20260327-status-taxonomy-separate-reporting",
+  "created_at": "2026-03-27T04:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "agent-lesson-capture",
+    "agent-performance-optimization-review",
+    "agent-scorecard-review",
+    "agent-staffing-and-prompt-tuning",
+    "board / heartbeat runtime recent report"
+  ],
+  "title": "Split runtime reporting states into review, apply, live receipt, and freshness",
+  "summary": "Board / heartbeat runtime は内容論点と状態論点が混ざりやすいので、review-approved / apply-blocked / live-receipt / artifact-freshness を別状態として報告し、follow-up の誤読を減らす。",
+  "observations": [
+    "board-premeeting-brief-latest.md は、review-approved / apply-blocked / live-receipt / artifact freshness を別状態で報告することを候補に挙げている。",
+    "board-agenda-seed-latest.md でも、queue / boundary / reporting の同じ論点が反復しているため、状態の見せ方を分ける価値がある。",
+    "agent-lesson-capture-20260326-0615.md では completed / blocked / failed を分けて扱うべきだと学びが明示されている。",
+    "agent-performance-optimization-review-20260326-0715.md では、役割や境界を狭く定義する方が効くとされており、報告状態の taxonomy 化はその延長にある。",
+    "agent-staffing-and-prompt-tuning-board-20260326-0630.md でも、広い役割を細い役割に割る方がレバレッジが高いとされている。",
+    "既存の signal-only contract は別 proposal で扱われているため、今回は状態表現の分離に絞る。"
+  ],
+  "proposed_changes": [
+    "report template に review_status / apply_status / live_receipt_status / freshness_status を追加する。",
+    "cron / board wording では、waiting / blocked / approved / applied / stale を本文の結論から分離して表示する。",
+    "board / heartbeat の summary には、状態レーンの凡例を短く入れて、内容の良し悪しと実行状態を混同しないようにする。",
+    "この変更は docs / report templates / cron wording に限定し、authority / routing / trust boundary は触らない。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/board-runtime-status-taxonomy.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+    "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/board/agenda-seed-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+  ],
+  "evidence": [
+    "reports/board/board-premeeting-brief-latest.md: review-approved / apply-blocked / live-receipt / artifact freshness を別状態として報告する候補",
+    "reports/board/agenda-seed-latest.md: queue / boundary / reporting の論点が反復している",
+    "reports/cron/agent-lesson-capture-20260326-0615.md: completed / blocked / failed を分けて扱うべき",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md: lightweight roles are appropriate; boundary clarity matters",
+    "reports/cron/agent-scorecard-review-20260326-0600.md: steady-state は signal-only で十分"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run verification before moving to VERIFIED.",
+  "cycle_id": "proposal-20260327-status-taxonomy-separate-reporting",
+  "status": "APPLIED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T06:40:28+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-27T06:40:28+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-27T06:40:28+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "APPLIED",
+      "at": "2026-03-27T06:42:41+09:00",
+      "note": "assisted apply plan generated"
+    }
+  ],
+  "reviewed_at": "2026-03-27T06:40:28+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 06:27 JST で approve 候補。report templates / docs / cron wording に限定された低リスク変更で、状態 taxonomy の分離は reversible かつ authority / routing / trust boundary に触れないため approve.",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      "projects/openclaw-core/docs/anomaly-delta-monitor-contract.md",
+      "projects/openclaw-core/docs/board-runtime-status-taxonomy.md",
+      "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+      "reports/board/agenda-seed-latest.md",
+      "reports/board/board-premeeting-brief-latest.md",
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/agent-performance-optimization-review-20260326-0715.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-27T06:40:28+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-status-taxonomy-separate-reporting.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-status-taxonomy-separate-reporting.apply.json"
+}

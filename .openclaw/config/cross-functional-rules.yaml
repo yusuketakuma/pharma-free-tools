@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "rules": {
+    "docs": {
+      "if_outputs_any": ["doc", "copy", "plan", "design-spec", "research-note"],
+      "advisory_roles": ["content-creator"],
+      "mandatory_review_roles": ["brand-guardian"]
+    },
+    "ops": {
+      "if_paths_match_any": [".openclaw/config/**", ".openclaw/runtime/**", "infra/**", ".github/workflows/**"],
+      "advisory_roles": ["infrastructure-maintainer"],
+      "active_roles": ["devops-automator"],
+      "mandatory_review_roles": ["workflow-optimizer"]
+    },
+    "auth_or_policy": {
+      "if_text_any": ["auth", "authentication", "approval", "policy", "guardrail", "protected path"],
+      "if_paths_match_any": [".openclaw/config/**", "org/**"],
+      "mandatory_review_roles": ["legal-compliance-checker", "workflow-optimizer"]
+    },
+    "high_risk": {
+      "if_risk_levels_any": ["high", "critical"],
+      "advisory_roles": ["project-shipper"],
+      "active_roles": ["api-tester"],
+      "mandatory_review_roles": ["test-results-analyzer", "api-tester"]
+    },
+    "cross_department": {
+      "if_departments_count_at_least": 2,
+      "advisory_roles": ["project-shipper"],
+      "active_roles_when_complexity_at_least": "high",
+      "active_roles": ["experiment-tracker"]
+    },
+    "multi_output": {
+      "if_output_count_at_least": 3,
+      "advisory_roles": ["project-shipper"],
+      "active_roles_when_complexity_at_least": "medium",
+      "active_roles": ["experiment-tracker"]
+    },
+    "protected_paths": {
+      "if_paths_match_any": ["org/**", ".openclaw/config/**", ".openclaw/scripts/**"],
+      "mandatory_review_roles": ["workflow-optimizer"]
+    }
+  },
+  "limits": {
+    "max_active_subroles": 2,
+    "default_active_gate_complexities": ["high", "very_high"],
+    "prefer_advisory_before_active": true
+  }
+}

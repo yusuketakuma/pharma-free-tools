@@ -1,0 +1,7 @@
+{
+  "kind": "mock",
+  "mock_mode": "success",
+  "task_id": "step6-lane-readonly-fallback-85d2ca3e",
+  "dispatch_id": "dispatch-readonly-fallback",
+  "settings_path": "/Users/yusuke/.openclaw/workspace/.openclaw/tasks/step6-lane-readonly-fallback-85d2ca3e/claude-settings.json"
+}

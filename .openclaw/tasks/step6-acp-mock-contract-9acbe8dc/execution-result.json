@@ -1,0 +1,97 @@
+{
+  "task_id": "step6-acp-mock-contract-9acbe8dc",
+  "status": "success",
+  "executor": "claude-code",
+  "summary": {
+    "summary": "All 23 tests pass. The queue rebalance fixture is implemented: execute_task.py uses a chained fallback loop supporting multi-level lane fallback (ACP→CLI→cli_backend_safety_net), and mock_mode conversion is scoped per-lane. dispatch_task.py preserves the route decision and skips probe overrides for test snapshots.",
+    "changed_files": [
+      ".openclaw/scripts/execute_task.py",
+      ".openclaw/scripts/dispatch_task.py"
+    ],
+    "verification_results": [
+      "python3 -m unittest discover -s .openclaw/tests -p 'test_*.py' → 23 tests OK"
+    ],
+    "remaining_risks": [],
+    "route_decision_id": "route-acp-mock",
+    "route_preserved": true
+  },
+  "changed_files": [
+    ".openclaw/scripts/execute_task.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "verification_results": [
+    "python3 -m unittest discover -s .openclaw/tests -p 'test_*.py'"
+  ],
+  "remaining_risks": [],
+  "exit_code": 0,
+  "started_at": "2026-03-22T16:41:12+09:00",
+  "finished_at": "2026-03-22T16:54:38+09:00",
+  "dispatch_id": "dispatch-acp-mock",
+  "raw_response_path": ".openclaw/tasks/step6-acp-mock-contract-9acbe8dc/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-acp-mock-contract-9acbe8dc/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "transport_kind": "claude_print_json_compat",
+    "native_acp_available": false,
+    "session_id": "bffdde1f-43c0-4942-b2c5-ebc367b1c4e5",
+    "normalization_source": "result_json_fallback",
+    "fallback_used": true,
+    "retry_count": 0,
+    "raw_sha256": "7273cb253317d9523923820a07c6bb297251b3bc90a7506c7c7994c61cbfe86e",
+    "publishable": true,
+    "degraded_contract": "compatibility normalization filled missing structured output fields",
+    "modelUsage": {
+      "claude-sonnet-4-6": {
+        "inputTokens": 118,
+        "outputTokens": 33071,
+        "cacheReadInputTokens": 2778002,
+        "cacheCreationInputTokens": 111857,
+        "webSearchRequests": 0,
+        "costUSD": 1.7492833500000002,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000
+      }
+    },
+    "total_cost_usd": 1.7492833500000002,
+    "duration_ms": 797672,
+    "duration_api_ms": 627453,
+    "num_turns": 40,
+    "stop_reason": "end_turn",
+    "permission_denials": [],
+    "is_error": false,
+    "cli_version": "2.1.81",
+    "init": {
+      "session_id": "bffdde1f-43c0-4942-b2c5-ebc367b1c4e5",
+      "model": "claude-sonnet-4-6",
+      "permissionMode": "bypassPermissions",
+      "tools": [
+        "Task",
+        "TaskOutput",
+        "Bash",
+        "Glob",
+        "Grep",
+        "ExitPlanMode",
+        "Read",
+        "Edit",
+        "Write",
+        "NotebookEdit",
+        "WebFetch",
+        "TodoWrite",
+        "WebSearch",
+        "TaskStop",
+        "AskUserQuestion",
+        "Skill",
+        "EnterPlanMode",
+        "EnterWorktree",
+        "ExitWorktree",
+        "CronCreate",
+        "CronDelete",
+        "CronList",
+        "ToolSearch",
+        "mcp__plugin_context7_context7__resolve-library-id",
+        "mcp__plugin_context7_context7__query-docs"
+      ],
+      "claude_code_version": "2.1.81"
+    }
+  }
+}

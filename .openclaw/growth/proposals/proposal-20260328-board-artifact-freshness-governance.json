@@ -1,0 +1,119 @@
+{
+  "proposal_id": "proposal-20260328-board-artifact-freshness-governance",
+  "created_at": "2026-03-28T23:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "summary": "Board系アーティファクトの鮮度管理を強化し、定期報告とBoard会議に必要な最新データ保証体制を構築する。特にpremeeting-briefの遅延がBoardサイクル効率を低下させている根本原因を解消する。",
+  "observations": [
+    "dashboard-latest.mdの定期報告入口で、board-premeeting-brief-latestが古い状態が検知された",
+    "board-agenda-assemblyなどのクローンジョブとboard系アーティファクトの更新タイミングが乖離している",
+    "board会議の準備に必要なデータが最新でないため、会議効率が低下している",
+    "heartbeat governance実装後のartifact fresness監視メカニズムが未整備",
+    "board artifactsの更新手動依存度が高く、自律運用体制が不十分"
+  ],
+  "proposed_changes": [
+    "Board系アーティファクトの鮮度監視と自動更新メカニズムの実装",
+    "board-agenda-assemblyなどのクローンジョブとアーティファクト更新のタイミング同期",
+    "premeeting-bresh freshnessをBoard会議の条件付き開始要件に組み込む",
+    "board系artifactの更新失敗時のエスカレーションパターンを明確化",
+    "定期報告ダッシュボードのartifact鮮度表示を改善し、劣化状態を明示的に可視化"
+  ],
+  "affected_paths": [
+    ".openclaw/templates/department-head-board-report.md",
+    ".openclaw/runbooks/board-agenda-assembly-runbook.md",
+    ".openclaw/schemas/board-artifact-freshness.schema.json",
+    ".openclaw/scripts/board_artifact_freshness_monitor.py",
+    ".openclaw/config/board-freshness-governance.json",
+    "reports/status/dashboard-latest.md"
+  ],
+  "evidence": [
+    "dashboard-latest.md 2026-03-28: board-premeeting-brief-latestが古い状態で⚠️古い（前回スロット）と表示",
+    "heartbeat governance implementation 2026-03-25: heartbeatをgoverned pipelineにしたが、artifact fresness監視は未実装",
+    "board-cycle-self-improvement-synthesis 2026-03-27: board系アーティファクトの自律運用が不足している",
+    "定期報告ダッシュボード: artifact鮮度判定がdegradedと判定されている"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Resolve blocked/manual paths before verification.",
+  "cycle_id": "proposal-20260328-board-artifact-freshness-governance",
+  "status": "APPROVED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-28T20:41:00+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-28T20:41:00+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-28T20:41:00+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-28T21:40:33+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-28T21:40:33+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-28T22:40:58+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-28T22:40:58+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-28T23:40:39+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-28T23:40:39+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T01:40:39+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T01:40:39+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T01:40:39+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Board裁定通り低リスク提案。docs/runbook/cron関連更新で可逆性が高く、protected path・auth・routing root・trust boundary非該当。board系アーティファクト鮮度管理はboard cycle安定性向上に直結。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/config/board-freshness-governance.json",
+      ".openclaw/runbooks/board-agenda-assembly-runbook.md",
+      ".openclaw/schemas/board-artifact-freshness.schema.json",
+      ".openclaw/scripts/board_artifact_freshness_monitor.py",
+      ".openclaw/templates/department-head-board-report.md",
+      "reports/status/dashboard-latest.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T01:40:39+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-board-artifact-freshness-governance.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260328-board-artifact-freshness-governance.apply.json"
+}

@@ -1,0 +1,36 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-approval",
+  "approval": {
+    "required": true,
+    "approved": true,
+    "approved_by": "tester",
+    "approved_at": "2026-03-22T13:01:00+09:00"
+  },
+  "approval_id": "approval-fixed",
+  "dispatch_id": "dispatch-approval",
+  "protected_paths": [
+    "org/policy.md"
+  ],
+  "message": "queue rebalanced: approval detected; ready to resume",
+  "task_id": "step6-approval-8c9d7b52",
+  "state": "READY_FOR_EXECUTION",
+  "updated_at": "2026-03-22T16:56:05+09:00",
+  "history": [
+    {
+      "state": "WAITING_APPROVAL",
+      "at": "2026-03-22T16:55:59+09:00",
+      "route_decision_id": "route-approval",
+      "dispatch_id": "dispatch-approval",
+      "message": "seeded WAITING_APPROVAL"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:56:05+09:00",
+      "route_decision_id": "route-approval",
+      "approval_id": "approval-fixed",
+      "dispatch_id": "dispatch-approval",
+      "message": "queue rebalanced: approval detected; ready to resume"
+    }
+  ]
+}

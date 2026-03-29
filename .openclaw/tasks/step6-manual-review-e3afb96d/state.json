@@ -1,0 +1,31 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-manual",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "approval_id": null,
+  "dispatch_id": "dispatch-manual",
+  "protected_paths": [],
+  "message": "queue rebalanced: manual review resolved; ready for publish",
+  "task_id": "step6-manual-review-e3afb96d",
+  "state": "REVIEWING",
+  "updated_at": "2026-03-22T16:44:03+09:00",
+  "history": [
+    {
+      "state": "WAITING_MANUAL_REVIEW",
+      "at": "2026-03-22T16:44:03+09:00",
+      "route_decision_id": "route-manual",
+      "dispatch_id": "dispatch-manual",
+      "message": "seeded WAITING_MANUAL_REVIEW"
+    },
+    {
+      "state": "REVIEWING",
+      "at": "2026-03-22T16:44:03+09:00",
+      "route_decision_id": "route-manual",
+      "dispatch_id": "dispatch-manual",
+      "message": "queue rebalanced: manual review resolved; ready for publish"
+    }
+  ]
+}

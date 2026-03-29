@@ -1,0 +1,30 @@
+{
+  "adapter": "openclaw-acp",
+  "lane": "acp",
+  "dispatch_id": "dispatch-readonly-fallback",
+  "dispatch_attempt_id": "dispatch-readonly-fallback_attempt_01",
+  "captured_at": "2026-03-22T16:19:26+09:00",
+  "request": {
+    "task_id": "step6-lane-readonly-fallback-bc8ebc0a",
+    "task_summary": "Review runtime behavior in read-only mode",
+    "target_paths": [
+      ".openclaw/scripts/dispatch_task.py"
+    ],
+    "task_type": "read_only"
+  },
+  "session": {
+    "mode": "mock",
+    "started": true
+  },
+  "result_preview": {
+    "status": "runtime_error",
+    "summary": "ACP session failed before execution started",
+    "meta": {
+      "lane": "acp",
+      "failure_stage": "session_start",
+      "partial_execution": false,
+      "side_effects_possible": false,
+      "publishable": false
+    }
+  }
+}

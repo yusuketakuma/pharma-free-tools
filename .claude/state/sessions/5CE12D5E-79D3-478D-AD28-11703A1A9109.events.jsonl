@@ -1,0 +1,7 @@
+{"type":"session.start","ts":"2026-03-22T07:31:12Z","state":"initialized","data":{"cc_session_id":"26a67184-f6a2-44c6-87e9-90266905e264"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-22T07:31:12Z","state":"initialized"}
+{"id":"event-000002","type":"session.resume","ts":"2026-03-22T07:31:20Z","state":"initialized"}
+{"id":"event-000003","type":"session.stop","ts":"2026-03-22T07:31:24Z","state":"stopped"}
+{"type":"session.resume","ts":"2026-03-22T07:31:36Z","state":"initialized","data":{"cc_session_id":"26a67184-f6a2-44c6-87e9-90266905e264","method":"mapping"}}
+{"id":"event-000001","type":"session.start","ts":"2026-03-22T07:31:36Z","state":"initialized"}
+{"id":"event-000002","type":"session.stop","ts":"2026-03-22T07:31:38Z","state":"stopped"}

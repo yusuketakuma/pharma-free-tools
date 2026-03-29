@@ -1,0 +1,18 @@
+{
+  "review_id": "phase4-step4-blocked-proposal-review",
+  "proposal_id": "phase4-step4-blocked-proposal",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/phase4-step4-blocked-proposal.json",
+  "reviewed_at": "2026-03-22T13:01:58+09:00",
+  "decision": "approve",
+  "reviewer": "smoke",
+  "reason": "smoke approve blocked",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    ".openclaw/config/approval-policy.yaml",
+    "org/organization.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

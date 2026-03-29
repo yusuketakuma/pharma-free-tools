@@ -1,0 +1,53 @@
+version: 3
+owner: openclaw
+source_of_truth: .openclaw/README.md
+manual_approval_fixed_for_guardrails: true
+architecture:
+  control_plane: openclaw
+  execution_plane: claude_code
+  primary_lane: acp
+  secondary_lane: cli
+  backend_safety_net: cli
+routing:
+  default_executor: openclaw
+  heavy_executor: claude_code
+  direct_openclaw_tasks:
+    - read_only_research
+    - small_doc_edit
+    - low_risk_single_file_change
+    - status_update
+  delegate_to_claude_code_when:
+    - multi_file_change
+    - implementation
+    - refactor
+    - code_generation
+    - verification_required
+  prefer_acp_for:
+    - heavy_code
+    - multi_file_write
+    - verification_heavy
+  use_cli_secondary_when:
+    - acp_unhealthy
+    - acp_unavailable
+    - backend_diagnosis_required
+  manual_approval_always_for:
+    - growth_loop_guardrail_changes
+    - org_source_of_truth_updates
+    - execution_policy_updates
+  decision_inputs:
+    - task_type
+    - affected_paths
+    - risk_level
+    - review_depth
+    - urgency
+    - context_size
+    - provider_capacity
+    - auth_health
+    - trust_boundary
+  output_fields:
+    - selected_executor
+    - selected_lane
+    - rationale
+    - risk_level
+    - approval_required
+    - required_context_sections

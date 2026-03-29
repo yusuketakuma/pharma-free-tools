@@ -1,0 +1,20 @@
+{
+  "task_id": "step6-capacity-0276cfcb",
+  "active": false,
+  "queue_reason": null,
+  "last_queue_reason": "waiting_capacity",
+  "state": "READY_FOR_EXECUTION",
+  "route": "claude-code",
+  "route_decision_id": "route-capacity",
+  "approval_id": null,
+  "dispatch_id": "dispatch-capacity",
+  "queued_at": "2026-03-22T16:53:24+09:00",
+  "released_at": "2026-03-22T16:53:26+09:00",
+  "last_rebalanced_at": "2026-03-22T16:53:26+09:00",
+  "resume_target_state": null,
+  "resume_eligible": false,
+  "resume_blockers": [],
+  "updated_at": "2026-03-22T16:53:26+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/step6-capacity-0276cfcb/queue-status.json"
+}

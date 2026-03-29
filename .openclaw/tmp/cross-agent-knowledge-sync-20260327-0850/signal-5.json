@@ -1,0 +1,37 @@
+{
+  "source": {
+    "type": "cron",
+    "name": "cross-agent-knowledge-sync"
+  },
+  "category": "suggestion",
+  "domain": "monitoring",
+  "summary": "cross-agent leverage is shifting from adding more agents to fixing reusable judgment packs and verification templates; recent growth and KPI work both point to template reuse over headcount expansion.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "pharma-free-tools-auditor and sidebiz-poc-designer are the strongest reuse targets",
+      "workspace improvement loop now emphasizes implementation confirmation",
+      "polymarket remains gated by compliance matrix / paper trading"
+    ],
+    "refs": [
+      "reports/cron/domain-specialization-growth-review-20260327-0700.md",
+      "reports/cron/project-kpi-registry-maintenance-20260327-0600.md",
+      "reports/cron/proactive-idle-work-discovery-20260327-0820.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "pharma-free-tools-auditor",
+      "sidebiz-poc-designer",
+      "polymarket-compliance-analyst"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": false
+}

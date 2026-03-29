@@ -1,0 +1,7 @@
+[openclaw-adapter] mode=cli
+[openclaw-adapter] bin=claude source=yaml
+[openclaw-adapter] model=sonnet
+[openclaw-adapter] permission_mode=bypassPermissions
+[openclaw-adapter] allowed_tools=<default>
+[openclaw-adapter] fallback_allow=True root_json=True fenced_json=True free_text_json=False cold_start_retry=1
+[openclaw-adapter] task=Check runtime logs in read-only mode

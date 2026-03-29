@@ -1,0 +1,86 @@
+{
+  "proposal_id": "proposal-2026-03-29-agent-performance-learning-loop-automation",
+  "created_at": "2026-03-29T07:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "agent-lesson-capture",
+    "agent-performance-optimization-review",
+    "autonomy-loop-health-review"
+  ],
+  "title": "Agent Performance Learning Loop Automation",
+  "summary": "エージェントのパフォーマンス学習を自動化し、agent-lesson-capture の問題点を解決する。エージェントの失敗・成功パターンを自動収集し、学習ループを構築する提案。",
+  "observations": [
+    "agent-lesson-capture が単発の manual アプローチで、継続的な改善が進んでいない",
+    "成功した agent の実行例が再利用されておらず、次回の実行に活かされていない",
+    "同じタイプの失敗が複数サイクルで繰り返されているのに、システム化された学習が不足",
+    "学習プロセスが manual review に依存しており、scalability に課題がある"
+  ],
+  "proposed_changes": [
+    "実行ログの自動分析と学習トリガーの自動検出",
+    "成功/失敗パターンの自動識別と学習候補の自動生成",
+    "継続的改善ループの自動化と学習結果の自動保存",
+    "学習ガバナンスフレームワークとパフォーマンス予測モデルの開発"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/agent-performance-learning-loop.md",
+    ".openclaw/growth/config/learning-automation-metrics.json",
+    ".openclaw/growth/prompts/automated-learning-capture.md",
+    ".openclaw/growth/cron-wording/performance-learning-sync.md",
+    ".openclaw/runtime/learning/",
+    ".openclaw/runtime/metrics/performance-learning.json",
+    ".openclaw/governance/learning-quality-standards.md"
+  ],
+  "evidence": [
+    "agent-lesson-capture: 単発の manual 学習プロセス",
+    "agent-performance-learning-synthesis-2026-03-28.md: パフォーマンス評価のギャップ",
+    "agent-efficiency-optimization: 空回り状態の検知課題",
+    "autonomy-loop-health-review: 持続的な改善の必要性"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run apply_growth_proposal.py to generate an apply plan and ledger update.",
+  "cycle_id": "proposal-2026-03-29-agent-performance-learning-loop-automation",
+  "status": "APPROVED",
+  "priority": "high",
+  "risk_level": "low",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T09:41:37+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T09:41:37+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T09:41:37+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T09:41:37+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Agent performance learning loop automation enables continuous improvement through automated monitoring and optimization. Low risk, reversible changes focused on system monitoring and performance tracking.",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/governance/learning-quality-standards.md",
+      ".openclaw/growth/config/learning-automation-metrics.json",
+      ".openclaw/growth/cron-wording/performance-learning-sync.md",
+      ".openclaw/growth/prompts/automated-learning-capture.md",
+      ".openclaw/growth/runbooks/agent-performance-learning-loop.md",
+      ".openclaw/runtime/learning/",
+      ".openclaw/runtime/metrics/performance-learning.json"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T09:41:37+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-2026-03-29-agent-performance-learning-loop-automation.review.json"
+}

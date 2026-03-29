@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RouteDecision",
+  "type": "object",
+  "required": [
+    "task_id",
+    "decision",
+    "score",
+    "reasons",
+    "approval_required",
+    "protected_paths"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "route_decision_id": {"type": "string"},
+    "decision": {"type": "string", "enum": ["openclaw", "claude-code"]},
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "approval_required": {"type": "boolean"},
+    "protected_paths": {"type": "array", "items": {"type": "string"}},
+    "affected_paths": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

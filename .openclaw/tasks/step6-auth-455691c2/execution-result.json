@@ -1,0 +1,29 @@
+{
+  "task_id": "step6-auth-455691c2",
+  "status": "success",
+  "executor": "claude-code",
+  "summary": "ACP adapter completed successfully",
+  "changed_files": [
+    ".openclaw/scripts/execute_task.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "verification_results": [
+    "python3 -m unittest discover -s .openclaw/tests -p 'test_*.py'"
+  ],
+  "remaining_risks": [
+    "ACP adapter is running in contract-preserving mock mode"
+  ],
+  "exit_code": 0,
+  "started_at": "2026-03-22T16:19:26+09:00",
+  "finished_at": "2026-03-22T16:19:26+09:00",
+  "dispatch_id": "dispatch-auth",
+  "raw_response_path": ".openclaw/tasks/step6-auth-455691c2/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-auth-455691c2/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "session_mode": "mock",
+    "partial_execution": false,
+    "side_effects_possible": false,
+    "publishable": true
+  }
+}

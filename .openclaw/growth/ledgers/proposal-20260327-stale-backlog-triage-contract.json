@@ -1,0 +1,49 @@
+{
+  "cycle_id": "proposal-20260327-stale-backlog-triage-contract",
+  "created_at": "2026-03-27T04:27:00+09:00",
+  "updated_at": "2026-03-27T06:42:41+09:00",
+  "proposal_id": "proposal-20260327-stale-backlog-triage-contract",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-stale-backlog-triage-contract.json",
+  "proposal_status": "APPLIED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-stale-backlog-triage-contract.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 06:27 JST で approve 候補。docs/runbook/cron wording に限定された低リスク変更で、stale backlog triage の contract 化は reversible かつ protected path / auth / routing root / trust boundary に触れないため approve.",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-27T06:40:25+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-27T06:40:25+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-stale-backlog-triage-contract.review.json"
+    },
+    {
+      "at": "2026-03-27T06:42:41+09:00",
+      "type": "apply",
+      "status": "applied",
+      "proposal_status": "APPLIED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-stale-backlog-triage-contract.apply.json"
+    }
+  ],
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-stale-backlog-triage-contract.apply.json",
+  "last_apply": {
+    "status": "applied",
+    "apply_mode": "assisted",
+    "applied_paths": [
+      "projects/openclaw-core/docs/backlog-triage-runbook.md",
+      "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+      "projects/openclaw-core/docs/stale-backlog-policy.md"
+    ],
+    "blocked_paths": [],
+    "manual_paths": [
+      "reports/board/board-premeeting-brief-latest.md",
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md"
+    ],
+    "applied_at": "2026-03-27T06:42:41+09:00"
+  }
+}

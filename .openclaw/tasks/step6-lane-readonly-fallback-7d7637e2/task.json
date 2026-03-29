@@ -1,0 +1,18 @@
+{
+  "task_id": "step6-lane-readonly-fallback-7d7637e2",
+  "task": "Review runtime behavior in read-only mode",
+  "requested_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ],
+  "constraints": [
+    "read-only"
+  ],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "requested_actions": [],
+  "requested_route": "claude-code",
+  "mock_mode": "acp_pre_session_failure",
+  "created_at": "2026-03-22T16:48:45+09:00"
+}

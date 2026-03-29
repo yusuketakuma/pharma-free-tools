@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "execution_model": {
+    "control_plane": "openclaw",
+    "execution_plane": "claude_code",
+    "primary_lane": "acp",
+    "secondary_lane": "cli",
+    "backend_safety_net": "cli"
+  },
+  "providers": {
+    "openclaw": {
+      "executor": "openclaw",
+      "strengths": ["planning", "lightweight_execution", "single_file_low_risk", "docs", "durable_state", "policy_enforcement"],
+      "avoid_for": ["heavy_multi_file_write_when_pressured"],
+      "degraded_success_auto_publish": true
+    },
+    "claude_code": {
+      "executor": "claude-code",
+      "strengths": ["heavy_code", "multi_file_write", "verification", "coding_specialists", "transient_execution"],
+      "requires_auth": true,
+      "preferred_lanes": ["acp", "cli"],
+      "avoid_for": ["auth_failed", "hard_pressure_multi_file_write", "mixed_trust_on_single_gateway"],
+      "degraded_success_auto_publish": false
+    },
+    "split": {
+      "executor": "hybrid",
+      "strengths": ["lead_subrole_split", "plan_then_execute", "openclaw_control_plus_claude_execution"],
+      "degraded_success_auto_publish": false
+    }
+  }
+}

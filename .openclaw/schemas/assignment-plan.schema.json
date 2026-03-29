@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AssignmentPlan",
+  "type": "object",
+  "required": [
+    "task_id",
+    "lead_role",
+    "advisory_subroles",
+    "active_subroles",
+    "mandatory_review_roles",
+    "required_capabilities",
+    "departments_involved",
+    "reasons"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "lead_role": {"type": "string"},
+    "advisory_subroles": {"type": "array", "items": {"type": "string"}},
+    "active_subroles": {"type": "array", "items": {"type": "string"}},
+    "mandatory_review_roles": {"type": "array", "items": {"type": "string"}},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}},
+    "departments_involved": {"type": "array", "items": {"type": "string"}},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "lead_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "risk_level": {"type": "string"},
+    "complexity": {"type": "string"},
+    "desired_outputs": {"type": "array", "items": {"type": "string"}},
+    "protected_paths": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

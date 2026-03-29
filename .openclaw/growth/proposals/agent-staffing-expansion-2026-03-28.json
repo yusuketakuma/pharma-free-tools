@@ -1,0 +1,32 @@
+{
+  "proposal_id": "agent-staffing-expansion-2026-03-28",
+  "summary": "エージェントスタッフィング拡張とプロンプチューニングの最適化",
+  "observations": [
+    "業務量増加に対応するため追加エージェントが必要",
+    "プロンプトチューニングの効果測定が不十分",
+    "既存エージェントの専門性を最大限活用できていない",
+    "workforce expansionのROIが不明確",
+    "スタッフィングとプロンプチューニングの連携が弱い"
+  ],
+  "proposed_changes": [
+    "専門エージェントの定義と役割分担を明確化",
+    "プロンプトチューニングのA/Bテストフレームワーク構築",
+    "エージェントのキャパシティと専門性マッピング",
+    "スタッフィング決定データドリブン化",
+    "エージェント間の知識共有と学習メカニズム強化"
+  ],
+  "affected_paths": [
+    ".openclaw/agents/",
+    ".openclaw/growth/staffing/",
+    ".openclaw/prompts/",
+    ".openclaw/docs/"
+  ],
+  "evidence": [
+    "agent-staffing-and-prompt-tuning: プロンプト変更の効果が統計的に不確実",
+    "agent-workforce-expansion-review: 現有エージェントの稼働率85%",
+    "agent-lesson-capture: 知識共有の非効率性が認められる",
+    "board report: 業務処理能力の限界が確認"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "専門エージェントの要件定義とプロンプチューニング計画を作成、パイロット実施"
+}

@@ -1,0 +1,63 @@
+{
+  "message": "execution succeeded; entering review",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "step6-lane-readonly-fallback-16955f99",
+  "state": "REVIEWING",
+  "updated_at": "2026-03-22T17:23:22+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T17:23:21+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T17:23:21+09:00",
+      "route_decision_id": "route-89af9f1f5648",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "route decision stored"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T17:23:21+09:00",
+      "route_decision_id": "route-89af9f1f5648",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "execution request saved lane=acp attempt=dispatch-readonly-fallback_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T17:23:21+09:00",
+      "route_decision_id": "route-89af9f1f5648",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "executor started lane=acp attempt=dispatch-readonly-fallback_attempt_01"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T17:23:21+09:00",
+      "route_decision_id": "route-89af9f1f5648",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "execution request saved lane=cli attempt=dispatch-readonly-fallback_attempt_02"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T17:23:21+09:00",
+      "route_decision_id": "route-89af9f1f5648",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "executor started lane=cli attempt=dispatch-readonly-fallback_attempt_02"
+    },
+    {
+      "state": "REVIEWING",
+      "at": "2026-03-22T17:23:22+09:00",
+      "route_decision_id": "route-89af9f1f5648",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "execution succeeded; entering review"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-89af9f1f5648",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-readonly-fallback"
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "test-auth-218c0563",
+  "task": "test",
+  "requested_paths": [],
+  "constraints": [],
+  "verification_commands": [],
+  "review_focus": [],
+  "requested_actions": [],
+  "requested_route": "claude-code"
+}

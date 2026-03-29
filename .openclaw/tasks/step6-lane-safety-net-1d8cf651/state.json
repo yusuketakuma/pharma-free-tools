@@ -1,0 +1,63 @@
+{
+  "message": "execution succeeded; entering review",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "step6-lane-safety-net-1d8cf651",
+  "state": "REVIEWING",
+  "updated_at": "2026-03-22T16:47:07+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:47:04+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:47:04+09:00",
+      "route_decision_id": "route-cfc70e29160f",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "route decision stored"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:47:04+09:00",
+      "route_decision_id": "route-cfc70e29160f",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "execution request saved lane=cli attempt=dispatch-safety-net_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:47:04+09:00",
+      "route_decision_id": "route-cfc70e29160f",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "executor started lane=cli attempt=dispatch-safety-net_attempt_01"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T16:47:05+09:00",
+      "route_decision_id": "route-cfc70e29160f",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "execution request saved lane=cli_backend_safety_net attempt=dispatch-safety-net_attempt_02"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T16:47:05+09:00",
+      "route_decision_id": "route-cfc70e29160f",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "executor started lane=cli_backend_safety_net attempt=dispatch-safety-net_attempt_02"
+    },
+    {
+      "state": "REVIEWING",
+      "at": "2026-03-22T16:47:07+09:00",
+      "route_decision_id": "route-cfc70e29160f",
+      "dispatch_id": "dispatch-safety-net",
+      "message": "execution succeeded; entering review"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-cfc70e29160f",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-safety-net"
+}

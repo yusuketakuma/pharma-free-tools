@@ -1,0 +1,78 @@
+{
+  "task_id": "step6-lane-capacity-ae4589bd",
+  "dispatch_id": "dispatch-5b3cafdcefad",
+  "execution_mode": "queued",
+  "selected_provider": "claude_code",
+  "selected_executor": "claude-code",
+  "assignment_contract": {
+    "lead_role": "engineering",
+    "advisory_subroles": [],
+    "active_subroles": [],
+    "mandatory_review_roles": []
+  },
+  "provider_assignments": {
+    "lead": {
+      "role": "engineering",
+      "provider": "plan_only",
+      "executor": "deferred"
+    },
+    "subroles": []
+  },
+  "scores": {
+    "capability_fit": 1.0,
+    "provider_preference_fit": 0.7,
+    "historical_success": 0.82,
+    "latency_fit": 0.7,
+    "limit_pressure": 0.1,
+    "cost_pressure": 0.1,
+    "queue_penalty": 0.2,
+    "risk_penalty": 0.05,
+    "total": 2.77
+  },
+  "reasons": [
+    "requested_route=claude-code を尊重"
+  ],
+  "capacity_snapshot_ref": ".openclaw/tasks/step6-lane-capacity-ae4589bd/capacity-snapshot.json",
+  "publish_policy": {
+    "auto_publish_allowed": true,
+    "block_on_degraded_success": false,
+    "protected_paths": []
+  },
+  "captured_at": "2026-03-22T13:02:00+09:00",
+  "auth_blocked": false,
+  "pre_auth_openclaw_phase": false,
+  "primary_mode": "acp",
+  "selected_lane": "none",
+  "selection_reasons": [
+    "primary_mode=acp",
+    "skip acp because acp_healthy=false",
+    "skip cli because cli_healthy=false",
+    "skip cli_backend_safety_net because cli_backend_healthy=false",
+    "no Claude lane healthy"
+  ],
+  "fallback_chain": [
+    "acp",
+    "cli",
+    "cli_backend_safety_net"
+  ],
+  "lane_health_snapshot": {
+    "auth_ok": true,
+    "acp_healthy": false,
+    "cli_healthy": false,
+    "cli_backend_healthy": false,
+    "acp_last_success_at": "2026-03-22T16:51:48+09:00",
+    "cli_last_success_at": "2026-03-22T16:51:48+09:00",
+    "acp_consecutive_failures": 1,
+    "cli_consecutive_failures": 0,
+    "retry_after_sec": 0.0,
+    "hard_blocked": false,
+    "probe_fresh": true,
+    "probe_path": ".openclaw/runtime/health/lane-health.json",
+    "lane_last_error": {},
+    "lane_latency_ms": {},
+    "lane_transport": {},
+    "captured_at": "2026-03-22T16:41:02+09:00"
+  },
+  "task_type": "write",
+  "queue_reason": "waiting_capacity"
+}

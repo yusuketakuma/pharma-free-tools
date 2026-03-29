@@ -1,0 +1,75 @@
+{
+  "version": 2,
+  "projectId": "careviax-pharmacy",
+  "controlPlane": "OpenClaw",
+  "executionPlane": "Claude Code",
+
+  "transport": {
+    "primary": "acp",
+    "secondary": "cli-headless",
+    "fallback": "cli-backend"
+  },
+
+  "prompt": {
+    "mode": "append",
+    "safetyViaPrompt": false,
+    "safetyVia": ["hooks", "permissions", "allow-deny", "protected-paths"]
+  },
+
+  "schema": {
+    "executionRequest": "../../schemas/execution-request.json",
+    "executionResult": "../../schemas/execution-result.json"
+  },
+
+  "agents": {
+    "codingOnly": true,
+    "active": [
+      "backend-architect",
+      "frontend-developer",
+      "qa-tester",
+      "devops-automator",
+      "docs-integrator"
+    ],
+    "maxConcurrent": 3,
+    "neverAlwaysOn": ["product-manager", "designer", "ops-manager"]
+  },
+
+  "permissions": {
+    "allow": [
+      "file-read",
+      "file-write",
+      "shell:git status",
+      "shell:git diff *",
+      "shell:git log *"
+    ],
+    "deny": [
+      "shell:git push *",
+      "shell:git reset --hard *",
+      "shell:rm -rf *"
+    ],
+    "approvalRequired": [
+      "file-write:../../config/*",
+      "file-write:../../schemas/*",
+      "file-write:../../org/*"
+    ]
+  },
+
+  "hooks": {
+    "preExecution": {
+      "validateSchema": true,
+      "checkApproval": true,
+      "checkCapacity": true
+    },
+    "postExecution": {
+      "validateResultSchema": true,
+      "storeOutput": true,
+      "reportMetrics": true
+    }
+  },
+
+  "auth": {
+    "preferred": "api_key",
+    "setupTokenAs": "compatibility",
+    "failClosed": true
+  }
+}

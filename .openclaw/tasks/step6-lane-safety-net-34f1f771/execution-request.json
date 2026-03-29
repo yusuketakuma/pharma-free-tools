@@ -1,0 +1,35 @@
+{
+  "task_id": "step6-lane-safety-net-34f1f771",
+  "request_version": 2,
+  "executor": "claude-code",
+  "execution_mode": "cli",
+  "task_summary": "Check runtime logs in read-only mode",
+  "constraints": [
+    "read-only"
+  ],
+  "target_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "approval": {
+    "required": false,
+    "protected_paths": []
+  },
+  "route_decision_id": "route-fe1d0298b3db",
+  "dispatch_id": "dispatch-safety-net",
+  "context_pack_path": ".openclaw/tasks/step6-lane-safety-net-34f1f771/context-pack.md",
+  "rendered_prompt_path": ".openclaw/tasks/step6-lane-safety-net-34f1f771/rendered-prompt.txt",
+  "raw_response_path": ".openclaw/tasks/step6-lane-safety-net-34f1f771/claude-raw.json",
+  "auth_artifacts": {
+    "auth_status_path": ".openclaw/tasks/step6-lane-safety-net-34f1f771/auth-status.json",
+    "auth_log_path": ".openclaw/tasks/step6-lane-safety-net-34f1f771/auth-preflight.log"
+  },
+  "mock_mode": "success",
+  "started_at": "2026-03-22T16:52:20+09:00",
+  "dispatch_attempt_id": "dispatch-safety-net_attempt_01",
+  "selected_lane": "cli",
+  "task_type": "read_only"
+}

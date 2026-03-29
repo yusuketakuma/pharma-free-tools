@@ -1,0 +1,25 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "lesson",
+  "domain": "reporting",
+  "summary": "review / apply / live receipt / artifact freshness separation is now reflected downstream, but the same proposal set still sits in pending_artifact until manual_paths are closed.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "review / apply / live receipt / freshness are separated in the report taxonomy",
+      "pending_artifact remains the dominant verification state",
+      "manual_paths still remain for multiple low-risk proposals"
+    ],
+    "refs": [
+      "reports/growth/self-improvement-verification-latest.md",
+      "reports/board/board-premeeting-brief-20260327-0635.md",
+      "reports/cron/board-postmeeting-agent-dispatch-20260327-1435.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["board-operator", "board-auditor", "doc-editor"],
+    "repos": ["openclaw-core"],
+    "layers": ["board", "execution"]
+  },
+  "candidate_hint": false
+}

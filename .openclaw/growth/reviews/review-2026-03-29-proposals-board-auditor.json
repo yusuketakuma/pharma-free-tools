@@ -1,0 +1,75 @@
+{
+  "review_id": "review-2026-03-29-proposals-board-auditor",
+  "reviewed_at": "2026-03-29T20:40:00+09:00",
+  "reviewer": "board-auditor",
+  "review_type": "board-proposal-review",
+  "reviewed_proposals": [
+    {
+      "proposal_id": "proposal-20260325195135-39790e8f7053",
+      "title": "Promote anomaly-delta monitor contract across heartbeat, board, and scorecard prompts",
+      "decision": "approve",
+      "apply_mode": "assisted",
+      "summary": "Routine heartbeat and scorecard output is still drifting toward narrative review; the stable pattern is signal_only for routine runs and agenda_candidate only for anomalies, deltas, and precedent gaps.",
+      "proposed_changes要点": [
+        "Standardize anomaly-delta monitor prompts so routine runs emit signal_only",
+        "Only anomalies become agenda candidates",
+        "Reduce routine governance noise, keep Board rare"
+      ],
+      "affected_paths要点": [
+        "Heartbeat prompts",
+        "Board prompts", 
+        "Scorecard prompts",
+        "Monitoring policy"
+      ],
+      "reason": "Low-risk docs/reporting policy change, no impact on protected paths or trust boundaries. Reversible with clear rollback path. Reduces board noise without affecting runtime behavior.",
+      "risk_assessment": {
+        "boundary_impact": "low",
+        "blast_radius": "low",
+        "reversibility": "high",
+        "novelty": "medium"
+      }
+    },
+    {
+      "proposal_id": "proposal-20260329005000-notification-policy-cron-mismatch",
+      "title": "Enforce user notification policy on cron jobs — token-management and completion-checker still set to delivery.mode announce",
+      "decision": "approve", 
+      "apply_mode": "assisted",
+      "summary": "User explicitly instructed (v6 policy) that token management notifications should be OFF except mode switches. However, 3 cron jobs remain configured with delivery.mode: 'announce', sending unwanted Telegram notifications.",
+      "proposed_changes要点": [
+        "Set delivery.mode to 'none' on token-management-snapshot",
+        "Set delivery.mode to 'none' on token-management-evaluation",
+        "Set delivery.mode to 'none' on claude-code-completion-checker"
+      ],
+      "affected_paths要点": [
+        "Cron job configuration",
+        "Notification policy enforcement",
+        "Token management system"
+      ],
+      "reason": "Low-risk policy enforcement, user preference alignment. No impact on core functionality. Reversible with simple config rollback. Eliminates unwanted notification spam.",
+      "risk_assessment": {
+        "boundary_impact": "none",
+        "blast_radius": "none", 
+        "reversibility": "high",
+        "novelty": "low"
+      }
+    }
+  ],
+  "review_conclusion": "Board裁定に基づき、2件の低リスク提案を承認。docs/reporting/policy変更でprotected pathやtrust boundaryに影響せず、rollback可能。",
+  "decision_summary": {
+    "total_reviewed": 2,
+    "approved": 2,
+    "revised": 0,
+    "rejected": 0
+  },
+  "apply_mode_distribution": {
+    "assisted": 2,
+    "manual": 0
+  },
+  "review_artifact_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/review-2026-03-29-proposals-board-auditor.json",
+  "next_actions": [
+    "Apply approved changes in assisted mode",
+    "Monitor for any unexpected side effects",
+    "Document rollback procedures for both changes"
+  ],
+  "governance_notes": "Review performed per Board rules - approve low-risk docs/reporting/policy changes with assisted apply mode. Both proposals avoid protected paths, auth changes, or trust boundary modifications."
+}

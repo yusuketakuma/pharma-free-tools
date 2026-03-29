@@ -1,0 +1,64 @@
+{
+  "apply_id": "2026-03-29-user-reporting-enhancement-apply",
+  "proposal_id": "2026-03-29-user-reporting-enhancement",
+  "applied_at": "2026-03-29T07:42:36+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/approved/2026-03-29-user-reporting-enhancement.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-29-user-reporting-enhancement.review.json",
+  "apply_mode": "assisted",
+  "status": "manual_required",
+  "requested_paths": [
+    "AGENTS.md",
+    "OpenClaw reporting workflows",
+    "SOUL.md",
+    "Status monitoring infrastructure",
+    "Task execution systems",
+    "User communication protocols"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [],
+  "manual_paths": [
+    "AGENTS.md",
+    "OpenClaw reporting workflows",
+    "SOUL.md",
+    "Status monitoring infrastructure",
+    "Task execution systems",
+    "User communication protocols"
+  ],
+  "apply_plan": [
+    {
+      "path": "AGENTS.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "OpenClaw reporting workflows",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "SOUL.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "Status monitoring infrastructure",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "Task execution systems",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "User communication protocols",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

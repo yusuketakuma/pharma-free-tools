@@ -1,0 +1,15 @@
+{
+  "task_id": "step6-lane-write-blocked-52c52f18",
+  "route_decision_id": "route-b5c6e5eb09a4",
+  "decision": "claude-code",
+  "score": 0.85,
+  "reasons": [
+    "task appears multi-step or implementation-heavy",
+    "requested_route=claude-code"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ]
+}

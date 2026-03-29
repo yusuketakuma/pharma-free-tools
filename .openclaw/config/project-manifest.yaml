@@ -1,0 +1,42 @@
+version: 3
+project:
+  name: openclaw-workspace
+  execution_system_root: .openclaw
+portfolio_projects:
+  - projects/openclaw-core
+  - projects/careviax-pharmacy
+  - projects/deadstocksolution
+docs_source_of_truth:
+  - .openclaw/README.md
+  - .openclaw/shared/trust-boundary-auth-policy.md
+  - CURRENT_STATUS.md
+  - org/organization.md
+  - org/operating-model.md
+primary_interfaces:
+  - openclaw
+  - claude_code_adapter
+  - claude_code_acp
+status_files:
+  - CURRENT_STATUS.md
+  - projects/openclaw-core/docs/status.md
+  - projects/careviax-pharmacy/docs/status.md
+  - projects/deadstocksolution/docs/status.md
+project_registry:
+  - project_id: openclaw-core
+    root_path: projects/openclaw-core
+    project_file: projects/openclaw-core/project.yaml
+    status_file: projects/openclaw-core/docs/status.md
+    claude_dir: projects/openclaw-core/.claude
+    claude_rules_file: projects/openclaw-core/CLAUDE.md
+  - project_id: careviax-pharmacy
+    root_path: projects/careviax-pharmacy
+    project_file: projects/careviax-pharmacy/project.yaml
+    status_file: projects/careviax-pharmacy/docs/status.md
+    claude_dir: projects/careviax-pharmacy/.claude
+    claude_rules_file: projects/careviax-pharmacy/CLAUDE.md
+  - project_id: deadstocksolution
+    root_path: projects/deadstocksolution
+    project_file: projects/deadstocksolution/project.yaml
+    status_file: projects/deadstocksolution/docs/status.md
+    claude_dir: projects/deadstocksolution/.claude
+    claude_rules_file: projects/deadstocksolution/CLAUDE.md

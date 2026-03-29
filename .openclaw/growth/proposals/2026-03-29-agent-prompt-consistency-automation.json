@@ -1,0 +1,39 @@
+{
+  "proposal_id": "agent-prompt-consistency-automation-2026-03-29",
+  "summary": "agent prompt 一貫性の問題を根本解決するため、**プロンプト変更の自動検知・一貫性チェック・ガバナンスフレームワーク**を提案。抽象的なプロンプト変更がシステム全体に波及する問題を防止し、安全な連携を実現する。",
+  "observations": [
+    "反復している失敗パターン: 抽象的なidentity問題、役割境界の曖昧さ、triggering conditionの不明確さ、cascade効果の無視",
+    "何度も説明している運用ルール: control plane vs execution plane、安全保護ルール、agent間連携の原則",
+    "何度も修正しているwording問題: 具体性の欠如、trigger conditionの文言、success criteriaの不明確さ"
+  ],
+  "proposed_changes": [
+    "プロンプト変更の自動検知・バリデーションシステム: 変更前自動チェック、一貫性スキャン、cascade効果シミュレーション、自動化テスト",
+    "役割境界明確化フレームワーク: boundary definition schema、decision tree、role clarity check、intersection mapping",
+    "安全保護の自動ガードレール: protected path auto-detection、safety validation、approval workflow、rollback mechanism",
+    "プロンプトテンプレート標準化: standardized prompt components、version control、impact documentation、performance correlation"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/prompt-consistency-automation.md",
+    ".openclaw/growth/config/prompt-boundary-decision-tree.json",
+    ".openclaw/growth/prompts/standardized-components/",
+    ".openclaw/growth/cron-wording/prompt-change-governance.md",
+    ".openclaw/workspace/.openclaw/runtime/prompt-validation/",
+    ".openclaw/governance/agent-role-mapping.json",
+    ".openclaw/growth/prompts/safety-guardrails.md"
+  ],
+  "evidence": [
+    "autonomous-development-hq-fix-2026-03-28.md: identitythemeが抽象的すぎる問題の修正例",
+    "agent-prompt-unification-framework-2026-03-29.md: agent間一貫性の問題",
+    "agent-performance-learning-synthesis-2026-03-28.md: パフォーマンス評価のギャップ",
+    "supervisor-governance-review-report.md: ガバナンスレビューの重要性",
+    "ワークスペース全体のagent設定ファイル: 多数のagentにまたがる一貫性問題"
+  ],
+  "requires_manual_approval": false,
+  "next_step": [
+    "プロンプト変更検知・バリデーションシステムの設計",
+    "役割境界decision treeの実装",
+    "保護パスauto-detectionのprototype開発",
+    "標準化プロンプトコンポーネントのライブラリ作成",
+    "自動化テストフレームワークの実装"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "cycle_id": "proposal-20260327-narrow-role-prompt-templates",
+  "created_at": "2026-03-27T06:30:00+09:00",
+  "updated_at": "2026-03-27T10:42:40+09:00",
+  "proposal_id": "proposal-20260327-narrow-role-prompt-templates",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260327-narrow-role-prompt-templates.json",
+  "proposal_status": "APPLIED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-narrow-role-prompt-templates.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 synthesis selected this as an approve candidate. Low-risk docs/prompts/runbook wording only: the change narrows lightweight operator prompt templates, keeps scope on remit/anti-scope and wording compression, and does not touch auth / trust boundary / routing root / protected paths. Specifics: proposal_id=proposal-20260327-narrow-role-prompt-templates; summary='Narrow prompt templates for lightweight operators to reduce role drift and redundant wording'; proposed_changes focus on 1-line remit+anti-scope, <=5-line outputs, and fixed role scopes; affected_paths are docs/runbooks only under projects/openclaw-core/docs plus two cron reports; reason is reversible and board-approved as low-risk, so approve with assisted apply.",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-27T10:41:24+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-27T10:41:24+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-narrow-role-prompt-templates.review.json"
+    },
+    {
+      "at": "2026-03-27T10:42:40+09:00",
+      "type": "apply",
+      "status": "applied",
+      "proposal_status": "APPLIED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-narrow-role-prompt-templates.apply.json"
+    }
+  ],
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-narrow-role-prompt-templates.apply.json",
+  "last_apply": {
+    "status": "applied",
+    "apply_mode": "assisted",
+    "applied_paths": [
+      "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+      "projects/openclaw-core/docs/doc-editor-runbook.md",
+      "projects/openclaw-core/docs/dss-manager-runbook.md",
+      "projects/openclaw-core/docs/github-operator-runbook.md",
+      "projects/openclaw-core/docs/ops-automator-runbook.md",
+      "projects/openclaw-core/docs/role-prompt-templates.md"
+    ],
+    "blocked_paths": [],
+    "manual_paths": [
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/agent-staffing-and-prompt-tuning-board-20260326-0630.md"
+    ],
+    "applied_at": "2026-03-27T10:42:40+09:00"
+  }
+}

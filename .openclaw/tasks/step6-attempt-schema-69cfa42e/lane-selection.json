@@ -1,0 +1,23 @@
+{
+  "task_id": "step6-attempt-schema-69cfa42e",
+  "provider": "claude_code",
+  "primary_mode": "acp",
+  "selected_lane": "acp",
+  "fallback_chain": [
+    "acp",
+    "cli",
+    "cli_backend_safety_net"
+  ],
+  "selection_reasons": [
+    "test fixture"
+  ],
+  "lane_health_snapshot": {
+    "auth_ok": true,
+    "acp_healthy": true,
+    "cli_healthy": true,
+    "cli_backend_healthy": true,
+    "captured_at": "2026-03-22T13:00:00+09:00"
+  },
+  "captured_at": "2026-03-22T13:00:00+09:00",
+  "version": 1
+}

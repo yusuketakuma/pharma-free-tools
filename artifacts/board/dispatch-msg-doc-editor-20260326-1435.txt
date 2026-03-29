@@ -1,0 +1,9 @@
+OpenClaw 最終裁定（decision-ledger / board postmeeting 2026-03-26 14:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: adopted。stale backlog triage を 1ページ runbook に固定し、owner / next action / success criteria を短文化する。
+
+依頼:
+- 1ページ版の運用文面を正式化する
+- owner / next action / success criteria を prefix ごとに固定する
+- security audit と 6〜12か月の資源配分は今回の運用 triage から分離する
+- 新しい例外分岐は増やさない

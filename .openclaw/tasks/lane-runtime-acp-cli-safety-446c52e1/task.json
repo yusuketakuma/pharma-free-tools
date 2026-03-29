@@ -1,0 +1,17 @@
+{
+  "task_id": "lane-runtime-acp-cli-safety-446c52e1",
+  "task": "Implement lane runtime behavior",
+  "requested_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ],
+  "constraints": [],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "requested_actions": [
+    "edit"
+  ],
+  "requested_route": "claude-code",
+  "created_at": "2026-03-22T16:42:21+09:00"
+}

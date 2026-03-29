@@ -1,0 +1,59 @@
+[
+  {
+    "id": "token-management-snapshot-v6",
+    "name": "token-management-snapshot-v6",
+    "schedule": {
+      "kind": "cron",
+      "expr": "*/15 * * * *",
+      "tz": "Asia/Tokyo"
+    },
+    "payload": {
+      "kind": "agentTurn",
+      "message": "トークン管理スナップショット更新。node /Users/yusuke/.openclaw/workspace/systems/token-management/save-token-data.js を実行してトークンデータを保存。通知は一切不要。静かに終了すること。",
+      "timeoutSeconds": 30
+    },
+    "sessionTarget": "isolated",
+    "agentId": "ops-automator",
+    "delivery": {
+      "mode": "none"
+    }
+  },
+  {
+    "id": "token-management-evaluation-v6",
+    "name": "token-management-evaluation-v6",
+    "schedule": {
+      "kind": "cron",
+      "expr": "*/15 * * * *",
+      "tz": "Asia/Tokyo"
+    },
+    "payload": {
+      "kind": "agentTurn",
+      "message": "トークン管理評価。/Users/yusuke/.openclaw/workspace/systems/token-management/token-snapshot.json を読み込み、モード判定を実行し、結果を system-state.json に記録。通知は一切不要。静かに終了すること。",
+      "timeoutSeconds": 60
+    },
+    "sessionTarget": "isolated",
+    "agentId": "ops-automator",
+    "delivery": {
+      "mode": "none"
+    }
+  },
+  {
+    "id": "token-management-weekly-review",
+    "name": "token-management-weekly-review",
+    "schedule": {
+      "kind": "cron",
+      "expr": "0 10 * * 0",
+      "tz": "Asia/Tokyo"
+    },
+    "payload": {
+      "kind": "agentTurn",
+      "message": "トークン管理システムの週次自己レビューを実行。node /Users/yusuke/.openclaw/workspace/systems/token-management/token-self-improvement-v2.js の performSelfImprovement() を実行。改善提案が生成された場合は、提案内容を reports/loops/ に保存し、board-auditor に軽微な通知を行う。低リスク改善は自動適用。",
+      "timeoutSeconds": 120
+    },
+    "sessionTarget": "isolated",
+    "agentId": "ops-automator",
+    "delivery": {
+      "mode": "announce"
+    }
+  }
+]

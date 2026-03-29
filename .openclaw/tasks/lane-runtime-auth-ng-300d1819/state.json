@@ -1,0 +1,35 @@
+{
+  "message": "Claude auth required before execution can continue",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "lane-runtime-auth-ng-300d1819",
+  "state": "AUTH_REQUIRED",
+  "updated_at": "2026-03-22T16:40:55+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:40:55+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:40:55+09:00",
+      "route_decision_id": "route-cc5febac9d1d",
+      "dispatch_id": "dispatch-lane-runtime-auth-ng-300d1819",
+      "message": "route decision stored"
+    },
+    {
+      "state": "AUTH_REQUIRED",
+      "at": "2026-03-22T16:40:55+09:00",
+      "route_decision_id": "route-cc5febac9d1d",
+      "dispatch_id": "dispatch-lane-runtime-auth-ng-300d1819",
+      "message": "Claude auth required before execution can continue"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-cc5febac9d1d",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-lane-runtime-auth-ng-300d1819"
+}

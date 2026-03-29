@@ -1,0 +1,57 @@
+{
+  "proposal_id": "phase4-step4-blocked-proposal",
+  "cycle_id": "phase4-step4-blocked",
+  "created_at": "2026-03-22T13:01:58+09:00",
+  "phase": "propose",
+  "summary": "Smoke fixture for phase4-step4-blocked-proposal",
+  "observations": [
+    "fixture"
+  ],
+  "proposed_changes": [
+    "fixture change"
+  ],
+  "affected_paths": [
+    "org/organization.md",
+    ".openclaw/config/approval-policy.yaml"
+  ],
+  "requires_manual_approval": true,
+  "status": "APPROVED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-22T13:01:58+09:00",
+      "note": "fixture created"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-22T13:01:58+09:00",
+      "note": "review started by smoke"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-22T13:01:58+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "guardrails": [
+    "org/organization.md",
+    ".openclaw/config/approval-policy.yaml"
+  ],
+  "next_step": "Resolve blocked/manual paths before verification.",
+  "reviewed_at": "2026-03-22T13:01:58+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "smoke",
+    "reason": "smoke approve blocked",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/config/approval-policy.yaml",
+      "org/organization.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-22T13:01:58+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/phase4-step4-blocked-proposal.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/phase4-step4-blocked-proposal.apply.json"
+}

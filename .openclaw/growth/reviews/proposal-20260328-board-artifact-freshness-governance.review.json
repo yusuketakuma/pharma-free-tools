@@ -1,0 +1,22 @@
+{
+  "review_id": "proposal-20260328-board-artifact-freshness-governance-review",
+  "proposal_id": "proposal-20260328-board-artifact-freshness-governance",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260328-board-artifact-freshness-governance.json",
+  "reviewed_at": "2026-03-29T01:40:39+09:00",
+  "decision": "approve",
+  "reviewer": "board-auditor",
+  "reason": "Board裁定通り低リスク提案。docs/runbook/cron関連更新で可逆性が高く、protected path・auth・routing root・trust boundary非該当。board系アーティファクト鮮度管理はboard cycle安定性向上に直結。",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    ".openclaw/config/board-freshness-governance.json",
+    ".openclaw/runbooks/board-agenda-assembly-runbook.md",
+    ".openclaw/schemas/board-artifact-freshness.schema.json",
+    ".openclaw/scripts/board_artifact_freshness_monitor.py",
+    ".openclaw/templates/department-head-board-report.md",
+    "reports/status/dashboard-latest.md"
+  ],
+  "blocked_paths": [],
+  "status_before": "APPROVED",
+  "status_after": "APPROVED",
+  "notes": []
+}

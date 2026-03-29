@@ -1,0 +1,13 @@
+[2026-03-22T16:40:36+09:00] command=claude auth status --json
+exit_code=0
+--- stdout ---
+{
+  "loggedIn": true,
+  "authMethod": "claude.ai",
+  "apiProvider": "firstParty",
+  "email": "takuma.yusuke@gmail.com",
+  "orgId": "dcff0cb3-a167-4dce-b3f6-76e8aa8374b9",
+  "orgName": "takuma.yusuke@gmail.com's Organization",
+  "subscriptionType": "max"
+}
+--- stderr ---

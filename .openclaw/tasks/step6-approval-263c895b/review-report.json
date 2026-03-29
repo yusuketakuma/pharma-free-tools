@@ -1,0 +1,11 @@
+{
+  "task_id": "step6-approval-263c895b",
+  "verdict": "blocked",
+  "summary": "fixture review",
+  "issues": [],
+  "publish_recommendation": "approval_required",
+  "publishable": false,
+  "requires_manual_review": false,
+  "result_classification": "approval_required",
+  "fallback_used": false
+}

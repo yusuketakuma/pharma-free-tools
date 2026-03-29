@@ -1,0 +1,15 @@
+{
+  "review_id": "phase4-growth-smoke-proposal-review",
+  "proposal_id": "phase4-growth-smoke-proposal",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/phase4-growth-smoke-proposal.json",
+  "reviewed_at": "2026-03-26T20:12:24+09:00",
+  "decision": "reject",
+  "reviewer": "ceo-tama",
+  "reason": "既存の manual_approval_required / approval discipline と重複しており、新しい運用変更や実装差分がないため。protected path への mutation を伴うが、提案内容自体は既存方針の再掲で十分。",
+  "apply_mode": "manual",
+  "approved_paths": [],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "REJECTED",
+  "notes": []
+}

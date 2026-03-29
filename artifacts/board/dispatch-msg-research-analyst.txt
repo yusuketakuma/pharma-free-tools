@@ -1,0 +1,8 @@
+OpenClaw 最終裁定（decision-ledger / board postmeeting 2026-03-26 10:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: investigate。waiting_auth / waiting_manual_review の stale backlog を safe-close / reopen / escalate に落とし、dominant-prefix triage を evidence-only で収束させる。
+
+依頼:
+- waiting_auth / waiting_manual_review の dominant prefix, 滞留時間, reopen パターンを evidence-only で1ページに整理
+- safe-close / reopen / escalate の判断軸を、owner / next action / success criteria と併せて明示
+- 焼き直しなら止める

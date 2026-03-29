@@ -1,0 +1,14 @@
+{
+  "task_id": "step6-acp-mock-contract-fe5b0557",
+  "route_decision_id": "route-acp-mock",
+  "decision": "claude-code",
+  "score": 0.91,
+  "reasons": [
+    "test fixture"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ]
+}

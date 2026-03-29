@@ -1,0 +1,65 @@
+{
+  "cycle_id": "2026-03-28-midnight-dispatch-optimization",
+  "created_at": "2026-03-28T00:00:00+09:00",
+  "updated_at": "2026-03-29T14:42:48+09:00",
+  "proposal_id": "2026-03-28-midnight-dispatch-optimization",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/2026-03-28-midnight-dispatch-optimization.json",
+  "proposal_status": "APPROVED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-midnight-dispatch-optimization.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "cron:b11cb560-da93-45ba-bbb1-4a17d45614a1",
+    "reason": "深夜帯dispatchの最適化は低リスクで、逆sleeptime検知の実効性が確認済み。翌日準備タスク限定の静音モード標準化で部長リソースを60%削減可能。",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-29T04:42:29+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-29T04:42:29+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-midnight-dispatch-optimization.review.json"
+    },
+    {
+      "at": "2026-03-29T04:44:29+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-28-midnight-dispatch-optimization.apply.json"
+    },
+    {
+      "at": "2026-03-29T05:43:55+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-28-midnight-dispatch-optimization.apply.json"
+    },
+    {
+      "at": "2026-03-29T11:42:27+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-28-midnight-dispatch-optimization.apply.json"
+    },
+    {
+      "at": "2026-03-29T14:42:48+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-28-midnight-dispatch-optimization.apply.json"
+    }
+  ],
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/2026-03-28-midnight-dispatch-optimization.apply.json",
+  "last_apply": {
+    "status": "manual_required",
+    "apply_mode": "assisted",
+    "applied_paths": [],
+    "blocked_paths": [],
+    "manual_paths": [
+      ".openclaw/growth/cron-wording/midnight-dispatch-pattern.md",
+      ".openclaw/growth/runbooks/midnight-dispatch-optimization.md"
+    ],
+    "applied_at": "2026-03-29T14:42:48+09:00"
+  }
+}

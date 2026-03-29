@@ -1,0 +1,62 @@
+[
+  {
+    "signal_id": "signal-crossagent-001",
+    "timestamp": "2026-03-29T08:50:00+09:00",
+    "source_role": "board-operator",
+    "domain_scope": ["staffing", "reporting"],
+    "trigger_reason": "cross-agent knowledge sync analysis",
+    "root_issue": "Repeated low-value staffing proposal",
+    "desired_change": "narrow staffing tuning scope",
+    "content_type": "routine_sync",
+    "content": "Low-value staffing proposals are repeating frequently, indicating need for narrower tuning scope to focus on high-impact staffing decisions only.",
+    "evidence_refs": ["heartbeat-results.jsonl", "staffing-domain-analysis"],
+    "priority": "medium",
+    "estimated_impact": "staffing_efficiency",
+    "next_review": "2026-04-05"
+  },
+  {
+    "signal_id": "signal-crossagent-002",
+    "timestamp": "2026-03-29T08:50:00+09:00",
+    "source_role": "ops-automator",
+    "domain_scope": ["heartbeat", "runtime", "governance"],
+    "trigger_reason": "cross-agent knowledge sync analysis",
+    "root_issue": "OpenClaw update available and shared-access warning should be tracked durably",
+    "desired_change": "record current heartbeat status in the runtime ledger and preserve follow-up visibility",
+    "content_type": "routine_sync",
+    "content": "OpenClaw updates and shared-access warnings need durable tracking in runtime ledger to maintain visibility and follow-up capabilities.",
+    "evidence_refs": ["heartbeat-results.jsonl", "runtime-monitoring-data"],
+    "priority": "medium",
+    "estimated_impact": "runtime_visibility",
+    "next_review": "2026-04-05"
+  },
+  {
+    "signal_id": "signal-crossagent-003",
+    "timestamp": "2026-03-29T08:50:00+09:00",
+    "source_role": "ceo-tama",
+    "domain_scope": ["board", "security", "routing"],
+    "trigger_reason": "cross-agent knowledge sync analysis",
+    "root_issue": "security audit is important but should stay decoupled from backlog triage",
+    "desired_change": "split Gateway/public-surface and host-hardening audit into a separate board track",
+    "content_type": "routine_sync",
+    "content": "Security audit processes should be separated from backlog triage to maintain focus and prevent scope bleed between different operational priorities.",
+    "evidence_refs": ["heartbeat-results.jsonl", "security-domain-analysis"],
+    "priority": "medium",
+    "estimated_impact": "security_focus",
+    "next_review": "2026-04-05"
+  },
+  {
+    "signal_id": "signal-crossagent-004",
+    "timestamp": "2026-03-29T08:50:00+09:00",
+    "source_role": "ceo-tama",
+    "domain_scope": ["board", "policy", "routing"],
+    "trigger_reason": "cross-agent knowledge sync analysis",
+    "root_issue": "safe-close / reopen decisions are structurally valid but operationally under-specified",
+    "desired_change": "close records should carry explicit owner, next_action, success_criteria, review_after, and linked_evidence fields",
+    "content_type": "routine_sync",
+    "content": "Safe-close and reopen decisions need explicit operational fields to ensure consistent interpretation across different operators.",
+    "evidence_refs": ["heartbeat-results.jsonl", "policy-domain-analysis"],
+    "priority": "medium",
+    "estimated_impact": "operational_clarity",
+    "next_review": "2026-04-05"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "task_id": "step6-acp-mock-contract-ba8517a9",
+  "lane": "acp",
+  "transport_kind": "claude_print_json_compat",
+  "native_acp_available": false,
+  "native_acp_reason": "claude CLI does not expose a native acp subcommand in this environment",
+  "session_id": "47c44d7c-67c9-43fe-bbe4-8ae91e77bb61",
+  "updated_at": "2026-03-22T16:50:18+09:00"
+}

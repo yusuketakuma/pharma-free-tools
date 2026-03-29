@@ -1,0 +1,86 @@
+{
+  "proposal_id": "GP-2026-03-29-heartbeat-board-bridge-automation-01",
+  "status": "APPROVED",
+  "phase": "propose",
+  "summary": "heartbeat governance成果物の自動precedent登録とboard artifact bridgeを構築して、再審コストを削減する",
+  "observations": [
+    "heartbeat governanceは実装済みだが、board成果物がformal ledgerに接続されていない",
+    "duplicate suppressionやprecedent reuseが機能せず、Boardが毎回「初見扱い」で裁きやすい",
+    "heartbeat_resultにentriesはあるが、board系成果物の反映がほぼ見えない",
+    "board_note/candidateが増えても、蓄積されず再審コストだけが増えている",
+    "ledger registry entriesとstanding approval registry entriesが0の状態が続いている"
+  ],
+  "proposed_changes": [
+    "heartbeat board artifact bridgeの自動化ルールを構築",
+    "board outcomeの自動precedent登録プロセスを実装",
+    "duplicate suppressionの自動適用メカニズムを追加",
+    "board成果物とheartbeat_resultを紐づける最小contractを固定",
+    "precedent化される前段の「pending board outcome」最小項目を定義"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/heartbeat-board-bridge-automation.md",
+    ".openclaw/growth/cron-wording/board-outcome-bridge-pattern.md",
+    ".openclaw/runtime/heartbeat/heartbeat-results.jsonl",
+    ".openclaw/reports/board/board-agenda-template.json",
+    ".openclaw/memory/recall-policies.md"
+  ],
+  "evidence": [
+    "artifacts/board/2026-03-25-heartbeat-ledger-bridge-agenda-candidate.md - bridgeギャップの認識",
+    "reports/heartbeat-governance-implementation-2026-03-25.md - heartbeat_result schema実装済み",
+    "artifacts/board/2026-03-26-heartbeat-runbook-consolidation-candidate.md - governance観点の既存議論",
+    "board precedent registry entries: 0 - 現状の蓄積不足",
+    "self-improvement-proposal-review-report-2026-03-29.md - 重複議論の継続"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Resolve blocked/manual paths before verification.",
+  "board_decision": null,
+  "created_at": "2026-03-29T23:27:00Z",
+  "updated_at": "2026-03-29T23:27:00Z",
+  "cycle_id": "GP-2026-03-29-heartbeat-board-bridge-automation-01",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T08:40:34+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T08:40:34+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T08:40:34+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T12:41:05+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T12:41:05+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T12:41:05+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Board裁定によるapprove候補。docs/runbook/cron-wordingの低リスク変更でreversible。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/growth/cron-wording/board-outcome-bridge-pattern.md",
+      ".openclaw/growth/runbooks/heartbeat-board-bridge-automation.md",
+      ".openclaw/memory/recall-policies.md",
+      ".openclaw/reports/board/board-agenda-template.json",
+      ".openclaw/runtime/heartbeat/heartbeat-results.jsonl"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T12:41:05+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/GP-2026-03-29-heartbeat-board-bridge-automation-01.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/GP-2026-03-29-heartbeat-board-bridge-automation-01.apply.json"
+}

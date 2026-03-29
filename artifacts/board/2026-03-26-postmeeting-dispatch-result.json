@@ -1,0 +1,109 @@
+{
+  "source": "cron:32ba03a1-c935-486d-8946-873b4235557e board-postmeeting-agent-dispatch",
+  "board_decision_ref": "decision-ledger latest 2026-03-26 08:41 JST",
+  "final_decision": "investigate",
+  "summary": "OpenClaw final ruling was investigate across all board items; dispatch pushed board agents into live subagent runs and queued execution-agent instructions through safe temporary files.",
+  "board_dispatch": [
+    {
+      "agent": "ceo-tama",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:ceo-tama:subagent:48d15959-2659-4c33-bac9-70881d30d23c",
+      "runId": "bc64a23a-bf03-4d47-9405-fb1708e63ba5"
+    },
+    {
+      "agent": "supervisor-core",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:supervisor-core:subagent:66a11e24-9720-4efe-bd52-d19e29d51cfa",
+      "runId": "c527e93c-1cac-4769-9993-98f6e889fd45"
+    },
+    {
+      "agent": "board-visionary",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-visionary:subagent:1104acbf-fe77-45b2-af4d-5cc11a861089",
+      "runId": "43b536c5-f2e7-4e5d-9af0-c27d8b188824"
+    },
+    {
+      "agent": "board-user-advocate",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-user-advocate:subagent:58cad445-c6ba-4775-bc8d-f6268d207e12",
+      "runId": "d86f4a7c-839e-4a9b-b903-93c9ee8d6226"
+    },
+    {
+      "agent": "board-operator",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-operator:subagent:f87ab600-62ca-4d10-87c5-81aed4efa486",
+      "runId": "7fa9e71a-5236-4f80-bb9e-b7cf85bf57ea"
+    },
+    {
+      "agent": "board-auditor",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-auditor:subagent:a7dc279e-a63e-4463-99f9-1c98137f5c1c",
+      "runId": "dbbc1613-29c2-4cd8-84bd-7eda70383895"
+    }
+  ],
+  "exec_dispatch": [
+    {
+      "agent": "research-analyst",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-research-analyst.txt",
+      "reason": "ACP runtime backend not configured; live acp spawn unavailable"
+    },
+    {
+      "agent": "github-operator",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-github-operator.txt",
+      "reason": "ACP runtime backend not configured; live acp spawn unavailable"
+    },
+    {
+      "agent": "ops-automator",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-ops-automator.txt",
+      "reason": "ACP runtime backend not configured; live acp spawn unavailable"
+    },
+    {
+      "agent": "doc-editor",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-doc-editor.txt",
+      "reason": "subagent allowlist excludes exec roles; live spawn unavailable"
+    },
+    {
+      "agent": "dss-manager",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-dss-manager.txt",
+      "reason": "subagent allowlist excludes exec roles; live spawn unavailable"
+    },
+    {
+      "agent": "opportunity-scout",
+      "status": "not_live_spawned",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-opportunity-scout.txt",
+      "reason": "subagent allowlist excludes exec roles; live spawn unavailable"
+    }
+  ],
+  "live_spawn_failures": [
+    {
+      "agent": "doc-editor",
+      "error": "ACP runtime backend is not configured. Install and enable the acpx runtime plugin."
+    },
+    {
+      "agent": "research-analyst",
+      "error": "agentId is not allowed for sessions_spawn (allowed: supervisor-core, board-visionary, board-user-advocate, board-operator, board-auditor)"
+    }
+  ],
+  "notes": [
+    "board agents were started as live runs and completed except where still running at the moment of capture; latest poll showed all completed",
+    "exec agents were queued through safe temporary files per instruction"
+  ],
+  "captured_at": "2026-03-26T09:00:00+09:00"
+}

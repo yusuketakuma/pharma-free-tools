@@ -1,0 +1,62 @@
+{
+  "proposal_id": "phase4-step4-assisted-proposal",
+  "cycle_id": "phase4-step4-assisted",
+  "created_at": "2026-03-22T13:01:58+09:00",
+  "phase": "propose",
+  "summary": "Smoke fixture for phase4-step4-assisted-proposal",
+  "observations": [
+    "fixture"
+  ],
+  "proposed_changes": [
+    "fixture change"
+  ],
+  "affected_paths": [
+    ".openclaw/shared/example.md",
+    "projects/demo/docs/guide.md"
+  ],
+  "requires_manual_approval": true,
+  "status": "APPLIED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-22T13:01:58+09:00",
+      "note": "fixture created"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-22T13:01:58+09:00",
+      "note": "review started by smoke"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-22T13:01:58+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "APPLIED",
+      "at": "2026-03-22T13:01:58+09:00",
+      "note": "assisted apply plan generated"
+    }
+  ],
+  "guardrails": [
+    ".openclaw/shared/example.md",
+    "projects/demo/docs/guide.md"
+  ],
+  "next_step": "Run verification before moving to VERIFIED.",
+  "reviewed_at": "2026-03-22T13:01:58+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "smoke",
+    "reason": "smoke approve assisted",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/shared/example.md",
+      "projects/demo/docs/guide.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-22T13:01:58+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/phase4-step4-assisted-proposal.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/phase4-step4-assisted-proposal.apply.json"
+}

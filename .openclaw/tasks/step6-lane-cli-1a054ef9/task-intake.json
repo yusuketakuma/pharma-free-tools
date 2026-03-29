@@ -1,0 +1,38 @@
+{
+  "task_id": "step6-lane-cli-1a054ef9",
+  "task_summary": "Implement runtime lane selector",
+  "requested_paths": [
+    ".openclaw/scripts/dispatch_task.py",
+    ".openclaw/scripts/execute_task.py"
+  ],
+  "required_capabilities": [
+    "backend",
+    "python",
+    "runtime",
+    "workflow-automation"
+  ],
+  "desired_outputs": [
+    "script"
+  ],
+  "departments_involved": [
+    "engineering",
+    "studio-operations",
+    "testing"
+  ],
+  "risk_level": "low",
+  "risk_reasons": [
+    "no high-risk signals detected"
+  ],
+  "complexity": "medium",
+  "protected_paths": [],
+  "signals": {
+    "requested_actions": [
+      "edit"
+    ],
+    "verification_commands": [
+      "python3 -m unittest"
+    ],
+    "constraints": []
+  },
+  "requested_route": "claude-code"
+}

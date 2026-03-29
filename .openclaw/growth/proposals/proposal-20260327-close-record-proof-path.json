@@ -1,0 +1,98 @@
+{
+  "proposal_id": "proposal-20260327-close-record-proof-path",
+  "created_at": "2026-03-27T12:28:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "autonomy-loop-health-review",
+    "agent-scorecard-review",
+    "agent-lesson-capture",
+    "agent-staffing-and-prompt-tuning",
+    "agent-performance-optimization-review",
+    "agent-workforce-expansion-review",
+    "board / heartbeat runtime recent report"
+  ],
+  "title": "Fix close-record proof-path fields and keep completion states separate",
+  "summary": "stale-backlog close records and dispatch completion claims should carry a fixed proof path: owner / next_action / success_criteria / review_after / linked_evidence, while review / apply / manual_required / effect-confirmed stay distinct.",
+  "observations": [
+    "board-auditor の safe-close / reopen audit で、close record の必須項目がまだ runbook 表示で固定されていない。",
+    "board-side dispatch は complete でも、exec-side live receipt は unresolved のままで、completion claims を単一の done に畳むと監査しにくい。",
+    "cross-agent knowledge sync では、completion claims に proof-path evidence と state separation が必要だと繰り返し示されている。",
+    "queue telemetry は steady-state で、今回の論点は drain ではなく close-record / proof-path の整形に寄っている。"
+  ],
+  "proposed_changes": [
+    "stale-close / reopen policy に、owner / next_action / success_criteria / review_after / linked_evidence を必須フィールドとして固定する。",
+    "board / execution の完了ラベルを review / apply / manual_required / effect-confirmed に分け、single done 表現を避ける。",
+    "board-side send / accept / confirm と exec-side live receipt を別行で書く文言を、postmeeting dispatch と verification report に入れる。",
+    "close reason と reopen condition を 1 行で残すテンプレートを追加し、silent failure と reopen drift を後で判別できるようにする。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/stale-queue-safe-close-reopen-policy.md",
+    "reports/cron/board-dispatch-verification-20260326-1035-final.md",
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "reports/cron/board-auditor-safe-close-reopen-audit-20260326-0844.md",
+    "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+    "reports/cron/cross-agent-knowledge-sync-20260327-0435.md",
+    "reports/cron/workspace-report-learning-review-20260327-0300.md"
+  ],
+  "evidence": [
+    "signal-20260326075258-b7007dc8ba82",
+    "signal-20260326075258-d5c58afdca35",
+    "signal-20260326195205-411b37c268d5",
+    "signal-20260326195205-d3c1aad64d08",
+    "signal-20260327015223-c9cd741b6099",
+    "signal-20260327015223-03ca75a7805d",
+    "board-auditor-safe-close-reopen-audit: mandatory fields still not fixed",
+    "board-postmeeting dispatch: board complete / exec live receipt unresolved"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run verification before moving to VERIFIED.",
+  "cycle_id": "proposal-20260327-close-record-proof-path",
+  "status": "APPLIED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T12:28:00+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-27T12:41:02+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-27T12:41:02+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "APPLIED",
+      "at": "2026-03-27T12:42:37+09:00",
+      "note": "assisted apply plan generated"
+    }
+  ],
+  "reviewed_at": "2026-03-27T12:41:02+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board approve candidate。close-record / proof-path の文言整備に限る低リスク提案で、docs / reports / runbook / cron wording の範囲に収まり、protected path / auth / routing root / trust boundary を触らないため。",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+      "projects/openclaw-core/docs/stale-queue-safe-close-reopen-policy.md",
+      "reports/cron/board-auditor-safe-close-reopen-audit-20260326-0844.md",
+      "reports/cron/board-dispatch-verification-20260326-1035-final.md",
+      "reports/cron/board-postmeeting-agent-dispatch-20260327-0435.md",
+      "reports/cron/cross-agent-knowledge-sync-20260327-0435.md",
+      "reports/cron/workspace-report-learning-review-20260327-0300.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-27T12:41:02+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-close-record-proof-path.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-close-record-proof-path.apply.json"
+}

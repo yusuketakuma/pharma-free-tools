@@ -1,0 +1,16 @@
+OpenClaw 最終裁定（board decision: decision-20260326183500-board-agenda-assembly）に基づく内部ディスパッチ。
+
+最終裁定: adopted
+差分指示:
+- 監視は read-only に固定する
+- 自動 drain はしない
+- monitor 指標は reopen 率 / stale backlog count / 7day stale count に絞る
+- routine heartbeat / board / scorecard は signal-only を維持する
+- auth / routing / trust boundary / approval / Telegram 根幹は触らない
+
+期待する成果物:
+- 監視条件の固定メモ
+- read-only 維持の確認
+
+注意:
+- 自己改善 proposal は直接適用せず、Board 最終裁定の範囲だけを反映すること

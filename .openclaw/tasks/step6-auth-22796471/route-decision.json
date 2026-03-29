@@ -1,0 +1,14 @@
+{
+  "task_id": "step6-auth-22796471",
+  "route_decision_id": "route-auth",
+  "decision": "claude-code",
+  "score": 0.91,
+  "reasons": [
+    "test fixture"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DispatchAttempt",
+  "type": "object",
+  "required": [
+    "task_id",
+    "dispatch_id",
+    "dispatch_attempt_id",
+    "lane",
+    "attempt_index",
+    "started_at",
+    "finished_at",
+    "status",
+    "result_code",
+    "fallback_triggered",
+    "fallback_target",
+    "version"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "dispatch_id": {
+      "type": "string"
+    },
+    "dispatch_attempt_id": {
+      "type": "string"
+    },
+    "lane": {
+      "type": "string",
+      "enum": [
+        "acp",
+        "cli",
+        "cli_backend_safety_net",
+        "none"
+      ]
+    },
+    "attempt_index": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "finished_at": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "policy_blocked",
+        "timeout",
+        "runtime_error",
+        "invalid_request",
+        "invalid_result",
+        "failed"
+      ]
+    },
+    "result_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fallback_triggered": {
+      "type": "boolean"
+    },
+    "fallback_target": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "exit_code": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": true
+}

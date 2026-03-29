@@ -1,0 +1,61 @@
+{
+  "proposal_id": "2026-03-28-system-recovery-automation",
+  "created_at": "2026-03-28T00:00:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "self-improvement-proposal-review",
+    "name": "cron:b11cb560-da93-45ba-bbb1-4a17d45614a1"
+  },
+  "summary": "全システム停止時の自動回復プロセス構築で信頼性を向上させる",
+  "observations": [
+    "全システム停止の事例と影響",
+    "現行の復旧パターンの課題",
+    "自律回復の可能性"
+  ],
+  "proposed_changes": [
+    "システム停止の自律検知メカニズム",
+    "段階的回復プロセスの自動化",
+    "緊急タスクの保護メカニズム"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/system-recovery-automation.md",
+    ".openclaw/growth/cron-wording/system-health-monitor.md"
+  ],
+  "evidence": [
+    "lessons-learned.md",
+    "heartbeat/2026-03-28-0000.md"
+  ],
+  "requires_manual_approval": true,
+  "next_step": "Revise the proposal and resubmit it to the inbox.",
+  "cycle_id": "2026-03-28-system-recovery-automation",
+  "status": "INBOX",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T04:42:43+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T04:42:43+09:00",
+      "note": "review started by cron:b11cb560-da93-45ba-bbb1-4a17d45614a1"
+    },
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T04:42:43+09:00",
+      "note": "decision=revise"
+    }
+  ],
+  "reviewed_at": "2026-03-29T04:42:43+09:00",
+  "review": {
+    "decision": "revise",
+    "reviewer": "cron:b11cb560-da93-45ba-bbb1-4a17d45614a1",
+    "reason": "中リスク提案で、システム停止検知と回復自動化の影響範囲が広範。自律回復の仕組みと人的介入の境界を明確にするため、詳細設計と手動レビューが必要。",
+    "apply_mode": "manual",
+    "approved_paths": [],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T04:42:43+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-system-recovery-automation.review.json"
+}

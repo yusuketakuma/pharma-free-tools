@@ -1,0 +1,24 @@
+{
+  "route": "claude-code",
+  "route_decision_id": "route-dedupe",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "approval_id": null,
+  "dispatch_id": "dispatch-dedupe",
+  "protected_paths": [],
+  "message": "seeded AUTH_REQUIRED",
+  "task_id": "step6-dedupe-16edf1f2",
+  "state": "AUTH_REQUIRED",
+  "updated_at": "2026-03-22T16:51:53+09:00",
+  "history": [
+    {
+      "state": "AUTH_REQUIRED",
+      "at": "2026-03-22T16:51:53+09:00",
+      "route_decision_id": "route-dedupe",
+      "dispatch_id": "dispatch-dedupe",
+      "message": "seeded AUTH_REQUIRED"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "task_id": "step6-attempt-schema-03ad41a3",
+  "status": "runtime_error",
+  "executor": "claude-code",
+  "summary": "ACP auth required before execution can continue",
+  "changed_files": [],
+  "verification_results": [
+    "acp_session_start"
+  ],
+  "remaining_risks": [
+    "Claude ACP auth unavailable"
+  ],
+  "exit_code": 30,
+  "started_at": "2026-03-22T16:21:04+09:00",
+  "finished_at": "2026-03-22T16:21:04+09:00",
+  "dispatch_id": "dispatch-attempt-schema",
+  "raw_response_path": ".openclaw/tasks/step6-attempt-schema-03ad41a3/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-attempt-schema-03ad41a3/rendered-prompt.txt",
+  "_meta": {
+    "result_code": "AUTH_REQUIRED",
+    "lane": "acp",
+    "failure_stage": "auth_preflight",
+    "partial_execution": false,
+    "side_effects_possible": false,
+    "publishable": false,
+    "session_mode": "preflight_mock"
+  }
+}

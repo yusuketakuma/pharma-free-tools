@@ -1,0 +1,33 @@
+# Polymarket 自律BOT 調査ログ
+
+## 2026-03-23
+- 調査テーマ: API/実装手段 + 自動化の前提条件
+- 公式ドキュメントで確認した点:
+  - Public market data は Gamma API / CLOB read / Data API で無認証取得可能
+  - 取引は CLOB API を使い、L1(秘密鍵)→L2(API key) の2段階認証が必要
+  - 公式SDKは TypeScript / Python / Rust があり、py-clob-client / clob-client / rs client が存在
+  - WebSocket は market / user / sports / RTDS があり、リアルタイム監視可能
+  - order type は GTC/GTD/FOK/FAK、post-only 対応
+  - maker rebates program があり、対象市場では taker fee 原資で maker に日次還元あり
+  - builder / relayer により gasless 運用や order attribution が可能
+  - rate limits は比較的高いが relayer submit は 25 req/min と低め
+  - geoblock endpoint があり、地域制限対象では注文拒否される
+  - docs 上の blocked countries に US/UK/DE/FR 等、close-only に SG/TH/TW 等が含まれる
+- 公式OSS:
+  - Polymarket/agents: AI Agents framework。自律売買の雛形だが、そのまま収益化保証ではない
+  - Polymarket/clob-client, py-clob-client, real-time-data-client
+- 実装上の主要構成要素:
+  - 市場探索/フィルタ
+  - オーダーブック・約定・スポーツ結果などのストリーミング
+  - シグナル生成
+  - 執行エンジン
+  - 在庫/資金/上限管理
+  - 監視、kill switch、鍵管理、障害復旧
+- 初期評価:
+  - BOT構築自体は技術的に可能
+  - ただし「安定して稼ぐ」は別問題で、法規制・市場効率・解決ルール・流動性/在庫リスクが大きい
+  - 実現可能性は現時点で「中」
+- 次回候補:
+  - 市場構造（neg risk, resolution, liquidity rewards, fee structure）
+  - 戦略候補の切り分け（MM / event-driven / mispricing / information edge）
+  - 利用規約/法規制の精査

@@ -1,0 +1,22 @@
+{
+  "task_id": "step6-approval-16f15c4c",
+  "task": "Implement queue rebalance fixture",
+  "requested_paths": [
+    ".openclaw/scripts/execute_task.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "constraints": [
+    "preserve route decision"
+  ],
+  "verification_commands": [
+    "python3 -m unittest discover -s .openclaw/tests -p 'test_*.py'"
+  ],
+  "review_focus": [
+    "correctness"
+  ],
+  "requested_actions": [
+    "edit"
+  ],
+  "requested_route": "claude-code",
+  "mock_mode": "success"
+}

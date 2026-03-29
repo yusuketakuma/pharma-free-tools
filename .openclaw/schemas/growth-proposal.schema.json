@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GrowthProposal",
+  "type": "object",
+  "required": [
+    "proposal_id",
+    "created_at",
+    "phase",
+    "summary",
+    "observations",
+    "proposed_changes",
+    "requires_manual_approval",
+    "status"
+  ],
+  "properties": {
+    "proposal_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "observe",
+        "propose"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proposed_changes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requires_manual_approval": {
+      "type": "boolean"
+    },
+    "cycle_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "INBOX",
+        "UNDER_REVIEW",
+        "APPROVED",
+        "REJECTED",
+        "APPLIED",
+        "VERIFIED"
+      ]
+    },
+    "status_history": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_step": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

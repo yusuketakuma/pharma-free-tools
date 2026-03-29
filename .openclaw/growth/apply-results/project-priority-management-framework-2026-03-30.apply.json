@@ -1,0 +1,71 @@
+{
+  "apply_id": "project-priority-management-framework-2026-03-30-apply",
+  "proposal_id": "project-priority-management-framework-2026-03-30",
+  "applied_at": "2026-03-29T05:43:52+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/project-priority-management-framework-2026-03-30.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/project-priority-management-framework-2026-03-30.review.json",
+  "apply_mode": "assisted",
+  "status": "manual_required",
+  "requested_paths": [
+    ".openclaw/growth/config/priority-evaluation-metrics.json",
+    ".openclaw/growth/cron-wording/monthly-project-priority-review.md",
+    ".openclaw/growth/prompts/roadmap-coordinator.md",
+    ".openclaw/growth/runbooks/project-priority-management-framework.md",
+    ".openclaw/workspace/projects/careroute-rx/roadmap/priority-tracing.md",
+    ".openclaw/workspace/projects/openclaw-core/roadmap/priority-tracing.md",
+    ".openclaw/workspace/projects/pharma-free-tools/roadmap/priority-tracing.md"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [],
+  "manual_paths": [
+    ".openclaw/growth/config/priority-evaluation-metrics.json",
+    ".openclaw/growth/cron-wording/monthly-project-priority-review.md",
+    ".openclaw/growth/prompts/roadmap-coordinator.md",
+    ".openclaw/growth/runbooks/project-priority-management-framework.md",
+    ".openclaw/workspace/projects/careroute-rx/roadmap/priority-tracing.md",
+    ".openclaw/workspace/projects/openclaw-core/roadmap/priority-tracing.md",
+    ".openclaw/workspace/projects/pharma-free-tools/roadmap/priority-tracing.md"
+  ],
+  "apply_plan": [
+    {
+      "path": ".openclaw/growth/config/priority-evaluation-metrics.json",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/growth/cron-wording/monthly-project-priority-review.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/growth/prompts/roadmap-coordinator.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/growth/runbooks/project-priority-management-framework.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/workspace/projects/careroute-rx/roadmap/priority-tracing.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/workspace/projects/openclaw-core/roadmap/priority-tracing.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/workspace/projects/pharma-free-tools/roadmap/priority-tracing.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

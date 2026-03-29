@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExecutionResult",
+  "type": "object",
+  "required": [
+    "task_id",
+    "status",
+    "executor",
+    "summary",
+    "changed_files",
+    "verification_results",
+    "remaining_risks",
+    "exit_code",
+    "started_at",
+    "finished_at"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "policy_blocked",
+        "timeout",
+        "runtime_error",
+        "invalid_request",
+        "invalid_result",
+        "failed"
+      ]
+    },
+    "executor": {"type": "string", "enum": ["openclaw", "claude-code"]},
+    "summary": {"type": "string"},
+    "changed_files": {"type": "array", "items": {"type": "string"}},
+    "verification_results": {"type": "array", "items": {"type": "string"}},
+    "remaining_risks": {"type": "array", "items": {"type": "string"}},
+    "exit_code": {"type": "integer", "minimum": 0},
+    "started_at": {"type": "string"},
+    "finished_at": {"type": "string"},
+    "dispatch_id": {"type": "string"},
+    "raw_response_path": {"type": "string"},
+    "rendered_prompt_path": {"type": "string"},
+    "_meta": {
+      "type": "object",
+      "properties": {
+        "result_code": {"type": "string", "enum": ["AUTH_REQUIRED"]},
+        "normalization_source": {"type": "string"},
+        "fallback_used": {"type": "boolean"},
+        "retry_count": {"type": "integer", "minimum": 0},
+        "cli_version": {"type": ["string", "null"]},
+        "raw_sha256": {"type": "string"},
+        "degraded_contract": {"type": "string"},
+        "publishable": {"type": "boolean"},
+        "auth_status_path": {"type": "string"},
+        "auth_log_path": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

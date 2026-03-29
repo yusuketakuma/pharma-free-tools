@@ -1,0 +1,20 @@
+{
+  "review_id": "2026-03-28-growth-index-review",
+  "proposal_id": "2026-03-28-growth-input-index-and-readpath",
+  "reviewed_at": "2026-03-29T06:42:00+09:00",
+  "reviewer": "tama-ai",
+  "decision": "approve",
+  "reason": "Low-risk growth index proposal that improves proposal discovery efficiency without modifying protected paths or routing policies. Changes are minimal and reversible.",
+  "apply_mode": "assisted",
+  "status": "APPROVED",
+  "approved_paths": [
+    ".openclaw/growth/INDEX.md",
+    ".openclaw/growth/index.json"
+  ],
+  "blocked_paths": [],
+  "notes": [
+    "Index files will be created with minimal metadata",
+    "Discovery patterns will be updated in subsequent report/proposal generation jobs",
+    "No protected paths or routing policies will be modified"
+  ]
+}

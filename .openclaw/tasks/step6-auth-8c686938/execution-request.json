@@ -1,0 +1,38 @@
+{
+  "task_id": "step6-auth-8c686938",
+  "request_version": 2,
+  "executor": "claude-code",
+  "execution_mode": "cli",
+  "task_summary": "Implement queue rebalance fixture",
+  "constraints": [
+    "preserve route decision"
+  ],
+  "target_paths": [
+    ".openclaw/scripts/execute_task.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "verification_commands": [
+    "python3 -m unittest discover -s .openclaw/tests -p 'test_*.py'"
+  ],
+  "review_focus": [
+    "correctness"
+  ],
+  "approval": {
+    "required": false,
+    "protected_paths": []
+  },
+  "route_decision_id": "route-auth",
+  "dispatch_id": "dispatch-auth",
+  "context_pack_path": ".openclaw/tasks/step6-auth-8c686938/context-pack.md",
+  "rendered_prompt_path": ".openclaw/tasks/step6-auth-8c686938/rendered-prompt.txt",
+  "raw_response_path": ".openclaw/tasks/step6-auth-8c686938/claude-raw.json",
+  "auth_artifacts": {
+    "auth_status_path": ".openclaw/tasks/step6-auth-8c686938/auth-status.json",
+    "auth_log_path": ".openclaw/tasks/step6-auth-8c686938/auth-preflight.log"
+  },
+  "mock_mode": "success",
+  "started_at": "2026-03-22T16:49:49+09:00",
+  "dispatch_attempt_id": "dispatch-auth_attempt_01",
+  "selected_lane": "acp",
+  "task_type": "write"
+}

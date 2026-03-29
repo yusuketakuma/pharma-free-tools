@@ -1,0 +1,23 @@
+{
+  "lastReview": "2026-03-28T16:55:21.195Z",
+  "lastImprovement": "2026-03-28T16:55:21.197Z",
+  "improvementCount": 0,
+  "weeklyMetrics": {
+    "reviewDate": "2026-03-28T16:55:21.195Z",
+    "reviewPeriod": {
+      "start": "2026-03-21T16:55:21.195Z",
+      "end": "2026-03-28T16:55:21.195Z"
+    },
+    "modeSwitchesPerDay": 0,
+    "emergencyStopsPerWeek": 2,
+    "normalModeStableDays": 0,
+    "monthlyUsagePercent": 35,
+    "historyEntriesCount": 5,
+    "averageConsumptionRate": 11800,
+    "improvementProposals": []
+  },
+  "monthlyMetrics": {},
+  "activeProposals": [],
+  "createdAt": "2026-03-28T16:55:03.629Z",
+  "version": "2.0"
+}

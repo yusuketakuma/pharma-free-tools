@@ -1,0 +1,21 @@
+{
+  "review_id": "proposal-20260328-board-input-freshness-contract-review",
+  "proposal_id": "proposal-20260328-board-input-freshness-contract",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260328-board-input-freshness-contract.md",
+  "reviewed_at": "2026-03-28T16:41:20+09:00",
+  "decision": "approve",
+  "reviewer": "board-auditor",
+  "reason": "Board裁定でapprove候補：docs/runboard/cron-promptの更新で低リスクかつ可逆性高い。protected path・auth・routing root・trust boundary非該当。freshness contractの明確化はboard cycleの安定性向上に直結。",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    ".openclaw/runbook/board-input-freshness-contract.md (新規作成)",
+    "cron: board-claudecode-precheck, board-premeeting-all-agent-business-report, board-premeeting-brief-normalize, board-agenda-assembly (prompt の freshness セクション更新)",
+    "reports/board/agenda-seed-latest.md (freshness metadata 追加)",
+    "reports/board/board-premeeting-brief-latest.md (freshness status 追加)",
+    "reports/board/claude-code-precheck-latest.md (input_gate 判定の統一)"
+  ],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "APPROVED",
+  "notes": []
+}

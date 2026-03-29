@@ -1,0 +1,37 @@
+{
+  "signal_id": "signal-20260325211500-handoff-guardrail",
+  "occurred_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "category": "lesson",
+  "domain": "staffing",
+  "summary": "scout / PoC handoff は owner / due / success criteria がないと止まりやすく、探索だけで完結させない。",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "sidebiz / research-analyst の候補は PoC 入口で止まりやすい"
+    ],
+    "refs": [
+      "reports/cron/autonomy-kpi-outcome-review-20260326-0430.md",
+      "reports/cron/agent-performance-optimization-review-20260325-0715.md",
+      "reports/cron/domain-specialization-growth-review-20260325-0700.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "research-analyst",
+      "opportunity-scout"
+    ],
+    "repos": [
+      "openclaw-core",
+      "sidebiz"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": true
+}

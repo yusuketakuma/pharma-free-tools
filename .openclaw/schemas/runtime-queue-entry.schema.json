@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RuntimeQueueEntry",
+  "type": "object",
+  "required": [
+    "task_id",
+    "queue_reason",
+    "queued_at",
+    "last_rebalanced_at",
+    "route_decision_id",
+    "approval_id",
+    "dispatch_id",
+    "resume_target_state",
+    "resume_eligible",
+    "resume_blockers",
+    "version"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "active": {"type": "boolean"},
+    "queue_reason": {
+      "type": "string",
+      "enum": ["waiting_auth", "waiting_approval", "waiting_capacity", "waiting_manual_review"]
+    },
+    "state": {"type": ["string", "null"]},
+    "route": {"type": ["string", "null"]},
+    "route_decision_id": {"type": ["string", "null"]},
+    "approval_id": {"type": ["string", "null"]},
+    "dispatch_id": {"type": ["string", "null"]},
+    "queued_at": {"type": "string"},
+    "released_at": {"type": ["string", "null"]},
+    "last_rebalanced_at": {"type": ["string", "null"]},
+    "resume_target_state": {"type": "string"},
+    "resume_eligible": {"type": "boolean"},
+    "resume_blockers": {"type": "array", "items": {"type": "string"}},
+    "task_queue_path": {"type": "string"},
+    "runtime_queue_path": {"type": "string"},
+    "updated_at": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1}
+  },
+  "additionalProperties": true
+}

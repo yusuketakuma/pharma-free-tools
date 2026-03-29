@@ -1,0 +1,15 @@
+{
+  "review_id": "token-management-system-operational-optimization-2026-03-29-review",
+  "proposal_id": "token-management-system-operational-optimization-2026-03-29",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/token-management-system-operational-optimization-2026-03-29.json",
+  "reviewed_at": "2026-03-29T03:42:05+09:00",
+  "decision": "revise",
+  "reviewer": "self-improvement-proposal-review",
+  "reason": "token management system affects core runtime behavior, needs more evidence on performance vs cost trade-offs",
+  "apply_mode": "manual",
+  "approved_paths": [],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "INBOX",
+  "notes": []
+}

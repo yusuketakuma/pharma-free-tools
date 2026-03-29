@@ -1,0 +1,13 @@
+{
+  "task_id": "step6-invalid-artifact-5cf361ed",
+  "verdict": "blocked",
+  "summary": "Queue artifact validation failed; task held for manual review.",
+  "issues": [
+    "invalid queue artifact: /Users/yusuke/.openclaw/workspace/.openclaw/runtime/queue/waiting_auth/step6-invalid-artifact-5cf361ed.json: runtime-queue-entry: invalid json in /Users/yusuke/.openclaw/workspace/.openclaw/runtime/queue/waiting_auth/step6-invalid-artifact-5cf361ed.json"
+  ],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": true,
+  "result_classification": "queue_artifact_invalid",
+  "fallback_used": false
+}

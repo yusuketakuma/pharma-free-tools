@@ -1,0 +1,38 @@
+{
+  "task_id": "step6-resume-no-redispatch-bdc0ed47",
+  "lead_role": "ai-engineer",
+  "advisory_subroles": [
+    "project-shipper"
+  ],
+  "active_subroles": [],
+  "mandatory_review_roles": [
+    "workflow-optimizer"
+  ],
+  "required_capabilities": [
+    "backend",
+    "python",
+    "runtime",
+    "workflow-automation"
+  ],
+  "departments_involved": [
+    "engineering",
+    "studio-operations",
+    "testing"
+  ],
+  "reasons": [
+    "lead selected by highest lead_score=0.77",
+    "capability match: python, workflow-automation",
+    "output fit: script",
+    "owns relevant paths",
+    "department match: engineering",
+    "cross_department: advisory -> project-shipper",
+    "protected_paths: mandatory_review -> workflow-optimizer"
+  ],
+  "lead_score": 0.77,
+  "risk_level": "low",
+  "complexity": "medium",
+  "desired_outputs": [
+    "script"
+  ],
+  "protected_paths": []
+}

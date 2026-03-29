@@ -1,0 +1,31 @@
+{
+  "task_id": "t",
+  "captured_at": "2026-03-22T17:14:16+09:00",
+  "providers": {
+    "openclaw": {
+      "healthy": true,
+      "remaining_requests_ratio": 0.7,
+      "remaining_tokens_ratio": 0.7,
+      "usage_pressure": 0.3,
+      "cost_pressure": 0.1,
+      "hard_blocked": false,
+      "captured_at": "2026-03-22T17:14:16+09:00",
+      "source": "derived_env_or_cache"
+    },
+    "claude_code": {
+      "healthy": true,
+      "acp_healthy": true,
+      "cli_healthy": true,
+      "cli_backend_healthy": true,
+      "auth_ok": true,
+      "rpm_pressure": 0.2,
+      "itpm_pressure": 0.2,
+      "otpm_pressure": 0.2,
+      "spend_pressure": 0.2,
+      "retry_after_sec": 0.0,
+      "hard_blocked": false,
+      "captured_at": "2026-03-22T17:14:16+09:00",
+      "source": "derived_env_or_cache"
+    }
+  }
+}

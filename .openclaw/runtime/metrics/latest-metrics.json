@@ -1,0 +1,60 @@
+{
+  "captured_at": "2026-03-22T17:23:39+09:00",
+  "queue_reason_counts": {
+    "waiting_auth": 476,
+    "waiting_approval": 0,
+    "waiting_capacity": 0,
+    "waiting_manual_review": 343
+  },
+  "queue_residency_seconds": {
+    "waiting_auth": {
+      "count": 476,
+      "avg_seconds": 2212.366,
+      "max_seconds": 5286.28
+    },
+    "waiting_approval": {
+      "count": 0,
+      "avg_seconds": 0.0,
+      "max_seconds": 0.0
+    },
+    "waiting_capacity": {
+      "count": 0,
+      "avg_seconds": 0.0,
+      "max_seconds": 0.0
+    },
+    "waiting_manual_review": {
+      "count": 343,
+      "avg_seconds": 2177.114,
+      "max_seconds": 5286.28
+    }
+  },
+  "rebalance": {
+    "attempts": 674,
+    "successes": 674,
+    "success_rate": 1.0
+  },
+  "auth_failure_count": 345,
+  "approval_waiting_count": 0,
+  "manual_review_waiting_count": 343,
+  "fallback_success_count": 0,
+  "degraded_success_count": 3,
+  "invalid_queue_artifact_count": 0,
+  "acp_healthy": true,
+  "cli_healthy": true,
+  "cli_backend_healthy": false,
+  "acp_last_success_at": "2026-03-22T17:23:33+09:00",
+  "cli_last_success_at": "2026-03-22T17:23:22+09:00",
+  "acp_consecutive_failures": 0,
+  "cli_consecutive_failures": 0,
+  "lane_selection_counts": {
+    "acp": 1943,
+    "cli": 362,
+    "cli_backend_safety_net": 159,
+    "none": 320
+  },
+  "lane_fallback_counts": {
+    "acp_to_cli": 2692,
+    "acp_to_cli_backend_safety_net": 2692,
+    "cli_to_cli_backend_safety_net": 91
+  }
+}

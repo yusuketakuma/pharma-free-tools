@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClaudeStructuredOutput",
+  "type": "object",
+  "required": [
+    "result",
+    "changed_files",
+    "verification_results",
+    "remaining_risks"
+  ],
+  "properties": {
+    "summary": {"type": "string"},
+    "result": {"type": "string"},
+    "changed_files": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "verification_results": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "remaining_risks": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}

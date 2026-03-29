@@ -1,0 +1,25 @@
+{
+  "source": {"type": "cron", "name": "cross-agent-knowledge-sync"},
+  "category": "dependency",
+  "domain": "reporting",
+  "summary": "board-side dispatch remains separable from exec-side live receipt; completion claims should stay split from effect-confirmed state until live receipt is observed.",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "board send / accept / confirm are complete",
+      "exec live receive is still not observed",
+      "apply / review / manual_required / effect-confirmed remain distinct"
+    ],
+    "refs": [
+      "reports/cron/board-postmeeting-agent-dispatch-20260327-1435.md",
+      "reports/growth/self-improvement-verification-latest.md",
+      "reports/cron/cross-agent-knowledge-sync-20260327-1450.md"
+    ]
+  },
+  "related_entities": {
+    "agents": ["board-operator", "board-auditor", "supervisor-core", "ops-automator"],
+    "repos": ["openclaw-core"],
+    "layers": ["board", "execution", "infra"]
+  },
+  "candidate_hint": false
+}

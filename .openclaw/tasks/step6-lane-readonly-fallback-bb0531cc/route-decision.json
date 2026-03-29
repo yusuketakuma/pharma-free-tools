@@ -1,0 +1,15 @@
+{
+  "task_id": "step6-lane-readonly-fallback-bb0531cc",
+  "route_decision_id": "route-bc7148964b47",
+  "decision": "claude-code",
+  "score": 0.85,
+  "reasons": [
+    "task appears multi-step or implementation-heavy",
+    "requested_route=claude-code"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ]
+}

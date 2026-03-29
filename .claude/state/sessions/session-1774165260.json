@@ -1,0 +1,45 @@
+{
+  "session_id": "session-1774165260",
+  "parent_session_id": null,
+  "state": "stopped",
+  "started_at": "2026-03-22T07:41:00Z",
+  "updated_at": "2026-03-22T07:41:44Z",
+  "event_seq": 34,
+  "last_event_id": "event-000034",
+  "state_version": 1,
+  "cwd": "/Users/yusuke/.openclaw/workspace",
+  "project_name": "workspace",
+  "resumed_at": "2026-03-22T07:41:21Z",
+  "git": {
+    "branch": "main",
+    "uncommitted_changes": 116,
+    "last_commit": "c74d61e5"
+  },
+  "plans": {
+    "exists": false,
+    "last_modified": 0,
+    "wip_tasks": 0,
+    "todo_tasks": 0,
+    "pending_tasks": 0,
+    "completed_tasks": 0
+  },
+  "orchestration": {
+    "max_state_retries": 3,
+    "retry_backoff_seconds": 10
+  },
+  "prompt_seq": 8,
+  "intent": "literal",
+  "changes_this_session": [
+    {
+      "file": ".openclaw/scripts/run_claude_acp.py",
+      "action": "Edit",
+      "timestamp": "2026-03-22T07:41:16Z",
+      "important": false
+    }
+  ],
+  "last_message_length": 487,
+  "last_message_hash": "584f8e19ef185562",
+  "ended_at": "2026-03-22T07:41:44Z",
+  "duration_minutes": 540,
+  "memory_logged": true
+}

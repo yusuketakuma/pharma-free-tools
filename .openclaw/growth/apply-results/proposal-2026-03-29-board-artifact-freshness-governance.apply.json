@@ -1,0 +1,60 @@
+{
+  "apply_id": "proposal-2026-03-29-board-artifact-freshness-governance-apply",
+  "proposal_id": "proposal-2026-03-29-board-artifact-freshness-governance",
+  "applied_at": "2026-03-29T15:50:00+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/approved/proposal-2026-03-29-board-artifact-freshness-governance.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-2026-03-29-board-artifact-freshness-governance.review.json",
+  "apply_mode": "assisted",
+  "status": "completed",
+  "requested_paths": [
+    ".openclaw/docs/board-freshness-specification.md",
+    ".openclaw/governance/board-artifact-lifecycle.md",
+    ".openclaw/growth/config/board-freshness-contract.json",
+    ".openclaw/growth/cron-wording/board-publish-gate-validation.md",
+    ".openclaw/growth/runbooks/board-artifact-freshness-validation.md",
+    ".openclaw/runtime/board/freshness-metrics.json"
+  ],
+  "applied_paths": [
+    {
+      "path": ".openclaw/docs/board-freshness-specification.md",
+      "disposition": "created",
+      "size_bytes": 6092
+    },
+    {
+      "path": ".openclaw/governance/board-artifact-lifecycle.md",
+      "disposition": "created",
+      "size_bytes": 7331
+    },
+    {
+      "path": ".openclaw/growth/config/board-freshness-contract.json",
+      "disposition": "created",
+      "size_bytes": 5413
+    },
+    {
+      "path": ".openclaw/growth/cron-wording/board-publish-gate-validation.md",
+      "disposition": "created",
+      "size_bytes": 5686
+    },
+    {
+      "path": ".openclaw/growth/runbooks/board-artifact-freshness-validation.md",
+      "disposition": "created",
+      "size_bytes": 7642
+    },
+    {
+      "path": ".openclaw/runtime/board/freshness-metrics.json",
+      "disposition": "created",
+      "size_bytes": 3274
+    }
+  ],
+  "blocked_paths": [],
+  "manual_paths": [],
+  "protected_files_verified_untouched": true,
+  "notes": [
+    "6 files created as specified in the approved proposal.",
+    "No auth/routing/trust boundary changes.",
+    "All content in Japanese (markdown) and JSON (config/metrics).",
+    "Freshness contract covers 7 artifact types with per-type max_age_ms, slot alignment, and validation failure handling.",
+    "Metrics schema initialized with null values ready for first validation run.",
+    "Cron wording template ready for insertion into board cycle job prompts."
+  ]
+}

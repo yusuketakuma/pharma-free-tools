@@ -1,0 +1,80 @@
+{
+  "proposal_id": "proposal-20260325211500-queue-triage-split",
+  "created_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "title": "Split supervisor-core and route dominant-prefix triage to Queue Triage Analyst",
+  "summary": "Supervisor-core で重複しやすい観測・triage・品質レビューを分離し、dominant-prefix triage は専任経路へ切り出す。",
+  "requested_action": {
+    "type": "adopt",
+    "target": "queue-triage-analyst / supervisor-core boundary"
+  },
+  "change_scope": {
+    "domains": [
+      "routing",
+      "staffing",
+      "reporting"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "agents": [
+      "supervisor-core",
+      "queue-triage-analyst"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "why_now": "同じ supervisor 論点が複数レポートで反復しており、追加観測より triage 変換がボトルネックになっている。",
+  "expected_benefit": "重複レポートを減らし、owner と次アクションを早く固定できる。",
+  "possible_harm": "分離しすぎると supervisor-core が横断文脈を失う可能性がある。",
+  "boundary_impact": {
+    "ceo_board": "low",
+    "board_execution": "medium",
+    "trust_boundary": "low",
+    "approval_boundary": "low"
+  },
+  "reversibility": {
+    "level": "high",
+    "rollback_path": "triage を supervisor-core に戻し、Queue Triage Analyst を advisory-only にする。"
+  },
+  "blast_radius": {
+    "users": "low",
+    "agents": "medium",
+    "production": "low"
+  },
+  "novelty": {
+    "level": "medium"
+  },
+  "evidence": {
+    "metrics": [
+      "20/21 成功でも監督系の重複が残る",
+      "複数レポートが dominant-prefix triage を示唆"
+    ],
+    "signals": [
+      "signal-20260325211500-supervisor-overlap",
+      "signal-20260325211500-history-gate"
+    ],
+    "refs": [
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+      "reports/cron/agent-performance-optimization-review-20260325-0715.md",
+      "reports/cron/agent-workforce-expansion-review-20260325-0645.md",
+      "reports/cron/workspace-report-learning-review-20260326-0300.md"
+    ]
+  },
+  "root_issue": "supervisor-core is still absorbing triage work that should be specialized",
+  "desired_change": "dominant-prefix triage should move to a dedicated Queue Triage Analyst path",
+  "mandatory_deep_flags": [],
+  "risk_hints": [
+    "role boundary drift",
+    "repeat-report suppression"
+  ],
+  "recommendation": {
+    "proposed_lane": "review",
+    "proposed_disposition": "adopt"
+  }
+}

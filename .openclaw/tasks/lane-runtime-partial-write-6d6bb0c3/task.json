@@ -1,0 +1,17 @@
+{
+  "task_id": "lane-runtime-partial-write-6d6bb0c3",
+  "task": "Implement lane runtime behavior",
+  "requested_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ],
+  "constraints": [],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "requested_actions": [
+    "edit"
+  ],
+  "requested_route": "claude-code",
+  "created_at": "2026-03-22T16:40:32+09:00"
+}

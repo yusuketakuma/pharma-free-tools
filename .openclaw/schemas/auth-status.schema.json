@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClaudeAuthStatus",
+  "type": "object",
+  "required": [
+    "checked_at",
+    "ok",
+    "cli",
+    "command"
+  ],
+  "properties": {
+    "checked_at": {
+      "type": "string"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "cli": {
+      "type": "string"
+    },
+    "command": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exit_code": {
+      "type": "integer"
+    },
+    "logged_in": {
+      "type": "boolean"
+    },
+    "auth_method": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "raw_path": {
+      "type": "string"
+    },
+    "log_path": {
+      "type": "string"
+    },
+    "runtime_cache_path": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "login_hint": {
+      "type": "string"
+    },
+    "stdout": {},
+    "stderr": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

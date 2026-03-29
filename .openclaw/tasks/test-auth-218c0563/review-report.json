@@ -1,0 +1,11 @@
+{
+  "task_id": "test-auth-218c0563",
+  "verdict": "blocked",
+  "summary": "auth",
+  "issues": [],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": false,
+  "result_classification": "auth_required",
+  "fallback_used": false
+}

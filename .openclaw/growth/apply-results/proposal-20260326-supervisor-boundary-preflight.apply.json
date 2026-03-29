@@ -1,0 +1,72 @@
+{
+  "apply_id": "proposal-20260326-supervisor-boundary-preflight-apply",
+  "proposal_id": "proposal-20260326-supervisor-boundary-preflight",
+  "applied_at": "2026-03-26T20:16:00+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260326-supervisor-boundary-preflight.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-supervisor-boundary-preflight.review.json",
+  "apply_mode": "assisted",
+  "status": "blocked",
+  "requested_paths": [
+    "projects/openclaw-core/docs/supervisor-core-runbook.md",
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "projects/openclaw-core/docs/handoff-preflight.md",
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "reports/cron/agent-workforce-expansion-review-20260326-0645.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [
+    "projects/openclaw-core/docs/supervisor-core-runbook.md",
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "projects/openclaw-core/docs/handoff-preflight.md",
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "reports/cron/agent-workforce-expansion-review-20260326-0645.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md"
+  ],
+  "manual_paths": [],
+  "apply_plan": [
+    {
+      "path": "projects/openclaw-core/docs/supervisor-core-runbook.md",
+      "disposition": "blocked",
+      "reason": "protected_routing_root_or_trust_boundary"
+    },
+    {
+      "path": "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+      "disposition": "blocked",
+      "reason": "protected_routing_root_or_trust_boundary"
+    },
+    {
+      "path": "projects/openclaw-core/docs/handoff-preflight.md",
+      "disposition": "blocked",
+      "reason": "protected_routing_root_or_trust_boundary"
+    },
+    {
+      "path": "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+      "disposition": "blocked",
+      "reason": "protected_routing_root_or_trust_boundary"
+    },
+    {
+      "path": "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+      "disposition": "blocked",
+      "reason": "protected_routing_root_or_trust_boundary"
+    },
+    {
+      "path": "reports/cron/agent-workforce-expansion-review-20260326-0645.md",
+      "disposition": "blocked",
+      "reason": "protected_routing_root_or_trust_boundary"
+    },
+    {
+      "path": "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "disposition": "blocked",
+      "reason": "protected_routing_root_or_trust_boundary"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "blocked by user rule: protected path / routing root / trust boundary are out of scope",
+    "assisted apply plan intentionally not generated into a mutating change set"
+  ]
+}

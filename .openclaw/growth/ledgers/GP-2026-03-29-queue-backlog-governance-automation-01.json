@@ -1,0 +1,82 @@
+{
+  "cycle_id": "GP-2026-03-29-queue-backlog-governance-automation-01",
+  "created_at": "2026-03-29T23:27:00Z",
+  "updated_at": "2026-03-29T13:42:42+09:00",
+  "proposal_id": "GP-2026-03-29-queue-backlog-governance-automation-01",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/GP-2026-03-29-queue-backlog-governance-automation-01.json",
+  "proposal_status": "APPROVED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/GP-2026-03-29-queue-backlog-governance-automation-01.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Board裁定によるapprove候補。docs/runbook/cron-wordingの低リスク変更でreversible。",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-29T12:41:07+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-29T08:40:36+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/GP-2026-03-29-queue-backlog-governance-automation-01.review.json"
+    },
+    {
+      "at": "2026-03-29T08:42:50+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/GP-2026-03-29-queue-backlog-governance-automation-01.apply.json"
+    },
+    {
+      "at": "2026-03-29T09:42:41+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/GP-2026-03-29-queue-backlog-governance-automation-01.apply.json"
+    },
+    {
+      "at": "2026-03-29T11:40:43+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/GP-2026-03-29-queue-backlog-governance-automation-01.review.json"
+    },
+    {
+      "at": "2026-03-29T12:41:07+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/GP-2026-03-29-queue-backlog-governance-automation-01.review.json"
+    },
+    {
+      "at": "2026-03-29T12:42:30+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/GP-2026-03-29-queue-backlog-governance-automation-01.apply.json"
+    },
+    {
+      "at": "2026-03-29T13:42:42+09:00",
+      "type": "apply",
+      "status": "manual_required",
+      "proposal_status": "APPROVED",
+      "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/GP-2026-03-29-queue-backlog-governance-automation-01.apply.json"
+    }
+  ],
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/GP-2026-03-29-queue-backlog-governance-automation-01.apply.json",
+  "last_apply": {
+    "status": "manual_required",
+    "apply_mode": "assisted",
+    "applied_paths": [],
+    "blocked_paths": [],
+    "manual_paths": [
+      ".openclaw/growth/cron-wording/queue-triage-pattern.md",
+      ".openclaw/growth/ledgers/queue-triage-ledger.json",
+      ".openclaw/growth/runbooks/queue-backlog-governance-automation.md",
+      ".openclaw/reports/board/board-agenda-template.json",
+      ".openclaw/runtime/heartbeat/heartbeat-results.jsonl"
+    ],
+    "applied_at": "2026-03-29T13:42:42+09:00"
+  }
+}

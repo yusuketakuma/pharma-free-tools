@@ -1,0 +1,38 @@
+{
+  "signal_id": "signal-20260325211500-history-gate",
+  "occurred_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "category": "lesson",
+  "domain": "policy",
+  "summary": "履歴が薄いときは新しい規則を増やさず、既存候補の統合と owner/due/success criteria の補強を先にする。",
+  "severity": "medium",
+  "evidence": {
+    "metrics": [
+      "3日連続指標不足の判定は履歴ありのときだけ有効",
+      "2回連続要判断事項は priority review へ昇格"
+    ],
+    "refs": [
+      "reports/cron/agent-lesson-capture-20260325-0615.md",
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+      "reports/cron/workspace-report-learning-review-20260326-0300.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "supervisor-core",
+      "research-analyst",
+      "doc-editor"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "candidate_hint": true
+}

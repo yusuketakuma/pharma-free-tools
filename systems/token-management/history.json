@@ -1,0 +1,57 @@
+[
+  {
+    "timestamp": "2026-03-28T11:34:59.329Z",
+    "tokensIn": 59000,
+    "tokensOut": 140,
+    "contextSize": 65000,
+    "contextLimit": 203000,
+    "usageRate": 0.29,
+    "monthlyUsage": 0,
+    "consumptionRate": 11800,
+    "remainingHours": 0.2
+  },
+  {
+    "timestamp": "2026-03-28T11:37:27.645Z",
+    "tokensIn": 59000,
+    "tokensOut": 140,
+    "contextSize": 65000,
+    "contextLimit": 203000,
+    "usageRate": 0.29,
+    "monthlyUsage": 0,
+    "consumptionRate": 11800,
+    "remainingHours": 0.2
+  },
+  {
+    "timestamp": "2026-03-28T11:45:26.573Z",
+    "tokensIn": 150000,
+    "tokensOut": 148000,
+    "contextSize": 140000,
+    "contextLimit": 203000,
+    "cacheHitRate": 0.75,
+    "monthlyUsagePercent": 35,
+    "fiveHourRemainingPercent": 80,
+    "_writtenAt": "2026-03-28T11:45:26.573Z"
+  },
+  {
+    "timestamp": "2026-03-28T12:04:35.257Z",
+    "tokensIn": 150000,
+    "tokensOut": 148000,
+    "contextSize": 140000,
+    "contextLimit": 203000,
+    "cacheHitRate": 0.75,
+    "monthlyUsagePercent": 35,
+    "fiveHourRemainingPercent": 80,
+    "_writtenAt": "2026-03-28T12:04:35.258Z"
+  },
+  {
+    "timestamp": "2026-03-28T12:18:35.582Z",
+    "tokensIn": 150000,
+    "tokensOut": 148000,
+    "contextSize": 140000,
+    "contextLimit": 203000,
+    "cacheHitRate": 0.75,
+    "monthlyUsagePercent": 35,
+    "fiveHourRemainingPercent": 80,
+    "_writtenAt": "2026-03-28T12:18:35.582Z"
+  }
+]

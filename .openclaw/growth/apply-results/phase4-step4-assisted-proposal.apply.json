@@ -1,0 +1,36 @@
+{
+  "apply_id": "phase4-step4-assisted-proposal-apply",
+  "proposal_id": "phase4-step4-assisted-proposal",
+  "applied_at": "2026-03-22T13:01:58+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/phase4-step4-assisted-proposal.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/phase4-step4-assisted-proposal.review.json",
+  "apply_mode": "assisted",
+  "status": "applied",
+  "requested_paths": [
+    ".openclaw/shared/example.md",
+    "projects/demo/docs/guide.md"
+  ],
+  "applied_paths": [
+    ".openclaw/shared/example.md",
+    "projects/demo/docs/guide.md"
+  ],
+  "blocked_paths": [],
+  "manual_paths": [],
+  "apply_plan": [
+    {
+      "path": ".openclaw/shared/example.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    },
+    {
+      "path": "projects/demo/docs/guide.md",
+      "disposition": "assisted",
+      "reason": "assisted_apply_allowed"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPLIED",
+  "notes": [
+    "assisted apply generated a safe apply plan; target files were not mutated automatically"
+  ]
+}

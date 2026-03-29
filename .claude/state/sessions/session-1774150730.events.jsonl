@@ -1,0 +1,9 @@
+{"type":"session.start","ts":"2026-03-22T03:38:50Z","state":"initialized","data":{"cc_session_id":"575da3b3-6614-47a9-a328-48e33b7e050b"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-22T03:38:50Z","state":"initialized"}
+{"id":"event-000002","type":"session.resume","ts":"2026-03-22T07:29:06Z","state":"initialized"}
+{"id":"event-000003","type":"tool.bash","ts":"2026-03-22T07:29:20Z","state":"initialized","data":{"command":"find /Users/yusuke/.openclaw/workspace -type f -name "*.py" | head -20"}}
+{"id":"event-000004","type":"tool.bash","ts":"2026-03-22T07:29:21Z","state":"initialized","data":{"command":"ls -la /Users/yusuke/.openclaw/workspace/.openclaw/ | head -30"}}
+{"id":"event-000005","type":"tool.bash","ts":"2026-03-22T07:29:25Z","state":"initialized","data":{"command":"find /Users/yusuke/.openclaw/workspace/.openclaw -type f \( -name "*.py" -o -name "*.sh" \) | sort"}}
+{"id":"event-000006","type":"session.resume","ts":"2026-03-22T07:29:26Z","state":"initialized"}
+{"id":"event-000007","type":"tool.bash","ts":"2026-03-22T07:29:26Z","state":"initialized","data":{"command":"find /Users/yusuke/.openclaw/workspace/.openclaw -type f -name "*step*" -o -name "*lane*" 2>/dev/null | sort"}}
+{"id":"event-000008","type":"session.stop","ts":"2026-03-22T07:29:32Z","state":"stopped"}

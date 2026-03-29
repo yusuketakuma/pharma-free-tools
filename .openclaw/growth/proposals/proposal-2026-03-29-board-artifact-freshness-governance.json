@@ -1,0 +1,91 @@
+{
+  "proposal_id": "proposal-2026-03-29-board-artifact-freshness-governance",
+  "created_at": "2026-03-29T07:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "board / heartbeat runtime report",
+    "board post-meeting analysis",
+    "autonomy-loop health review"
+  ],
+  "title": "Board Artifact Freshness Governance",
+  "summary": "Board cycle のアーティファクト鮮度を publish 時点で厳格に管理する。agenda-seed-latest.md のような重要アーティファクトが stale 状態で publish されないように、publish gate での freshness validation を導入する。",
+  "observations": [
+    "publish gate の不備で board_cycle_slot_id が古い artifact が publish され、precheck で問題発覚",
+    "freshness が precheck でしか検出されておらず、board cycle の進行が遅延",
+    "publish contract が曖昧で、どの時点で freshness が保証されるのかが不明確",
+    "同様の問題が他の board アーティファクトでも発生する可能性がある"
+  ],
+  "proposed_changes": [
+    "publish gate の slot 一致チェックと freshness threshold validation",
+    "board アーティファクトの lifecycle management と versioning",
+    "freshness コントラクトの明文化と exception handling",
+    "freshness 監視と anomaly detection システムの構築"
+  ],
+  "affected_paths": [
+    ".openclaw/growth/runbooks/board-artifact-freshness-validation.md",
+    ".openclaw/growth/config/board-freshness-contract.json",
+    ".openclaw/growth/cron-wording/board-publish-gate-validation.md",
+    ".openclaw/runtime/board/publish-gate/",
+    ".openclaw/runtime/board/freshness-metrics.json",
+    ".openclaw/governance/board-artifact-lifecycle.md",
+    ".openclaw/docs/board-freshness-specification.md"
+  ],
+  "evidence": [
+    "board/2026-03-28-board-seed-freshness-publish-gate-agenda-candidate.md: stale agenda-seed-latest.md 問題",
+    "agenda-seed-latest.md: board_cycle_slot_id=20260327-2220 (stale)",
+    "claude-code-precheck-latest.md: expected_board_cycle_slot_id=20260328-0235 との不一致",
+    "board-premeeting-brief-latest.md: 古い cycle の表示"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Resolve blocked/manual paths before verification.",
+  "cycle_id": "proposal-2026-03-29-board-artifact-freshness-governance",
+  "status": "APPROVED",
+  "priority": "high",
+  "risk_level": "low",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T10:41:12+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T10:41:12+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T10:41:12+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T10:41:12+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Low-risk governance proposal: adds publish gate freshness validation and lifecycle management for board artifacts. No protected path changes, no auth/trust boundary impact. All affected paths are governance docs, runbooks, config metadata, and monitoring metrics. Risk level self-assessed as low. Addresses real operational issue (stale artifacts published). Apply with assisted mode.",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      ".openclaw/docs/board-freshness-specification.md",
+      ".openclaw/governance/board-artifact-lifecycle.md",
+      ".openclaw/growth/config/board-freshness-contract.json",
+      ".openclaw/growth/cron-wording/board-publish-gate-validation.md",
+      ".openclaw/growth/runbooks/board-artifact-freshness-validation.md",
+      ".openclaw/runtime/board/freshness-metrics.json",
+      ".openclaw/runtime/board/publish-gate/"
+    ],
+    "blocked_paths": [],
+    "notes": [
+      "Evidence from 2026-03-28 shows stale agenda-seed-latest.md with mismatched board_cycle_slot_id.",
+      "No changes to auth, routing, trust boundary, or approval mechanisms.",
+      "Aligns with Board governance hardening direction from decision-20260326103500-board-agenda-assembly."
+    ],
+    "reviewed_at": "2026-03-29T10:41:12+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-2026-03-29-board-artifact-freshness-governance.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-2026-03-29-board-artifact-freshness-governance.apply.json"
+}

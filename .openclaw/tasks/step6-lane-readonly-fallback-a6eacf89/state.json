@@ -1,0 +1,63 @@
+{
+  "message": "executor finished with status=runtime_error",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "step6-lane-readonly-fallback-a6eacf89",
+  "state": "EXECUTION_FAILED",
+  "updated_at": "2026-03-22T15:55:33+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T15:55:32+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T15:55:32+09:00",
+      "route_decision_id": "route-9b3a08294106",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "route decision stored"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T15:55:32+09:00",
+      "route_decision_id": "route-9b3a08294106",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "execution request saved lane=acp attempt=dispatch-readonly-fallback_attempt_01"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T15:55:32+09:00",
+      "route_decision_id": "route-9b3a08294106",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "executor started lane=acp attempt=dispatch-readonly-fallback_attempt_01"
+    },
+    {
+      "state": "READY_FOR_EXECUTION",
+      "at": "2026-03-22T15:55:32+09:00",
+      "route_decision_id": "route-9b3a08294106",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "execution request saved lane=cli attempt=dispatch-readonly-fallback_attempt_02"
+    },
+    {
+      "state": "RUNNING",
+      "at": "2026-03-22T15:55:32+09:00",
+      "route_decision_id": "route-9b3a08294106",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "executor started lane=cli attempt=dispatch-readonly-fallback_attempt_02"
+    },
+    {
+      "state": "EXECUTION_FAILED",
+      "at": "2026-03-22T15:55:33+09:00",
+      "route_decision_id": "route-9b3a08294106",
+      "dispatch_id": "dispatch-readonly-fallback",
+      "message": "executor finished with status=runtime_error"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-9b3a08294106",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-readonly-fallback"
+}

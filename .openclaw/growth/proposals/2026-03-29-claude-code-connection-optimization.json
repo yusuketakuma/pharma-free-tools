@@ -1,0 +1,78 @@
+{
+  "proposal_id": "GP-2026-03-29-claude-code-connection-optimization-01", 
+  "title": "Claude Code Execution Plane 接続最適化提案",
+  "description": "実行系エージェントとClaude Codeの接続性を改善し、重い実装タスクを適切に処理できる環境を構築",
+  "created_at": "2026-03-29T05:00:00+09:00",
+  "created_by": "autonomy-loop-health-review",
+  "status": "INBOX", 
+  "phase": "propose",
+  "requires_manual_approval": false,
+  "affected_paths": [
+    ".openclaw/growth/runbooks/claude-code-connection-validation.md",
+    ".openclaw/growth/cron-wording/connection-health-check.md",
+    ".openclaw/config/agents/supervisor-core/BOOT.md",
+    ".openclaw/config/agents/ceo-tama/BOOT.md"
+  ],
+  "evidence": [
+    {
+      "type": "runtime",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md",
+      "content": "実行系エージェント3件がClaude Codeを呼び出していない"
+    },
+    {
+      "type": "report",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md", 
+      "content": "Claude Code execution plane接続が残存課題として特定"
+    },
+    {
+      "type": "artifact",
+      "path": "board-postmeeting-dispatch-completion-report-2026-03-29.md",
+      "content": "Enhanced Execution Policyを各エージェントのBOOT.mdに追加済みだが接続未完了"
+    }
+  ],
+  "problem_statement": "Boardディスパッチレポートによると、実行系エージェント3件がClaude Codeを呼び出していない状態が継続している。これにより、重い実装タスクが実行プレーンで処理されず、本来の性能を発揮できない。",
+  "proposed_changes": [
+    {
+      "change": "Claude Code接続検証runbookの作成",
+      "description": "エージェントとClaude Codeの接続性を検証する標準手順を定義",
+      "files": [
+        ".openclaw/growth/runbooks/claude-code-connection-validation.md"
+      ]
+    },
+    {
+      "change": "接続健全性チェックcronの設定",
+      "description": "supervisor-coreに毎時実行の接続健全性チェックジョブを追加",
+      "files": [
+        ".openclaw/growth/cron-wording/connection-health-check.md",
+        ".openclaw/config/agents/supervisor-core/BOOT.md"
+      ]
+    },
+    {
+      "change": "エージェント接続状態の自動診断機能",
+      "description": "各エージェントの接続状態を自動的に診断し、問題を検知する機能",
+      "files": [
+        ".openclaw/config/agents/ceo-tama/BOOT.md"
+      ]
+    }
+  ],
+  "expected_benefits": [
+    "実装タスクの適切な処理環境の確保",
+    "エージェント性能の最大限の活用",
+    "システム全体の効率向上",
+    "接続問題の早期発見と修正"
+  ],
+  "risk_assessment": {
+    "risk_level": "medium",
+    "risk_factors": [
+      "エージェントの再起動が必要になる可能性",
+      "設定変更による既存ジョブへの影響"
+    ],
+    "mitigation_measures": [
+      "テスト環境での検証を先行実施",
+      "変更前の状態をバックアップ",
+      "段階的な適用と監視"
+    ]
+  },
+  "next_step": "board review required",
+  "proposer_impact": "high"
+}

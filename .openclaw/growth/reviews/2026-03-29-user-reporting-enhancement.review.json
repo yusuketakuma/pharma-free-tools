@@ -1,0 +1,22 @@
+{
+  "review_id": "2026-03-29-user-reporting-enhancement-review",
+  "proposal_id": "2026-03-29-user-reporting-enhancement",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/2026-03-29-user-reporting-enhancement.json",
+  "reviewed_at": "2026-03-29T02:40:24+09:00",
+  "decision": "approve",
+  "reviewer": "board-auditor",
+  "reason": "ユーザーレポートシステムの改善は、ユートラスを高め、コミュニケーションギャップを解消するための重要な改善。docs/reporting system の変更でリスクが低く、reversible。",
+  "apply_mode": "assisted",
+  "approved_paths": [
+    "AGENTS.md",
+    "OpenClaw reporting workflows",
+    "SOUL.md",
+    "Status monitoring infrastructure",
+    "Task execution systems",
+    "User communication protocols"
+  ],
+  "blocked_paths": [],
+  "status_before": "APPROVED",
+  "status_after": "APPROVED",
+  "notes": []
+}

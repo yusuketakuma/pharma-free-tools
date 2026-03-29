@@ -1,0 +1,17 @@
+{
+  "task_id": "lane-runtime-acp-cli-safety-aa10e8ee",
+  "task": "Review runtime behavior in read-only mode",
+  "requested_paths": [
+    ".openclaw/scripts/execute_task.py"
+  ],
+  "constraints": [
+    "read-only"
+  ],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "requested_actions": [],
+  "requested_route": "claude-code",
+  "created_at": "2026-03-22T16:48:50+09:00"
+}

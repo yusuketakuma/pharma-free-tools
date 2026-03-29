@@ -1,0 +1,25 @@
+{
+  "cycle_id": "proposal-20260329-seed-operations-standardization",
+  "created_at": "2026-03-29T05:27:00+09:00",
+  "updated_at": "2026-03-29T14:40:44+09:00",
+  "proposal_id": "proposal-20260329-seed-operations-standardization",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260329-seed-operations-standardization.json",
+  "proposal_status": "APPROVED",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260329-seed-operations-standardization.review.json",
+  "last_review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Low-risk proposal: standardizes board input pipeline to use seed artifacts as primary source. No protected path changes. Fully reversible. Addresses real operational pain points.",
+    "apply_mode": "assisted",
+    "reviewed_at": "2026-03-29T14:40:44+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-29T14:40:44+09:00",
+      "type": "review",
+      "decision": "approve",
+      "status": "APPROVED",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260329-seed-operations-standardization.review.json"
+    }
+  ]
+}

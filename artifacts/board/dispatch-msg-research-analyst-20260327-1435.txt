@@ -1,0 +1,9 @@
+OpenClaw 最終裁定（board postmeeting 2026-03-27 14:35 JST）に基づく内部ディスパッチ。
+
+最終裁定: backlog triage の標準化、safe-close / reopen / escalate の 1 ページ固定、新規拡張の凍結、security audit の別議題化、監視指標の絞り込み。
+
+依頼:
+- waiting_auth / waiting_manual_review の stale backlog を evidence-only で分類し、safe-close / reopen / escalate の候補だけを報告する
+- 新しい論点は増やさず、既存 backlog の収束に集中する
+- repo 調査・複数ファイル変更・テスト・実装が必要なら Claude Code execution plane（acp_compat 優先）へ回す
+- 通常業務は継続し、未知の例外や差分だけを上げる

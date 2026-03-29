@@ -1,0 +1,48 @@
+{
+  "proposal_id": "proposal-20260329-conditional-dispatch-for-idle-agents",
+  "status": "APPROVED",
+  "phase": "applied",
+  "created_at": "2026-03-29T08:46:00+09:00",
+  "requires_manual_approval": false,
+  "summary": "空回り担当エージェント2件（queue-backlog-triage-clerk, receipt-delivery-reconciler）への条件付きdispatch導入により、無意味な実行を停止しリソース効率を改善",
+  "observations": [
+    "queue-backlog-triage-clerkはdiminishing_returns状態。backlogに未処理項目がなくても毎時間dispatchされている",
+    "receipt-delivery-reconcilerは13.5時間待機状態。受理確認すべき対象がないのにdispatchされている",
+    "両エージェントともcronジョブを持たず、board-postmeeting-agent-dispatch経由で毎時間実行されている",
+    "両エージェントともrouting rules 0件で、自律的にタスクを生成できない構造",
+    "DIFFERENTIAL_INSTRUCTIONS.mdでreceipt-delivery-reconcilerへの即時停止指示は出ているが、dispatch自体は継続中"
+  ],
+  "proposed_changes": [
+    {
+      "change_id": "1",
+      "target": "board-postmeeting-agent-dispatch cron prompt",
+      "type": "prompt_update",
+      "description": "dispatch先リストに『条件付きdispatch』カテゴリを追加。queue-backlog-triage-clerkとreceipt-delivery-reconcilerを条件付きに分類",
+      "details": "各エージェントのdispatch条件:\n- queue-backlog-triage-clerk: queue-backlog.md / backlog/queue.md に未処理項目が存在する場合のみdispatch\n- receipt-delivery-reconciler: 直近4時間以内に新規配信指示（board dispatch / subagent spawn）が発生している場合のみdispatch\n\n条件を満たさない場合は『通常業務継続 / 待機中（条件未達のためskip）』として記録のみ"
+    },
+    {
+      "change_id": "2", 
+      "target": "receipt-delivery-reconciler/DIFFERENTIAL_INSTRUCTIONS.md",
+      "type": "file_update",
+      "description": "過去の即時停止指示を条件付き運用指示に更新",
+      "details": "停止指示から『条件付きdispatch運用』へ変更。明示的な再開指示なしにcron経由で起動しないよう明記"
+    }
+  ],
+  "affected_paths": [
+    "~/.openclaw/cron/jobs.json (board-postmeeting-agent-dispatch promptのみ)",
+    "~/.openclaw/agents/receipt-delivery-reconciler/DIFFERENTIAL_INSTRUCTIONS.md"
+  ],
+  "evidence": [
+    "openclaw agents list: 両エージェントともrouting rules 0",
+    "openclaw cron list: 両エージェントのcronジョブなし",
+    "DIFFERENTIAL_INSTRUCTIONS.md: receipt-delivery-reconcilerへ13.5時間空回り停止指示済み",
+    "jobs.json: board-postmeeting-agent-dispatch (32ba03a1) が毎時45分に全エージェントへdispatch"
+  ],
+  "expected_impact": {
+    "resource_saving_percent": 60,
+    "description": "2エージェント×毎時間1回の無意味実行（約8-15秒/回のagent turn）を条件付きに変更。dispatch自体のpromptに条件判定を追加するのみで、新規cron不要",
+    "quality_impact": "none_positive",
+    "risk_level": "low"
+  },
+  "next_step": "safe low-risk review candidate"
+}

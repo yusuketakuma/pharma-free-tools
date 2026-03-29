@@ -1,0 +1,11 @@
+{
+  "task_id": "step6-dedupe-9aa7fcd3",
+  "verdict": "blocked",
+  "summary": "fixture review",
+  "issues": [],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": false,
+  "result_classification": "auth_required",
+  "fallback_used": false
+}

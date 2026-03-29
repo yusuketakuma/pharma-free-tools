@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TaskIntake",
+  "type": "object",
+  "required": [
+    "task_id",
+    "task_summary",
+    "required_capabilities",
+    "requested_paths",
+    "desired_outputs",
+    "departments_involved",
+    "risk_level",
+    "complexity"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "task_summary": {"type": "string"},
+    "requested_paths": {"type": "array", "items": {"type": "string"}},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}},
+    "desired_outputs": {"type": "array", "items": {"type": "string"}},
+    "departments_involved": {"type": "array", "items": {"type": "string"}},
+    "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+    "risk_reasons": {"type": "array", "items": {"type": "string"}},
+    "complexity": {"type": "string", "enum": ["low", "medium", "high", "very_high"]},
+    "protected_paths": {"type": "array", "items": {"type": "string"}},
+    "requested_route": {"type": "string"},
+    "signals": {"type": "object"}
+  },
+  "additionalProperties": true
+}

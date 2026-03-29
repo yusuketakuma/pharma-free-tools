@@ -1,0 +1,13 @@
+{
+  "task_id": "lane-runtime-auth-ng-73f33f65",
+  "verdict": "blocked",
+  "summary": "Claude authentication is required before execution can continue.",
+  "issues": [
+    "Claude auth preflight failed; execution can be resumed after login recovery"
+  ],
+  "publish_recommendation": "hold",
+  "publishable": false,
+  "requires_manual_review": false,
+  "result_classification": "auth_required",
+  "fallback_used": false
+}

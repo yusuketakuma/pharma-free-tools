@@ -1,0 +1,26 @@
+{
+  "task_id": "step6-acp-mock-contract-cd4a6cc4",
+  "status": "invalid_result",
+  "executor": "claude-code",
+  "summary": "ACP adapter could not normalize Claude output to the structured contract",
+  "changed_files": [],
+  "verification_results": [
+    "structured output normalization failed"
+  ],
+  "remaining_risks": [
+    "inspect claude-raw.json for schema drift"
+  ],
+  "exit_code": 50,
+  "started_at": "2026-03-22T16:40:01+09:00",
+  "finished_at": "2026-03-22T16:54:11+09:00",
+  "dispatch_id": "dispatch-acp-mock",
+  "raw_response_path": ".openclaw/tasks/step6-acp-mock-contract-cd4a6cc4/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-acp-mock-contract-cd4a6cc4/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "transport_kind": "claude_print_json_compat",
+    "native_acp_available": false,
+    "session_id": "e78ae2bc-f319-4eea-bcfc-599a8fb99da4",
+    "publishable": false
+  }
+}

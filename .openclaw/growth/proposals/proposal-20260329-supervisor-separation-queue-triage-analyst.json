@@ -1,0 +1,127 @@
+{
+  "proposal_id": "proposal-20260329-supervisor-separation-queue-triage-analyst",
+  "created_at": "2026-03-29T05:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "autonomy-loop-health-review",
+    "agent-scorecard-review",
+    "agent-lesson-capture",
+    "agent-performance-optimization-review",
+    "board / heartbeat runtime recent report",
+    "board-agenda-seed-latest"
+  ],
+  "title": "Separate queue triage from supervisor-core and create dedicated Queue Triage Analyst role",
+  "summary": "supervisor-core の観測・triage・品質レビュー同居による重複を解消し、dominant-prefix triage を専任の Queue Triage Analyst に切り出すことで、重複論点の削減と bordernoise の軽減を実現する。",
+  "observations": [
+    "autonomy-loop-health-review 20260325-0500.md では、supervisor-core で観測→triage→品質レビューが同質化して重複しやすい問題が明確に指摘されている。",
+    "agent-lesson-capture 20260326-0615.md でも、同じ supervisor 系論点が何度も再掲され、redundant wording の原因とされている。",
+    "agent-performance-optimization-review 20260326-0715.md では、supervisor-core は役割の広さが主原因で、モデル強化より境界縮小が効くと分析されている。",
+    "board-agenda-seed-latest.md では、dominant-prefix triage の checklist 固定と backlog churn 問題が議論されている。",
+    "既存の anomaly-delta-monitor-contract は定常監視の signal-only 化を解決したが、supervisor-core の重複問題は別途必要。",
+    "proposed roles として Queue Triage Analyst が既に存在し、その専任化が再掲され続けているため、実行時期に差し掛かっている。"
+  ],
+  "proposed_changes": [
+    "supervisor-core から dominant-prefix triage 機能を完全に切り出し、Queue Triage Analyst を専任経路に昇格させる。",
+    "supervisor-core は観測集約と remit 専任に縮退し、triage と品質レビューは別経路へ委譲する。",
+    "Queue Triage Analyst には固定の triage checklist を与え、再掲のない標準化された判断を行う。",
+    "board / heartbeat / scorecard は signal-only を維持しつつ、Queue Triage Analyst の candidate は anomaly/delta のみに限定する。",
+    "supervisor-core の役割を '観測→判断' から '観測→整理→委譲' へ変更し、重複思考を排除する。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "projects/openclaw-core/docs/queue-triage-analyst-runbook.md",
+    "projects/openclaw-core/docs/supervisor-core-boundary-definition.md",
+    "projects/openclaw-core/docs/board-heartbeat-scorecard-signal-only.md",
+    "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "reports/board/agenda-seed-latest.md",
+    "reports/board/board-premeeting-brief-latest.md"
+  ],
+  "evidence": [
+    "autonomy-loop-health-review-20260325-0500.md: Supervisor 系で観測→triage→品質レビューが同質化している",
+    "agent-lesson-capture-20260326-0615.md: 同じ supervisor 系論点が何度も再掲されやすい",
+    "agent-performance-optimization-review-20260326-0715.md: supervisor-core は役割の広さが主原因",
+    "board-agenda-seed-latest.md: dominant-prefix triage checklist 固定と backlog churn 問題",
+    "existing-proposals: Queue Triage Analyst が既に proposed 状態で再掲され続けている",
+    "board-premeeting-brief-latest.md: Supervisor 系の重複論点が Board 候補として継続的に出現"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run apply_growth_proposal.py to generate an apply plan and ledger update.",
+  "cycle_id": "proposal-20260329-supervisor-separation-queue-triage-analyst",
+  "status": "APPROVED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-29T05:27:00+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T13:41:00+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T13:41:00+09:00",
+      "note": "decision=approve (medium-low risk role separation, assisted mode with guardrails)"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-29T14:40:46+09:00",
+      "note": "review started by board-auditor"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-29T14:40:46+09:00",
+      "note": "decision=approve"
+    }
+  ],
+  "reviewed_at": "2026-03-29T14:40:46+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "board-auditor",
+    "reason": "Medium-low risk architectural proposal: separates queue triage from supervisor-core. Limited to role separation only, no auth/trust changes. Fully reversible. Multiple evidence sources support. Apply with assisted mode and mandatory guardrails.",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+      "projects/openclaw-core/docs/board-heartbeat-scorecard-signal-only.md",
+      "projects/openclaw-core/docs/queue-triage-analyst-runbook.md",
+      "projects/openclaw-core/docs/supervisor-core-boundary-definition.md",
+      "reports/board/agenda-seed-latest.md",
+      "reports/board/board-premeeting-brief-latest.md",
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-29T14:40:46+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260329-supervisor-separation-queue-triage-analyst.review.json",
+  "expected_benefit": [
+    "supervisor-core 重複論点の大幅削減",
+    "board-noise の軽減",
+    "Queue Triage Analyst の判断安定化",
+    "triage の標準化と再掲抑制",
+    "supervisor-core の観測機能への集中"
+  ],
+  "priority_score": 0.85,
+  "confidence": "high",
+  "guardrails": [
+    "supervisor-core の根幹変更は避けつつ、観測と triage の分離のみ実施",
+    "Queue Triage Analyst は triage 専任に限定し、品質レビュー機能は別経路に委譲",
+    "board / heartbeat / scorecard の signal-only contract は既存のまま維持",
+    "protected path / auth / trust boundary / routing root は一切変更しない"
+  ],
+  "apply_reversibility": {
+    "reversible": true,
+    "rollback_path": "projects/openclaw-core/docs/supervisor-core-boundary-definition.md",
+    "fallback_mechanism": "既存の supervisor-full-triage 挙動に戻すことが可能",
+    "risk_level": "low"
+  }
+}

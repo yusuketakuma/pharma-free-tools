@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "dispatch": {
+    "primary_lane": "acp",
+    "secondary_lane": "cli",
+    "consider_openai_project_rate_limits": true,
+    "consider_claude_telemetry_and_spend": true
+  },
+  "providers": {
+    "openclaw": {
+      "preferred_for": ["single_department_light", "docs", "research", "status_update", "control_plane"],
+      "thresholds": {
+        "high_pressure_at": 0.75,
+        "hard_pressure_at": 0.9,
+        "remaining_requests_ratio_low": 0.2,
+        "remaining_tokens_ratio_low": 0.2,
+        "cost_pressure_high": 0.8
+      },
+      "routing_fallback": {
+        "heavy_task_when_hard_pressured": "plan_only",
+        "heavy_write_when_claude_unavailable": "queued",
+        "both_high_pressure": "queued"
+      }
+    },
+    "claude_code": {
+      "preferred_for": ["heavy_code", "multi_file_change", "implementation", "refactor", "verification_heavy", "execution_plane"],
+      "thresholds": {
+        "high_pressure_at": 0.75,
+        "hard_pressure_at": 0.9,
+        "retry_after_high_at": 60,
+        "spend_pressure_high": 0.8
+      },
+      "routing_fallback": {
+        "auth_failure": "plan_only",
+        "acp_unhealthy": "cli_secondary",
+        "multi_file_write_when_hard_pressured": "queued",
+        "both_high_pressure": "queued"
+      }
+    }
+  }
+}

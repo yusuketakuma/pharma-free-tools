@@ -1,0 +1,78 @@
+{
+  "proposal_id": "proposal-20260325211500-delta-monitor",
+  "created_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "title": "Keep routine board / heartbeat / scorecard signal-only and reserve candidates for anomalies",
+  "summary": "定常時の board / heartbeat / scorecard は digest に固定し、candidate 化は anomaly delta があるときだけに絞る。",
+  "requested_action": {
+    "type": "adopt",
+    "target": "board / heartbeat / scorecard contract"
+  },
+  "change_scope": {
+    "domains": [
+      "reporting",
+      "policy"
+    ],
+    "repos": [
+      "openclaw-core"
+    ],
+    "agents": [
+      "agent-scorecard-review",
+      "autonomy-loop-health-review",
+      "board-agenda-assembly"
+    ],
+    "layers": [
+      "board",
+      "execution"
+    ]
+  },
+  "why_now": "直近の scorecard は新規 anomaly がなく、候補を増やすと Board noise が増えるだけだから。",
+  "expected_benefit": "審議密度を下げ、真正の anomaly に Board の時間を残せる。",
+  "possible_harm": "閾値を高くしすぎると、遅い drift を見落とす可能性がある。",
+  "boundary_impact": {
+    "ceo_board": "low",
+    "board_execution": "low",
+    "trust_boundary": "low",
+    "approval_boundary": "low"
+  },
+  "reversibility": {
+    "level": "high",
+    "rollback_path": "signal-only 制約を外し、従来どおり candidate を許可する。"
+  },
+  "blast_radius": {
+    "users": "low",
+    "agents": "low",
+    "production": "low"
+  },
+  "novelty": {
+    "level": "medium"
+  },
+  "evidence": {
+    "metrics": [
+      "agent-scorecard-review 20260326-0600 は no anomaly / no candidate",
+      "loop health は安定寄りだが重複が多い"
+    ],
+    "signals": [
+      "signal-20260325211500-delta-monitor"
+    ],
+    "refs": [
+      "reports/cron/agent-scorecard-review-20260326-0600.md",
+      "reports/cron/autonomy-loop-health-review-20260325-0500.md",
+      "reports/cron/workspace-report-learning-review-20260326-0300.md"
+    ]
+  },
+  "root_issue": "routine monitoring is producing too much governance noise",
+  "desired_change": "steady-state monitoring should remain signal-only unless there is a real anomaly delta",
+  "mandatory_deep_flags": [],
+  "risk_hints": [
+    "noise suppression",
+    "monitoring contract drift"
+  ],
+  "recommendation": {
+    "proposed_lane": "fast",
+    "proposed_disposition": "adopt"
+  }
+}

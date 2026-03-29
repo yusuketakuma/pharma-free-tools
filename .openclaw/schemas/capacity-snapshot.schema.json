@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CapacitySnapshot",
+  "type": "object",
+  "required": ["captured_at", "providers"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "captured_at": {"type": "string"},
+    "providers": {
+      "type": "object",
+      "required": ["openclaw", "claude_code"],
+      "properties": {
+        "openclaw": {
+          "type": "object",
+          "required": [
+            "healthy",
+            "remaining_requests_ratio",
+            "remaining_tokens_ratio",
+            "usage_pressure",
+            "cost_pressure",
+            "hard_blocked",
+            "captured_at"
+          ],
+          "properties": {
+            "healthy": {"type": "boolean"},
+            "remaining_requests_ratio": {"type": "number"},
+            "remaining_tokens_ratio": {"type": "number"},
+            "usage_pressure": {"type": "number"},
+            "cost_pressure": {"type": "number"},
+            "hard_blocked": {"type": "boolean"},
+            "captured_at": {"type": "string"},
+            "source": {"type": "string"}
+          },
+          "additionalProperties": true
+        },
+        "claude_code": {
+          "type": "object",
+          "required": [
+            "healthy",
+            "auth_ok",
+            "rpm_pressure",
+            "itpm_pressure",
+            "otpm_pressure",
+            "spend_pressure",
+            "retry_after_sec",
+            "hard_blocked",
+            "captured_at"
+          ],
+          "properties": {
+            "healthy": {"type": "boolean"},
+            "auth_ok": {"type": "boolean"},
+            "rpm_pressure": {"type": "number"},
+            "itpm_pressure": {"type": "number"},
+            "otpm_pressure": {"type": "number"},
+            "spend_pressure": {"type": "number"},
+            "retry_after_sec": {"type": "number"},
+            "hard_blocked": {"type": "boolean"},
+            "captured_at": {"type": "string"},
+            "source": {"type": "string"}
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

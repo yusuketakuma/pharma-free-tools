@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/improvement-review.schema.json",
+  "title": "ImprovementReview",
+  "description": "A review decision recorded for an improvement proposal, capturing the reviewer's verdict and supporting context.",
+  "type": "object",
+  "required": ["proposal_id", "review_id", "decision", "reviewer", "version"],
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "description": "Identifier of the proposal this review applies to."
+    },
+    "review_id": {
+      "type": "string",
+      "description": "Unique identifier for this review record."
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["approved", "rejected", "deferred", "needs_info"],
+      "description": "The outcome of this review."
+    },
+    "reviewer": {
+      "type": "string",
+      "description": "Identifier of the reviewer (human or agent) that issued this decision."
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version of this review document."
+    },
+    "requires_manual_review": {
+      "type": "boolean",
+      "description": "Whether this review must be performed by a human rather than an agent."
+    },
+    "blocking_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional list of reasons that are blocking approval or causing deferral."
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the proposal was approved, if applicable."
+    },
+    "rejected_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the proposal was rejected, if applicable."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional free-text notes from the reviewer."
+    }
+  },
+  "additionalProperties": false
+}

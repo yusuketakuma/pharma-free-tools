@@ -1,0 +1,35 @@
+{
+  "message": "pre-auth OpenClaw artifacts prepared; waiting for Claude auth",
+  "approval": {
+    "required": false,
+    "approved": false
+  },
+  "task_id": "step6-plan-auth-runtime-230f3b80",
+  "state": "AUTH_REQUIRED",
+  "updated_at": "2026-03-22T16:44:43+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:44:43+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:44:43+09:00",
+      "route_decision_id": "route-3246aa214e18",
+      "dispatch_id": "dispatch-auth-runtime",
+      "message": "route decision stored"
+    },
+    {
+      "state": "AUTH_REQUIRED",
+      "at": "2026-03-22T16:44:43+09:00",
+      "route_decision_id": "route-3246aa214e18",
+      "dispatch_id": "dispatch-auth-runtime",
+      "message": "pre-auth OpenClaw artifacts prepared; waiting for Claude auth"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-3246aa214e18",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-auth-runtime"
+}

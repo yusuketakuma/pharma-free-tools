@@ -1,0 +1,15 @@
+{
+  "task_id": "step6-lane-safety-net-fc4adb52",
+  "route_decision_id": "route-1b1f1439f8f6",
+  "decision": "claude-code",
+  "score": 0.85,
+  "reasons": [
+    "task appears multi-step or implementation-heavy",
+    "requested_route=claude-code"
+  ],
+  "approval_required": false,
+  "protected_paths": [],
+  "affected_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ]
+}

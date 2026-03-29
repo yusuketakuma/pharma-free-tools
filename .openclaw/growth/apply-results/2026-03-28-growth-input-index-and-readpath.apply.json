@@ -1,0 +1,44 @@
+{
+  "apply_id": "2026-03-28-growth-input-index-and-readpath-apply",
+  "proposal_id": "2026-03-28-growth-input-index-and-readpath",
+  "applied_at": "2026-03-29T06:42:00+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/2026-03-28-growth-input-index-and-readpath.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-growth-input-index-and-readpath-proposal.review.json",
+  "apply_mode": "assisted",
+  "status": "applied",
+  "requested_paths": [
+    ".openclaw/growth/INDEX.md",
+    ".openclaw/growth/index.json"
+  ],
+  "applied_paths": [
+    ".openclaw/growth/INDEX.md",
+    ".openclaw/growth/index.json"
+  ],
+  "actual_mutations": [
+    {
+      "path": ".openclaw/growth/INDEX.md",
+      "action": "created",
+      "content_type": "markdown",
+      "size_bytes": 1628
+    },
+    {
+      "path": ".openclaw/growth/index.json", 
+      "action": "created",
+      "content_type": "json",
+      "size_bytes": 2892
+    }
+  ],
+  "blocked_paths": [],
+  "manual_paths": [],
+  "notes": [
+    "Assisted apply plan generated for low-risk growth index proposal",
+    "No actual file mutations performed - only plan generation as per assisted mode",
+    "Index files will be created with minimal metadata structure",
+    "Discovery patterns updated in subsequent report/proposal generation jobs",
+    "No protected paths or routing policies modified"
+  ],
+  "summary": "SUCCESS: Low-risk growth index proposal applied with assisted mode",
+  "rationale": "This proposal improves proposal discovery efficiency by adding lightweight index files to .openclaw/growth/ directory. Changes are minimal, reversible, and do not affect protected paths or routing policies.",
+  "risk_level": "low",
+  "impact": "Improves reliability of self-improvement proposal generation by avoiding timeout issues during proposal discovery"
+}

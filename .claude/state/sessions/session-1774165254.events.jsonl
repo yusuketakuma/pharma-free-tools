@@ -1,0 +1,10 @@
+{"type":"session.start","ts":"2026-03-22T07:40:54Z","state":"initialized","data":{"cc_session_id":"13b99617-24cd-4276-aa2d-97758d27f709"}}
+{"id":"event-000001","type":"tool.bash","ts":"2026-03-22T07:40:54Z","state":"initialized","data":{"command":"sleep 30 && cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/a7b22dbb-b1d2-42ff-b599-a96d187b0ea1/tasks/bgt9l3sqs.output 2>&1 | tail -50"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-22T07:40:54Z","state":"initialized"}
+{"id":"event-000002","type":"tool.bash","ts":"2026-03-22T07:40:56Z","state":"initialized","data":{"command":"ls /Users/yusuke/.openclaw/workspace/.openclaw/tests/"}}
+{"id":"event-000003","type":"tool.bash","ts":"2026-03-22T07:40:56Z","state":"initialized","data":{"command":"sleep 30 && cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/9edfc01a-0f3c-402e-ae2d-064506eb2756/tasks/bn7mwk1il.output 2>/dev/null | tail -60"}}
+{"id":"event-000004","type":"tool.bash","ts":"2026-03-22T07:40:56Z","state":"initialized","data":{"command":"sleep 30 && cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/64e1bf72-ae03-46aa-b0bd-077b8e3e68a1/tasks/b3q3w6erw.output 2>/dev/null | tail -50"}}
+{"id":"event-000005","type":"tool.bash","ts":"2026-03-22T07:40:56Z","state":"initialized","data":{"command":"sleep 30 && cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/319467d0-b772-4a48-adab-f6e0ee11db84/tasks/bdwwwvwon.output 2>/dev/null"}}
+{"id":"event-000006","type":"session.resume","ts":"2026-03-22T07:40:57Z","state":"initialized"}
+{"id":"event-000007","type":"tool.bash","ts":"2026-03-22T07:40:58Z","state":"initialized","data":{"command":"cat /private/tmp/claude-501/-Users-yusuke--openclaw-workspace/a7b22dbb-b1d2-42ff-b599-a96d187b0ea1/tasks/b91t6kqtc.output 2>&1"}}
+{"id":"event-000008","type":"session.stop","ts":"2026-03-22T07:40:59Z","state":"stopped"}

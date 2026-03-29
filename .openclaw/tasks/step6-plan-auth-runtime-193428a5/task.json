@@ -1,0 +1,10 @@
+{
+  "task_id": "step6-plan-auth-runtime-193428a5",
+  "task": "Prepare docs draft",
+  "requested_paths": [
+    ".openclaw/scripts/task_runtime.py",
+    ".openclaw/scripts/rebalance_queue.py"
+  ],
+  "requested_route": "claude-code",
+  "created_at": "2026-03-22T16:21:25+09:00"
+}

@@ -1,0 +1,93 @@
+{
+  "proposal_id": "proposal-20260327-stale-backlog-triage-contract",
+  "created_at": "2026-03-27T04:27:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "autonomy-loop-health-review",
+    "agent-scorecard-review",
+    "agent-lesson-capture",
+    "agent-staffing-and-prompt-tuning",
+    "board / heartbeat runtime recent report"
+  ],
+  "title": "Standardize stale backlog triage into safe-close / reopen / escalate / record",
+  "summary": "stale backlog が Board の反復論点になっているため、AUTH_REQUIRED / WAITING_MANUAL_REVIEW / 24h+ 滞留を one-page contract で safe-close / reopen / escalate / record に固定し、再審議コストを下げる。",
+  "observations": [
+    "board-premeeting-all-agent-business-report-20260326-0818.md では、stale queue backlog の safe-close / reopen / escalate が Board で決める中心論点に収束している。",
+    "board-premeeting-brief-latest.md でも、stale backlog triage / safe-close / reopen / escalate / record contract が Board への上げ候補 1 位になっている。",
+    "agent-lesson-capture-20260326-0615.md では blocked は failure ではなく待ちとして扱うべきだと整理されている。",
+    "agent-scorecard-review-20260326-0600.md は新規 anomaly / delta なしで signal-only だったため、定常監視を増やすより滞留 triage の標準化が効く。",
+    "agent-staffing-and-prompt-tuning-board-20260326-0630.md でも、ボトルネックはモデル不足より役割の広さ・重複・受け渡し不足だと整理されている。",
+    "autonomy-loop-health-review-20260325-0500.md では supervisor 系の観測・triage・品質レビュー同居が重複を生んでいると指摘されている。"
+  ],
+  "proposed_changes": [
+    "stale backlog の判定対象を AUTH_REQUIRED / WAITING_MANUAL_REVIEW / 24h+ 滞留に限定し、1ページの triage contract にまとめる。",
+    "safe-close / reopen / escalate / record の条件を prefix ごとに固定し、owner / next action / success criteria を必須化する。",
+    "cron wording と runbook に、閉じた理由・再開条件・記録先を一行で残す定型文を入れる。",
+    "monitoring は read-only に留め、自動 drain や routing の変更は行わない。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/backlog-triage-runbook.md",
+    "projects/openclaw-core/docs/stale-backlog-policy.md",
+    "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+    "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md",
+    "reports/board/board-premeeting-brief-latest.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md"
+  ],
+  "evidence": [
+    "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md: stale queue backlog policy / safe-close / reopen / escalate が Board 中心論点",
+    "reports/board/board-premeeting-brief-latest.md: stale backlog triage / safe-close / reopen / escalate / record contract が top candidate",
+    "reports/cron/agent-lesson-capture-20260326-0615.md: blocked は failure ではなく waiting とする lesson",
+    "reports/cron/agent-scorecard-review-20260326-0600.md: hard threshold breach=none, significant delta=none, agenda_candidate=0",
+    "reports/cron/autonomy-loop-health-review-20260325-0500.md: supervisor 系の観測/triage/品質レビュー同居が重複を生みやすい"
+  ],
+  "requires_manual_approval": false,
+  "next_step": "Run verification before moving to VERIFIED.",
+  "cycle_id": "proposal-20260327-stale-backlog-triage-contract",
+  "status": "APPLIED",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T06:40:25+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-27T06:40:25+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "APPROVED",
+      "at": "2026-03-27T06:40:25+09:00",
+      "note": "decision=approve"
+    },
+    {
+      "status": "APPLIED",
+      "at": "2026-03-27T06:42:41+09:00",
+      "note": "assisted apply plan generated"
+    }
+  ],
+  "reviewed_at": "2026-03-27T06:40:25+09:00",
+  "review": {
+    "decision": "approve",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 06:27 JST で approve 候補。docs/runbook/cron wording に限定された低リスク変更で、stale backlog triage の contract 化は reversible かつ protected path / auth / routing root / trust boundary に触れないため approve.",
+    "apply_mode": "assisted",
+    "approved_paths": [
+      "projects/openclaw-core/docs/backlog-triage-runbook.md",
+      "projects/openclaw-core/docs/heartbeat-reporting-runbook.md",
+      "projects/openclaw-core/docs/stale-backlog-policy.md",
+      "reports/board/board-premeeting-brief-latest.md",
+      "reports/cron/agent-lesson-capture-20260326-0615.md",
+      "reports/cron/board-premeeting-all-agent-business-report-20260326-0818.md"
+    ],
+    "blocked_paths": [],
+    "notes": [],
+    "reviewed_at": "2026-03-27T06:40:25+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260327-stale-backlog-triage-contract.review.json",
+  "apply_result_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/apply-results/proposal-20260327-stale-backlog-triage-contract.apply.json"
+}

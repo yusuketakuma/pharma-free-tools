@@ -1,0 +1,64 @@
+{
+  "apply_id": "proposal-20260328-board-artifact-freshness-governance-apply",
+  "proposal_id": "proposal-20260328-board-artifact-freshness-governance",
+  "applied_at": "2026-03-29T03:42:50+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260328-board-artifact-freshness-governance.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-board-artifact-freshness-governance.review.json",
+  "apply_mode": "assisted",
+  "status": "manual_required",
+  "requested_paths": [
+    ".openclaw/config/board-freshness-governance.json",
+    ".openclaw/runbooks/board-agenda-assembly-runbook.md",
+    ".openclaw/schemas/board-artifact-freshness.schema.json",
+    ".openclaw/scripts/board_artifact_freshness_monitor.py",
+    ".openclaw/templates/department-head-board-report.md",
+    "reports/status/dashboard-latest.md"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [],
+  "manual_paths": [
+    ".openclaw/config/board-freshness-governance.json",
+    ".openclaw/runbooks/board-agenda-assembly-runbook.md",
+    ".openclaw/schemas/board-artifact-freshness.schema.json",
+    ".openclaw/scripts/board_artifact_freshness_monitor.py",
+    ".openclaw/templates/department-head-board-report.md",
+    "reports/status/dashboard-latest.md"
+  ],
+  "apply_plan": [
+    {
+      "path": ".openclaw/config/board-freshness-governance.json",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/runbooks/board-agenda-assembly-runbook.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/schemas/board-artifact-freshness.schema.json",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/scripts/board_artifact_freshness_monitor.py",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/templates/department-head-board-report.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "reports/status/dashboard-latest.md",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

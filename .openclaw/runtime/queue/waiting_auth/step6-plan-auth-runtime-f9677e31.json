@@ -1,0 +1,24 @@
+{
+  "task_id": "step6-plan-auth-runtime-f9677e31",
+  "active": true,
+  "queue_reason": "waiting_auth",
+  "last_queue_reason": "waiting_auth",
+  "state": "AUTH_REQUIRED",
+  "route": "claude-code",
+  "route_decision_id": "route-4ff62252731e",
+  "approval_id": null,
+  "dispatch_id": "dispatch-auth-runtime",
+  "queued_at": "2026-03-22T16:43:04+09:00",
+  "released_at": null,
+  "last_rebalanced_at": null,
+  "resume_target_state": "READY_FOR_EXECUTION",
+  "resume_eligible": false,
+  "resume_blockers": [
+    "claude_auth_unavailable",
+    "resume_requires_claude_auth"
+  ],
+  "updated_at": "2026-03-22T16:43:04+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/step6-plan-auth-runtime-f9677e31/queue-status.json",
+  "runtime_queue_path": ".openclaw/runtime/queue/waiting_auth/step6-plan-auth-runtime-f9677e31.json"
+}

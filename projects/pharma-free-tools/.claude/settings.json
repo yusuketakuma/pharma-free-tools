@@ -1,0 +1,63 @@
+{
+  "version": 2,
+  "projectId": "pharma-free-tools",
+  "controlPlane": "OpenClaw",
+  "executionPlane": "Claude Code",
+
+  "transport": {
+    "primary": "acp_compat",
+    "secondary": "cli",
+    "fallback": "cli_backend_safety_net"
+  },
+
+  "prompt": {
+    "mode": "append",
+    "safetyViaPrompt": false,
+    "safetyVia": ["hooks", "permissions", "allow-deny", "protected-paths"]
+  },
+
+  "schema": {
+    "executionRequest": "../../schemas/execution-request.json",
+    "executionResult": "../../schemas/execution-result.json"
+  },
+
+  "sourceRepo": "/Users/yusuke/pharma-free-tools",
+
+  "agents": {
+    "codingOnly": true,
+    "active": [
+      "engineering/frontend-developer",
+      "engineering/rapid-prototyper",
+      "testing/api-tester",
+      "docs/docs-integrator"
+    ],
+    "activationPolicy": "on-demand",
+    "maxConcurrent": 2,
+    "neverAlwaysOn": ["product-manager", "designer", "ops-manager"]
+  },
+
+  "permissions": {
+    "allow": [
+      "file-read",
+      "file-write",
+      "shell:git status",
+      "shell:git diff *",
+      "shell:git log *",
+      "shell:git add *",
+      "shell:git commit *"
+    ],
+    "deny": [
+      "shell:git push *",
+      "shell:git reset --hard *",
+      "shell:rm -rf *"
+    ],
+    "approvalRequired": [
+      "shell:git push"
+    ]
+  },
+
+  "auth": {
+    "preferred": "subscription",
+    "failClosed": true
+  }
+}

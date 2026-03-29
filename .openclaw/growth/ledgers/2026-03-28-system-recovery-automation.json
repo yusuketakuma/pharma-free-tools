@@ -1,0 +1,25 @@
+{
+  "cycle_id": "2026-03-28-system-recovery-automation",
+  "created_at": "2026-03-28T00:00:00+09:00",
+  "updated_at": "2026-03-29T04:42:43+09:00",
+  "proposal_id": "2026-03-28-system-recovery-automation",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/2026-03-28-system-recovery-automation.json",
+  "proposal_status": "INBOX",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-system-recovery-automation.review.json",
+  "last_review": {
+    "decision": "revise",
+    "reviewer": "cron:b11cb560-da93-45ba-bbb1-4a17d45614a1",
+    "reason": "中リスク提案で、システム停止検知と回復自動化の影響範囲が広範。自律回復の仕組みと人的介入の境界を明確にするため、詳細設計と手動レビューが必要。",
+    "apply_mode": "manual",
+    "reviewed_at": "2026-03-29T04:42:43+09:00"
+  },
+  "events": [
+    {
+      "at": "2026-03-29T04:42:43+09:00",
+      "type": "review",
+      "decision": "revise",
+      "status": "INBOX",
+      "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/2026-03-28-system-recovery-automation.review.json"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "title": "トークン管理システムの自己改善ループ統合",
+  "description": "トークン管理システムの運用結果を定期的に評価し、閾値・モード設定の最適化を自動提案する仕組みを自己改善ループに統合する",
+  "rationale": "トークン管理システムを導入後、実際の稼働データに基づいて閾値やモード設定を継続的に最適化する必要がある。消費パターンの変化、モデルの更新、新しいエージェントの追加などに自動追従できるようにする。",
+  "priority": "medium",
+  "impact": "high",
+  "risk": "low",
+  "category": "system-optimization",
+  "proposer": "ops-automator",
+  "submittedAt": "2026-03-28T20:40:00+09:00",
+  "status": "approved",
+  "reviewCycle": "weekly",
+  "reviewSchedule": "毎週日曜 10:00 JST",
+  "metrics": {
+    "weeklyReviewItems": [
+      "平均消費速度の推移",
+      "モード切り替え回数",
+      "予測精度（予測残時間 vs 実残時間）",
+      "緊急停止の発生回数",
+      "コンテキスト使用率の推移"
+    ],
+    "monthlyReviewItems": [
+      "月間トークン消費総量",
+      "月間予算の消費パターン",
+      "長期トレンド分析",
+      "システム改善提案の実績"
+    ]
+  },
+  "autoImprovementRules": [
+    {
+      "condition": "モード切り替えが1日に3回以上発生",
+      "action": "閾値のヒステリシス追加を提案",
+      "risk": "low"
+    },
+    {
+      "condition": "緊急停止が1週間に2回以上発生",
+      "action": "停止ラインの引き下げまたはバッファ率の増加を提案",
+      "risk": "low"
+    },
+    {
+      "condition": "連続3日間normalモードで安定稼働",
+      "action": "高効率モードの閾値緩和を提案",
+      "risk": "low"
+    },
+    {
+      "condition": "月間予算が50%を超過",
+      "action": "省エネモードの閾値引き上げを提案",
+      "risk": "low"
+    }
+  ],
+  "proposalGeneration": {
+    "template": "トークン管理改善提案: [指標]の[変化]に基づき、[パラメータ]の[変更内容]を提案",
+    "reviewBoard": "board-auditor",
+    "applyAgent": "ops-automator"
+  },
+  "boardIntegration": {
+    "agendaItem": "トークン管理システム運用レビュー",
+    "frequency": "weekly",
+    "reportPath": "/Users/yusuke/.openclaw/workspace/reports/loops/ops-latest.md",
+    "dataPath": "/Users/yusuke/.openclaw/workspace/systems/token-management/"
+  },
+  "expectedOutcome": {
+    "week1": "ベースラインの確立",
+    "week2": "最初の改善提案の生成",
+    "month1": "安定した自動最適化の実現",
+    "month3": "予測精度90%以上の達成"
+  }
+}

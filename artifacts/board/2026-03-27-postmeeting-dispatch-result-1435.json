@@ -1,0 +1,174 @@
+{
+  "source": "cron:32ba03a1-c935-486d-8946-873b4235557e board-postmeeting-agent-dispatch",
+  "board_cycle_slot_id": "20260327-1435",
+  "board_decision_ref": "board-premeeting-brief latest 2026-03-27 14:35 JST",
+  "final_decision": "backlog-triage-standardization / one-page safe-close-reopen-escalate / freeze-new-expansion / separate-security-audit / thin-metrics",
+  "summary": "Board 系 6 名は live 受理・成果物確認まで完了。Exec 系 6 名は safe temporary file 配信で送信成功したが live 受理は未達。自己改善 proposal は review/apply に 2 件を引き渡し済み。",
+  "board_dispatch": [
+    {
+      "agent": "ceo-tama",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:ceo-tama:subagent:347018ee-2710-4d4c-802d-c5652f400cd7",
+      "runId": "9793153a-8580-47f6-8ff5-b85e6af77f53",
+      "artifact": "artifacts/board/2026-03-27-ceo-tama-postmeeting-1435.md"
+    },
+    {
+      "agent": "supervisor-core",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:supervisor-core:subagent:1c895381-4571-4819-b757-c80346a0de8a",
+      "runId": "c4764b86-f8b3-4eaf-8ff6-f6381c478652",
+      "artifact": "artifacts/board/2026-03-27-supervisor-core-postmeeting-1435.md"
+    },
+    {
+      "agent": "board-operator",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-operator:subagent:29eb5a61-0588-4155-bf8b-35941fe9900a",
+      "runId": "e6d8c51c-71d4-4e70-afa8-35cf3d2e614f",
+      "artifact": "artifacts/board/2026-03-27-board-operator-postmeeting-1435.md"
+    },
+    {
+      "agent": "board-auditor",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-auditor:subagent:73535d1b-9c3d-4e51-af0a-464f6a657091",
+      "runId": "9e1889e1-75ab-4606-9e80-0fa059422774",
+      "artifact": "artifacts/board/2026-03-27-board-auditor-postmeeting-1435.md"
+    },
+    {
+      "agent": "board-user-advocate",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:board-user-advocate:subagent:82f9acb1-dbe6-4362-bfae-af02e32ef020",
+      "runId": "1257e6cc-c53b-4f81-9cfb-a8af7675750d",
+      "artifact": "artifacts/board/2026-03-27-board-user-advocate-postmeeting-1435.md"
+    },
+    {
+      "agent": "board-visionary",
+      "status": "done",
+      "delivery": "sessions_spawn subagent run",
+      "sessionKey": "agent:ceo-tama:subagent:e6777ac8-fbbb-4355-b8dd-446b13e93a41",
+      "runId": "9606ce31-ed21-42cf-9bc8-063e0411f76c",
+      "artifact": "artifacts/board/2026-03-27-board-visionary-postmeeting-1435.md"
+    }
+  ],
+  "exec_dispatch": [
+    {
+      "agent": "research-analyst",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-research-analyst-20260327-1435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "github-operator",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-github-operator-20260327-1435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "ops-automator",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-ops-automator-20260327-1435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "doc-editor",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-doc-editor-20260327-1435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "dss-manager",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-dss-manager-20260327-1435.txt",
+      "reason": "no live receive path used"
+    },
+    {
+      "agent": "opportunity-scout",
+      "status": "sent_only",
+      "delivery": "safe temporary file",
+      "artifact": "artifacts/board/dispatch-msg-opportunity-scout-20260327-1435.txt",
+      "reason": "no live receive path used"
+    }
+  ],
+  "stages": {
+    "send_success": [
+      "ceo-tama",
+      "supervisor-core",
+      "board-operator",
+      "board-auditor",
+      "board-user-advocate",
+      "board-visionary",
+      "research-analyst",
+      "github-operator",
+      "ops-automator",
+      "doc-editor",
+      "dss-manager",
+      "opportunity-scout"
+    ],
+    "accept_success": [
+      "ceo-tama",
+      "supervisor-core",
+      "board-operator",
+      "board-auditor",
+      "board-user-advocate",
+      "board-visionary"
+    ],
+    "artifact_confirmed": [
+      "ceo-tama",
+      "supervisor-core",
+      "board-operator",
+      "board-auditor",
+      "board-user-advocate",
+      "board-visionary"
+    ]
+  },
+  "unreceived": [
+    "research-analyst",
+    "github-operator",
+    "ops-automator",
+    "doc-editor",
+    "dss-manager",
+    "opportunity-scout"
+  ],
+  "unconfirmed": [
+    "research-analyst",
+    "github-operator",
+    "ops-automator",
+    "doc-editor",
+    "dss-manager",
+    "opportunity-scout"
+  ],
+  "failure_reasons": [
+    "Exec roles were intentionally routed to safe temporary files; live receive path not used.",
+    "No board-side direct application was performed; all changes stay within board final裁定 scope and review/apply routing."
+  ],
+  "self_improvement_proposal_handoff": {
+    "review_apply": [
+      "proposal-20260327-stale-backlog-triage-contract",
+      "proposal-20260327-status-taxonomy-separate-reporting"
+    ],
+    "revise_manual_approval_required": []
+  },
+  "retry_targets": [
+    "research-analyst",
+    "github-operator",
+    "ops-automator",
+    "doc-editor",
+    "dss-manager",
+    "opportunity-scout"
+  ],
+  "next_actions": [
+    "Pass proposal-20260327-stale-backlog-triage-contract and proposal-20260327-status-taxonomy-separate-reporting to review/apply.",
+    "Keep exec roles in sent_only until a live receive path is explicitly added.",
+    "Keep board-side work limited to backlog triage, security separation, and metric thinning.",
+    "Route repo investigation, multi-file change, tests, and implementation to Claude Code execution plane (acp_compat 優先) when needed."
+  ]
+}

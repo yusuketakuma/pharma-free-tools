@@ -1,0 +1,112 @@
+{
+  "proposal_id": "proposal-20260326-supervisor-boundary-preflight",
+  "created_at": "2026-03-26T20:14:00+09:00",
+  "phase": "propose",
+  "source": {
+    "type": "cron",
+    "name": "self-improvement-proposal-synthesis"
+  },
+  "synthesis_of": [
+    "agent-performance-optimization-review",
+    "agent-workforce-expansion-review",
+    "agent-lesson-capture",
+    "agent-staffing-and-prompt-tuning",
+    "agent-performance-optimization-review",
+    "agent-workforce-expansion-review"
+  ],
+  "title": "Shrink supervisor-core triage scope and require exact-target preflight before light-edit / scout handoffs",
+  "summary": "supervisor-core の観測・triage・品質レビュー同居を縮め、dominant-prefix triage は専任経路へ寄せる。あわせて軽微修正と scout / PoC handoff に exact target / owner / due / success criteria を必須化する。",
+  "observations": [
+    "agent-performance-optimization-review 2026-03-26 07:15 JST では、最も効くのはモデル強化より役割を狭くすることだと整理されている。",
+    "同レビューでは supervisor-core が観測・triage・品質レビューを同居させすぎていると指摘されている。",
+    "agent-workforce-expansion-review 2026-03-26 06:45 JST では、新規採用は不要で、既存役割の広さと再掲癖を直す方が先だと結論づけている。",
+    "agent-lesson-capture 2026-03-26 06:15 JST では、dominant-prefix triage の専任化と、light-edit / scout handoff 前の preflight gate が policy 化候補になっている。",
+    "existing proposal 群でも queue-triage-split と handoff-guardrail が同じ問題圏を別々に上げており、今回まとめた方が重複が減る。"
+  ],
+  "proposed_changes": [
+    "supervisor-core の runbook を、観測集約と escalation に寄せて triage の主経路から外す。",
+    "dominant-prefix triage を Queue Triage Analyst の既定経路に固定し、supervisor-core への逆流は例外扱いにする。",
+    "light-edit / scout / PoC handoff の前に exact target / owner / due / success criteria を 1 行で必須確認する。",
+    "新規 staffing は増やさず、既存役割の scope を縮めて再掲を抑える。"
+  ],
+  "affected_paths": [
+    "projects/openclaw-core/docs/supervisor-core-runbook.md",
+    "projects/openclaw-core/docs/queue-dominant-prefix-triage.md",
+    "projects/openclaw-core/docs/handoff-preflight.md",
+    "projects/openclaw-core/docs/agent-staffing-guidelines.md",
+    "reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "reports/cron/agent-workforce-expansion-review-20260326-0645.md",
+    "reports/cron/agent-lesson-capture-20260326-0615.md"
+  ],
+  "evidence": [
+    "metrics: supervisor-core: queue telemetry -> triage -> decision-quality の重複が残存",
+    "metrics: workforce expansion review: 追加不要",
+    "metrics: light handoff failures: exact target mismatch / owner-due-success criteria 欠落が反復",
+    "metrics: Queue Triage Analyst への切り出しは既存論点として複数レポートで反復",
+    "signals: signal-20260325211500-supervisor-overlap",
+    "signals: signal-20260325211500-exact-target",
+    "signals: signal-20260325211500-handoff-guardrail",
+    "signals: signal-20260325211500-history-gate",
+    "refs: reports/cron/agent-performance-optimization-review-20260326-0715.md",
+    "refs: reports/cron/agent-workforce-expansion-review-20260326-0645.md",
+    "refs: reports/cron/agent-lesson-capture-20260326-0615.md",
+    "refs: reports/cron/agent-scorecard-review-20260326-0600.md",
+    "refs: .openclaw/runtime/board/agenda-cases.jsonl",
+    "refs: .openclaw/runtime/board/agenda-candidates.jsonl"
+  ],
+  "requires_manual_approval": true,
+  "next_step": "Revise the proposal and resubmit it to the inbox.",
+  "cycle_id": "proposal-20260326-supervisor-boundary-preflight",
+  "status": "INBOX",
+  "status_history": [
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T00:41:30+09:00",
+      "note": "loaded for review"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-27T00:41:30+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T00:41:30+09:00",
+      "note": "decision=revise"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-27T16:40:50+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T16:40:50+09:00",
+      "note": "decision=revise"
+    },
+    {
+      "status": "UNDER_REVIEW",
+      "at": "2026-03-27T18:40:37+09:00",
+      "note": "review started by ceo-tama"
+    },
+    {
+      "status": "INBOX",
+      "at": "2026-03-27T18:40:37+09:00",
+      "note": "decision=revise"
+    }
+  ],
+  "reviewed_at": "2026-03-27T18:40:37+09:00",
+  "review": {
+    "decision": "revise",
+    "reviewer": "ceo-tama",
+    "reason": "Board 2026-03-27 synthesis では approve 候補に入っていない。proposal_id=proposal-20260326-supervisor-boundary-preflight。summary: supervisor-core の scope 縮小と exact-target preflight は妥当だが、proposed_changes に ① supervisor-core runbook の観測/triage 分離、② dominant-prefix triage の既定経路固定、③ light-edit/scout/PoC handoff 前の exact target / owner / due / success criteria 必須化が混在している。affected_paths: projects/openclaw-core/docs/supervisor-core-runbook.md, projects/openclaw-core/docs/queue-dominant-prefix-triage.md, projects/openclaw-core/docs/handoff-preflight.md, projects/openclaw-core/docs/agent-staffing-guidelines.md, および関連 cron reports。reason: 低リスクな docs/runbook wording は有効だが、routing root / trust boundary / protected path に触れる境界変更と、低リスク文言変更が同一 proposal に混在しているため、Board ルールに従い wording 部分を切り出して再提出し、境界変更は manual review に分離すべき。",
+    "apply_mode": "manual",
+    "approved_paths": [],
+    "blocked_paths": [],
+    "notes": [
+      "Board 裁定に合わせて revise。approve 候補ではないため assisted apply には回さない。low-risk wording と boundary/staffing 変更の分離が必要。"
+    ],
+    "reviewed_at": "2026-03-27T18:40:37+09:00"
+  },
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260326-supervisor-boundary-preflight.review.json"
+}

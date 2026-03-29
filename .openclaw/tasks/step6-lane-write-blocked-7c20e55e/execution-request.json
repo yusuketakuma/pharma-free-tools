@@ -1,0 +1,33 @@
+{
+  "task_id": "step6-lane-write-blocked-7c20e55e",
+  "request_version": 2,
+  "executor": "claude-code",
+  "execution_mode": "cli",
+  "task_summary": "Implement runtime change",
+  "constraints": [],
+  "target_paths": [
+    ".openclaw/scripts/dispatch_task.py"
+  ],
+  "verification_commands": [],
+  "review_focus": [
+    "correctness"
+  ],
+  "approval": {
+    "required": false,
+    "protected_paths": []
+  },
+  "route_decision_id": "route-9ccff215edaf",
+  "dispatch_id": "dispatch-write-blocked",
+  "context_pack_path": ".openclaw/tasks/step6-lane-write-blocked-7c20e55e/context-pack.md",
+  "rendered_prompt_path": ".openclaw/tasks/step6-lane-write-blocked-7c20e55e/rendered-prompt.txt",
+  "raw_response_path": ".openclaw/tasks/step6-lane-write-blocked-7c20e55e/claude-raw.json",
+  "auth_artifacts": {
+    "auth_status_path": ".openclaw/tasks/step6-lane-write-blocked-7c20e55e/auth-status.json",
+    "auth_log_path": ".openclaw/tasks/step6-lane-write-blocked-7c20e55e/auth-preflight.log"
+  },
+  "mock_mode": "acp_partial_write_failure",
+  "started_at": "2026-03-22T16:41:57+09:00",
+  "dispatch_attempt_id": "dispatch-write-blocked_attempt_01",
+  "selected_lane": "acp",
+  "task_type": "write"
+}

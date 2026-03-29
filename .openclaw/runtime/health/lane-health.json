@@ -1,0 +1,130 @@
+{
+  "captured_at": "2026-03-22T17:21:51+09:00",
+  "claude_bin": "claude",
+  "claude_bin_resolved": "/Users/yusuke/.local/bin/claude",
+  "auth": {
+    "auth_ok": true,
+    "last_error": null,
+    "details": {
+      "command": [
+        "claude",
+        "auth",
+        "status",
+        "--json"
+      ],
+      "exit_code": 0,
+      "parsed": {
+        "loggedIn": true,
+        "authMethod": "claude.ai",
+        "apiProvider": "firstParty",
+        "email": "takuma.yusuke@gmail.com",
+        "orgId": "dcff0cb3-a167-4dce-b3f6-76e8aa8374b9",
+        "orgName": "takuma.yusuke@gmail.com's Organization",
+        "subscriptionType": "max"
+      },
+      "stderr": "",
+      "normalized_auth_method": "claude_subscription",
+      "allowed_auth_methods": [
+        "claude_subscription"
+      ]
+    }
+  },
+  "lanes": {
+    "acp": {
+      "lane": "acp",
+      "healthy": true,
+      "auth_ok": true,
+      "latency_ms": 9460.136,
+      "last_error": null,
+      "captured_at": "2026-03-22T17:21:33+09:00",
+      "transport_kind": "claude_print_json_compat",
+      "native_acp_available": false,
+      "native_transport_gap": "claude CLI does not expose native acp subcommand",
+      "command": [
+        "claude",
+        "-p",
+        "--output-format",
+        "json",
+        "--permission-mode",
+        "bypassPermissions",
+        "--json-schema",
+        "{\"type\": \"object\", \"required\": [\"result\", \"changed_files\", \"verification_results\", \"remaining_risks\"], \"properties\": {\"summary\": {\"type\": \"string\"}, \"result\": {\"type\": \"string\"}, \"changed_files\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"verification_results\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"remaining_risks\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}, \"additionalProperties\": false}",
+        "<prompt>"
+      ],
+      "exit_code": 0,
+      "session_id": "c3cfbeac-d9fb-4fff-9f56-5412744d7496",
+      "model_usage": {
+        "claude-opus-4-6[1m]": {
+          "inputTokens": 4,
+          "outputTokens": 122,
+          "cacheReadInputTokens": 37822,
+          "cacheCreationInputTokens": 8199,
+          "webSearchRequests": 0,
+          "costUSD": 0.07322475,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000
+        }
+      }
+    },
+    "cli": {
+      "lane": "cli",
+      "healthy": true,
+      "auth_ok": true,
+      "latency_ms": 7295.193,
+      "last_error": null,
+      "captured_at": "2026-03-22T17:21:42+09:00",
+      "transport_kind": "cli_json",
+      "native_acp_available": false,
+      "command": [
+        "claude",
+        "-p",
+        "--output-format",
+        "json",
+        "--permission-mode",
+        "bypassPermissions",
+        "--json-schema",
+        "{\"type\": \"object\", \"required\": [\"result\", \"changed_files\", \"verification_results\", \"remaining_risks\"], \"properties\": {\"summary\": {\"type\": \"string\"}, \"result\": {\"type\": \"string\"}, \"changed_files\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"verification_results\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"remaining_risks\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}, \"additionalProperties\": false}",
+        "<prompt>"
+      ],
+      "exit_code": 0,
+      "session_id": "dddf6aad-3ba9-4b17-a621-bfcbc9be8091",
+      "model_usage": {
+        "claude-opus-4-6[1m]": {
+          "inputTokens": 4,
+          "outputTokens": 125,
+          "cacheReadInputTokens": 22938,
+          "cacheCreationInputTokens": 23074,
+          "webSearchRequests": 0,
+          "costUSD": 0.1588265,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000
+        }
+      }
+    },
+    "cli_backend_safety_net": {
+      "lane": "cli_backend_safety_net",
+      "healthy": false,
+      "auth_ok": true,
+      "latency_ms": 1192.808,
+      "last_error": "probe exited 1",
+      "captured_at": "2026-03-22T17:21:50+09:00",
+      "transport_kind": "cli_bare_json",
+      "native_acp_available": false,
+      "command": [
+        "claude",
+        "-p",
+        "--output-format",
+        "json",
+        "--permission-mode",
+        "bypassPermissions",
+        "--json-schema",
+        "{\"type\": \"object\", \"required\": [\"result\", \"changed_files\", \"verification_results\", \"remaining_risks\"], \"properties\": {\"summary\": {\"type\": \"string\"}, \"result\": {\"type\": \"string\"}, \"changed_files\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"verification_results\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"remaining_risks\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}, \"additionalProperties\": false}",
+        "--bare",
+        "--tools=StructuredOutput",
+        "<prompt>"
+      ],
+      "exit_code": 1
+    }
+  },
+  "version": 1
+}

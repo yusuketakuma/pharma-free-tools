@@ -1,0 +1,15 @@
+{
+  "review_id": "phase4-step4-reject-proposal-review",
+  "proposal_id": "phase4-step4-reject-proposal",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/phase4-step4-reject-proposal.json",
+  "reviewed_at": "2026-03-22T13:01:58+09:00",
+  "decision": "reject",
+  "reviewer": "smoke",
+  "reason": "smoke reject",
+  "apply_mode": "manual",
+  "approved_paths": [],
+  "blocked_paths": [],
+  "status_before": "INBOX",
+  "status_after": "REJECTED",
+  "notes": []
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "step6-acp-mock-contract-31ce4ae3",
+  "status": "timeout",
+  "executor": "claude-code",
+  "summary": "ACP execution timed out after 900s",
+  "changed_files": [],
+  "verification_results": [
+    "timeout"
+  ],
+  "remaining_risks": [
+    "consider increasing timeout or simplifying the task"
+  ],
+  "exit_code": 20,
+  "started_at": "2026-03-22T16:39:22+09:00",
+  "finished_at": "2026-03-22T16:54:23+09:00",
+  "dispatch_id": "dispatch-acp-mock",
+  "raw_response_path": ".openclaw/tasks/step6-acp-mock-contract-31ce4ae3/claude-raw.json",
+  "rendered_prompt_path": ".openclaw/tasks/step6-acp-mock-contract-31ce4ae3/rendered-prompt.txt",
+  "_meta": {
+    "lane": "acp",
+    "transport_kind": "claude_print_json_compat",
+    "native_acp_available": false,
+    "session_id": null,
+    "publishable": false
+  }
+}

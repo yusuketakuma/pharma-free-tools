@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GrowthApplyResult",
+  "type": "object",
+  "required": [
+    "apply_id",
+    "proposal_id",
+    "applied_at",
+    "review_path",
+    "apply_mode",
+    "status",
+    "requested_paths",
+    "applied_paths",
+    "blocked_paths",
+    "manual_paths",
+    "notes"
+  ],
+  "properties": {
+    "apply_id": {
+      "type": "string"
+    },
+    "proposal_id": {
+      "type": "string"
+    },
+    "applied_at": {
+      "type": "string"
+    },
+    "proposal_path": {
+      "type": "string"
+    },
+    "review_path": {
+      "type": "string"
+    },
+    "apply_mode": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "assisted"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "applied",
+        "blocked",
+        "manual_required",
+        "skipped"
+      ]
+    },
+    "requested_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "applied_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "manual_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "apply_plan": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "proposal_status_before": {
+      "type": "string"
+    },
+    "proposal_status_after": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

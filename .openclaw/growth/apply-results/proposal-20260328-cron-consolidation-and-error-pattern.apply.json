@@ -1,0 +1,106 @@
+{
+  "apply_id": "proposal-20260328-cron-consolidation-and-error-pattern-apply",
+  "proposal_id": "proposal-20260328-cron-consolidation-and-error-pattern",
+  "applied_at": "2026-03-29T15:43:06+09:00",
+  "proposal_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/proposals/proposal-20260328-cron-consolidation-and-error-pattern.json",
+  "review_path": "/Users/yusuke/.openclaw/workspace/.openclaw/growth/reviews/proposal-20260328-cron-consolidation-and-error-pattern.review.json",
+  "apply_mode": "manual",
+  "status": "manual_required",
+  "requested_paths": [
+    ".openclaw/runbook/cron-consolidation-plan.md (新規作成)",
+    ".openclaw/runbook/edit-safety-rules.md (新規作成)",
+    "cron: agent-lesson-capture (統合候補)",
+    "cron: agent-performance-optimization-review (統合候補)",
+    "cron: agent-scorecard-review (統合候補)",
+    "cron: agent-staffing-and-prompt-tuning (統合候補)",
+    "cron: agent-workforce-expansion-review (統合候補)",
+    "cron: autonomy-loop-health-review (統合候補)",
+    "cron: board-agenda-seed-normalize (削除/統合候補)",
+    "cron: board-premeeting-brief-normalize (統合先候補)",
+    "cron: pharma-free-tools-theme-extraction (edit safety fix)",
+    "cron: workspace-tmp-and-artifact-cleanup-review (error handling fix)"
+  ],
+  "applied_paths": [],
+  "blocked_paths": [],
+  "manual_paths": [
+    ".openclaw/runbook/cron-consolidation-plan.md (新規作成)",
+    ".openclaw/runbook/edit-safety-rules.md (新規作成)",
+    "cron: agent-lesson-capture (統合候補)",
+    "cron: agent-performance-optimization-review (統合候補)",
+    "cron: agent-scorecard-review (統合候補)",
+    "cron: agent-staffing-and-prompt-tuning (統合候補)",
+    "cron: agent-workforce-expansion-review (統合候補)",
+    "cron: autonomy-loop-health-review (統合候補)",
+    "cron: board-agenda-seed-normalize (削除/統合候補)",
+    "cron: board-premeeting-brief-normalize (統合先候補)",
+    "cron: pharma-free-tools-theme-extraction (edit safety fix)",
+    "cron: workspace-tmp-and-artifact-cleanup-review (error handling fix)"
+  ],
+  "apply_plan": [
+    {
+      "path": ".openclaw/runbook/cron-consolidation-plan.md (新規作成)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": ".openclaw/runbook/edit-safety-rules.md (新規作成)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: agent-lesson-capture (統合候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: agent-performance-optimization-review (統合候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: agent-scorecard-review (統合候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: agent-staffing-and-prompt-tuning (統合候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: agent-workforce-expansion-review (統合候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: autonomy-loop-health-review (統合候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: board-agenda-seed-normalize (削除/統合候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: board-premeeting-brief-normalize (統合先候補)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: pharma-free-tools-theme-extraction (edit safety fix)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    },
+    {
+      "path": "cron: workspace-tmp-and-artifact-cleanup-review (error handling fix)",
+      "disposition": "manual",
+      "reason": "non_guardrail_path_requires_manual_execution"
+    }
+  ],
+  "proposal_status_before": "APPROVED",
+  "proposal_status_after": "APPROVED",
+  "notes": [
+    "remaining allowed paths require manual execution outside this automation step"
+  ]
+}

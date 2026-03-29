@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-03-28T12:18:35.582Z",
+  "tokensIn": 150000,
+  "tokensOut": 148000,
+  "contextSize": 140000,
+  "contextLimit": 203000,
+  "usagePercent": 73.9,
+  "consumptionRate": 0,
+  "consumptionRatePerHour": null,
+  "remainingHours": 4,
+  "recommendedMode": "normal",
+  "monthlyUsagePercent": 35,
+  "fiveHourRemainingPercent": 80,
+  "historyCount": 4
+}

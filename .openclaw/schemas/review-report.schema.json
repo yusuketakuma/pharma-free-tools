@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReviewReport",
+  "type": "object",
+  "required": ["task_id", "verdict", "summary", "issues", "publish_recommendation"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "verdict": {"type": "string", "enum": ["pass", "needs_changes", "blocked"]},
+    "summary": {"type": "string"},
+    "issues": {"type": "array", "items": {"type": "string"}},
+    "publish_recommendation": {"type": "string", "enum": ["publish", "hold", "approval_required"]}
+  },
+  "additionalProperties": true
+}

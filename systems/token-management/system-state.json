@@ -1,0 +1,17 @@
+{
+  "selfImprovementEnabled": true,
+  "selfImprovementVersion": "2.0",
+  "lastSelfImprovementCheck": "2026-03-28T16:55:03.636Z",
+  "selfImprovement": {
+    "status": "active",
+    "version": "2.0",
+    "lastReview": "2026-03-28T16:55:21.195Z",
+    "improvementCount": 0,
+    "enabled": true,
+    "weeklyReview": {
+      "schedule": "毎週日曜 10:00 JST",
+      "nextReview": "2026-04-05T10:00:00.000Z"
+    }
+  },
+  "currentMode": "energy_saving"
+}

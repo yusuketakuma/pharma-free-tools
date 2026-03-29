@@ -1,0 +1,30 @@
+{
+  "adapter": "openclaw-acp",
+  "lane": "acp",
+  "dispatch_id": "dispatch-write-blocked",
+  "dispatch_attempt_id": "dispatch-write-blocked_attempt_01",
+  "captured_at": "2026-03-22T16:19:46+09:00",
+  "request": {
+    "task_id": "step6-lane-write-blocked-04ff68dd",
+    "task_summary": "Implement runtime change",
+    "target_paths": [
+      ".openclaw/scripts/dispatch_task.py"
+    ],
+    "task_type": "write"
+  },
+  "session": {
+    "mode": "mock",
+    "started": true
+  },
+  "result_preview": {
+    "status": "runtime_error",
+    "summary": "ACP failed after partial write execution",
+    "meta": {
+      "lane": "acp",
+      "failure_stage": "execution",
+      "partial_execution": true,
+      "side_effects_possible": true,
+      "publishable": false
+    }
+  }
+}

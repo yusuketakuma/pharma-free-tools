@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/improvement-signal.schema.json",
+  "title": "ImprovementSignal",
+  "description": "A signal captured from openclaw or claude_code indicating a condition that may warrant a system improvement.",
+  "type": "object",
+  "required": ["signal_id", "source", "signal_type", "severity", "captured_at", "version"],
+  "properties": {
+    "signal_id": {
+      "type": "string",
+      "description": "Unique identifier for this signal."
+    },
+    "source": {
+      "type": "string",
+      "enum": ["openclaw", "claude_code"],
+      "description": "The system plane that emitted this signal."
+    },
+    "signal_type": {
+      "type": "string",
+      "description": "The specific type of signal. Valid values depend on the source.",
+      "oneOf": [
+        {
+          "description": "Signal types valid when source is openclaw.",
+          "enum": [
+            "auth_failure",
+            "approval_wait_long",
+            "manual_review_wait_long",
+            "queue_residency_high",
+            "lane_fallback",
+            "lane_unhealthy",
+            "invalid_result",
+            "schema_validation_failure",
+            "dispatch_retry",
+            "degraded_success",
+            "fallback_success",
+            "publish_block",
+            "capacity_pressure",
+            "protected_path_hit",
+            "rebalance_loop"
+          ]
+        },
+        {
+          "description": "Signal types valid when source is claude_code.",
+          "enum": [
+            "tool_failure",
+            "permission_denied",
+            "verification_failed",
+            "subagent_misroute",
+            "context_overflow_pattern",
+            "repeated_edit_pattern",
+            "test_failure_cluster",
+            "hook_block_cluster",
+            "session_compaction_loss",
+            "slow_iteration_pattern",
+            "unsafe_path_attempt",
+            "partial_execution",
+            "rule_conflict",
+            "memory_correction_pattern"
+          ]
+        }
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"],
+      "description": "The severity level of the signal."
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the signal was captured."
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version of this signal document."
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Optional identifier of the project associated with this signal."
+    },
+    "task_id": {
+      "type": "string",
+      "description": "Optional identifier of the task associated with this signal."
+    },
+    "evidence": {
+      "type": "object",
+      "description": "Optional unstructured evidence object containing supporting details for the signal.",
+      "additionalProperties": true
+    },
+    "cluster_id": {
+      "type": "string",
+      "description": "Optional identifier grouping related signals into a cluster."
+    }
+  },
+  "additionalProperties": false
+}

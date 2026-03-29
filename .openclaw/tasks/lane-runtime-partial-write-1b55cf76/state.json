@@ -1,0 +1,35 @@
+{
+  "message": "automatic fallback blocked: write task may have side effects",
+  "approval": {
+    "required": false,
+    "approved": true
+  },
+  "task_id": "lane-runtime-partial-write-1b55cf76",
+  "state": "WAITING_MANUAL_REVIEW",
+  "updated_at": "2026-03-22T16:51:19+09:00",
+  "history": [
+    {
+      "state": "RECEIVED",
+      "at": "2026-03-22T16:51:19+09:00",
+      "message": "task stored"
+    },
+    {
+      "state": "ROUTED",
+      "at": "2026-03-22T16:51:19+09:00",
+      "route_decision_id": "route-4ecb41da8f81",
+      "dispatch_id": "dispatch-lane-runtime-partial-write-1b55cf76",
+      "message": "route decision stored"
+    },
+    {
+      "state": "WAITING_MANUAL_REVIEW",
+      "at": "2026-03-22T16:51:19+09:00",
+      "route_decision_id": "route-4ecb41da8f81",
+      "dispatch_id": "dispatch-lane-runtime-partial-write-1b55cf76",
+      "message": "automatic fallback blocked: write task may have side effects"
+    }
+  ],
+  "route": "claude-code",
+  "route_decision_id": "route-4ecb41da8f81",
+  "protected_paths": [],
+  "dispatch_id": "dispatch-lane-runtime-partial-write-1b55cf76"
+}

@@ -10,6 +10,12 @@
 - 既存課題: index / sitemap / 実ファイル数の整合ずれあり
 - 既存傾向: 診断・チェックリスト系は多いが、実務をその場で前進させる「実行ツール」は不足
 
+## Latest Research Update (2026-03-27)
+2026-03-27 の再点検では **変更なし**。前回のトップ3を維持し、新規トップ候補の追加はなかった。
+- 反復残存テーマ: 薬歴下書き・要点整理支援 / 供給障害患者対応ワークベンチ / 返戻再請求ナビ
+- 進展: 薬歴テーマは 2026-03-26 に wireframe proposal まで進行済み
+- 方針: 既存改善を継続し、新規追加は保留
+
 ## Latest Research Update (2026-03-25)
 2026-03-25の再点検では、トップ3は前回から変更なしだった。新規のトップ候補はなし。2026年度調剤報酬改定まわりの話題は確認したが、既存HTMLで吸収済みのため新規追加は見送った。
 追加で既存HTMLの実ファイル監査を行い、返戻表記ゆれの低リスク修正を 9 件のHTML / 94 箇所に先行適用した。
@@ -111,6 +117,7 @@
 - GitHub Pages ビルド失敗（CI で検証）
 
 ## Reference
+- 詳細レポート: `projects/pharma-free-tools/docs/theme-extraction-2026-03-27.md`
 - 詳細レポート: `projects/pharma-free-tools/docs/theme-extraction-2026-03-25.md`
 - 既存HTMLランキング: `projects/pharma-free-tools/docs/html-improvement-ranking-2026-03-24-existing.md`
 - 前回ランキング: `projects/pharma-free-tools/docs/html-improvement-ranking-2026-03-23.md`
@@ -119,4 +126,4 @@
 - 2026-03-25 朝の自動更新では exact-match 編集失敗が一度出たが、status 内容自体は当日版の研究更新と existing HTML 監査差分を反映済みだったため、ここでは回収確認メモのみ追記した。
 
 ## Last Updated
-- 2026-03-25
+- 2026-03-27

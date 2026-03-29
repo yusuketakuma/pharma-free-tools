@@ -1,0 +1,35 @@
+{
+  "signal_id": "signal-20260325211500-exact-target",
+  "occurred_at": "2026-03-25T21:15:00Z",
+  "source": {
+    "type": "cron",
+    "name": "agent-lesson-capture"
+  },
+  "category": "risk_hint",
+  "domain": "execution",
+  "summary": "軽微タスクでも exact target mismatch は retry cost を増やすので、対象確認を先に入れる。",
+  "severity": "low",
+  "evidence": {
+    "metrics": [
+      "pharma-free-tools の軽微修正で exact target mismatch が発生"
+    ],
+    "refs": [
+      "reports/cron/agent-lesson-capture-20260325-0615.md",
+      "reports/cron/agent-performance-optimization-review-20260325-0715.md"
+    ]
+  },
+  "related_entities": {
+    "agents": [
+      "ceo-tama",
+      "doc-editor"
+    ],
+    "repos": [
+      "pharma-free-tools"
+    ],
+    "layers": [
+      "execution",
+      "user-facing"
+    ]
+  },
+  "candidate_hint": true
+}

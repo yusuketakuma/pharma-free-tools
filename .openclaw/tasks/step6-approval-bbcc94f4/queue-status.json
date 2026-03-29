@@ -1,0 +1,20 @@
+{
+  "task_id": "step6-approval-bbcc94f4",
+  "active": false,
+  "queue_reason": null,
+  "last_queue_reason": "waiting_approval",
+  "state": "READY_FOR_EXECUTION",
+  "route": "claude-code",
+  "route_decision_id": "route-approval",
+  "approval_id": "approval-fixed",
+  "dispatch_id": "dispatch-approval",
+  "queued_at": "2026-03-22T16:55:50+09:00",
+  "released_at": "2026-03-22T16:55:55+09:00",
+  "last_rebalanced_at": "2026-03-22T16:55:55+09:00",
+  "resume_target_state": null,
+  "resume_eligible": false,
+  "resume_blockers": [],
+  "updated_at": "2026-03-22T16:55:55+09:00",
+  "version": 1,
+  "task_queue_path": ".openclaw/tasks/step6-approval-bbcc94f4/queue-status.json"
+}
