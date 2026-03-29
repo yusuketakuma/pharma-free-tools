@@ -1,7 +1,0 @@
-id,name,address,lastVisit,prescriptionDays,urgency,notes
-P001,A様,杉並区A町1-1,2026-02-24,28,high,多剤併用
-P002,B様,杉並区B町2-2,2026-02-20,14,medium,認知症支援
-P003,C様,練馬区C町3-3,2026-02-28,28,low,
-P004,D様,杉並区A町1-5,2026-02-15,7,critical,在宅酸素
-P005,E様,練馬区D町4-4,2026-02-26,28,medium,糖尿病
-P006,F様,中野区E町5-5,2026-02-22,14,high,褥瘡ケア
