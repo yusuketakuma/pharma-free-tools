@@ -1,5 +1,32 @@
 # MEMORY.md
 
+## 2026-04-03 AI Micro-SaaS グローバル展開: 最終実行計画完了
+
+### 実行概要
+**日時**: 2026-04-03 02:00 JST
+**成果物**: `artifacts/implementation/` に3ファイル配置済み
+
+### 重大事実: 日本拠点ではStripe Managed Payments利用不可
+- 代替経路: 標準Stripe（国内）→ Lemon Squeezy（グローバルMoR）
+- US法人設立はMRR $5,000+条件付きで後回し
+
+### MVP開発計画
+- 技術スタック: Next.js + Supabase + Anthropic Claude Haiku 4
+- 開発期間: 4週間
+- 現実的収益予測: 初期MRR $30-50、6ヶ月後 $300-800
+
+### ゆうすけの次アクション（今週中）
+1. Anthropic APIキー取得（15分）
+2. Supabase + Stripe + Vercel アカウント設定（1時間）
+3. Claude CodeでMVP開発開始
+
+### 前版からの修正
+- Board最終レビューの「日本不可」判明が前版に未反映だった3点の矛盾を解消
+- 楽観的すぎた収益予測を現実値に修正
+- PMF未検証での北米即時参入を撤回
+
+---
+
 ## 2026-04-03 自律探索タスク: 収益化パイプライン完了
 
 ### 実行概要
