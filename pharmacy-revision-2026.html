@@ -21,8 +21,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-revision-2026.html">
   <title>2026改定対応・実績計算診断 | 薬剤師無料ツール | 薬局無料ツール集</title>
-  <meta name="description" content="2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援・医薬品供給体制加算の取得状況を可視化し、改善提案を自動生成。">
-  <meta name="keywords" content="2026改定,診療報酬,調剤報酬,地域支援加算,医薬品供給体制加算,薬局DX,実績計算">
+  <meta name="description" content="2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援体制加算の取得状況を可視化し、改善提案を自動生成。">
+  <meta name="keywords" content="2026改定,診療報酬,調剤報酬,地域支援加算,地域支援体制加算（供給対応体制）,薬局DX,実績計算">
   
   <style>
     * {
@@ -318,20 +318,20 @@
   </script>
 
       <meta property="og:title" content="2026改定対応・実績計算診断 | 薬剤師無料ツール | 薬局無料ツール集">
-    <meta property="og:description" content="2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援・医薬品供給体制加算の取得状況を可視化し、改善提案を自動生成。">
+    <meta property="og:description" content="2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援体制加算の取得状況を可視化し、改善提案を自動生成。">
     <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
     <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-revision-2026.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="2026改定対応・実績計算診断 | 薬剤師無料ツール | 薬局無料ツール集">
-    <meta name="twitter:description" content="2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援・医薬品供給体制加算の取得状況を可視化し、改善提案を自動生成。">
+    <meta name="twitter:description" content="2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援体制加算の取得状況を可視化し、改善提案を自動生成。">
     <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
       "name": "2026改定対応・実績計算診断 | 薬剤師無料ツール | 薬局無料ツール集",
-      "description": "2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援・医薬品供給体制加算の取得状況を可視化し、改善提案を自動生成。",
+      "description": "2026年度診療報酬改定に向けた薬局の実績計算・対応レベルを診断。地域支援体制加算の取得状況を可視化し、改善提案を自動生成。",
       "inLanguage": "ja",
       "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacy-revision-2026.html"
     }
@@ -437,7 +437,7 @@
       // 供給体制（5問）
       {
         category: "供給体制",
-        question: "医薬品供給体制加算の取得状況・維持管理は？",
+        question: "地域支援体制加算（供給対応体制）の取得状況・維持管理は？",
         options: ["取得していない", "取得検討中", "取得済み・維持管理中", "取得済み・拡大検討中"]
       },
       {
@@ -594,7 +594,7 @@
         if (percent < 50) {
           if (cat === "地域連携") suggestions.push("地域医療連携ネットワークへの参加・地域ケア会議への参画を検討");
           if (cat === "在宅医療") suggestions.push("在宅訪問薬剤管理指導の実施拡大・チーム連携強化");
-          if (cat === "供給体制") suggestions.push("医薬品供給体制加算の取得・在庫管理システム導入");
+          if (cat === "供給体制") suggestions.push("地域支援体制加算（供給対応体制）の取得・在庫管理システム導入");
           if (cat === "患者対応") suggestions.push("服薬指導時間の確保・患者フィードバック収集仕組み作り");
           if (cat === "DX推進") suggestions.push("電子薬歴データ活用・オンライン服薬指導導入検討");
         }
