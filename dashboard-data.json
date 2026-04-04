@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-21 00:06 JST",
+  "lastUpdated": "2026-04-04 21:20:08 JST",
   "agents": {
     "coding": {
       "status": "更新停滞（3h40m）",
@@ -25,22 +25,49 @@
     "MCS操作推奨期間 最終2日（3/21-22）— ゆうすけ着手未確認",
     "テリパラチド返品期限 残り7日（3/28）— Day1-2進捗未確認",
     "coding: status.md 3h40m未更新・outputs空",
-    "GA4実ID差し替え未実施（全73ファイルがプレースホルダー）",
-    "販売プラットフォーム・アカウント開設未着手"
+    "GA4実ID差し替え未実施（全262ファイルがプレースホルダー）",
+    "販売プラットフォーム・アカウント開設未着手",
+    "整合監査検出: HTML数値不整合 (262 vs 73)",
+    "整合監査検出: sitemap.xmlとの数値不一致 (75 vs 262)",
+    "[SITEMAP_UPDATE] sitemap.xmlを261件に更新（差分: 187）"
   ],
   "nextActions": [
     "coding: 4h閾値チェック（次回巡回）",
     "homecare: MCS最終日対応準備・三環系ALERT継続調査",
     "sidebiz: AIプロンプト15本実装（翌朝08:00以降）",
-    "08:00以降: 社長定例報告（MCS最終日フォロー含む）"
+    "08:00以降: 社長定例報告（MCS最終日フォロー含む）",
+    "整合修正: dashboard-data.jsonのtotalHtmlFilesを262に更新",
+    "整合修正: sitemap.xmlに全262HTMLファイルを追加",
+    "SEO改善: meta description欠落52件を追加",
+    "SEO改善: OGPタグ欠落53件を追加"
   ],
   "qualityMetrics": {
     "sidebiz": {
-      "ga4Coverage": "73/73 (100%)",
+      "ga4Coverage": "0/262 (0%)",
       "crosslinkCoverage": "72/72 (100%)",
       "outboundLinks": "全ファイル1件以上",
-      "seoMetaDescriptionRate": "63/73 (86%)",
-      "totalHtmlFiles": 73
-    }
+      "seoMetaDescriptionRate": "210/262 (80%)",
+      "totalHtmlFiles": 262,
+      "sitemapUrlCount": 75,
+      "indexHtmlPublishedCount": 74
+    },
+    "sitemapUrlCount": 261
+  },
+  "audit": {
+    "auditDate": "2026-04-04 21:17 JST",
+    "auditType": "pharma-free-tools-integrity-audit",
+    "htmlTotalCount": 262,
+    "indexHtmlPublishedCount": 74,
+    "sitemapUrlCount": 75,
+    "dashboardDataJsonCount": 73,
+    "metaDescriptionMissing": 52,
+    "ogTagsMissing": 53,
+    "tmpFiles": 0,
+    "criticalIssues": [
+      "HTML数値不整合 (dashboard:73 vs actual:262)",
+      "sitemap.xmlの網羅性不足 (75 vs 262)",
+      "GA4実ID差し替え未実施",
+      "meta description/OGPタグ欠落"
+    ]
   }
 }

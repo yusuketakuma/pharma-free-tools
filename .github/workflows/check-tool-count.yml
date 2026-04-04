@@ -39,7 +39,12 @@ jobs:
           fi
           
           echo "✅ Tool count verified: $ACTUAL tools"
-      
+
+      - name: Run pharma-free-tools-auditor
+        id: audit
+        run: |
+          python3 scripts/pharma_free_tools_auditor.py --scope root --json-output /tmp/pharma-free-tools-audit.json
+
       - name: Check GA4 placeholder
         run: |
           # G-XXXXXXXXXX プレースホルダーの存在確認
