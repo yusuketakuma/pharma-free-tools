@@ -41,9 +41,12 @@
 2. **収益化完全停止状態**: 集中攻撃で即時解放中
 3. **心理的ハードル**: User Advocateフレームワークで解消中
 
-### 重大事実: 日本拠点ではStripe Managed Payments利用不可
-- 代替経路: 標準Stripe（国内）→ Lemon Squeezy（グローバルMoR）
-- US法人設立はMRR $5,000+条件付きで後回し
+### 事実訂正 (2026-04-04 12:30 JST): 日本はStripe MoR出品者対応国
+- Global Expansion Report (2026-04-04) で確認: 日本はStripe Managed Paymentsの出品者対応国に含まれる
+- 2025年5月Stripe Sessions発表、2026年4月現在Private Preview、SaaSサブスクリプション対応
+- MoRでVAT/GST自動徴収可能 → グローバル販売の税務コンプライアンスコスト大幅削減
+- 前記「日本不可」は事実誤り。US法人設立の緊急性は低下
+- 詳細: artifacts/ai-micro-saas-global-expansion-report-2026-04-04.md
 
 ### MVP開発計画
 - 技術スタック: Next.js + Supabase + Anthropic Claude Haiku 4
