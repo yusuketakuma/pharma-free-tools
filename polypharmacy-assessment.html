@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ポリファーマシー評価ツール | 薬剤師のための無料ツール</title>
+    <title>ポリファーマシー評価ツール | 薬剤師のための無料ツール | 薬局無料ツール集</title>
     <meta name="description" content="高齢者の多剤併用リスクをスクリーニングする無料ツール。6種類以上の内服薬がある患者のポリファーマシーを評価し、鑑別薬・注意すべき相互作用を抽出します。">
     <meta name="keywords" content="ポリファーマシー,多剤併用,高齢者,薬剤師,鑑別,かかりつけ薬剤師,在宅医療">
     <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/polypharmacy-assessment.html">
     
     <!-- OGP -->
-    <meta property="og:title" content="ポリファーマシー評価ツール | 薬剤師のための無料ツール">
-    <meta property="og:description" content="高齢者の多剤併用リスクをスクリーニング。6種類以上の内服薬がある患者のポリファーマシーを評価し、鑑別薬・注意すべき相互作用を抽出します。">
+    <meta property="og:title" content="ポリファーマシー評価ツール | 薬剤師のための無料ツール | 薬局無料ツール集">
+    <meta property="og:description" content="高齢者の多剤併用リスクをスクリーニングする無料ツール。6種類以上の内服薬がある患者のポリファーマシーを評価し、鑑別薬・注意すべき相互作用を抽出します。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/polypharmacy-assessment.html">
-    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/og-polypharmacy.png">
+    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ポリファーマシー評価ツール | 薬剤師のための無料ツール">
-    <meta name="twitter:description" content="高齢者の多剤併用リスクをスクリーニング。6種類以上の内服薬がある患者のポリファーマシーを評価します。">
+    <meta name="twitter:title" content="ポリファーマシー評価ツール | 薬剤師のための無料ツール | 薬局無料ツール集">
+    <meta name="twitter:description" content="高齢者の多剤併用リスクをスクリーニングする無料ツール。6種類以上の内服薬がある患者のポリファーマシーを評価し、鑑別薬・注意すべき相互作用を抽出します。">
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -140,12 +140,12 @@
         }
     </style>
   <!-- GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7M1K9P2D8Q"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
+    gtag('config', 'G-7M1K9P2D8Q');
 
     function trackToolUsage(action) {
       gtag('event', 'tool_usage', {
@@ -168,6 +168,17 @@
       });
     }
   </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "ポリファーマシー評価ツール | 薬剤師のための無料ツール | 薬局無料ツール集",
+      "description": "高齢者の多剤併用リスクをスクリーニングする無料ツール。6種類以上の内服薬がある患者のポリファーマシーを評価し、鑑別薬・注意すべき相互作用を抽出します。",
+      "inLanguage": "ja",
+      "url": "https://yusuketakuma.github.io/pharma-free-tools/polypharmacy-assessment.html"
+    }
+  </script>
+  <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
 </head>
 <body>
     <div class="container">
@@ -184,7 +195,7 @@
                 <div class="form-group">
                     <label>年齢</label>
                     <input type="number" id="age" placeholder="例: 78" min="0" max="120">
-                </div>
+            </div>
                 <div class="form-group">
                     <label>性別</label>
                     <select id="gender">
@@ -192,18 +203,18 @@
                         <option value="male">男性</option>
                         <option value="female">女性</option>
                     </select>
-                </div>
             </div>
+        </div>
             <div class="input-row">
                 <div class="form-group">
                     <label>体重 (kg)</label>
                     <input type="number" id="weight" placeholder="例: 52" step="0.1">
-                </div>
+            </div>
                 <div class="form-group">
                     <label>eGFR (mL/min/1.73m²)</label>
                     <input type="number" id="egfr" placeholder="例: 45" step="0.1">
-                </div>
             </div>
+        </div>
         </div>
         
         <div class="card">
@@ -229,18 +240,18 @@
                     <label class="checkbox-item"><input type="checkbox" data-category="osteoporosis"> 骨粗鬆症薬</label>
                     <label class="checkbox-item"><input type="checkbox" data-category="thyroid"> 甲状腺薬</label>
                     <label class="checkbox-item"><input type="checkbox" data-category="gout"> 痛風薬</label>
-                </div>
             </div>
+        </div>
             
             <div class="form-group">
                 <label>その他の薬剤（自由入力・カンマ区切り）</label>
                 <input type="text" id="otherDrugs" placeholder="例: レボチロキシン, アロプリノール">
-            </div>
+        </div>
             
             <div class="form-group">
                 <label>内服薬総数</label>
                 <input type="number" id="totalDrugs" placeholder="上記以外も含めた総数" min="0">
-            </div>
+        </div>
         </div>
         
         <div class="card">
@@ -255,7 +266,7 @@
                 <label class="checkbox-item"><input type="checkbox" data-factor="drowsiness"> 眠気・鎮静</label>
                 <label class="checkbox-item"><input type="checkbox" data-factor="weightLoss"> 体重減少</label>
                 <label class="checkbox-item"><input type="checkbox" data-factor="polyuria"> 頻尿・多尿</label>
-            </div>
+        </div>
         </div>
         
         <button class="primary" onclick="assessPolypharmacy()">ポリファーマシーを評価する</button>
@@ -265,57 +276,57 @@
                 <div class="result-header">
                     <h2>評価結果</h2>
                     <span id="riskBadge" class="risk-badge"></span>
-                </div>
+            </div>
                 
                 <div class="score-display">
                     <div class="score-number" id="scoreNumber">0</div>
                     <div class="score-label">ポリファーマシースコア (MAI簡易版)</div>
-                </div>
+            </div>
                 
                 <div id="drugCountSummary" class="category-card">
                     <div class="category-title">📊 薬剤数サマリー</div>
                     <div id="drugSummary"></div>
-                </div>
+            </div>
                 
                 <div id="deprescribingSection" class="hidden">
                     <div class="category-card">
                         <div class="category-title">
                             ⚠️ 鑑別（処方中止・減量）候補薬
                             <span class="category-count" id="deprescribeCount">0</span>
-                        </div>
-                        <div id="deprescribingList"></div>
                     </div>
+                        <div id="deprescribingList"></div>
                 </div>
+            </div>
                 
                 <div id="interactionSection" class="hidden">
                     <div class="category-card">
                         <div class="category-title">
                             🔔 注意すべき相互作用・重複
                             <span class="category-count" id="interactionCount">0</span>
-                        </div>
-                        <div id="interactionList"></div>
                     </div>
+                        <div id="interactionList"></div>
                 </div>
+            </div>
                 
                 <div id="anticholinergicSection" class="hidden">
                     <div class="category-card">
                         <div class="category-title">
                             🧠 抗コリン作用負荷
                             <span class="category-count" id="acbScore">0</span>
-                        </div>
-                        <div id="anticholinergicList"></div>
                     </div>
+                        <div id="anticholinergicList"></div>
                 </div>
+            </div>
                 
                 <div id="recommendationSection" class="hidden">
                     <div class="category-card" style="background: #e7f3ff;">
                         <div class="category-title">💡 推奨アクション</div>
                         <div id="recommendations"></div>
-                    </div>
                 </div>
+            </div>
                 
                 <button class="copy-btn" onclick="copyResult()">📋 結果をコピー</button>
-            </div>
+        </div>
         </div>
         
         <!-- CTA Section -->
@@ -325,8 +336,13 @@
             <div class="cta-links">
                 <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-link">AIプロンプト集を見る (¥500)</a>
                 <a href="ai-prompts-lp.html" onclick="trackPromptCTA()" class="cta-link secondary">Notionテンプレート (¥500)</a>
-            </div>
         </div>
+      <!-- PharmCheck AI -->
+      <div class="cta-section" style="background: linear-gradient(135deg, #052e16 0%, #14532d 100%); border: 1px solid #166534;">
+        <h3 style="color: #dcfce7;">🤖 AIが処方を自動解析 — PharmCheck AI</h3>
+        <p style="color: #86efac; font-size: 0.85rem;">相互作用・重複・用量・禁忌を一括チェック。薬歴指導の下書きも自動生成。</p>
+        <a href="#" class="cta-button" style="background: #22c55e; color: white;" onclick="gtag('event','cta_click',{'event_category':'conversion','event_label':'polypharmacy-assessment-pharmcheck'})">近日公開 — お知らせを受け取る →</a>
+      </div>
         
         <footer>
             <p>薬剤師のための無料ツール | <a href="index.html">ツール一覧に戻る</a></p>
@@ -635,8 +651,8 @@
                         <div>
                             <div class="drug-name">${d.category}</div>
                             <div class="deprescribe-reason">${d.reason}</div>
-                        </div>
                     </div>
+                </div>
                 `).join('');
                 document.getElementById('deprescribingList').innerHTML = deprescribeHtml;
             } else {
@@ -651,7 +667,7 @@
                     <div class="warning-item">
                         <span class="warning-icon">${i.severity === 'high' ? '🔴' : i.severity === 'medium' ? '🟡' : '⚪'}</span>
                         <span>${i.message}</span>
-                    </div>
+                </div>
                 `).join('');
                 document.getElementById('interactionList').innerHTML = interactionHtml;
             } else {
