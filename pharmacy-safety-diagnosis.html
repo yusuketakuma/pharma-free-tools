@@ -725,5 +725,234 @@
     </ul>
   </section>
 
+
+<!-- print-enhancement v1 -->
+<script>
+(function () {
+  if (document.body.dataset.printEnhancement === 'true') return;
+  document.body.dataset.printEnhancement = 'true';
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .print-action-btn {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 999;
+      border: 0;
+      border-radius: 999px;
+      background: #1d4ed8;
+      color: #fff;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(29, 78, 216, 0.28);
+      cursor: pointer;
+    }
+    .print-meta-card {
+      display: none;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: #fff;
+      color: #111827;
+    }
+    .print-meta-card strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .print-meta-card span {
+      display: block;
+      font-size: 0.85rem;
+      color: #475569;
+    }
+    @media print {
+      @page {
+        margin: 12mm;
+      }
+      body {
+        background: #fff !important;
+        color: #111827 !important;
+        padding: 0 !important;
+      }
+      .print-action-btn,
+      .cta-section,
+      .related-section,
+      .related-tools,
+      footer,
+      nav,
+      .nav-buttons,
+      .restart-btn,
+      .cta-btn,
+      .cta-button,
+      .cta-buttons,
+      .tool-links,
+      .btn,
+      .no-print,
+      [data-print-hide="true"] {
+        display: none !important;
+      }
+      .print-meta-card {
+        display: block !important;
+      }
+      .container,
+      main,
+      .card,
+      .content,
+      .result,
+      .result-container,
+      .results-section {
+        max-width: 100% !important;
+        width: 100% !important;
+        box-shadow: none !important;
+      }
+      * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+      }
+      a {
+        color: #111827 !important;
+        text-decoration: none !important;
+      }
+      input[type="checkbox"],
+      input[type="radio"] {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const meta = document.createElement('div');
+  meta.className = 'print-meta-card';
+  meta.innerHTML = '<strong></strong><span></span>';
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'print-action-btn';
+  button.textContent = '🖨️ 印刷用に表示';
+
+  function updateMeta() {
+    const title = (document.querySelector('h1') || {}).textContent || document.title;
+    meta.querySelector('strong').textContent = title.trim();
+    meta.querySelector('span').textContent = `印刷日: ${new Date().toLocaleDateString('ja-JP')}`;
+  }
+
+  function preparePrint() {
+    updateMeta();
+    window.print();
+  }
+
+  const target = document.querySelector('.container') || document.querySelector('main') || document.body;
+  target.insertBefore(meta, target.firstChild);
+  button.addEventListener('click', preparePrint);
+  document.body.appendChild(button);
+  window.addEventListener('beforeprint', updateMeta);
+})();
+
+// Copy functionality for diagnostic results
+function trackCopyAction() {
+  if (typeof gtag === 'function') {
+    gtag('event', 'copy_action', {
+      'event_category': 'engagement',
+      'event_label': 'pharmacy-safety-diagnosis-copy'
+    });
+  }
+}
+
+function copyResult() {
+  trackCopyAction();
+  
+  const categoryScores = {};
+  const recommendations = [];
+  
+  // Get diagnosis results
+  const scoreElements = document.querySelectorAll('.score-item');
+  scoreElements.forEach(el => {
+    const name = el.querySelector('.score-item-title').textContent;
+    const value = el.querySelector('.score-item-value').textContent;
+    categoryScores[name] = value;
+  });
+  
+  // Get recommendations
+  const recElements = document.querySelectorAll('.recommendation-item');
+  recElements.forEach(el => {
+    const title = el.querySelector('h4').textContent;
+    const desc = el.querySelector('p').textContent;
+    recommendations.push(`${title}: ${desc}`);
+  });
+  
+  const overallScore = document.getElementById('total-score')?.textContent || '計算中';
+  const riskLevel = document.querySelector('.risk-level')?.textContent || '評価中';
+  
+  const text = `【薬局医療安全診断結果】
+総合リスクスコア: ${overallScore} (${riskLevel})
+
+カテゴリ別スコア:
+${Object.entries(categoryScores).map(([c, s]) => `${c}: ${s}`).join('\n')}
+
+推奨改善策:
+${recommendations.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+
+診断日: ${new Date().toLocaleDateString('ja-JP')}
+https://yusuketakuma.github.io/pharma-free-tools/pharmacy-safety-diagnosis.html`;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    alert('診断結果をコピーしました');
+  }).catch(() => {
+    alert('コピーに失敗しました');
+  });
+}
+
+// Add copy button to results
+function addCopyButton() {
+  const resultSection = document.querySelector('.result-container, .results-section');
+  if (!resultSection || resultSection.querySelector('.copy-result-btn')) return;
+  
+  const copyBtn = document.createElement('button');
+  copyBtn.type = 'button';
+  copyBtn.className = 'copy-result-btn';
+  copyBtn.textContent = '📋 結果をコピー';
+  copyBtn.style.cssText = `
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: 600;
+    transition: transform 0.2s;
+  `;
+  copyBtn.addEventListener('click', copyResult);
+  
+  resultSection.appendChild(copyBtn);
+}
+
+// Monitor for results and add copy button
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.addedNodes) {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) { // Element node
+          if (node.classList.contains('result-container') || node.classList.contains('results-section')) {
+            addCopyButton();
+          }
+          // Check children
+          const resultContainers = node.querySelectorAll('.result-container, .results-section');
+          resultContainers.forEach(addCopyButton);
+        }
+      });
+    }
+  });
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+
+// Initial check
+addCopyButton();
+</script>
 </body>
 </html>

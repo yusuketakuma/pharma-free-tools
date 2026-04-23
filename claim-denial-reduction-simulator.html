@@ -198,6 +198,86 @@
       font-weight: 700;
       margin: 8px 0;
     }
+
+    .reason-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .reason-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    }
+
+    .reason-card h3 {
+      color: #334155;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .reason-amount {
+      color: #667eea;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .reason-card p {
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
+    .action-section {
+      margin-top: 24px;
+      background: #eef2ff;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .action-section h3 {
+      color: #4338ca;
+      margin-bottom: 12px;
+    }
+
+    .action-section ol {
+      margin-left: 20px;
+      color: #374151;
+    }
+
+    .action-section li {
+      margin-bottom: 8px;
+    }
+
+    .quick-link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .quick-link-card {
+      display: block;
+      background: white;
+      color: #4338ca;
+      text-decoration: none;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #c7d2fe;
+      font-weight: 600;
+    }
+
+    .quick-link-card span {
+      display: block;
+      margin-top: 4px;
+      color: #64748b;
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
     
     .cta-section {
       margin-top: 32px;
@@ -287,7 +367,24 @@
       <div class="highlight">
         <div>年間収益改善予測</div>
         <div class="amount" id="improvement">-</div>
-        <div>ROI: 無料ツール導入なので無限大</div>
+        <div id="monthly-target">月次回収目安: -</div>
+      </div>
+
+      <div class="reason-grid" id="reason-breakdown"></div>
+
+      <div class="action-section">
+        <h3>🗂 今日やること 3ステップ</h3>
+        <ol id="today-actions"></ol>
+        <div class="quick-link-grid">
+          <a href="pharmacy-rejection-template.html" class="quick-link-card" onclick="trackCTA('rejection-nav')">
+            返戻再請求ナビを開く
+            <span>返戻理由別の説明文、進捗、提出前チェックをすぐ確認</span>
+          </a>
+          <a href="pharmacy-billing-checklist.html" class="quick-link-card" onclick="trackCTA('billing-checklist')">
+            請求チェックリストを見る
+            <span>提出前の確認漏れと再請求遅れを防止</span>
+          </a>
+        </div>
       </div>
     </div>
     
@@ -310,24 +407,50 @@
     </div>
   
   <script>
+    function formatMoney(value) {
+      return '¥' + Math.round(value).toLocaleString();
+    }
+
     function calculate() {
       const monthlyDenial = parseFloat(document.getElementById('monthly-denial-amount').value) || 0;
       const currentRate = parseFloat(document.getElementById('current-success-rate').value) || 0;
       const targetRate = parseFloat(document.getElementById('target-success-rate').value) || 0;
-      
+
       const annualDenial = monthlyDenial * 12;
       const currentRecovery = annualDenial * (currentRate / 100);
       const targetRecovery = annualDenial * (targetRate / 100);
-      const improvement = targetRecovery - currentRecovery;
-      
-      document.getElementById('annual-denial').textContent = '¥' + annualDenial.toLocaleString();
-      document.getElementById('current-recovery').textContent = '¥' + currentRecovery.toLocaleString();
-      document.getElementById('target-recovery').textContent = '¥' + targetRecovery.toLocaleString();
-      document.getElementById('improvement').textContent = '¥' + improvement.toLocaleString();
-      
+      const improvement = Math.max(targetRecovery - currentRecovery, 0);
+      const unrecovered = Math.max(annualDenial - currentRecovery, 0);
+
+      document.getElementById('annual-denial').textContent = formatMoney(annualDenial);
+      document.getElementById('current-recovery').textContent = formatMoney(currentRecovery);
+      document.getElementById('target-recovery').textContent = formatMoney(targetRecovery);
+      document.getElementById('improvement').textContent = formatMoney(improvement);
+      document.getElementById('monthly-target').textContent = `月次回収目安: ${formatMoney(improvement / 12)}`;
+
+      const reasons = [
+        { name: '算定要件', ratio: 0.35, hint: '算定根拠と薬歴記載を先に整理' },
+        { name: '記載不備', ratio: 0.30, hint: '提出前チェックで漏れ防止' },
+        { name: '用法・用量', ratio: 0.20, hint: '疑義照会・修正履歴を残す' },
+        { name: '期限・提出遅延', ratio: 0.15, hint: '返戻通知から再請求期限を固定' }
+      ];
+      document.getElementById('reason-breakdown').innerHTML = reasons.map(reason => `
+        <div class="reason-card">
+          <h3>${reason.name}</h3>
+          <div class="reason-amount">${formatMoney(unrecovered * reason.ratio)}</div>
+          <p>${reason.hint}</p>
+        </div>
+      `).join('');
+
+      const actions = [
+        `返戻通知書を確認し、直近1か月の返戻理由を上位3件に分類する（取りこぼし推定 ${formatMoney(unrecovered)}）`,
+        `返戻再請求ナビで説明文と必要資料を準備し、再請求成功率を ${currentRate}% → ${targetRate}% に引き上げる`,
+        `提出前に請求チェックリストで最終確認し、今月の改善目安 ${formatMoney(improvement / 12)} を追う`
+      ];
+      document.getElementById('today-actions').innerHTML = actions.map(action => `<li>${action}</li>`).join('');
+
       document.getElementById('result').style.display = 'block';
-      
-      // GA4イベント計測（仮）
+
       if (typeof gtag !== 'undefined') {
         gtag('event', 'simulation_complete', {
           'event_category': 'claim_denial_simulator',
@@ -336,9 +459,8 @@
         });
       }
     }
-    
+
     function trackCTA(ctaType) {
-      // GA4イベント計測（仮）
       if (typeof gtag !== 'undefined') {
         gtag('event', 'cta_click', {
           'event_category': 'claim_denial_simulator',

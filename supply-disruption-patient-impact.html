@@ -487,7 +487,53 @@
       
       <div class="recommendations">
         <h3 class="recommendations-title">💡 推奨アクション</h3>
-        <ul class="recommendations-list" id="recommendations-list"></ul>
+        <ul class="recommendations-list" id="recommendations-list">
+          ${priorityActions.map(action => `<li>${action}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <div class="response-templates">
+        <h3 class="templates-title">📋 対応テンプレート</h3>
+        
+        <div class="template-group">
+          <h4>24時間以内対応（緊急）</h4>
+          <div class="template-cards">
+            <div class="template-card">
+              <h5>患者への連絡</h5>
+              <div class="template-content">
+                <p>${responseTemplates["24時間内"].patient}</p>
+                <div class="copy-btn" onclick="copyTemplate('24h-patient')">📋 コピー</div>
+              </div>
+            </div>
+            <div class="template-card">
+              <h5>医師への連絡</h5>
+              <div class="template-content">
+                <p>${responseTemplates["24時間内"].doctor}</p>
+                <div class="copy-btn" onclick="copyTemplate('24h-doctor')">📋 コピー</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="template-group">
+          <h4>72時間以内対応（準急）</h4>
+          <div class="template-cards">
+            <div class="template-card">
+              <h5>患者への連絡</h5>
+              <div class="template-content">
+                <p>${responseTemplates["72時間内"].patient}</p>
+                <div class="copy-btn" onclick="copyTemplate('72h-patient')">📋 コピー</div>
+              </div>
+            </div>
+            <div class="template-card">
+              <h5>医師への連絡</h5>
+              <div class="template-content">
+                <p>${responseTemplates["72時間内"].doctor}</p>
+                <div class="copy-btn" onclick="copyTemplate('72h-doctor')">📋 コピー</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div class="timeline-section">
@@ -641,6 +687,38 @@
       // 優先対応順位
       const sortedCategories = Object.entries(categoryAvg).sort((a, b) => b[1] - a[1]);
       
+      // 対応テンプレート
+      const responseTemplates = {
+        "24時間内": {
+          patient: "〇〇様。現在お調子はいかがでしょうか。薬剤師の〇〇です。現在ご使用の薬〇〇の供給に影響が出ている可能性があるため、代替薬についてご相談させていただきたいと思っています。",
+          doctor: "〇〇先生。お調子はいかがでしょうか。薬剤師の〇〇です。患者様の薬剤供給に影響が出る可能性があるため、代替薬についてのご相談させていただきたくご連絡いたしました。",
+          pharmacy: "〇〇薬局様。〇〇薬品の供給障害情報についてご確認のほどよろしくお願いいたします。代替手配の可能性をご教示いただけますと幸いです。"
+        },
+        "72時間内": {
+          patient: "〇〇様。お調子はいかがでしょうか。薬剤師の〇〇です。現在お調子はいかがでしょうか。現在ご使用の薬〇〇の供給に影響が出る可能性があるため、今後の対応についてご相談させていただきたいと思っています。",
+          doctor: "〇〇先生。お調子はいかがでしょうか。薬剤師の〇〇です。患者様の薬剤供給に影響が出る可能性があるため、代替薬の相談が必要な場合にはお気軽にご連絡ください。",
+          pharmacy: "〇〇薬局様。〇〇薬品の供給障害情報について、代替手配の検討を開始したいのでご確認いただけますと幸いです。"
+        }
+      };
+      
+      // 優先順位に基づいた推奨アクション
+      const priorityActions = sortedCategories.map(([category, score], index) => {
+        const priority = index + 1;
+        let action = "";
+        
+        if (category === "患者数評価") {
+          action = `${priority}位: ${score}点 - 影響患者のリストアップと個別連絡計画の策定`;
+        } else if (category === "代替薬可否") {
+          action = `${priority}位: ${score}点 - 代替薬の確保と切り替え手順の準備`;
+        } else if (category === "緊急度評価") {
+          action = `${priority}位: ${score}点 - 患者への迅速な周知と対応準備`;
+        } else if (category === "対応コスト") {
+          action = `${priority}位: ${score}点 - リソース確保と業務調整の計画立案`;
+        }
+        
+        return action;
+      });
+      
       const priorityTexts = {
         "患者数評価": "影響患者の把握・リスト化を最優先",
         "代替薬可否": "代替薬の確保・切り替え準備を最優先",
@@ -718,17 +796,51 @@
         categoryAvg[cat] = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
       }
       
+      const overallScore = document.getElementById('overall-score').textContent;
+      const riskLevel = overallScore >= 70 ? '高リスク' : overallScore >= 45 ? '中程度リスク' : '低リスク';
+      
+      // 優先順位付きの推奨連絡文を生成
+      const recommendedContact = sortedCategories.map(([category, score], index) => {
+        const priority = index + 1;
+        if (category === "患者数評価") {
+          return `${priority}位: まず影響患者のリストアップと個別連絡計画を立案してください。`;
+        } else if (category === "代替薬可否") {
+          return `${priority}位: 代替薬の確保と切り替え手順を準備してください。`;
+        } else if (category === "緊急度評価") {
+          return `${priority}位: 患者への迅速な周知と対応準備を進めてください。`;
+        } else {
+          return `${priority}位: リソース確保と業務調整の計画を立案してください。`;
+        }
+      }).join('\n');
+      
       const text = `【供給障害患者影響診断結果】
-総合リスクスコア: ${document.getElementById('overall-score').textContent}点
+総合リスクスコア: ${overallScore}点 (${riskLevel})
 
 カテゴリ別スコア:
 ${Object.entries(categoryAvg).map(([c, s]) => `${c}: ${s}点`).join('\n')}
+
+優先順位と推奨対応:
+${recommendedContact}
 
 診断日: ${new Date().toLocaleDateString('ja-JP')}
 https://yusuketakuma.github.io/pharma-free-tools/supply-disruption-patient-impact.html`;
       
       navigator.clipboard.writeText(text).then(() => {
         alert('結果をコピーしました');
+      });
+    }
+    
+    function copyTemplate(type) {
+      const templates = {
+        '24h-patient': responseTemplates["24時間内"].patient,
+        '24h-doctor': responseTemplates["24時間内"].doctor,
+        '72h-patient': responseTemplates["72時間内"].patient,
+        '72h-doctor': responseTemplates["72時間内"].doctor
+      };
+      
+      const text = templates[type];
+      navigator.clipboard.writeText(text).then(() => {
+        alert('テンプレートをコピーしました');
       });
     }
   </script>

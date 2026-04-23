@@ -280,5 +280,205 @@
     <a href="ai-prompts-lp.html" onclick="gtag('event', 'cta_click', {'event_category': 'conversion', 'event_label': 'pharmacy-cashflow-diagnosis-cta'})" style="display: inline-block; background: white; color: #667eea; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">詳細を見る →</a>
   </div>
 
+
+
+<!-- 関連ツール セクション -->
+<div class="related-section" style="margin:40px auto 24px;max-width:860px;padding:24px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;">
+  <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;text-align:center;">🔗 関連ツール</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+    <a href="pharmacy-billing-checklist.html" style="display:inline-flex;align-items:center;gap:6px;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;">💳 請求・入金管理チェックリスト</a>
+    <a href="pharmacy-inventory-diagnosis.html" style="display:inline-flex;align-items:center;gap:6px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;">📦 在庫診断</a>
+    <a href="claim-denial-prevention-checklist.html" style="display:inline-flex;align-items:center;gap:6px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:500;">📋 返戻予防チェックリスト</a>
+    <a href="ai-prompts-lp.html" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;">🤖 AIプロンプト集</a>
+  </div>
+</div>
+
+<!-- result-output-enhancement v1 -->
+<script>
+(function () {
+  const RESULT_SELECTOR = "#result";
+  const STORAGE_KEY = "pharma-free-tools:pharmacy-cashflow-diagnosis.html:result-report";
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .result-output-tools {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .result-output-btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: #1d4ed8;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(29, 78, 216, 0.18);
+    }
+    .result-output-btn.secondary {
+      background: #e2e8f0;
+      color: #1e293b;
+      box-shadow: none;
+    }
+    .result-output-status {
+      font-size: 0.85rem;
+      color: #475569;
+    }
+    .saved-result-preview {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: rgba(248, 250, 252, 0.95);
+      color: #0f172a;
+    }
+    .saved-result-preview pre {
+      white-space: pre-wrap;
+      margin: 10px 0 0;
+      font-family: inherit;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+  `;
+  document.head.appendChild(style);
+
+  function showStatus(message) {
+    const status = document.querySelector(`${RESULT_SELECTOR} .result-output-status`);
+    if (status) status.textContent = message;
+  }
+
+  function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+  }
+
+  function getResultRoot() {
+    return document.querySelector(RESULT_SELECTOR);
+  }
+
+  function buildResultText() {
+    const root = getResultRoot();
+    if (!root) return '';
+
+    const clone = root.cloneNode(true);
+    clone.querySelectorAll('button, script, style, .result-output-tools, .saved-result-preview, .cta-section').forEach(node => node.remove());
+    const lines = clone.innerText
+      .split('\n')
+      .map(line => line.replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+
+    return [
+      `【${(document.querySelector('h1') || { textContent: document.title }).textContent.trim()}】`,
+      `診断日: ${new Date().toLocaleDateString('ja-JP')}`,
+      ...lines,
+      window.location.href
+    ].join('\n');
+  }
+
+  function copyWithFallback(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise((resolve, reject) => {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', 'readonly');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        resolve();
+      } catch (error) {
+        reject(error);
+      } finally {
+        textarea.remove();
+      }
+    });
+  }
+
+  function copyResultReport() {
+    const report = buildResultText();
+    if (!report) {
+      showStatus('診断結果を表示してからコピーしてください。');
+      return;
+    }
+    copyWithFallback(report)
+      .then(() => showStatus('結果をコピーしました。'))
+      .catch(() => showStatus('コピーに失敗しました。'));
+  }
+
+  function saveResultReport() {
+    const report = buildResultText();
+    if (!report) {
+      showStatus('診断結果を表示してから保存してください。');
+      return;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      savedAt: new Date().toLocaleString('ja-JP'),
+      report
+    }));
+    showStatus('結果を保存しました。');
+  }
+
+  function restoreResultReport() {
+    const root = getResultRoot();
+    if (!root) return;
+
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const preview = root.querySelector('.saved-result-preview');
+    if (!raw) {
+      showStatus('保存済みの結果はありません。');
+      if (preview) preview.hidden = true;
+      return;
+    }
+
+    const data = JSON.parse(raw);
+    if (!preview) return;
+    preview.hidden = false;
+    preview.innerHTML = `<strong>保存済みレポート</strong><div class="result-output-status">保存日時: ${escapeHtml(data.savedAt || '')}</div><pre>${escapeHtml(data.report || '')}</pre>`;
+    showStatus('保存済み結果を表示しました。');
+  }
+
+  function injectResultActions() {
+    const root = getResultRoot();
+    if (!root || root.dataset.resultOutputEnhanced === 'true') return;
+    root.dataset.resultOutputEnhanced = 'true';
+
+    const tools = document.createElement('div');
+    tools.className = 'result-output-tools';
+    tools.innerHTML = `
+      <button type="button" class="result-output-btn" data-result-action="copy">📋 結果をコピー</button>
+      <button type="button" class="result-output-btn" data-result-action="save">💾 結果を保存</button>
+      <button type="button" class="result-output-btn secondary" data-result-action="restore">↩ 保存結果を表示</button>
+      <span class="result-output-status"></span>
+    `;
+
+    const preview = document.createElement('div');
+    preview.className = 'saved-result-preview';
+    preview.hidden = true;
+
+    tools.querySelector('[data-result-action="copy"]').addEventListener('click', copyResultReport);
+    tools.querySelector('[data-result-action="save"]').addEventListener('click', saveResultReport);
+    tools.querySelector('[data-result-action="restore"]').addEventListener('click', restoreResultReport);
+
+    root.appendChild(tools);
+    root.appendChild(preview);
+  }
+
+  const observer = new MutationObserver(() => injectResultActions());
+  observer.observe(document.body, { childList: true, subtree: true });
+  injectResultActions();
+
+  window.copyResult = copyResultReport;
+  window.saveResultOutput = saveResultReport;
+  window.restoreResultOutput = restoreResultReport;
+})();
+</script>
 </body>
 </html>
