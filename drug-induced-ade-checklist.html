@@ -396,6 +396,20 @@
                 flex-direction: column;
             }
         }
+        @media print {
+          @page { margin: 12mm; }
+          body { background: #fff !important; color: #111827 !important; padding: 0 !important; }
+          nav, .cta-section, .cta-box, .action-buttons, .no-print,
+          [data-print-hide="true"] { display: none !important; }
+          .container, main, .card, .content {
+            max-width: 100% !important; width: 100% !important; box-shadow: none !important;
+          }
+          * { box-shadow: none !important; text-shadow: none !important; }
+          a { color: #111827 !important; text-decoration: none !important; }
+          input[type="checkbox"], input[type="radio"] {
+            -webkit-print-color-adjust: exact; print-color-adjust: exact;
+          }
+        }
     </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7M1K9P2D8Q"></script>
   <script>
@@ -633,6 +647,7 @@
             <!-- アクションボタン -->
             <div class="action-buttons">
                 <button class="btn btn-primary" onclick="copyResult()">📋 結果をコピー</button>
+                <button class="btn btn-secondary" onclick="window.print(); trackToolUsage('print')">🖨️ 印刷する</button>
                 <button class="btn btn-secondary" onclick="reset; trackToolUsage('restart')"Form()">🔄 リセット</button>
             </div>
             

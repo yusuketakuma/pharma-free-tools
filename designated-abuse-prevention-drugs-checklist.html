@@ -69,6 +69,20 @@
     .cta-box { background: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%); border: 2px solid #ffc107; border-radius: 12px; padding: 20px; text-align: center; margin-top: 20px; }
     .cta-box h3 { color: #f57c00; margin-bottom: 10px; }
     .cta-btn { display: inline-block; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+    @media print {
+      @page { margin: 12mm; }
+      body { background: #fff !important; color: #111827 !important; padding: 0 !important; }
+      nav, .cta-section, .cta-box, .btn, .no-print,
+      [data-print-hide="true"] { display: none !important; }
+      .container, main, .card, .content {
+        max-width: 100% !important; width: 100% !important; box-shadow: none !important;
+      }
+      * { box-shadow: none !important; text-shadow: none !important; }
+      a { color: #111827 !important; text-decoration: none !important; }
+      input[type="checkbox"], input[type="radio"] {
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+    }
   </style>
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7M1K9P2D8Q"></script>
@@ -334,6 +348,7 @@
         <a href="https://yusuketakuma.github.io/promo-ai-prompts-lp/" class="cta-btn">詳細を見る →</a>
       </div>
       
+      <button class="btn" onclick="window.print(); trackToolUsage('print')" style="margin-top: 20px; background: #64748b;">🖨️ 印刷する</button>
       <button class="btn" onclick="location.reload(); trackToolUsage('reset')" style="margin-top: 20px;">もう一度チェックする</button>
     </div>
   </div>
