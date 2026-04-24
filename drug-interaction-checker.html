@@ -65,6 +65,9 @@
     .drug-input input:focus { outline: none; border-color: var(--primary); }
     .drug-input button { padding: 12px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .drug-input button:hover { background: var(--primary-dark); }
+    .suggestion-help { margin-top: 10px; font-size: 0.85rem; color: var(--gray-600); }
+    .suggestion-help strong { color: var(--primary-dark); }
+    .match-note { margin-top: 12px; padding: 10px 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; font-size: 0.85rem; color: #1d4ed8; }
     .drug-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
     .drug-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-100); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; }
     .drug-tag button { background: none; border: none; color: var(--gray-600); cursor: pointer; font-size: 1.1rem; line-height: 1; }
@@ -121,9 +124,11 @@
       <div class="input-section">
         <label>薬剤名を入力（複数可）</label>
         <div class="drug-input">
-          <input type="text" id="drugInput" placeholder="例: イトラコナゾール、ピモジド" autocomplete="off">
+          <input type="text" id="drugInput" placeholder="例: イトラコナゾール、ピモジド" autocomplete="off" list="drugSuggestions">
           <button onclick="addDrug()">追加</button>
         </div>
+        <datalist id="drugSuggestions"></datalist>
+        <div class="suggestion-help" id="drugSuggestionHelp">候補薬剤名が表示されます。略称や一部入力でも候補を確認できます。</div>
         <div class="drug-tags" id="drugTags"></div>
       </div>
 
@@ -170,16 +175,108 @@
   <script src="interaction-data.js"></script>
   <script>
     let drugs = [];
+    const knownDrugs = buildDrugSuggestions();
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+
+    function buildDrugSuggestions() {
+      const set = new Set();
+      INTERACTION_DATA.forEach(interaction => {
+        set.add(interaction.drugA.trim());
+        set.add(interaction.drugB.trim());
+      });
+      return Array.from(set).filter(Boolean).sort((a, b) => a.localeCompare(b, 'ja'));
+    }
+
+    function populateDrugSuggestions() {
+      const datalist = document.getElementById('drugSuggestions');
+      datalist.innerHTML = knownDrugs.map(drug => `<option value="${escapeHtml(drug)}"></option>`).join('');
+    }
+
+    function getMatchingDrugs(query) {
+      const normalizedQuery = normalize(query);
+      if (!normalizedQuery) return [];
+      return knownDrugs.filter(drug => normalize(drug).includes(normalizedQuery)).slice(0, 8);
+    }
+
+    function resolveDrugInput(value) {
+      const exact = knownDrugs.find(drug => normalize(drug) === normalize(value));
+      if (exact) {
+        return { status: 'resolved', value: exact, matches: [exact] };
+      }
+
+      const matches = getMatchingDrugs(value);
+      if (matches.length === 1) {
+        return { status: 'resolved', value: matches[0], matches };
+      }
+      if (matches.length > 1) {
+        return { status: 'ambiguous', value, matches };
+      }
+      return { status: 'raw', value, matches: [] };
+    }
+
+    function updateSuggestionHelp(message) {
+      const help = document.getElementById('drugSuggestionHelp');
+      const inputValue = document.getElementById('drugInput').value.trim();
+
+      if (message) {
+        help.innerHTML = message;
+        return;
+      }
+
+      if (!inputValue) {
+        help.textContent = '候補薬剤名が表示されます。略称や一部入力でも候補を確認できます。';
+        return;
+      }
+
+      const matches = getMatchingDrugs(inputValue);
+      if (matches.length === 0) {
+        help.textContent = '候補が見つからない場合でも、そのまま追加して部分一致チェックできます。';
+        return;
+      }
+
+      if (matches.length === 1) {
+        help.innerHTML = `<strong>候補:</strong> ${escapeHtml(matches[0])}。Enterで追加できます。`;
+        return;
+      }
+
+      const preview = matches.slice(0, 6).map(escapeHtml).join('、');
+      const suffix = matches.length > 6 ? ' ほか' : '';
+      help.innerHTML = `<strong>候補 ${matches.length}件:</strong> ${preview}${suffix}`;
+    }
 
     function addDrug() {
       const input = document.getElementById('drugInput');
       const value = input.value.trim();
-      if (value && !drugs.includes(value)) {
-        drugs.push(value);
+      if (!value) {
+        input.focus();
+        return;
+      }
+
+      const resolution = resolveDrugInput(value);
+      if (resolution.status === 'ambiguous') {
+        updateSuggestionHelp(`候補が複数あります。候補から選択してください: <strong>${resolution.matches.slice(0, 6).map(escapeHtml).join('、')}</strong>`);
+        input.focus();
+        input.select();
+        return;
+      }
+
+      const finalValue = resolution.status === 'resolved' ? resolution.value : value;
+      if (finalValue && !drugs.includes(finalValue)) {
+        drugs.push(finalValue);
         renderTags();
         input.value = '';
         updateCheckBtn();
       }
+
+      if (resolution.status === 'raw') {
+        updateSuggestionHelp('データベース登録名ではないため、入力語で部分一致チェックします。結果は必ず添付文書等で確認してください。');
+      } else {
+        updateSuggestionHelp();
+      }
+
       input.focus();
     }
 
@@ -201,6 +298,12 @@
 
     function updateCheckBtn() {
       document.getElementById('checkBtn').disabled = drugs.length < 2;
+    }
+
+    function getUnresolvedDrugNotes() {
+      return drugs
+        .filter(drug => !knownDrugs.includes(drug))
+        .map(drug => `入力語「${drug}」は代表薬剤名と完全一致していません。部分一致候補を確認してください。`);
     }
 
     function normalize(str) {
@@ -242,6 +345,8 @@
 
       section.style.display = 'block';
 
+      const unresolvedNotes = getUnresolvedDrugNotes();
+
       if (results.length === 0) {
         title.innerHTML = '<span style="color: var(--success);">✓</span> 重大な相互作用は見つかりませんでした';
         list.innerHTML = `
@@ -249,6 +354,7 @@
             <div class="icon">✅</div>
             <p>入力された薬剤の組み合わせで<br>重大な相互作用は検出されませんでした</p>
             <p style="margin-top: 8px; font-size: 0.8rem;">※本ツールは代表的な相互作用のみを収録しています</p>
+            ${unresolvedNotes.length ? `<div class="match-note">${unresolvedNotes.join('<br>')}</div>` : ''}
       </div>
         `;
       } else {
@@ -280,6 +386,9 @@
     document.getElementById('drugInput').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') addDrug();
     });
+    document.getElementById('drugInput').addEventListener('input', () => updateSuggestionHelp());
+    populateDrugSuggestions();
+    updateSuggestionHelp();
 
     // GA4 tracking (placeholder)
     function trackToolUsage() {

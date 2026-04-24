@@ -421,6 +421,13 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-7M1K9P2D8Q');
+
+      function trackToolUsage(action) {
+          gtag('event', 'tool_usage', {
+              event_category: 'engagement',
+              event_label: 'pharmacy-time-study-diagnosis-' + action
+          });
+      }
   </script>
     <meta property="og:title" content="薬剤師向け無料ツール - Pharmacy Time Study Diagnosis">
     <meta property="og:description" content="薬剤師の業務効率化を支援するPharmacy Time Study Diagnosisツール">
@@ -473,6 +480,10 @@
         <div id="improvementsList">
           <!-- Improvements will be inserted here -->
         </div>
+      </div>
+
+      <div class="buttons" style="margin-top: 20px;">
+        <button class="btn" id="copyResultBtn" onclick="copyResult()">📋 結果をコピー</button>
       </div>
       
       <div class="cta-banner">
@@ -752,6 +763,31 @@
       });
       
       improvementsList.innerHTML = improvementHtml;
+    }
+
+    function copyResult() {
+      const score = document.getElementById('totalScore').textContent;
+      const categoryScores = document.getElementById('categoryScores').innerText.replace(/\n+/g, '\n').trim();
+      const improvementsText = document.getElementById('improvementsList').innerText.replace(/\n+/g, '\n').trim();
+      const text = '【薬局タイムスタディ診断 結果】\n' +
+        'スコア: ' + score + '\n\n' +
+        '■ 領域別スコア\n' + categoryScores + '\n\n' +
+        '■ 優先改善ポイント\n' + improvementsText + '\n\n' +
+        '---\n' +
+        'ツール: https://pharma-free-tools.pages.dev/pharmacy-time-study-diagnosis';
+
+      navigator.clipboard.writeText(text).then(function() {
+        const btn = document.getElementById('copyResultBtn');
+        const original = btn.textContent;
+        btn.textContent = 'コピーしました ✅';
+        setTimeout(function() { btn.textContent = original; }, 1500);
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'copy_action', {
+            'event_category': 'engagement',
+            'event_label': 'pharmacy-time-study-diagnosis-copy'
+          });
+        }
+      });
     }
 
     init();

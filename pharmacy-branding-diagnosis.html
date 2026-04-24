@@ -342,7 +342,11 @@
       <div class="diagnosis" id="diagnosis">
         <!-- Diagnosis will be inserted by JavaScript -->
       </div>
-      
+
+      <div style="text-align:center;margin:16px 0;">
+        <button id="copyResultBtn" onclick="copyResult()" style="background:#2563eb;color:white;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s;">📋 結果をコピー</button>
+      </div>
+
       <div class="cta-section">
         <h3>💡 ブランディングを強化しませんか？</h3>
         <p>薬局の差別化・集客に役立つプロンプトを含む「薬剤師向けAIプロンプト集」で、マーケティング戦略を加速させましょう。</p>
@@ -677,8 +681,29 @@
     
     // 初期化
     renderQuestion();
+
+    function copyResult() {
+      const scoreEl = document.getElementById('total-score');
+      const diagEl = document.getElementById('diagnosis');
+      const score = scoreEl ? scoreEl.textContent : '';
+      const diagText = diagEl ? diagEl.innerText.replace(/\n+/g, '\n').trim() : '';
+      const text = '【薬局ブランディング診断 結果】\n' +
+        'スコア: ' + score + ' / 100点\n\n' +
+        diagText + '\n\n' +
+        'ツール: https://yusuketakuma.github.io/pharma-free-tools/pharmacy-branding-diagnosis.html';
+      navigator.clipboard.writeText(text).then(function() {
+        const btn = document.getElementById('copyResultBtn');
+        if (!btn) return;
+        const orig = btn.textContent;
+        btn.textContent = 'コピーしました ✅';
+        setTimeout(function() { btn.textContent = orig; }, 1500);
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'copy_action', { event_category: 'engagement', event_label: 'pharmacy-branding-diagnosis-copy' });
+        }
+      });
+    }
   </script>
-  
+
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7M1K9P2D8Q"></script>
   <script>
@@ -686,6 +711,13 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-7M1K9P2D8Q');
+
+    function trackToolUsage(action) {
+      gtag('event', 'tool_usage', {
+        event_category: 'engagement',
+        event_label: 'pharmacy-branding-diagnosis-' + action
+      });
+    }
   </script>
 
   <!-- 関連ツール -->

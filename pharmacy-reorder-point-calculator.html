@@ -438,6 +438,10 @@
             <div class="value" id="stockStatus">-</div>
             <div class="label">在庫状況</div>
           </div>
+          <div class="result-item">
+            <div class="value" id="supplyRisk">-</div>
+            <div class="label">供給リスク</div>
+          </div>
         </div>
       </div>
     </div>
@@ -446,8 +450,27 @@
     <div class="card">
       <h2>複数薬品の一括計算</h2>
       <p style="color: #666; margin-bottom: 16px; font-size: 0.9rem;">
-        レセコンデータから転記して一括計算。CSVエクスポート対応。
+        レセコンデータから転記して一括計算。CSVエクスポート対応。<br>
+        <small style="color: #999;">自動フラグ：欠品危険・過剰在庫・要発注 | 優先順位ソート対応</small>
       </p>
+      
+      <div style="margin-bottom: 16px; padding: 12px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
+        <h3 style="color: #1976d2; font-size: 0.9rem; margin-bottom: 8px;">🚨 自動フラグ判定基準</h3>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 0.8rem;">
+          <div>
+            <span class="status-indicator status-danger">欠品危険</span><br>
+            現在庫 = 0
+          </div>
+          <div>
+            <span class="status-indicator status-warning">要発注</span><br>
+            現在庫 &lt; 発注点
+          </div>
+          <div>
+            <span class="status-indicator status-ok">過剰在庫</span><br>
+            現在庫 &gt; 発注点 × 1.5
+          </div>
+        </div>
+      </div>
       
       <div class="item-list">
         <div class="item-row">
@@ -465,21 +488,24 @@
       
       <button class="btn-add" onclick="addItemRow()">+ 薬品を追加</button>
       <button class="btn" style="margin-top: 10px;" onclick="calculateAll()">一括計算</button>
+      <button class="btn btn-secondary" style="margin-top: 10px;" onclick="sortByPriority()">🎯 優先順位でソート</button>
       
       <div id="bulkResults" style="display: none; margin-top: 20px;">
         <div class="item-row" style="background: #f8f9fa; font-weight: 600;">
+          <div>優先順位</div>
           <div>薬品名</div>
           <div>発注点</div>
           <div>在庫状況</div>
+          <div>供給リスク</div>
           <div>推奨発注量</div>
           <div>判定</div>
-          <div></div>
         </div>
         <div id="bulkResultRows"></div>
         
         <div class="export-section">
           <button class="btn-export" onclick="exportCSV()">📥 CSVダウンロード</button>
           <button class="btn-export" onclick="copyToClipboard()">📋 クリップボードにコピー</button>
+          <button class="btn-export" onclick="exportPriorityList()">📋 優先順位リスト</button>
         </div>
       </div>
     </div>
@@ -527,6 +553,121 @@
   </div>
   
   <script>
+    // 供給リスク評価
+    function getSupplyRisk(usage, leadTime, safetyDays, name) {
+      // 供給不安要因のチェック
+      const riskFactors = [];
+      
+      // 使用量が多い（1日10個以上）
+      if (usage >= 10) riskFactors.push('高使用量');
+      
+      // リードタイムが長い（5日以上）
+      if (leadTime >= 5) riskFactors.push('長リードタイム');
+      
+      // 安全日数が長い（10日以上）
+      if (safetyDays >= 10) riskFactors.push('長期在庫');
+      
+      // 特定のキーワードで供給不安薬を判定
+      const riskKeywords = ['がん', '抗がん', '特殊', '希少', '限定', '注射', '点滴'];
+      if (riskKeywords.some(keyword => name.includes(keyword))) {
+        riskFactors.push('供給不安定薬');
+      }
+      
+      if (riskFactors.length >= 3) return { text: '⚠️ 高', class: 'status-danger' };
+      if (riskFactors.length >= 2) return { text: '⚠️ 中', class: 'status-warning' };
+      if (riskFactors.length >= 1) return { text: '⚠️ 低', class: 'status-ok' };
+      return { text: '✅ 安定', class: 'status-ok' };
+    }
+    
+    // 優先順位ソート
+    function sortByPriority() {
+      if (!window.bulkResults || window.bulkResults.length === 0) {
+        alert('先に計算を実行してください');
+        return;
+      }
+      
+      // 優先順位の計算：在庫状況 + 供給リスク + 発注必要性
+      window.bulkResults.sort((a, b) => {
+        const priorityA = getPriorityScore(a);
+        const priorityB = getPriorityScore(b);
+        return priorityB - priorityA;
+      });
+      
+      // ソート結果を再表示
+      displayBulkResults();
+    }
+    
+    // 優先スコア計算（拡張版）
+    function getPriorityScore(item) {
+      let score = 0;
+      
+      // 在庫状況（欠品危険: 100, 要発注: 60, 過剰在庫: -20, OK: 0）
+      if (item.stockStatus === '欠品危険') score += 100;
+      else if (item.stockStatus === '要発注') score += 60;
+      else if (item.stockStatus === '過剰在庫') score += -20;
+      
+      // 供給リスク（高: 40, 中: 20, 低: 10, 安定: 0）
+      if (item.supplyRisk === '高') score += 40;
+      else if (item.supplyRisk === '中') score += 20;
+      else if (item.supplyRisk === '低') score += 10;
+      
+      // 発注必要性（発注量大: 30, 小: 15, なし: 0）
+      if (item.orderQty > 100) score += 30;
+      else if (item.orderQty > 0) score += 15;
+      
+      // 重要度キーワードボーナス
+      const importantKeywords = ['がん', '抗がん', '特殊', '希少', '救命', '緊急'];
+      if (importantKeywords.some(keyword => item.name.includes(keyword))) {
+        score += 50;
+      }
+      
+      return score;
+    }
+    
+    // 在庫状況判定（拡張版）
+    function getStockStatus(stock, reorderPoint, orderQty) {
+      if (stock <= 0) return { text: '欠品危険', class: 'status-danger' };
+      if (stock < reorderPoint) return { text: '要発注', class: 'status-warning' };
+      if (stock > reorderPoint * 1.5) return { text: '過剰在庫', class: 'status-ok' };
+      return { text: '適正', class: 'status-ok' };
+    }
+    
+    function displayBulkResults() {
+      const resultsContainer = document.getElementById('bulkResultRows');
+      resultsContainer.innerHTML = window.bulkResults.map((r, index) => {
+        const priorityScore = getPriorityScore(r);
+        const priorityRank = getPriorityRankName(priorityScore);
+        const priorityBadge = getPriorityBadge(priorityScore);
+        
+        return `
+          <div class="item-row">
+            <div style="text-align: center; font-weight: bold;">${priorityBadge}</div>
+            <div style="font-weight: 500;">${r.name}</div>
+            <div><strong>${r.reorderPoint}</strong> 個</div>
+            <div><span class="status-indicator ${r.stockStatusClass}">${r.stockStatus}</span></div>
+            <div><span class="status-indicator ${r.supplyRiskClass}">${r.supplyRisk}</span></div>
+            <div>${r.orderQty > 0 ? r.orderQty + ' 個' : '-'}</div>
+            <div><span class="status-indicator ${r.stockStatusClass}">${r.stockStatus}</span></div>
+          </div>`;
+      }).join('');
+    }
+    
+    // 優先度ランク取得
+    function getPriorityRankName(score) {
+      if (score >= 120) return '最優先';
+      if (score >= 80) return '高';
+      if (score >= 40) return '中';
+      return '低';
+    }
+    
+    // 優先度バッジ取得
+    function getPriorityBadge(score) {
+      if (score >= 120) return '🔴';
+      if (score >= 80) return '🟡';
+      if (score >= 40) return '🟠';
+      return '🟢';
+    }
+    
     // 初期行追加
     document.addEventListener('DOMContentLoaded', () => {
       addItemRow();
@@ -567,6 +708,12 @@
         resultBox.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
       }
       
+      // 供給リスク評価
+      const supplyRiskEl = document.getElementById('supplyRisk');
+      const supplyRiskInfo = getSupplyRisk(avgUsage, leadTime, safetyDays, '現在計算中の薬品');
+      supplyRiskEl.textContent = supplyRiskInfo.text;
+      supplyRiskEl.className = 'status-indicator ' + supplyRiskInfo.class;
+      
       document.getElementById('singleResult').classList.add('show');
       
       // GA4イベント
@@ -594,7 +741,7 @@
       container.appendChild(row);
     }
     
-    // 一括計算
+    // 一括計算（拡張版）
     function calculateAll() {
       const rows = document.querySelectorAll('#itemRows .item-row');
       const results = [];
@@ -606,45 +753,40 @@
         const safetyDays = parseFloat(row.querySelector('.item-safety').value) || 7;
         const stock = parseFloat(row.querySelector('.item-stock').value) || 0;
         
+        // 計算処理
         const reorderPoint = Math.ceil((usage * leadTime) + (usage * safetyDays));
         const leadTimeStock = Math.ceil(usage * leadTime);
         const safetyStock = Math.ceil(usage * safetyDays);
         
-        let status, statusClass, orderQty;
-        if (stock <= 0) {
-          status = '欠品';
-          statusClass = 'status-danger';
-          orderQty = reorderPoint + safetyStock;
-        } else if (stock < reorderPoint) {
-          status = '要発注';
-          statusClass = 'status-warning';
-          orderQty = reorderPoint - stock + safetyStock;
-        } else {
-          status = 'OK';
-          statusClass = 'status-ok';
-          orderQty = 0;
-        }
+        // 在庫状況判定（拡張版）
+        const stockStatusInfo = getStockStatus(stock, reorderPoint);
+        const orderQty = stockStatusInfo.needOrder ? 
+          Math.ceil(reorderPoint - stock + safetyStock) : 0;
+        
+        // 供給リスク評価（拡張版）
+        const supplyRiskInfo = getEnhancedSupplyRisk(usage, leadTime, safetyDays, name);
+        
+        // 優先スコア計算
+        const priorityScore = getPriorityScore({
+          name, usage, leadTime, safetyDays, stock,
+          reorderPoint, stockStatus: stockStatusInfo.text,
+          supplyRisk: supplyRiskInfo.text, orderQty
+        });
         
         results.push({
           name, usage, leadTime, safetyDays, stock,
           reorderPoint, leadTimeStock, safetyStock,
-          status, statusClass, orderQty: Math.ceil(orderQty)
+          stockStatus: stockStatusInfo.text,
+          stockStatusClass: stockStatusInfo.class,
+          supplyRisk: supplyRiskInfo.text,
+          supplyRiskClass: supplyRiskInfo.class,
+          orderQty: Math.ceil(orderQty),
+          priorityScore
         });
       });
       
       // 結果表示
-      const resultsContainer = document.getElementById('bulkResultRows');
-      resultsContainer.innerHTML = results.map(r => `
-        <div class="item-row">
-          <div>${r.name}</div>
-          <div><strong>${r.reorderPoint}</strong> 個</div>
-          <div>${r.stock} 個</div>
-          <div>${r.orderQty > 0 ? r.orderQty + ' 個' : '-'}</div>
-          <div><span class="status-indicator ${r.statusClass}">${r.status}</span></div>
-          <div></div>
-        </div>
-      `).join('');
-      
+      displayBulkResults();
       document.getElementById('bulkResults').style.display = 'block';
       window.bulkResults = results;
       
@@ -658,6 +800,37 @@
       }
     }
     
+    // 拡張版供給リスク評価
+    function getEnhancedSupplyRisk(usage, leadTime, safetyDays, name) {
+      const riskFactors = [];
+      
+      // 使用量が多い（1日10個以上）
+      if (usage >= 10) riskFactors.push('高使用量');
+      
+      // リードタイムが長い（5日以上）
+      if (leadTime >= 5) riskFactors.push('長リードタイム');
+      
+      // 安全日数が長い（10日以上）
+      if (safetyDays >= 10) riskFactors.push('長期在庫');
+      
+      // 特定のキーワードで供給不安薬を判定
+      const highRiskKeywords = ['がん', '抗がん', '特殊', '希少', '救命', '緊急', '限定'];
+      const mediumRiskKeywords = ['慢性', '長期', '注射', '点滴'];
+      
+      if (highRiskKeywords.some(keyword => name.includes(keyword))) {
+        return { text: '高', class: 'status-danger' };
+      }
+      
+      if (mediumRiskKeywords.some(keyword => name.includes(keyword))) {
+        return { text: '中', class: 'status-warning' };
+      }
+      
+      if (riskFactors.length >= 3) return { text: '高', class: 'status-danger' };
+      if (riskFactors.length >= 2) return { text: '中', class: 'status-warning' };
+      if (riskFactors.length >= 1) return { text: '低', class: 'status-ok' };
+      return { text: '安定', class: 'status-ok' };
+    }
+    
     // CSV出力
     function exportCSV() {
       if (!window.bulkResults || window.bulkResults.length === 0) {
@@ -665,13 +838,18 @@
         return;
       }
       
-      const headers = ['薬品名', '使用量/日', 'リードタイム', '安全日数', '現在庫', '発注点', 'リードタイム在庫', '安全在庫', '在庫状況', '推奨発注量'];
+      const headers = ['優先順位', '薬品名', '使用量/日', 'リードタイム', '安全日数', '現在庫', '発注点', 'リードタイム在庫', '安全在庫', '在庫状況', '供給リスク', '推奨発注量'];
       const csv = [
         headers.join(','),
-        ...window.bulkResults.map(r => [
-          r.name, r.usage, r.leadTime, r.safetyDays, r.stock,
-          r.reorderPoint, r.leadTimeStock, r.safetyStock, r.status, r.orderQty
-        ].join(','))
+        ...window.bulkResults.map(r => {
+          const priorityRank = getPriorityRankName(r.priorityScore);
+          return [
+            priorityRank,
+            r.name, r.usage, r.leadTime, r.safetyDays, r.stock,
+            r.reorderPoint, r.leadTimeStock, r.safetyStock, 
+            r.stockStatus, r.supplyRisk, r.orderQty
+          ].join(',');
+        })
       ].join('\n');
       
       const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -681,6 +859,30 @@
       link.click();
     }
     
+    // 優先順位リスト出力
+    function exportPriorityList() {
+      if (!window.bulkResults || window.bulkResults.length === 0) {
+        alert('先に計算を実行してください');
+        return;
+      }
+      
+      const sortedResults = [...window.bulkResults].sort((a, b) => 
+        getPriorityScore(b) - getPriorityScore(a)
+      );
+      
+      const text = sortedResults.map((r, index) => {
+        const priorityRank = getPriorityRankName(r.priorityScore);
+        const priorityBadge = getPriorityBadge(r.priorityScore);
+        return `${index + 1}. [${priorityBadge}${priorityRank}] ${r.name}\n` +
+               `   発注点: ${r.reorderPoint}個 | 在庫: ${r.stock}個 | 状況: ${r.stockStatus}\n` +
+               `   供給リスク: ${r.supplyRisk} | 発注量: ${r.orderQty > 0 ? r.orderQty + '個' : '不要'}\n`;
+      }).join('\n');
+      
+      navigator.clipboard.writeText(text).then(() => {
+        alert('優先順位リストをクリップボードにコピーしました\n\n' + text.substring(0, 200) + '...');
+      });
+    }
+    
     // クリップボードコピー
     function copyToClipboard() {
       if (!window.bulkResults || window.bulkResults.length === 0) {
@@ -688,9 +890,11 @@
         return;
       }
       
-      const text = window.bulkResults.map(r => 
-        `${r.name}\t発注点:${r.reorderPoint}\t在庫:${r.stock}\t${r.status}\t推奨:${r.orderQty}`
-      ).join('\n');
+      const text = window.bulkResults.map(r => {
+        const priorityRank = getPriorityRankName(r.priorityScore);
+        const priorityBadge = getPriorityBadge(r.priorityScore);
+        return `${priorityBadge}${priorityRank} | ${r.name} | 発注点:${r.reorderPoint} | 在庫:${r.stock} | ${r.stockStatus} | 推奨:${r.orderQty > 0 ? r.orderQty + '個' : '不要'}`;
+      }).join('\n');
       
       navigator.clipboard.writeText(text).then(() => {
         alert('クリップボードにコピーしました');

@@ -594,6 +594,10 @@
             <div class="diagnosis" id="diagnosis"></div>
             
             <div class="improvements" id="improvements"></div>
+
+            <div style="text-align:center; margin-top: 20px;">
+                <button id="copyResultBtn" onclick="copyResult()" style="background:#2563eb;color:white;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s;">📋 結果をコピー</button>
+            </div>
         </div>
         
         <div class="cta-section">
@@ -631,6 +635,15 @@
                 this.querySelector('input').checked = true;
             });
         });
+
+        function trackCopyAction() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'copy_action', {
+                    'event_category': 'engagement',
+                    'event_label': 'pharmacy-dispensing-fee-revision-diagnosis-copy'
+                });
+            }
+        }
         
         function calculateResult() {
             const totalQuestions = 20;
@@ -775,6 +788,28 @@
             // Scroll to results
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
         }
+
+        function copyResult() {
+            const score = document.getElementById('totalScore').textContent;
+            const categoryScores = document.getElementById('categoryScores').innerText.replace(/\n+/g, '\n').trim();
+            const diagnosis = document.getElementById('diagnosis').innerText.replace(/\n+/g, '\n').trim();
+            const improvements = document.getElementById('improvements').innerText.replace(/\n+/g, '\n').trim();
+            const text = '【2026年度調剤報酬改定対応診断 結果】\n' +
+                'スコア: ' + score + ' / 80点\n\n' +
+                '■ 領域別スコア\n' + categoryScores + '\n\n' +
+                '■ 診断結果\n' + diagnosis + '\n\n' +
+                '■ 優先改善ポイント\n' + improvements + '\n\n' +
+                '---\n' +
+                'ツール: https://pharma-free-tools.pages.dev/pharmacy-dispensing-fee-revision-diagnosis';
+
+            navigator.clipboard.writeText(text).then(function() {
+                const btn = document.getElementById('copyResultBtn');
+                const original = btn.textContent;
+                btn.textContent = 'コピーしました ✅';
+                setTimeout(function() { btn.textContent = original; }, 1500);
+                trackCopyAction();
+            });
+        }
     </script>
     
     <!-- Google Analytics -->
@@ -784,6 +819,13 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-7M1K9P2D8Q');
+
+        function trackToolUsage(action) {
+            gtag('event', 'tool_usage', {
+                event_category: 'engagement',
+                event_label: 'pharmacy-dispensing-fee-revision-diagnosis-' + action
+            });
+        }
     </script>
 
   <!-- 関連ツール -->

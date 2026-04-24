@@ -105,6 +105,21 @@
         .tips { background: #e8f5e9; border-radius: 10px; padding: 15px; margin-top: 20px; }
         .tips-title { font-weight: bold; color: #2e7d32; margin-bottom: 10px; font-size: 14px; }
         .tips ul { padding-left: 20px; font-size: 12px; line-height: 1.6; color: #333; }
+
+        .status-panel { background: #eef2ff; border-radius: 12px; padding: 18px; margin: 20px 0 25px; }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .status-field label { display: block; font-size: 12px; color: #4338ca; margin-bottom: 6px; font-weight: 600; }
+        .status-field input, .status-field select { width: 100%; padding: 10px 12px; border: 1px solid #c7d2fe; border-radius: 8px; background: white; font-size: 13px; }
+        .status-summary { background: white; border-radius: 10px; padding: 16px; border: 1px solid #c7d2fe; }
+        .status-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        .status-chip, .deadline-chip { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+        .status-chip { background: #dbeafe; color: #1d4ed8; }
+        .deadline-chip { background: #fef3c7; color: #92400e; }
+        .workflow-progress { background: #e5e7eb; height: 10px; border-radius: 999px; overflow: hidden; margin: 12px 0; }
+        .workflow-progress-bar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; width: 0%; transition: width 0.3s; }
+        .workflow-summary-text { font-size: 13px; color: #475569; line-height: 1.6; }
+        .status-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .status-actions .copy-btn { margin-top: 0; }
         
         @media (max-width: 600px) {
             .tabs { flex-direction: column; }
@@ -140,16 +155,6 @@
       });
     }
   </script>
-
-      <meta property="og:title" content="薬剤師向け無料ツール - Pharmacy Rejection Template">
-    <meta property="og:description" content="薬剤師の業務効率化を支援するPharmacy Rejection Templateツール">
-    <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp-ai-prompts.png">
-    <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacy-rejection-template.html">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="薬剤師向け無料ツール - Pharmacy Rejection Template">
-    <meta name="twitter:description" content="薬剤師の業務効率化を支援するPharmacy Rejection Templateツール">
-    <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp-ai-prompts.png">
 </head>
 <body>
     <div class="container">
@@ -168,13 +173,51 @@
             <h3>返戻理由別ナビを開く</h3>
             <p>返戻理由を選ぶと、再請求手順と提出前チェックが表示されます</p>
         </div>
+
+        <div class="status-panel">
+            <div class="status-grid">
+                <div class="status-field">
+                    <label for="workflowStatus">返戻対応ステータス</label>
+                    <select id="workflowStatus" onchange="updateWorkflowStatus()">
+                        <option value="確認中">確認中</option>
+                        <option value="再請求準備">再請求準備</option>
+                        <option value="提出済">提出済</option>
+                        <option value="完了">完了</option>
+                    </select>
+                </div>
+                <div class="status-field">
+                    <label for="noticeDate">返戻通知確認日</label>
+                    <input type="date" id="noticeDate" onchange="updateWorkflowStatus()">
+                </div>
+                <div class="status-field">
+                    <label for="submitDate">提出予定日</label>
+                    <input type="date" id="submitDate" onchange="updateWorkflowStatus()">
+                </div>
+                <div class="status-field">
+                    <label for="ownerName">担当メモ</label>
+                    <input type="text" id="ownerName" placeholder="例: 山田 / 保険請求担当" oninput="updateWorkflowStatus()">
+                </div>
+            </div>
+            <div class="status-summary">
+                <div class="status-badges">
+                    <span class="status-chip" id="statusChip">確認中</span>
+                    <span class="deadline-chip" id="deadlineChip">期限情報を入れるとアラート表示</span>
+                </div>
+                <div class="workflow-progress"><div class="workflow-progress-bar" id="workflowProgressBar"></div></div>
+                <p class="workflow-summary-text" id="workflowSummary">返戻通知確認日と提出予定日を設定すると、進捗線と提出優先度がここに表示されます。</p>
+                <div class="status-actions">
+                    <button class="copy-btn" onclick="copyWorkflowSummary(this)">📋 進捗メモをコピー</button>
+                    <button class="copy-btn" onclick="copyActiveChecklist(this)">📋 チェック項目をまとめてコピー</button>
+                </div>
+            </div>
+        </div>
         
         <div class="tabs">
-            <div class="tab active" onclick="showSection('category1')">🔢 算定要件</div>
-            <div class="tab" onclick="showSection('category2')">📝 記載不備</div>
-            <div class="tab" onclick="showSection('category3')">💊 用法・用量</div>
-            <div class="tab" onclick="showSection('category4')">📅 期限・日付</div>
-            <div class="tab" onclick="showSection('category5')">✅ 再請求チェック</div>
+            <div class="tab active" onclick="showSection('category1', this)">🔢 算定要件</div>
+            <div class="tab" onclick="showSection('category2', this)">📝 記載不備</div>
+            <div class="tab" onclick="showSection('category3', this)">💊 用法・用量</div>
+            <div class="tab" onclick="showSection('category4', this)">📅 期限・日付</div>
+            <div class="tab" onclick="showSection('category5', this)">✅ 再請求チェック</div>
         </div>
         
         <div class="search-box">
@@ -518,22 +561,115 @@
     </div>
     
     <script>
-        function showSection(sectionId) {
+        function showSection(sectionId, tabEl) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
-            event.target.classList.add('active');
+            if (tabEl) tabEl.classList.add('active');
+        }
+
+        function formatDateJP(value) {
+            if (!value) return '未設定';
+            const date = new Date(value + 'T00:00:00');
+            return `${date.getMonth() + 1}/${date.getDate()}`;
+        }
+
+        function getChecklistProgress() {
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            const checked = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked');
+            return checkboxes.length ? Math.round((checked.length / checkboxes.length) * 100) : 0;
+        }
+
+        function getStageProgress(status) {
+            return {
+                '確認中': 20,
+                '再請求準備': 55,
+                '提出済': 85,
+                '完了': 100
+            }[status] || 20;
+        }
+
+        function buildWorkflowSummary() {
+            const status = document.getElementById('workflowStatus').value;
+            const noticeDate = document.getElementById('noticeDate').value;
+            const submitDate = document.getElementById('submitDate').value;
+            const owner = document.getElementById('ownerName').value.trim();
+            const checklistProgress = getChecklistProgress();
+            const progress = Math.round((getStageProgress(status) + checklistProgress) / 2);
+            const today = new Date();
+            const submit = submitDate ? new Date(submitDate + 'T00:00:00') : null;
+            const daysLeft = submit ? Math.ceil((submit - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000) : null;
+            const deadlineText = submit === null
+                ? '提出予定日を入れると期限アラートを表示'
+                : daysLeft < 0
+                    ? `期限超過 ${Math.abs(daysLeft)}日` 
+                    : daysLeft === 0
+                        ? '本日提出' 
+                        : `提出まであと${daysLeft}日`;
+            const summary = `ステータス: ${status} / 返戻通知: ${formatDateJP(noticeDate)} / 提出予定: ${formatDateJP(submitDate)} / チェック進捗: ${checklistProgress}%${owner ? ` / 担当: ${owner}` : ''}`;
+            return { status, progress, deadlineText, summary };
+        }
+
+        function updateWorkflowStatus() {
+            const info = buildWorkflowSummary();
+            document.getElementById('statusChip').textContent = info.status;
+            document.getElementById('workflowProgressBar').style.width = info.progress + '%';
+            document.getElementById('workflowSummary').textContent = info.summary;
+            const deadlineChip = document.getElementById('deadlineChip');
+            deadlineChip.textContent = info.deadlineText;
+            if (info.deadlineText.startsWith('期限超過')) {
+                deadlineChip.style.background = '#fee2e2';
+                deadlineChip.style.color = '#b91c1c';
+            } else if (info.deadlineText.includes('あと') || info.deadlineText === '本日提出') {
+                deadlineChip.style.background = '#fef3c7';
+                deadlineChip.style.color = '#92400e';
+            } else {
+                deadlineChip.style.background = '#e0f2fe';
+                deadlineChip.style.color = '#0369a1';
+            }
         }
         
         function copyTemplate(btn) {
             const templateText = btn.previousElementSibling.textContent;
-            navigator.clipboard.writeText(templateText).then(() => {
+            const reason = btn.closest('.rejection-item').querySelector('.rejection-reason').textContent;
+            const summary = buildWorkflowSummary().summary;
+            const payload = `【${reason}】
+${templateText}
+
+${summary}`;
+            navigator.clipboard.writeText(payload).then(() => {
+                trackCopyAction();
                 btn.textContent = '✓ コピー完了';
                 btn.classList.add('copied');
                 setTimeout(() => {
                     btn.textContent = '📋 コピー';
                     btn.classList.remove('copied');
                 }, 2000);
+            });
+        }
+
+        function copyWorkflowSummary(btn) {
+            const info = buildWorkflowSummary();
+            navigator.clipboard.writeText(`【返戻対応進捗】
+${info.summary}
+${info.deadlineText}`).then(() => {
+                trackCopyAction();
+                btn.textContent = '✓ コピー完了';
+                setTimeout(() => btn.textContent = '📋 進捗メモをコピー', 2000);
+            });
+        }
+
+        function copyActiveChecklist(btn) {
+            const lines = Array.from(document.querySelectorAll('.checklist-item label')).map((label, index) => {
+                const checkbox = document.getElementById(`c${index + 1}`);
+                return `${checkbox && checkbox.checked ? '☑' : '☐'} ${label.textContent}`;
+            }).join('
+');
+            navigator.clipboard.writeText(`【再請求チェック項目】
+${lines}`).then(() => {
+                trackCopyAction();
+                btn.textContent = '✓ コピー完了';
+                setTimeout(() => btn.textContent = '📋 チェック項目をまとめてコピー', 2000);
             });
         }
         
@@ -568,7 +704,10 @@
                     cb.parentElement.classList.remove('checked');
                 }
             });
+            updateWorkflowStatus();
         }
+
+        updateWorkflowStatus();
     </script>
     
     <div style="margin-top: 30px; padding: 20px; background: #fef3c7; border-radius: 12px; margin: 30px auto; max-width: 860px;">
@@ -576,7 +715,7 @@
       <ul style="list-style: none; display: grid; gap: 8px;">
         <li><a href="pharmacy-claim-denial-diagnosis.html" style="color: #d97706; text-decoration: none;">→ 請求拒否リスク診断</a></li>
         <li><a href="claim-denial-prevention-checklist.html" style="color: #d97706; text-decoration: none;">→ 返戻予防チェックリスト</a></li>
-        <li><a href="index.html" style="color: #d97706; text-decoration: none;">→ 全ツール一覧（86選）</a></li>
+        <li><a href="index.html" style="color: #d97706; text-decoration: none;">→ 全ツール一覧</a></li>
       </ul>
     </div>
 <!-- CTA Section -->

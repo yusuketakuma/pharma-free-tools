@@ -147,6 +147,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-7M1K9P2D8Q');
+
+  function trackToolUsage(action) {
+    gtag('event', 'tool_usage', {
+      event_category: 'engagement',
+      event_label: 'pharmacy-claim-denial-diagnosis-' + action
+    });
+  }
 </script>
     <meta property="og:title" content="薬局レセプト返戻リスク診断 | 薬剤師無料ツール | 薬局無料ツール集">
     <meta property="og:description" content="薬局のレセプト返戻・査定リスクを5領域20問で診断。算定要件、記録、在宅請求、返戻対応、チェック体制の弱点を可視化し改善策を提示。">
@@ -198,6 +205,9 @@
               <strong>📚 参考リンク:</strong>
               <a href="https://www.ssk.or.jp/" target="_blank" rel="noopener" style="color: #0f766e; margin-left: 8px;">社会保険診療報酬支払基金 →</a>
               <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/" target="_blank" rel="noopener" style="color: #0f766e; margin-left: 8px;">厚生労働省 診療報酬 →</a>
+            </div>
+            <div style="text-align:center;margin:16px 0;">
+              <button id="copyResultBtn" onclick="copyResult()" style="background:#2563eb;color:white;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s;">📋 結果をコピー</button>
             </div>
             <div class="cta-box">
                 <h3 style="color:#c2410c; margin-bottom:10px;">次は「実務テンプレ」で時短</h3>
@@ -456,6 +466,30 @@ function restartQuiz() {
 }
 
 renderQuestion();
+
+function copyResult() {
+  const scoreEl = document.getElementById('totalScore');
+  const summaryEl = document.getElementById('summaryText');
+  const recommendEl = document.getElementById('recommendList');
+  const score = scoreEl ? scoreEl.textContent : '';
+  const summary = summaryEl ? summaryEl.innerText.trim() : '';
+  const recommend = recommendEl ? recommendEl.innerText.replace(/\n+/g, '\n').trim() : '';
+  const text = '【返戻請求対応診断 結果】\n' +
+    'スコア: ' + score + ' / 80点\n\n' +
+    '■ 総評\n' + summary + '\n\n' +
+    '■ 優先アクション\n' + recommend + '\n\n' +
+    'ツール: https://yusuketakuma.github.io/pharma-free-tools/pharmacy-claim-denial-diagnosis.html';
+  navigator.clipboard.writeText(text).then(function() {
+    const btn = document.getElementById('copyResultBtn');
+    if (!btn) return;
+    const orig = btn.textContent;
+    btn.textContent = 'コピーしました ✅';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'copy_action', { event_category: 'engagement', event_label: 'pharmacy-claim-denial-diagnosis-copy' });
+    }
+  });
+}
 </script>
 
 <div style="margin-top: 30px; padding: 20px; background: #fef3c7; border-radius: 12px; margin: 30px auto; max-width: 860px;">

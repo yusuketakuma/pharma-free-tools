@@ -377,6 +377,12 @@
         <p class="input-hint">薬歴入力・請求業務・在庫管理等の定型業務</p>
         <input type="number" id="routineTaskHours" min="0" max="24" step="0.5" value="4" placeholder="例: 4">
       </div>
+
+      <div class="input-group">
+        <label>かかりつけ薬剤師フォローアップ加算 対象患者数（人）</label>
+        <p class="input-hint">2026年6月新設。50点=500円/3月に1回。継続フォローアップ実施患者数を入力。</p>
+        <input type="number" id="followupPatients" min="0" max="1000" value="20" placeholder="例: 20">
+      </div>
     </div>
     
     <div class="form-section">
@@ -451,6 +457,10 @@
           <div class="result-item-value" id="netBenefit">--</div>
           <div class="result-item-label">3年間純利益（万円）</div>
         </div>
+        <div class="result-item" style="grid-column: 1 / -1; background: #f0fff4; border: 1px solid #68d391;">
+          <div class="result-item-value" id="followupRevenueDisplay" style="color:#276749;">--</div>
+          <div class="result-item-label" id="followupRevenueLabel" style="color:#276749;">かかりつけ薬剤師フォローアップ加算 年間収益</div>
+        </div>
       </div>
       
       <div class="recommendation" id="recommendation">
@@ -487,6 +497,7 @@
         prescriptionCount: document.getElementById('prescriptionCount').value,
         hourlyWage: document.getElementById('hourlyWage').value,
         routineTaskHours: document.getElementById('routineTaskHours').value,
+        followupPatients: document.getElementById('followupPatients').value,
         dxEc: document.getElementById('dx-ec').checked,
         dxRpa: document.getElementById('dx-rpa').checked,
         dxAi: document.getElementById('dx-ai').checked,
@@ -507,6 +518,7 @@
         document.getElementById('prescriptionCount').value = state.prescriptionCount || 150;
         document.getElementById('hourlyWage').value = state.hourlyWage || 2500;
         document.getElementById('routineTaskHours').value = state.routineTaskHours || 4;
+        document.getElementById('followupPatients').value = state.followupPatients !== undefined ? state.followupPatients : 20;
         document.getElementById('dx-ec').checked = state.dxEc !== false;
         document.getElementById('dx-rpa').checked = state.dxRpa || false;
         document.getElementById('dx-ai').checked = state.dxAi || false;
@@ -536,6 +548,11 @@
       const routineTaskHours = parseFloat(document.getElementById('routineTaskHours').value) || 4;
       const initialCost = parseFloat(document.getElementById('initialCost').value) || 200;
       const monthlyCost = parseFloat(document.getElementById('monthlyCost').value) || 5;
+      const followupPatients = parseInt(document.getElementById('followupPatients').value) || 0;
+
+      // フォローアップ加算収益: 500円 × 年4回（3月に1回） × 対象患者数
+      const followupRevenueYen = followupPatients * 500 * 4;
+      const followupRevenueManYen = Math.round(followupRevenueYen / 10000);
       
       // Get DX selections
       const dxEc = document.getElementById('dx-ec').checked;
@@ -562,15 +579,16 @@
       const yearlyTaskHours = dailyTaskHours * 280; // 280 working days
       const timeSavedHours = Math.round(yearlyTaskHours * efficiencyGain);
       
-      // Calculate cost savings (万円/year)
-      const costSaved = Math.round((timeSavedHours * hourlyWage) / 10000);
-      
+      // Calculate cost savings (万円/year) - 効率化削減 + フォローアップ加算収益
+      const efficiencyCostSaved = Math.round((timeSavedHours * hourlyWage) / 10000);
+      const costSaved = efficiencyCostSaved + followupRevenueManYen;
+
       // Calculate 3-year costs and benefits
       const year1Cost = initialCost + (monthlyCost * 12);
       const year2Cost = monthlyCost * 12;
       const year3Cost = monthlyCost * 12;
       const totalCost = year1Cost + year2Cost + year3Cost;
-      
+
       const totalBenefit = costSaved * 3;
       const netBenefit = totalBenefit - totalCost;
       
@@ -587,6 +605,8 @@
       document.getElementById('costSaved').textContent = costSaved.toLocaleString();
       document.getElementById('paybackPeriod').textContent = paybackMonths >= 99 ? '36ヶ月+' : paybackMonths + 'ヶ月';
       document.getElementById('netBenefit').textContent = netBenefit.toLocaleString();
+      document.getElementById('followupRevenueDisplay').textContent = '¥' + followupRevenueYen.toLocaleString();
+      document.getElementById('followupRevenueLabel').textContent = `かかりつけ薬剤師フォローアップ加算収益: ¥${followupRevenueYen.toLocaleString()}/年（${followupPatients}人×500円×4回）`;
       
       // Generate recommendations
       const recommendations = [];

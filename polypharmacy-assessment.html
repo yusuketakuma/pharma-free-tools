@@ -640,6 +640,15 @@
                 <p>ポリファーマシー判定: <strong>${data.isExcessivePolypharmacy ? '過剰ポリファーマシー (≥10薬剤)' : data.isPolypharmacy ? 'ポリファーマシー (≥6薬剤)' : 'ポリファーマシーなし (<6薬剤)'}</strong></p>
             `;
             if (data.age >= 65) summaryHtml += `<p>年齢: ${data.age}歳 (高齢者) | eGFR: ${data.egfr} mL/min/1.73m²</p>`;
+            if (data.isPolypharmacy) {
+                summaryHtml += `
+                <div style="background:#f0fff4;border:2px solid #68d391;border-radius:10px;padding:16px;margin:16px 0;">
+                  <p style="font-weight:700;color:#276749;margin:0 0 8px;">💡 かかりつけ薬剤師フォローアップ加算の算定機会</p>
+                  <p style="color:#276749;margin:0;font-size:0.9rem;">この患者はポリファーマシー（多剤併用）状態のため、<strong>継続的な服薬フォローアップ</strong>の対象です。<br>
+                  かかりつけ薬剤師フォローアップ加算（2026年6月新設・<strong>50点=500円/3月に1回</strong>）の算定が見込めます。<br>
+                  患者同意を取得し、フォローアップ記録を薬歴に残してください。</p>
+                </div>`;
+            }
             document.getElementById('drugSummary').innerHTML = summaryHtml;
             
             // 鑑別候補薬

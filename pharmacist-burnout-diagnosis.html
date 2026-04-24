@@ -4,16 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="canonical" href="https://yusuketakuma.github.io/pharma-free-tools/pharmacist-burnout-diagnosis.html">
-  <title>薬剤師バーンアウト診断 | 準備中 | 薬局無料ツール集 | 薬剤師無料ツール集</title>
-  <meta name="description" content="薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見。">
+  <title>薬剤師バーンアウト診断 | 薬局無料ツール集 | 薬剤師無料ツール集</title>
+  <meta name="description" content="薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見・対処アドバイスを提示。">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; min-height: 100vh; }
-    .container { max-width: 600px; margin: 0 auto; }
-    h1 { font-size: 2rem; margin-bottom: 20px; }
-    p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; }
-    a { color: #ffc107; text-decoration: none; font-weight: bold; }
-    a:hover { text-decoration: underline; }
-    .icon { font-size: 4rem; margin-bottom: 20px; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #333; }
+    .container { max-width: 780px; margin: 0 auto; background: white; border-radius: 16px; padding: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+    header { text-align: center; margin-bottom: 24px; }
+    .icon { font-size: 3rem; margin-bottom: 8px; }
+    h1 { color: #4c1d95; font-size: 1.7rem; margin-bottom: 6px; }
+    .subtitle { color: #6b7280; font-size: 0.95rem; }
+    .progress-bar { background: #e5e7eb; height: 8px; border-radius: 4px; margin: 20px 0 8px; overflow: hidden; }
+    .progress-fill { background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; transition: width 0.3s; width: 0%; }
+    .progress-text { text-align: center; color: #6b7280; font-size: 0.88rem; margin-bottom: 18px; }
+    .axis-label { display: inline-block; background: #ede9fe; color: #5b21b6; padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-bottom: 14px; }
+    .question { display: none; animation: fadeIn 0.25s; }
+    .question.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .question h2 { color: #1f2937; font-size: 1.18rem; margin-bottom: 16px; line-height: 1.55; font-weight: 600; }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option { background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 10px; padding: 14px 18px; cursor: pointer; transition: all 0.2s; font-size: 0.98rem; }
+    .option:hover { border-color: #8b5cf6; background: #f5f3ff; }
+    .option.selected { border-color: #6d28d9; background: #ede9fe; }
+    .option-score { display: inline-block; min-width: 28px; color: #6d28d9; font-weight: 700; margin-right: 6px; }
+    .result { display: none; }
+    .result.active { display: block; }
+    .score-card { text-align: center; padding: 28px 20px; border-radius: 14px; color: white; margin-bottom: 22px; }
+    .score-card.green { background: linear-gradient(135deg, #10b981, #059669); }
+    .score-card.yellow { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .score-card.orange { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .score-card.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .score-number { font-size: 3.2rem; font-weight: bold; margin-bottom: 4px; }
+    .score-label { font-size: 1.05rem; opacity: 0.92; }
+    .score-level { display: inline-block; background: rgba(255,255,255,0.22); padding: 8px 18px; border-radius: 20px; margin-top: 14px; font-weight: bold; font-size: 1.05rem; }
+    .axis-breakdown { margin: 22px 0; }
+    .axis-breakdown h3 { color: #4c1d95; margin-bottom: 14px; font-size: 1.1rem; }
+    .axis-item { margin-bottom: 14px; }
+    .axis-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .axis-name { font-weight: 600; color: #1f2937; }
+    .axis-score { font-weight: 700; color: #4c1d95; font-size: 0.95rem; }
+    .bar-outer { background: #e5e7eb; height: 10px; border-radius: 5px; overflow: hidden; }
+    .bar-inner { height: 100%; border-radius: 5px; transition: width 0.5s; }
+    .bar-inner.lv0 { background: linear-gradient(90deg, #10b981, #059669); }
+    .bar-inner.lv1 { background: linear-gradient(90deg, #f59e0b, #d97706); }
+    .bar-inner.lv2 { background: linear-gradient(90deg, #f97316, #ea580c); }
+    .bar-inner.lv3 { background: linear-gradient(90deg, #ef4444, #dc2626); }
+    .advice { background: #faf5ff; border-left: 4px solid #8b5cf6; border-radius: 8px; padding: 18px 20px; margin: 20px 0; }
+    .advice h3 { color: #4c1d95; margin-bottom: 10px; font-size: 1.08rem; }
+    .advice-item { padding: 8px 0; color: #374151; line-height: 1.65; }
+    .advice-item:not(:last-child) { border-bottom: 1px solid #e9d5ff; }
+    .advice-item strong { color: #4c1d95; }
+    .action-buttons { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; justify-content: center; }
+    .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.98rem; font-weight: 600; transition: all 0.2s; }
+    .btn-primary { background: #6d28d9; color: white; }
+    .btn-primary:hover { background: #5b21b6; }
+    .btn-secondary { background: #e5e7eb; color: #374151; }
+    .btn-secondary:hover { background: #d1d5db; }
+    .disclaimer { margin-top: 18px; font-size: 0.82rem; color: #6b7280; text-align: center; line-height: 1.6; }
+    @media (max-width: 600px) { .container { padding: 22px; } h1 { font-size: 1.4rem; } .score-number { font-size: 2.6rem; } }
   </style>
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7M1K9P2D8Q"></script>
@@ -44,21 +92,21 @@
       });
     }
   </script>
-    <meta property="og:title" content="薬剤師バーンアウト診断 | 準備中 | 薬局無料ツール集 | 薬剤師無料ツール集">
-    <meta property="og:description" content="薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見。">
+    <meta property="og:title" content="薬剤師バーンアウト診断 | 薬局無料ツール集 | 薬剤師無料ツール集">
+    <meta property="og:description" content="薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見・対処アドバイスを提示。">
     <meta property="og:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
     <meta property="og:url" content="https://yusuketakuma.github.io/pharma-free-tools/pharmacist-burnout-diagnosis.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="薬剤師バーンアウト診断 | 準備中 | 薬局無料ツール集 | 薬剤師無料ツール集">
-    <meta name="twitter:description" content="薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見。">
+    <meta name="twitter:title" content="薬剤師バーンアウト診断 | 薬局無料ツール集 | 薬剤師無料ツール集">
+    <meta name="twitter:description" content="薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見・対処アドバイスを提示。">
     <meta name="twitter:image" content="https://yusuketakuma.github.io/pharma-free-tools/ogp.png">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "薬剤師バーンアウト診断 | 準備中 | 薬局無料ツール集",
-      "description": "薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見。",
+      "name": "薬剤師バーンアウト診断 | 薬局無料ツール集",
+      "description": "薬剤師のバーンアウト（燃え尽き症候群）レベルを5分で診断。感情耗尽・脱人格化・達成感低下の3軸15問で早期発見・対処アドバイスを提示。",
       "inLanguage": "ja",
       "url": "https://yusuketakuma.github.io/pharma-free-tools/pharmacist-burnout-diagnosis.html"
     }
@@ -66,10 +114,45 @@
 </head>
 <body>
   <div class="container">
-    <div class="icon">🧠</div>
-    <h1>薬剤師バーンアウト診断</h1>
-    <p>このツールは現在準備中です。<br>もうしばらくお待ちください。</p>
-    <p><a href="https://yusuketakuma.github.io/pharma-free-tools/">← ツール一覧に戻る</a></p>
+    <header>
+      <div class="icon">🧠</div>
+      <h1>薬剤師バーンアウト診断</h1>
+      <p class="subtitle">感情耗尽・脱人格化・達成感低下の3軸15問で燃え尽きリスクを早期発見（5分）</p>
+    </header>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-text" id="progressText">質問 1 / 15</div>
+
+    <div id="questions"></div>
+
+    <div class="result" id="result">
+      <div class="score-card" id="scoreCard">
+        <div class="score-number" id="totalScore">0</div>
+        <div class="score-label">点 / 60点</div>
+        <div class="score-level" id="scoreLevel">判定中...</div>
+      </div>
+
+      <div class="axis-breakdown">
+        <h3>📊 軸別スコア</h3>
+        <div id="axisList"></div>
+      </div>
+
+      <div class="advice">
+        <h3>💡 対処アドバイス</h3>
+        <div id="adviceList"></div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-primary" onclick="copyResult()">📋 結果をコピー</button>
+        <button class="btn btn-secondary" onclick="restart()">🔄 もう一度診断する</button>
+      </div>
+
+      <p class="disclaimer">
+        ※ 本診断は参考情報です。症状が継続する場合は産業医・メンタルクリニック等の専門家にご相談ください。
+      </p>
+    </div>
   </div>
 
 <!-- 関連ツール セクション -->
@@ -88,6 +171,211 @@
     <p style="margin: 0 0 16px 0; opacity: 0.9;">薬剤師向けAIプロンプト集で、調剤・鑑別・在宅業務の時短パターンをすぐ使えます</p>
     <a href="ai-prompts-lp.html" onclick="gtag('event', 'cta_click', {'event_category': 'conversion', 'event_label': 'pharmacist-burnout-diagnosis-cta'})" style="display: inline-block; background: white; color: #667eea; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">詳細を見る →</a>
   </div>
+
+  <script>
+    const SCALE = [
+      { score: 0, label: "全くない" },
+      { score: 1, label: "めったにない" },
+      { score: 2, label: "時々ある" },
+      { score: 3, label: "よくある" },
+      { score: 4, label: "常にある" }
+    ];
+
+    const questions = [
+      // 軸1: 感情耗尽（5問）
+      { axis: "感情耗尽", text: "仕事が終わるとエネルギーを使い果たしたと感じる" },
+      { axis: "感情耗尽", text: "職場で人と関わることに疲弊する" },
+      { axis: "感情耗尽", text: "朝起きたとき、今日も仕事だと思うと気が重い" },
+      { axis: "感情耗尽", text: "一日中患者と話し続けることが辛い" },
+      { axis: "感情耗尽", text: "仕事上の問題に対して感情的に鈍くなってきた" },
+      // 軸2: 脱人格化（5問）
+      { axis: "脱人格化", text: "患者を症状や処方箋として扱うことが増えた" },
+      { axis: "脱人格化", text: "患者の訴えに対して以前より冷めた対応をするようになった" },
+      { axis: "脱人格化", text: "職場の同僚に対してイライラしやすくなった" },
+      { axis: "脱人格化", text: "患者のクレームを聞くのが億劫になった" },
+      { axis: "脱人格化", text: "仕事に対する使命感・やりがいが薄れてきた" },
+      // 軸3: 達成感低下（5問）
+      { axis: "達成感低下", text: "仕事で有意義な成果を出せていると感じない" },
+      { axis: "達成感低下", text: "専門知識が患者に役立てられている実感がない" },
+      { axis: "達成感低下", text: "キャリアの方向性に自信が持てない" },
+      { axis: "達成感低下", text: "新しい業務や改定対応について学ぶ意欲が湧かない" },
+      { axis: "達成感低下", text: "薬剤師を続けることへの誇りが以前より低下した" }
+    ];
+
+    const AXES = ["感情耗尽", "脱人格化", "達成感低下"];
+    let currentQuestion = 0;
+    let answers = new Array(questions.length).fill(null);
+
+    function renderQuestions() {
+      const container = document.getElementById("questions");
+      container.innerHTML = questions.map((q, i) => `
+        <div class="question" id="q${i}">
+          <div class="axis-label">軸${AXES.indexOf(q.axis) + 1}: ${q.axis}</div>
+          <h2>Q${i + 1}. ${q.text}</h2>
+          <div class="options">
+            ${SCALE.map(s => `
+              <div class="option" onclick="selectOption(${i}, ${s.score})">
+                <span class="option-score">${s.score}</span>${s.label}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function showQuestion(index) {
+      document.querySelectorAll(".question").forEach(q => q.classList.remove("active"));
+      if (index < questions.length) {
+        document.getElementById(`q${index}`).classList.add("active");
+        document.getElementById("progressFill").style.width = `${(index / questions.length) * 100}%`;
+        document.getElementById("progressText").textContent = `質問 ${index + 1} / ${questions.length}`;
+      }
+    }
+
+    function selectOption(qIndex, score) {
+      answers[qIndex] = score;
+      const options = document.querySelectorAll(`#q${qIndex} .option`);
+      options.forEach(opt => opt.classList.remove("selected"));
+      options[score].classList.add("selected");
+
+      setTimeout(() => {
+        currentQuestion = qIndex + 1;
+        if (currentQuestion < questions.length) {
+          showQuestion(currentQuestion);
+        } else {
+          showResult();
+        }
+      }, 260);
+    }
+
+    function computeAxisScores() {
+      const result = { "感情耗尽": 0, "脱人格化": 0, "達成感低下": 0 };
+      questions.forEach((q, i) => {
+        result[q.axis] += answers[i] || 0;
+      });
+      return result;
+    }
+
+    function judgeOverall(total) {
+      if (total <= 15) return { key: "green", label: "🌱 バーンアウトリスク低", card: "green" };
+      if (total <= 30) return { key: "yellow", label: "⚠️ 中程度の疲弊サイン", card: "yellow" };
+      if (total <= 45) return { key: "orange", label: "🔶 要注意・早期対処を", card: "orange" };
+      return { key: "red", label: "🚨 バーンアウト高リスク", card: "red" };
+    }
+
+    function axisLevel(score) {
+      if (score <= 5) return 0;
+      if (score <= 10) return 1;
+      if (score <= 14) return 2;
+      return 3;
+    }
+
+    function buildAdvice(axisScores, overall) {
+      const items = [];
+
+      if (overall.key === "green") {
+        items.push("現在のストレス対処は良好です。<strong>予防の視点で現在の習慣（睡眠・休息・趣味の時間）を継続</strong>してください。");
+      } else if (overall.key === "yellow") {
+        items.push("<strong>疲弊サインが出始めています。</strong>週1回の完全オフ日を確保し、業務外での回復時間を意図的に作ってください。");
+      } else if (overall.key === "orange") {
+        items.push("<strong>早期対処が必要な段階です。</strong>業務負荷の見直しと、信頼できる同僚や上司への相談を今週中に開始してください。");
+      } else {
+        items.push("<strong>バーンアウト高リスク状態です。</strong>産業医・メンタルクリニック等の専門家への相談を強く推奨します。放置は離職・うつ病に直結します。");
+      }
+
+      if (axisScores["感情耗尽"] >= 15) {
+        items.push("【感情耗尽が高値】今すぐ有給休暇を申請してください。<strong>連続3日以上の休息</strong>が回復の第一歩です。");
+      }
+      if (axisScores["脱人格化"] >= 15) {
+        items.push("【脱人格化が高値】<strong>1日1件でも患者から感謝された瞬間を手帳に記録</strong>する習慣を始めてください。");
+      }
+      if (axisScores["達成感低下"] >= 15) {
+        items.push("【達成感低下が高値】<strong>薬剤師会の研修会・学術発表参加で外部との繋がりを再構築</strong>してください。");
+      }
+
+      return items;
+    }
+
+    function showResult() {
+      document.getElementById("progressFill").style.width = "100%";
+      document.getElementById("progressText").textContent = "診断完了";
+      document.querySelectorAll(".question").forEach(q => q.classList.remove("active"));
+      document.getElementById("result").classList.add("active");
+
+      const axisScores = computeAxisScores();
+      const total = axisScores["感情耗尽"] + axisScores["脱人格化"] + axisScores["達成感低下"];
+      const overall = judgeOverall(total);
+
+      const card = document.getElementById("scoreCard");
+      card.classList.remove("green", "yellow", "orange", "red");
+      card.classList.add(overall.card);
+      document.getElementById("totalScore").textContent = total;
+      document.getElementById("scoreLevel").textContent = overall.label;
+
+      const axisList = document.getElementById("axisList");
+      axisList.innerHTML = AXES.map(axis => {
+        const s = axisScores[axis];
+        const lv = axisLevel(s);
+        const pct = Math.round((s / 20) * 100);
+        return `
+          <div class="axis-item">
+            <div class="axis-row">
+              <span class="axis-name">${axis}</span>
+              <span class="axis-score">${s} / 20点</span>
+            </div>
+            <div class="bar-outer"><div class="bar-inner lv${lv}" style="width:${pct}%"></div></div>
+          </div>
+        `;
+      }).join("");
+
+      const advice = buildAdvice(axisScores, overall);
+      document.getElementById("adviceList").innerHTML = advice.map(a => `<div class="advice-item">${a}</div>`).join("");
+
+      trackToolUsage("completed_" + overall.key);
+    }
+
+    function copyResult() {
+      const axisScores = computeAxisScores();
+      const total = axisScores["感情耗尽"] + axisScores["脱人格化"] + axisScores["達成感低下"];
+      const overall = judgeOverall(total);
+      const lines = [
+        "【薬剤師バーンアウト診断 結果】",
+        "",
+        `総合スコア: ${total} / 60点`,
+        `判定: ${overall.label.replace(/^[^ぁ-んァ-ヶ一-龠]+/, "").trim()}`,
+        "",
+        "軸別スコア:",
+        `  感情耗尽: ${axisScores["感情耗尽"]} / 20点`,
+        `  脱人格化: ${axisScores["脱人格化"]} / 20点`,
+        `  達成感低下: ${axisScores["達成感低下"]} / 20点`,
+        "",
+        "対処アドバイス:",
+        ...buildAdvice(axisScores, overall).map(a => "  - " + a.replace(/<[^>]+>/g, "")),
+        "",
+        "診断元: 薬剤師バーンアウト診断 | 薬局無料ツール集",
+        "https://yusuketakuma.github.io/pharma-free-tools/pharmacist-burnout-diagnosis.html"
+      ].join("\n");
+
+      navigator.clipboard.writeText(lines).then(() => {
+        alert("✅ 結果をコピーしました");
+        trackCopyAction();
+      }).catch(() => {
+        alert("コピーに失敗しました。手動でコピーしてください。");
+      });
+    }
+
+    function restart() {
+      currentQuestion = 0;
+      answers = new Array(questions.length).fill(null);
+      document.getElementById("result").classList.remove("active");
+      document.querySelectorAll(".option.selected").forEach(o => o.classList.remove("selected"));
+      showQuestion(0);
+      trackToolUsage("restart");
+    }
+
+    renderQuestions();
+    showQuestion(0);
+  </script>
 
 </body>
 </html>

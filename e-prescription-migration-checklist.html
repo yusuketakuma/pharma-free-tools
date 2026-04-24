@@ -285,7 +285,7 @@
           <div class="stat-label">完了項目</div>
         </div>
         <div class="stat-box">
-          <div class="stat-number" id="remainingCount">25</div>
+          <div class="stat-number" id="remainingCount">29</div>
           <div class="stat-label">残り項目</div>
         </div>
         <div class="stat-box">
@@ -552,6 +552,53 @@
       <div class="note">→ 地域紙・広報誌への掲載検討</div>
     </div>
 
+    <!-- Section 5: 2026年6月改定 加算算定チェック -->
+    <div class="section">
+      <div class="section-title" style="background: #3182ce;">
+        5️⃣ 2026年6月改定 加算算定チェック
+        <span class="section-progress" id="section5Progress">(0/4)</span>
+      </div>
+      <div style="background:#ebf8ff;border-left:4px solid #bee3f8;padding:10px 14px;margin-bottom:12px;border-radius:6px;">
+        <p style="color:#2c5282;font-size:0.88rem;line-height:1.55;margin:0;">2026年6月施行の調剤報酬改定で新設／要件化される加算の算定体制を確認。未対応項目は6月までに整備を。</p>
+      </div>
+
+      <label class="check-item" style="background:#ebf8ff;">
+        <input type="checkbox" data-section="5" data-priority="high">
+        <span class="check-label">
+          マイナ保険証利用率30%以上（2026年6月〜一部加算算定要件）
+          <span class="priority priority-high">必須</span>
+        </span>
+      </label>
+      <div class="note">→ 直近3ヶ月平均30%未達で一部加算算定不可。窓口での声かけ徹底</div>
+
+      <label class="check-item" style="background:#ebf8ff;">
+        <input type="checkbox" data-section="5" data-priority="high">
+        <span class="check-label">
+          電子的調剤情報連携体制整備加算（8点）の届出完了
+          <span class="priority priority-high">必須</span>
+        </span>
+      </label>
+      <div class="note">→ マイナポータルへの調剤情報電子提供体制の届出が必要</div>
+
+      <label class="check-item" style="background:#ebf8ff;">
+        <input type="checkbox" data-section="5" data-priority="high">
+        <span class="check-label">
+          かかりつけ薬剤師フォローアップ加算（50点・新設）の算定体制整備
+          <span class="priority priority-high">必須</span>
+        </span>
+      </label>
+      <div class="note">→ 継続フォローアップ記録と患者同意書の整備が要件（500円/3月に1回）</div>
+
+      <label class="check-item" style="background:#ebf8ff;">
+        <input type="checkbox" data-section="5" data-priority="medium">
+        <span class="check-label">
+          電子薬歴システムへのマイナポータル連携設定完了
+          <span class="priority priority-medium">重要</span>
+        </span>
+      </label>
+      <div class="note">→ 電子的調剤情報連携加算の前提となるシステム設定</div>
+    </div>
+
     <!-- Action Buttons -->
     <div class="action-buttons">
       <button class="btn btn-primary" onclick="saveData()">💾 保存</button>
@@ -565,7 +612,7 @@
   </div>
 
   <script>
-    const TOTAL_ITEMS = 25;
+    const TOTAL_ITEMS = 29;
     const STORAGE_KEY = 'e-prescription-migration-checklist';
 
     function loadData() {
@@ -599,7 +646,7 @@
     function updateProgress() {
       const checkboxes = document.querySelectorAll('.check-item input');
       let total = 0;
-      const sectionCounts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+      const sectionCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
       
       checkboxes.forEach(cb => {
         if (cb.checked) {
@@ -626,8 +673,8 @@
       document.getElementById('readinessScore').textContent = percentage + '%';
 
       // Section progress
-      const sectionTotals = { 1: 6, 2: 6, 3: 7, 4: 6 };
-      for (let s = 1; s <= 4; s++) {
+      const sectionTotals = { 1: 6, 2: 6, 3: 7, 4: 6, 5: 4 };
+      for (let s = 1; s <= 5; s++) {
         document.getElementById(`section${s}Progress`).textContent = 
           `(${sectionCounts[s]}/${sectionTotals[s]})`;
       }

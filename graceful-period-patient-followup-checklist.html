@@ -286,6 +286,23 @@
             .btn-group { flex-direction: column; }
             .btn { width: 100%; }
         }
+
+        /* フォローアップ加算チェックセクション */
+        .kasantei-section { background: #ecfdf5; border: 2px solid #10b981; border-radius: 10px; padding: 20px; margin: 20px 0; }
+        .kasantei-section h3 { color: #065f46; margin-bottom: 4px; font-size: 15px; }
+        .kasantei-badge { background: #10b981; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+        .kasantei-check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #d1fae5; }
+        .kasantei-check-item:last-of-type { border-bottom: none; }
+        .kasantei-check-item input[type="checkbox"] { margin-top: 3px; width: 18px; height: 18px; accent-color: #10b981; flex-shrink: 0; cursor: pointer; }
+        .kasantei-check-item label { font-size: 14px; color: #1f2937; cursor: pointer; line-height: 1.5; }
+        .roi-display { display: none; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; padding: 16px; margin-top: 12px; text-align: center; }
+        .roi-display.active { display: block; }
+        .roi-display h4 { color: #15803d; margin-bottom: 8px; font-size: 15px; }
+        .roi-input-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+        .roi-input-row input { width: 70px; padding: 6px 8px; border: 1px solid #86efac; border-radius: 6px; font-size: 16px; text-align: center; }
+        .roi-result { font-size: 22px; font-weight: 800; color: #15803d; margin-top: 8px; }
+        .copy-kasantei-btn { display: inline-block; background: #059669; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; margin-top: 12px; font-weight: 600; transition: background 0.2s; }
+        .copy-kasantei-btn:hover { background: #047857; }
     </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7M1K9P2D8Q"></script>
   <script>
@@ -519,6 +536,43 @@
             <textarea class="notes-area" id="notes4" placeholder="Phase 4 特記事項..."></textarea>
         </div>
 
+        <!-- 6月改定 フォローアップ加算 算定チェックリスト -->
+        <div class="kasantei-section" id="kasantei-check">
+          <h3>✅ 6月改定対応：フォローアップ加算（50点）算定チェックリスト <span class="kasantei-badge">NEW</span></h3>
+          <p style="font-size:13px;color:#065f46;margin:4px 0 12px;">かかりつけ薬剤師フォローアップ加算（2026年6月改定・50点＝500円）の算定要件を確認</p>
+          <div class="kasantei-check-item">
+            <input type="checkbox" id="k1" onchange="checkKasantei()">
+            <label for="k1">① かかりつけ薬剤師として患者に指名されている（同意書取得済み）</label>
+          </div>
+          <div class="kasantei-check-item">
+            <input type="checkbox" id="k2" onchange="checkKasantei()">
+            <label for="k2">② 服薬状況（飲み忘れ・飲み間違いなど）を確認・記録した</label>
+          </div>
+          <div class="kasantei-check-item">
+            <input type="checkbox" id="k3" onchange="checkKasantei()">
+            <label for="k3">③ 副作用の有無・症状を確認した</label>
+          </div>
+          <div class="kasantei-check-item">
+            <input type="checkbox" id="k4" onchange="checkKasantei()">
+            <label for="k4">④ 医師との情報共有・連携を実施（情報提供書作成または相談記録あり）</label>
+          </div>
+          <div class="kasantei-check-item">
+            <input type="checkbox" id="k5" onchange="checkKasantei()">
+            <label for="k5">⑤ 薬歴への記録が完了している</label>
+          </div>
+          <div class="roi-display" id="roiDisplay">
+            <h4>🎉 算定可能！月間ROI試算</h4>
+            <div class="roi-input-row">
+              <span>月間算定件数：</span>
+              <input type="number" id="kasanteiCount" value="20" min="1" max="500" oninput="calcROI()">
+              <span>件</span>
+            </div>
+            <div class="roi-result" id="roiResult">月間 +10,000円</div>
+            <p style="font-size:12px;color:#15803d;margin-top:4px;">1件×500円（50点）×月間算定件数</p>
+            <button class="copy-kasantei-btn" onclick="copyKasanteiResult()">📋 結果をコピー</button>
+          </div>
+        </div>
+
         <div class="btn-group">
             <button class="btn btn-primary" onclick="saveData()">💾 保存</button>
             <button class="btn btn-secondary" onclick="window.print()">🖨️ 印刷</button>
@@ -658,6 +712,44 @@
                 cb.addEventListener('change', updateProgress);
             });
         });
+
+        function checkKasantei() {
+          const allChecked = ['k1','k2','k3','k4','k5'].every(id => document.getElementById(id).checked);
+          const roi = document.getElementById('roiDisplay');
+          if (allChecked) {
+            roi.classList.add('active');
+            calcROI();
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'kasantei_check_complete', { event_category: 'engagement', event_label: 'graceful-period-kasantei-all-checked' });
+            }
+          } else {
+            roi.classList.remove('active');
+          }
+        }
+
+        function calcROI() {
+          const count = parseInt(document.getElementById('kasanteiCount').value) || 0;
+          const monthly = count * 500;
+          document.getElementById('roiResult').textContent = '月間 +' + monthly.toLocaleString() + '円';
+        }
+
+        function copyKasanteiResult() {
+          const count = parseInt(document.getElementById('kasanteiCount').value) || 0;
+          const monthly = count * 500;
+          const text = '【フォローアップ加算（50点）算定チェック結果】\n' +
+            '✅ 全5項目クリア — 算定可能！\n' +
+            '月間算定件数: ' + count + '件\n' +
+            '月間ROI: +' + monthly.toLocaleString() + '円（1件×500円）\n' +
+            '年間ROI: +' + (monthly * 12).toLocaleString() + '円\n\n' +
+            'ツール: https://yusuketakuma.github.io/pharma-free-tools/graceful-period-patient-followup-checklist.html';
+          navigator.clipboard.writeText(text).then(function() {
+            const btn = document.querySelector('.copy-kasantei-btn');
+            const orig = btn.textContent;
+            btn.textContent = 'コピーしました ✅';
+            setTimeout(function() { btn.textContent = orig; }, 1500);
+            if (typeof trackCopyAction !== 'undefined') trackCopyAction();
+          });
+        }
     </script>
 
 <!-- 関連ツール セクション (自動追加: Batch2 crosslink) -->
