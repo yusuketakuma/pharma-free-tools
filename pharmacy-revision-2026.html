@@ -347,7 +347,7 @@
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill" style="width: 0%"></div>
     </div>
-    <div class="progress-text" id="progressText">質問 1 / 20</div>
+    <div class="progress-text" id="progressText">質問 1 / 23</div>
     
     <div id="questions"></div>
     
@@ -486,6 +486,22 @@
         category: "DX推進",
         question: "オンライン服薬指導・テレファーマシーの導入状況は？",
         options: ["導入していない", "検討中", "試行導入済み", "本格運用中"]
+      },
+      // 2026年6月新設加算（3問）
+      {
+        category: "フォローアップ加算",
+        question: "かかりつけ薬剤師フォローアップ加算（新設・2026年6月〜）の算定準備状況は？ ※50点=500円/3月に1回。継続的服薬フォローアップの記録・患者同意が要件。",
+        options: ["加算の内容をまだ把握していない／未届出", "内容は把握しているが未着手", "算定準備中・患者同意取得進行中", "算定開始済み・記録体制整備完了"]
+      },
+      {
+        category: "マイナ保険証",
+        question: "マイナ保険証利用率は30%以上を達成できる見込みか？ ※2026年6月〜一部加算の算定にマイナ保険証利用実績30%が要件化。未達で加算ゼロのリスクあり。",
+        options: ["20%未満・対策未実施／データ未把握", "20〜24%で対策検討中", "25〜29%で改善中", "直近3ヶ月平均で30%以上達成済み"]
+      },
+      {
+        category: "電子的調剤連携",
+        question: "電子的調剤情報連携体制整備加算（8点）の算定体制は？ ※患者の調剤情報をマイナポータルへ電子的に提供できる体制が要件。電子薬歴・マイナ保険証対応が前提。",
+        options: ["加算の存在を知らなかった／紙薬歴で対応不可", "電子薬歴あり・マイナ連携設定中", "体制整備中・近く算定予定", "算定中・電子薬歴とマイナ連携完備"]
       }
     ];
     
@@ -495,7 +511,10 @@
       "在宅医療": 0,
       "供給体制": 0,
       "患者対応": 0,
-      "DX推進": 0
+      "DX推進": 0,
+      "フォローアップ加算": 0,
+      "マイナ保険証": 0,
+      "電子的調剤連携": 0
     };
     
     function init() {
@@ -568,7 +587,7 @@
       document.getElementById('scoreLevel').textContent = level;
       
       const breakdownList = document.getElementById('breakdownList');
-      const maxScores = { "地域連携": 25, "在宅医療": 25, "供給体制": 25, "患者対応": 15, "DX推進": 10 };
+      const maxScores = { "地域連携": 25, "在宅医療": 25, "供給体制": 25, "患者対応": 15, "DX推進": 10, "フォローアップ加算": 15, "マイナ保険証": 15, "電子的調剤連携": 15 };
       breakdownList.innerHTML = Object.entries(scores).map(([cat, score]) => {
         const max = maxScores[cat];
         const percent = Math.round((score / max) * 100);
@@ -585,7 +604,7 @@
     
     function generateSuggestions() {
       const suggestions = [];
-      const maxScores = { "地域連携": 25, "在宅医療": 25, "供給体制": 25, "患者対応": 15, "DX推進": 10 };
+      const maxScores = { "地域連携": 25, "在宅医療": 25, "供給体制": 25, "患者対応": 15, "DX推進": 10, "フォローアップ加算": 15, "マイナ保険証": 15, "電子的調剤連携": 15 };
       
       Object.entries(scores).forEach(([cat, score]) => {
         const max = maxScores[cat];
@@ -597,6 +616,9 @@
           if (cat === "供給体制") suggestions.push("地域支援体制加算（供給対応体制）の取得・在庫管理システム導入");
           if (cat === "患者対応") suggestions.push("服薬指導時間の確保・患者フィードバック収集仕組み作り");
           if (cat === "DX推進") suggestions.push("電子薬歴データ活用・オンライン服薬指導導入検討");
+          if (cat === "フォローアップ加算") suggestions.push("【P1】かかりつけ薬剤師フォローアップ加算（50点=500円/3月）を未算定。継続服薬フォローアップ記録と患者同意書整備で月数万円の収益機会");
+          if (cat === "マイナ保険証") suggestions.push("【緊急】マイナ保険証利用率30%未達のまま6月を迎えると一部加算が算定不可になるリスクあり。窓口での声かけ徹底を今週から開始");
+          if (cat === "電子的調剤連携") suggestions.push("電子的調剤情報連携体制整備加算（8点）未算定。電子薬歴の導入・マイナ連携設定で恒常的な加算収益を確保可能");
         }
       });
       
@@ -616,7 +638,10 @@
         "在宅医療": 0,
         "供給体制": 0,
         "患者対応": 0,
-        "DX推進": 0
+        "DX推進": 0,
+        "フォローアップ加算": 0,
+        "マイナ保険証": 0,
+        "電子的調剤連携": 0
       };
       document.getElementById('result').classList.remove('active');
       init();
