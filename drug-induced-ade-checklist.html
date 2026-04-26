@@ -648,7 +648,9 @@
             <div class="action-buttons">
                 <button class="btn btn-primary" onclick="copyResult()">📋 結果をコピー</button>
                 <button class="btn btn-secondary" onclick="window.print(); trackToolUsage('print')">🖨️ 印刷する</button>
-                <button class="btn btn-secondary" onclick="reset; trackToolUsage('restart')"Form()">🔄 リセット</button>
+                <button class="btn btn-secondary" onclick="saveResult(); trackToolUsage('save')">💾 保存</button>
+                <button class="btn btn-secondary" onclick="loadResult(); trackToolUsage('load')">📂 読込</button>
+                <button class="btn btn-secondary" onclick="resetForm(); trackToolUsage('restart')">🔄 リセット</button>
             </div>
             
             <!-- 参考情報 -->
@@ -797,8 +799,56 @@ ${notes}
             calculateScore();
         }
         
-        function showToast() {
+        function saveResult() {
+            const data = {
+                patientId: document.getElementById('patientId').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                evalDate: document.getElementById('evalDate').value,
+                event: document.getElementById('event').value,
+                suspectDrug: document.getElementById('suspectDrug').value,
+                notes: document.getElementById('notes').value,
+                radios: {},
+                checkboxes: {}
+            };
+            for (let i = 1; i <= 10; i++) {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                data.radios['q' + i] = sel ? sel.value : null;
+            }
+            for (let i = 1; i <= 5; i++) {
+                data.checkboxes['f' + i] = document.getElementById('f' + i).checked;
+            }
+            localStorage.setItem('ade-checklist-save', JSON.stringify(data));
+            showToast('保存しました');
+        }
+
+        function loadResult() {
+            const raw = localStorage.getItem('ade-checklist-save');
+            if (!raw) { showToast('保存データがありません'); return; }
+            const data = JSON.parse(raw);
+            document.getElementById('patientId').value = data.patientId || '';
+            document.getElementById('age').value = data.age || '';
+            document.getElementById('gender').value = data.gender || '';
+            document.getElementById('evalDate').value = data.evalDate || '';
+            document.getElementById('event').value = data.event || '';
+            document.getElementById('suspectDrug').value = data.suspectDrug || '';
+            document.getElementById('notes').value = data.notes || '';
+            for (let i = 1; i <= 10; i++) {
+                const savedVal = data.radios && data.radios['q' + i];
+                document.querySelectorAll(`input[name="q${i}"]`).forEach(r => {
+                    r.checked = (r.value === savedVal);
+                });
+            }
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('f' + i).checked = !!(data.checkboxes && data.checkboxes['f' + i]);
+            }
+            calculateScore();
+            showToast('読み込みました');
+        }
+
+        function showToast(msg) {
             const toast = document.getElementById('toast');
+            toast.textContent = msg || 'コピーしました';
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
