@@ -300,6 +300,102 @@
             transform: scale(1.05);
         }
         
+
+        .copy-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            background: #38a169;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover { background: #276749; }
+
+        .billing-memo-btn {
+            display: none;
+            width: 100%;
+            padding: 13px;
+            background: #805ad5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .billing-memo-btn.visible { display: block; }
+        .billing-memo-btn:hover { background: #6b46c1; }
+
+        .billing-memo-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f5f0ff;
+            border: 2px solid #805ad5;
+            border-radius: 12px;
+        }
+        .billing-memo-section.visible { display: block; }
+        .billing-memo-section h3 {
+            color: #553c9a;
+            font-size: 16px;
+            margin-bottom: 14px;
+        }
+        .billing-memo-section textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 12px;
+            border: 1px solid #c4b5fd;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: monospace;
+            line-height: 1.6;
+            color: #2d3748;
+            background: white;
+            resize: vertical;
+        }
+        .billing-copy-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 8px 18px;
+            background: #805ad5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .billing-copy-btn:hover { background: #6b46c1; }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 9999;
+        }
+        .toast.show { opacity: 1; }
+
+        @media print {
+            .billing-memo-section { display: block !important; }
+            .billing-memo-btn, .copy-btn, .billing-copy-btn { display: none !important; }
+        }
         @media print {
             body {
                 background: white;
@@ -466,6 +562,18 @@
         
         <button class="print-btn" onclick="window.print()">🖨️ チェックリストを印刷</button>
         <button class="reset-btn" onclick="resetForm()">🔄 リセット</button>
+        <button class="copy-btn" onclick="copyResults()">📋 結果をコピー（薬歴・申送り用）</button>
+        <button class="billing-memo-btn" id="billingMemoBtn" onclick="toggleBillingMemo()">📝 請求証跡メモを生成（300点算定用）</button>
+
+        <div class="billing-memo-section" id="billingMemoSection">
+            <h3>📄 請求証跡メモ — 訪問診療薬剤師同時指導料（300点）</h3>
+            <textarea id="billingMemoText" readonly></textarea>
+            <button class="billing-copy-btn" onclick="copyBillingMemo()">📋 メモをコピー</button>
+        </div>
+
+        <div class="toast" id="toast"></div>
+
+
         
         <div class="cta-section">
             <div class="cta-title">🚀 在宅医療業務をもっと効率化しませんか？</div>
@@ -543,6 +651,16 @@
                 }
             });
             
+
+            // Show billing-memo button when billing section items checked
+            const billingCbs = [document.getElementById('item13'), document.getElementById('item14'), document.getElementById('item15')];
+            const billingDone = billingCbs.every(cb => cb && cb.checked);
+            const bmBtn = document.getElementById('billingMemoBtn');
+            if (bmBtn) {
+                if (billingDone) bmBtn.classList.add('visible');
+                else { bmBtn.classList.remove('visible'); document.getElementById('billingMemoSection').classList.remove('visible'); }
+            }
+
             // Save to localStorage
             saveState();
 
@@ -587,6 +705,102 @@
             }
         }
         
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        function copyResults() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const labels = document.querySelectorAll('.checklist-item label');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit' });
+            const timeStr = now.toLocaleTimeString('ja-JP', { hour:'2-digit', minute:'2-digit' });
+
+            let lines = [];
+            lines.push('【在宅医療同時指導チェックリスト 実施記録】');
+            lines.push(`実施日時: ${dateStr} ${timeStr}`);
+            lines.push(`完了項目: ${checkedCount} / 15`);
+            lines.push('');
+
+            const categories = ['1. 訪問前準備', '2. 同時訪問実施', '3. 記録・報告', '4. 請求要件確認'];
+            const catRanges = [[0,4],[4,9],[9,12],[12,15]];
+            catRanges.forEach((range, i) => {
+                lines.push(`▼ ${categories[i]}`);
+                for (let j = range[0]; j < range[1]; j++) {
+                    const cb = checkboxes[j];
+                    const lbl = labels[j];
+                    lines.push(`  [${cb.checked ? '✓' : ' '}] ${lbl ? lbl.textContent.trim() : ''}`);
+                }
+                lines.push('');
+            });
+
+            lines.push('※ 訪問診療薬剤師同時指導料（300点）の算定には全15項目の完了が推奨されます。');
+
+            navigator.clipboard.writeText(lines.join('\n'))
+                .then(() => showToast('✅ 結果をコピーしました'))
+                .catch(() => showToast('❌ コピーに失敗しました'));
+            trackToolUsage('copy_results', 'homecare_joint_visit_copy');
+        }
+
+        function toggleBillingMemo() {
+            const section = document.getElementById('billingMemoSection');
+            if (section.classList.contains('visible')) {
+                section.classList.remove('visible');
+                return;
+            }
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit' });
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const labels = document.querySelectorAll('.checklist-item label');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const billingItems = [12,13,14].map(i => ({
+                checked: checkboxes[i] ? checkboxes[i].checked : false,
+                label: labels[i] ? labels[i].textContent.trim() : ''
+            }));
+            const allBillingOk = billingItems.every(b => b.checked);
+
+            const memo = [
+                '【請求証跡メモ】訪問診療薬剤師同時指導料（300点）',
+                `算定日: ${dateStr}`,
+                `患者氏名: （記入）`,
+                `医師氏名: （記入）`,
+                `訪問時間: （記入）〜（記入）`,
+                '',
+                '■ 算定要件チェック（請求前確認）',
+                `  [${checkboxes[4]&&checkboxes[4].checked?'✓':' '}] 医師と同時入室（同時訪問の証左）`,
+                `  [${checkboxes[12]&&checkboxes[12].checked?'✓':' '}] 同時指導料算定要件充足確認`,
+                `  [${checkboxes[13]&&checkboxes[13].checked?'✓':' '}] 添付書類・証跡整備完了`,
+                `  [${checkboxes[14]&&checkboxes[14].checked?'✓':' '}] 請求システム入力完了`,
+                '',
+                '■ 指導内容サマリー',
+                `  服薬状況: （記入）`,
+                `  医師との協議事項: （記入）`,
+                `  処方変更有無: 有 ／ 無`,
+                `  次回訪問予定: （記入）`,
+                '',
+                `■ 完了スコア: ${checkedCount}/15 項目`,
+                `■ 算定可否判定: ${allBillingOk ? '✅ 算定可（請求要件3項目すべて完了）' : '⚠️ 要確認（請求要件に未完了あり）'}`,
+                '',
+                '※ 本メモは薬歴・証跡保管用です。実際の算定は保険規定に基づき確認してください。'
+            ].join('\n');
+
+            document.getElementById('billingMemoText').value = memo;
+            section.classList.add('visible');
+            trackToolUsage('billing_memo_generate', 'homecare_joint_visit_billing');
+        }
+
+        function copyBillingMemo() {
+            const text = document.getElementById('billingMemoText').value;
+            navigator.clipboard.writeText(text)
+                .then(() => showToast('✅ 請求証跡メモをコピーしました'))
+                .catch(() => showToast('❌ コピーに失敗しました'));
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadState();
