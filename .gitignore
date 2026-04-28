@@ -1,4 +1,47 @@
+# Vercel
 .vercel
-*.tmp
+
+# Build & dependencies
 node_modules/
 __pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# System & IDE
+.DS_Store
+._.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Claude Code / Development state
+.claude/
+.codex/
+.openclaw/
+claude-code-harness.config.json
+
+# Temporary & backup files
+*.tmp
+*.bak
+*.backup
+*.lock
+*.log
+
+# Output artifacts
+*.txt
+*.jsonl
+sitemap_*.xml
+index_backup_*.html
+claim-denial-reduction-simulator.bak.html
+
+# Research & reports (local only)
+memory/
+reports/
+org/
+artifacts/
+scripts/*.md
